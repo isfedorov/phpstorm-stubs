@@ -18,7 +18,11 @@
     "nikic/php-parser": "^4",
     "phpdocumentor/reflection-docblock": "^4.3",
     "phpunit/phpunit": "^7",
-    "friendsofphp/php-cs-fixer": "^2.16"
+    "friendsofphp/php-cs-fixer": "^2.16",
+    "squizlabs/php_codesniffer": "@stable",
+    "phpmd/phpmd": "@stable",
+    "vimeo/psalm": "@stable",
+    "phpstan/phpstan": "@stable"
   },
   "autoload": {
     "files": ["PhpStormStubsMap.php"]
