@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace StubTests\TestData\Providers\Reflection;
 
 use Generator;
+use ReflectionException;
 use StubTests\Model\PHPParameter;
 use StubTests\Model\StubProblemType;
 use StubTests\TestData\Providers\EntitiesFilter;
@@ -43,6 +44,9 @@ class ReflectionParametersProvider
         }
     }
 
+    /**
+     * @throws ReflectionException
+     */
     public static function methodParametersProvider(): ?Generator
     {
         $classesAndInterfaces = ReflectionStubsSingleton::getReflectionStubs()->getClasses() +
@@ -59,6 +63,9 @@ class ReflectionParametersProvider
         }
     }
 
+    /**
+     * @throws ReflectionException
+     */
     public static function methodOptionalParametersProvider(): ?Generator
     {
         $classesAndInterfaces = ReflectionStubsSingleton::getReflectionStubs()->getClasses() +
@@ -76,6 +83,9 @@ class ReflectionParametersProvider
         }
     }
 
+    /**
+     * @throws ReflectionException
+     */
     public static function methodOptionalParametersWithDefaultValueProvider(): ?Generator
     {
         $classesAndInterfaces = ReflectionStubsSingleton::getReflectionStubs()->getClasses() +

@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace StubTests\TestData\Providers\Reflection;
 
 use Generator;
+use ReflectionException;
 use StubTests\Model\PHPClass;
 use StubTests\Model\PHPInterface;
 use StubTests\Model\StubProblemType;
@@ -12,6 +13,9 @@ use StubTests\TestData\Providers\ReflectionStubsSingleton;
 
 class ReflectionClassesTestDataProviders
 {
+    /**
+     * @throws ReflectionException
+     */
     public static function allClassesProvider(): ?Generator
     {
         $allClassesAndInterfaces = ReflectionStubsSingleton::getReflectionStubs()->getClasses() +
@@ -24,6 +28,9 @@ class ReflectionClassesTestDataProviders
         }
     }
 
+    /**
+     * @throws ReflectionException
+     */
     public static function classesWithInterfacesProvider(): ?Generator
     {
         foreach (EntitiesFilter::getFiltered(ReflectionStubsSingleton::getReflectionStubs()->getClasses(),
@@ -35,6 +42,9 @@ class ReflectionClassesTestDataProviders
         }
     }
 
+    /**
+     * @throws ReflectionException
+     */
     public static function classWithParentProvider(): ?Generator
     {
         $classesAndInterfaces = ReflectionStubsSingleton::getReflectionStubs()->getClasses() +

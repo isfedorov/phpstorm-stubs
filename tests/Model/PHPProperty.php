@@ -17,7 +17,6 @@ class PHPProperty extends BasePHPElement
 
     /**
      * @param ReflectionProperty $reflectionObject
-     * @return static
      */
     public function readObjectFromReflection($reflectionObject): static
     {
@@ -43,7 +42,6 @@ class PHPProperty extends BasePHPElement
 
     /**
      * @param Property $node
-     * @return static
      */
     public function readObjectFromStubNode($node): static
     {

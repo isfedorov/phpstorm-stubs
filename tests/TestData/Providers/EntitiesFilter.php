@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace StubTests\TestData\Providers;
 
+use ReflectionException;
 use StubTests\Model\BasePHPElement;
 use StubTests\Model\PHPClass;
 use StubTests\Model\PHPFunction;
@@ -15,8 +16,6 @@ class EntitiesFilter
 {
     /**
      * @param BasePHPElement[] $entities
-     * @param callable|null $additionalFilter
-     * @param int ...$problemTypes
      * @return BasePHPElement[]
      */
     public static function getFiltered(array $entities, callable $additionalFilter = null, int ...$problemTypes): array
@@ -44,6 +43,9 @@ class EntitiesFilter
         return $resultArray;
     }
 
+    /**
+     * @throws ReflectionException
+     */
     public static function getFilteredFunctions(PHPClass|PHPInterface $class = null): array
     {
         if ($class === null) {

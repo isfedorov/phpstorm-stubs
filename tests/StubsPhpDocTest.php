@@ -8,6 +8,7 @@ use phpDocumentor\Reflection\DocBlock\Tags\Link;
 use phpDocumentor\Reflection\DocBlock\Tags\Reference\Url;
 use phpDocumentor\Reflection\DocBlock\Tags\See;
 use phpDocumentor\Reflection\DocBlock\Tags\Since;
+use PHPUnit\Framework\Exception;
 use StubTests\Model\BasePHPClass;
 use StubTests\Model\BasePHPElement;
 use StubTests\Model\PHPConst;
@@ -22,8 +23,7 @@ class StubsPhpDocTest extends BaseStubsTest
 {
     /**
      * @dataProvider \StubTests\TestData\Providers\Stubs\StubConstantsProvider::classConstantProvider
-     * @param BasePHPClass $class
-     * @param PHPConst $constant
+     * @throws Exception
      */
     public static function testClassConstantsPHPDocs(BasePHPClass $class, PHPConst $constant): void
     {
@@ -33,6 +33,7 @@ class StubsPhpDocTest extends BaseStubsTest
 
     /**
      * @dataProvider \StubTests\TestData\Providers\Stubs\StubConstantsProvider::globalConstantProvider
+     * @throws Exception
      */
     public static function testConstantsPHPDocs(PHPConst $constant): void
     {
@@ -42,6 +43,7 @@ class StubsPhpDocTest extends BaseStubsTest
 
     /**
      * @dataProvider \StubTests\TestData\Providers\Stubs\StubsTestDataProviders::allFunctionsProvider
+     * @throws Exception
      */
     public static function testFunctionPHPDocs(PHPFunction $function): void
     {
@@ -51,6 +53,7 @@ class StubsPhpDocTest extends BaseStubsTest
 
     /**
      * @dataProvider \StubTests\TestData\Providers\Stubs\StubsTestDataProviders::allClassesProvider
+     * @throws Exception
      */
     public static function testClassesPHPDocs(BasePHPClass $class): void
     {
@@ -60,6 +63,7 @@ class StubsPhpDocTest extends BaseStubsTest
 
     /**
      * @dataProvider \StubTests\TestData\Providers\Stubs\StubMethodsProvider::allMethodsProvider
+     * @throws Exception
      */
     public static function testMethodsPHPDocs(PHPMethod $method): void
     {
@@ -112,7 +116,7 @@ class StubsPhpDocTest extends BaseStubsTest
 
         $phpdoc = preg_replace(
             [
-                '#<br ?/>#',
+                '#<br />#',
                 '#<br>#i',
                 '#->#',
                 '#=>#',
@@ -170,6 +174,9 @@ class StubsPhpDocTest extends BaseStubsTest
         }
     }
 
+    /**
+     * @throws Exception
+     */
     private static function checkContainsOnlyValidTags(BasePHPElement $element, string $elementName): void
     {
         $VALID_TAGS = [
@@ -203,6 +210,9 @@ class StubsPhpDocTest extends BaseStubsTest
         }
     }
 
+    /**
+     * @throws Exception
+     */
     private static function checkPHPDocCorrectness(BasePHPElement $element, string $elementName): void
     {
         self::checkLinks($element, $elementName);

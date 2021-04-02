@@ -13,7 +13,6 @@ class PHPInterface extends BasePHPClass
 
     /**
      * @param ReflectionClass $reflectionObject
-     * @return static
      */
     public function readObjectFromReflection($reflectionObject): static
     {
@@ -36,7 +35,6 @@ class PHPInterface extends BasePHPClass
 
     /**
      * @param Interface_ $node
-     * @return static
      */
     public function readObjectFromStubNode($node): static
     {
@@ -55,15 +53,7 @@ class PHPInterface extends BasePHPClass
     {
         foreach ($jsonData as $interface) {
             if ($interface->name === $this->name) {
-                if (!empty($interface->problems)) {
-                    foreach ($interface->problems as $problem) {
-                        $this->mutedProblems[] = match ($problem) {
-                            'wrong parent' => StubProblemType::WRONG_PARENT,
-                            'missing interface' => StubProblemType::STUB_IS_MISSED,
-                            default => -1
-                        };
-                    }
-                }
+                $this->readMutedProblemsOfInterface($interface);
                 if (!empty($interface->methods)) {
                     foreach ($this->methods as $method) {
                         $method->readMutedProblems($interface->methods);
@@ -75,6 +65,19 @@ class PHPInterface extends BasePHPClass
                     }
                 }
                 return;
+            }
+        }
+    }
+
+    protected function readMutedProblemsOfInterface(mixed $interface): void
+    {
+        if (!empty($interface->problems)) {
+            foreach ($interface->problems as $problem) {
+                $this->mutedProblems[] = match ($problem) {
+                    'wrong parent' => StubProblemType::WRONG_PARENT,
+                    'missing interface' => StubProblemType::STUB_IS_MISSED,
+                    default => -1
+                };
             }
         }
     }

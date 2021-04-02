@@ -32,11 +32,17 @@ class PhpVersions implements ArrayAccess, IteratorAggregate
         return $this->offsetExists($offset) ? self::$versions[$offset] : null;
     }
 
+    /**
+     * @throws RuntimeException
+     */
     public function offsetSet($offset, $value)
     {
         throw new RuntimeException('Unsupported operation');
     }
 
+    /**
+     * @throws RuntimeException
+     */
     public function offsetUnset($offset)
     {
         throw new RuntimeException('Unsupported operation');

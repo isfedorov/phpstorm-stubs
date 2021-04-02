@@ -5,6 +5,7 @@ namespace StubTests\Model;
 
 use phpDocumentor\Reflection\DocBlock\Tags\Param;
 use PhpParser\Node\Stmt\ClassMethod;
+use ReflectionException;
 use ReflectionMethod;
 use stdClass;
 
@@ -17,7 +18,7 @@ class PHPMethod extends PHPFunction
 
     /**
      * @param ReflectionMethod $reflectionObject
-     * @return static
+     * @throws ReflectionException
      */
     public function readObjectFromReflection($reflectionObject): static
     {
@@ -41,7 +42,6 @@ class PHPMethod extends PHPFunction
 
     /**
      * @param ClassMethod $node
-     * @return static
      */
     public function readObjectFromStubNode($node): static
     {

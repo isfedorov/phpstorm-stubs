@@ -18,7 +18,6 @@ class PHPClass extends BasePHPClass
 
     /**
      * @param ReflectionClass $reflectionObject
-     * @return static
      */
     public function readObjectFromReflection($reflectionObject): static
     {
@@ -54,7 +53,6 @@ class PHPClass extends BasePHPClass
 
     /**
      * @param Class_ $node
-     * @return static
      */
     public function readObjectFromStubNode($node): static
     {
@@ -109,16 +107,7 @@ class PHPClass extends BasePHPClass
     {
         foreach ($jsonData as $class) {
             if ($class->name === $this->name) {
-                if (!empty($class->problems)) {
-                    foreach ($class->problems as $problem) {
-                        $this->mutedProblems[] = match ($problem) {
-                            'wrong parent' => StubProblemType::WRONG_PARENT,
-                            'wrong interface' => StubProblemType::WRONG_INTERFACE,
-                            'missing class' => StubProblemType::STUB_IS_MISSED,
-                            default => -1,
-                        };
-                    }
-                }
+                $this->readClassProblems($class);
                 if (!empty($class->methods)) {
                     foreach ($this->methods as $method) {
                         $method->readMutedProblems($class->methods);
@@ -130,6 +119,20 @@ class PHPClass extends BasePHPClass
                     }
                 }
                 return;
+            }
+        }
+    }
+
+    protected function readClassProblems(mixed $class): void
+    {
+        if (!empty($class->problems)) {
+            foreach ($class->problems as $problem) {
+                $this->mutedProblems[] = match ($problem) {
+                    'wrong parent' => StubProblemType::WRONG_PARENT,
+                    'wrong interface' => StubProblemType::WRONG_INTERFACE,
+                    'missing class' => StubProblemType::STUB_IS_MISSED,
+                    default => -1,
+                };
             }
         }
     }

@@ -21,7 +21,6 @@ class PHPConst extends BasePHPElement
 
     /**
      * @param ReflectionClassConstant $reflectionObject
-     * @return static
      */
     public function readObjectFromReflection($reflectionObject): static
     {
@@ -39,7 +38,6 @@ class PHPConst extends BasePHPElement
 
     /**
      * @param Const_ $node
-     * @return static
      */
     public function readObjectFromStubNode($node): static
     {

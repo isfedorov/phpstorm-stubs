@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace StubTests;
 
 use JetBrains\PhpStorm\Pure;
+use LogicException;
 use PhpParser\Node\Expr\BinaryOp\BitwiseOr;
 use PhpParser\Node\Expr\ClassConstFetch;
 use PhpParser\Node\Expr\ConstFetch;
@@ -24,12 +25,13 @@ use StubTests\Model\StubProblemType;
 use StubTests\Parsers\Utils;
 use StubTests\TestData\Providers\EntitiesFilter;
 use StubTests\TestData\Providers\PhpStormStubsSingleton;
+use UnexpectedValueException;
 
 class StubsTest extends BaseStubsTest
 {
     /**
      * @dataProvider \StubTests\TestData\Providers\Reflection\ReflectionConstantsProvider::constantProvider
-     * @throws Exception
+     * @throws Exception|RuntimeException|LogicException|UnexpectedValueException
      */
     public function testConstants(PHPConst $constant): void
     {
@@ -61,7 +63,7 @@ class StubsTest extends BaseStubsTest
 
     /**
      * @dataProvider \StubTests\TestData\Providers\Reflection\ReflectionConstantsProvider::classConstantProvider
-     * @throws Exception|RuntimeException
+     * @throws Exception|RuntimeException|LogicException
      */
     public function testClassConstants(PHPClass|PHPInterface $class, PHPConst $constant): void
     {
@@ -81,7 +83,7 @@ class StubsTest extends BaseStubsTest
 
     /**
      * @dataProvider \StubTests\TestData\Providers\Reflection\ReflectionConstantsProvider::classConstantValuesProvider
-     * @throws RuntimeException
+     * @throws RuntimeException|LogicException
      */
     public function testClassConstantsValues(PHPClass|PHPInterface $class, PHPConst $constant): void
     {
@@ -102,7 +104,7 @@ class StubsTest extends BaseStubsTest
 
     /**
      * @dataProvider \StubTests\TestData\Providers\Reflection\ReflectionConstantsProvider::classConstantProvider
-     * @throws RuntimeException
+     * @throws RuntimeException|LogicException
      */
     public function testClassConstantsVisibility(PHPClass|PHPInterface $class, PHPConst $constant): void
     {
@@ -123,7 +125,7 @@ class StubsTest extends BaseStubsTest
 
     /**
      * @dataProvider \StubTests\TestData\Providers\Reflection\ReflectionFunctionsProvider::allFunctionsProvider
-     * @throws Exception
+     * @throws Exception|LogicException|RuntimeException|UnexpectedValueException
      */
     public function testFunctionsExist(PHPFunction $function): void
     {
@@ -149,7 +151,7 @@ class StubsTest extends BaseStubsTest
 
     /**
      * @dataProvider \StubTests\TestData\Providers\Reflection\ReflectionFunctionsProvider::functionsForParamsAmountTestsProvider
-     * @throws Exception
+     * @throws Exception|LogicException|RuntimeException|UnexpectedValueException
      */
     public function testFunctionsParametersAmount(PHPFunction $function)
     {
@@ -165,7 +167,7 @@ class StubsTest extends BaseStubsTest
     }
 
     /**
-     * @throws Exception|RuntimeException
+     * @throws Exception|RuntimeException|LogicException
      */
     public function testFunctionsDuplicates()
     {
@@ -181,7 +183,7 @@ class StubsTest extends BaseStubsTest
 
     /**
      * @dataProvider \StubTests\TestData\Providers\Reflection\ReflectionParametersProvider::functionOptionalParametersProvider
-     * @throws RuntimeException
+     * @throws RuntimeException|LogicException
      */
     public function testFunctionsOptionalParameters(PHPFunction $function, PHPParameter $parameter)
     {
@@ -195,9 +197,7 @@ class StubsTest extends BaseStubsTest
 
     /**
      * @dataProvider \StubTests\TestData\Providers\Reflection\ReflectionParametersProvider::functionOptionalParametersWithDefaultValueProvider
-     * @param PHPFunction $function
-     * @param PHPParameter $parameter
-     * @throws Exception|RuntimeException
+     * @throws Exception|RuntimeException|LogicException
      */
     public function testFunctionsDefaultParametersValue(PHPFunction $function, PHPParameter $parameter)
     {
@@ -214,10 +214,7 @@ class StubsTest extends BaseStubsTest
 
     /**
      * @dataProvider \StubTests\TestData\Providers\Reflection\ReflectionParametersProvider::methodOptionalParametersWithDefaultValueProvider
-     * @param PHPClass|PHPInterface $class
-     * @param PHPMethod $method
-     * @param PHPParameter $parameter
-     * @throws Exception|RuntimeException
+     * @throws Exception|RuntimeException|LogicException
      */
     public function testMethodsDefaultParametersValue(PHPClass|PHPInterface $class, PHPMethod $method, PHPParameter $parameter)
     {
@@ -238,10 +235,7 @@ class StubsTest extends BaseStubsTest
 
     /**
      * @dataProvider \StubTests\TestData\Providers\Reflection\ReflectionParametersProvider::methodOptionalParametersProvider
-     * @param PHPClass|PHPInterface $class
-     * @param PHPMethod $method
-     * @param PHPParameter $parameter
-     * @throws RuntimeException
+     * @throws RuntimeException|LogicException
      */
     public function testMethodsOptionalParameters(PHPClass|PHPInterface $class, PHPMethod $method, PHPParameter $parameter)
     {
@@ -260,8 +254,7 @@ class StubsTest extends BaseStubsTest
 
     /**
      * @dataProvider \StubTests\TestData\Providers\Reflection\ReflectionClassesTestDataProviders::classWithParentProvider
-     * @param PHPClass|PHPInterface $class
-     * @throws Exception|RuntimeException
+     * @throws Exception|RuntimeException|LogicException
      */
     public function testClassesParent(PHPClass|PHPInterface $class)
     {
@@ -288,9 +281,7 @@ class StubsTest extends BaseStubsTest
 
     /**
      * @dataProvider \StubTests\TestData\Providers\Reflection\ReflectionMethodsProvider::classMethodsProvider
-     * @param PHPClass|PHPInterface $class
-     * @param PHPMethod $method
-     * @throws Exception|RuntimeException
+     * @throws Exception|RuntimeException|LogicException
      */
     public function testClassesMethodsExist(PHPClass|PHPInterface $class, PHPMethod $method)
     {
@@ -309,9 +300,7 @@ class StubsTest extends BaseStubsTest
 
     /**
      * @dataProvider \StubTests\TestData\Providers\Reflection\ReflectionMethodsProvider::classFinalMethodsProvider
-     * @param PHPClass|PHPInterface $class
-     * @param PHPMethod $method
-     * @throws RuntimeException
+     * @throws RuntimeException|LogicException
      */
     public function testClassesFinalMethods(PHPClass|PHPInterface $class, PHPMethod $method)
     {
@@ -330,9 +319,7 @@ class StubsTest extends BaseStubsTest
 
     /**
      * @dataProvider \StubTests\TestData\Providers\Reflection\ReflectionMethodsProvider::classStaticMethodsProvider
-     * @param PHPClass|PHPInterface $class
-     * @param PHPMethod $method
-     * @throws RuntimeException
+     * @throws RuntimeException|LogicException
      */
     public function testClassesStaticMethods(PHPClass|PHPInterface $class, PHPMethod $method)
     {
@@ -351,9 +338,7 @@ class StubsTest extends BaseStubsTest
 
     /**
      * @dataProvider \StubTests\TestData\Providers\Reflection\ReflectionMethodsProvider::classMethodsWithAccessProvider
-     * @param PHPClass|PHPInterface $class
-     * @param PHPMethod $method
-     * @throws RuntimeException
+     * @throws RuntimeException|LogicException
      */
     public function testClassesMethodsVisibility(PHPClass|PHPInterface $class, PHPMethod $method)
     {
@@ -372,9 +357,7 @@ class StubsTest extends BaseStubsTest
 
     /**
      * @dataProvider \StubTests\TestData\Providers\Reflection\ReflectionMethodsProvider::classMethodsWithParametersProvider
-     * @param PHPClass|PHPInterface $class
-     * @param PHPMethod $method
-     * @throws Exception|RuntimeException
+     * @throws Exception|RuntimeException|LogicException
      */
     public function testClassMethodsParametersCount(PHPClass|PHPInterface $class, PHPMethod $method)
     {
@@ -394,8 +377,7 @@ class StubsTest extends BaseStubsTest
 
     /**
      * @dataProvider \StubTests\TestData\Providers\Reflection\ReflectionClassesTestDataProviders::classesWithInterfacesProvider
-     * @param PHPClass $class
-     * @throws Exception|RuntimeException
+     * @throws Exception|RuntimeException|LogicException
      */
     public function testClassInterfaces(PHPClass $class)
     {
@@ -412,9 +394,7 @@ class StubsTest extends BaseStubsTest
 
     /**
      * @dataProvider \StubTests\TestData\Providers\Reflection\ReflectionPropertiesProvider::classPropertiesProvider
-     * @param PHPClass $class
-     * @param PHPProperty $property
-     * @throws Exception|RuntimeException
+     * @throws Exception|RuntimeException|LogicException
      */
     public function testClassProperties(PHPClass $class, PHPProperty $property)
     {
@@ -429,9 +409,7 @@ class StubsTest extends BaseStubsTest
 
     /**
      * @dataProvider \StubTests\TestData\Providers\Reflection\ReflectionPropertiesProvider::classStaticPropertiesProvider
-     * @param PHPClass $class
-     * @param PHPProperty $property
-     * @throws RuntimeException
+     * @throws RuntimeException|LogicException
      */
     public function testClassStaticProperties(PHPClass $class, PHPProperty $property)
     {
@@ -446,9 +424,7 @@ class StubsTest extends BaseStubsTest
 
     /**
      * @dataProvider \StubTests\TestData\Providers\Reflection\ReflectionPropertiesProvider::classPropertiesWithAccessProvider
-     * @param PHPClass $class
-     * @param PHPProperty $property
-     * @throws RuntimeException
+     * @throws RuntimeException|LogicException
      */
     public function testClassPropertiesVisibility(PHPClass $class, PHPProperty $property)
     {
@@ -463,9 +439,7 @@ class StubsTest extends BaseStubsTest
 
     /**
      * @dataProvider \StubTests\TestData\Providers\Reflection\ReflectionPropertiesProvider::classPropertiesWithTypeProvider
-     * @param PHPClass $class
-     * @param PHPProperty $property
-     * @throws RuntimeException
+     * @throws RuntimeException|LogicException
      */
     public function testClassPropertiesType(PHPClass $class, PHPProperty $property)
     {
@@ -480,7 +454,7 @@ class StubsTest extends BaseStubsTest
 
     /**
      * @dataProvider \StubTests\TestData\Providers\Reflection\ReflectionClassesTestDataProviders::allClassesProvider
-     * @throws Exception
+     * @throws Exception|LogicException|RuntimeException|UnexpectedValueException
      */
     public function testClassesExist(PHPClass|PHPInterface $class): void
     {
@@ -494,7 +468,7 @@ class StubsTest extends BaseStubsTest
     }
 
     /**
-     * @throws Exception
+     * @throws Exception|LogicException|RuntimeException|UnexpectedValueException
      */
     public function testImplodeFunctionIsCorrect()
     {
@@ -548,9 +522,7 @@ class StubsTest extends BaseStubsTest
     }
 
     /**
-     * @param array $filtered
-     * @return array
-     * @throws RuntimeException
+     * @throws RuntimeException|LogicException
      */
     private static function getDuplicatedFunctions(array $filtered): array
     {
@@ -578,10 +550,7 @@ class StubsTest extends BaseStubsTest
     }
 
     /**
-     * @param mixed $defaultValue
-     * @param PHPClass|PHPInterface|null $contextClass
-     * @return bool|float|int|string|null
-     * @throws Exception|RuntimeException
+     * @throws Exception|RuntimeException|LogicException
      */
     private static function getStringRepresentationOfDefaultParameterValue(mixed $defaultValue, PHPClass|PHPInterface $contextClass = null): float|bool|int|string|null
     {

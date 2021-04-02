@@ -3,13 +3,16 @@ declare(strict_types=1);
 
 namespace StubTests;
 
+use LogicException;
 use PHPUnit\Framework\Exception;
+use ReflectionException;
 use RuntimeException;
 use StubTests\Model\PHPMethod;
 use StubTests\Model\StubProblemType;
 use StubTests\Parsers\Visitors\MetaOverrideFunctionsParser;
 use StubTests\TestData\Providers\PhpStormStubsSingleton;
 use StubTests\TestData\Providers\ReflectionStubsSingleton;
+use UnexpectedValueException;
 use function array_filter;
 use function array_pop;
 
@@ -25,6 +28,10 @@ class StubsMetaInternalTagTest extends BaseStubsTest
 
     /**
      * @throws Exception
+     * @throws RuntimeException
+     * @throws LogicException
+     * @throws ReflectionException
+     * @throws UnexpectedValueException
      */
     public function testFunctionInternalMetaTag(): void
     {
@@ -42,7 +49,11 @@ class StubsMetaInternalTagTest extends BaseStubsTest
     }
 
     /**
+     * @throws Exception
+     * @throws LogicException
+     * @throws ReflectionException
      * @throws RuntimeException
+     * @throws UnexpectedValueException
      */
     public function testMethodsInternalMetaTag(): void
     {
@@ -69,7 +80,6 @@ class StubsMetaInternalTagTest extends BaseStubsTest
     }
 
     /**
-     * @param string $elementName
      * @throws Exception
      */
     private static function checkInternalMetaInOverride(string $elementName): void

@@ -25,7 +25,6 @@ class StubParser
     private static ?StubsContainer $stubs = null;
 
     /**
-     * @return StubsContainer
      * @throws LogicException
      * @throws RuntimeException
      * @throws UnexpectedValueException
@@ -57,9 +56,6 @@ class StubParser
     }
 
     /**
-     * @param NodeVisitorAbstract $visitor
-     * @param CoreStubASTVisitor|null $coreStubASTVisitor
-     * @param callable $fileCondition
      * @throws LogicException
      * @throws UnexpectedValueException
      */

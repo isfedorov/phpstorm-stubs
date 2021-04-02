@@ -33,9 +33,6 @@ class StubsContainer
         return $this->constants;
     }
 
-    /**
-     * @param PHPConst $constant
-     */
     public function addConstant(PHPConst $constant): void
     {
         if (isset($constant->name)) {
@@ -58,9 +55,6 @@ class StubsContainer
     }
 
     /**
-     * @param string $name
-     * @param string|null $sourceFilePath
-     * @return PHPFunction|null
      * @throws RuntimeException
      */
     public function getFunction(string $name, ?string $sourceFilePath = null): ?PHPFunction
@@ -96,9 +90,6 @@ class StubsContainer
     }
 
     /**
-     * @param string $name
-     * @param string|null $sourceFilePath
-     * @return PHPClass|null
      * @throws RuntimeException
      */
     public function getClass(string $name, ?string $sourceFilePath = null): ?PHPClass
@@ -136,9 +127,6 @@ class StubsContainer
         return array_filter($this->classes, fn (PHPClass $class): bool => $class->stubBelongsToCore === true);
     }
 
-    /**
-     * @param PHPClass $class
-     */
     public function addClass(PHPClass $class): void
     {
         if (isset($class->name)) {
@@ -153,9 +141,6 @@ class StubsContainer
     }
 
     /**
-     * @param string $name
-     * @param string|null $sourceFilePath
-     * @return PHPInterface|null
      * @throws RuntimeException
      */
     public function getInterface(string $name, ?string $sourceFilePath = null): ?PHPInterface
@@ -193,9 +178,6 @@ class StubsContainer
         return array_filter($this->interfaces, fn (PHPInterface $interface): bool => $interface->stubBelongsToCore === true);
     }
 
-    /**
-     * @param PHPInterface $interface
-     */
     public function addInterface(PHPInterface $interface): void
     {
         if (isset($interface->name)) {

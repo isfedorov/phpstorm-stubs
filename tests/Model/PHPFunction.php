@@ -11,6 +11,7 @@ use phpDocumentor\Reflection\Types\Compound;
 use PhpParser\Comment\Doc;
 use PhpParser\Node\FunctionLike;
 use PhpParser\Node\Stmt\Function_;
+use ReflectionException;
 use ReflectionFunction;
 use stdClass;
 use StubTests\Parsers\DocFactoryProvider;
@@ -36,7 +37,7 @@ class PHPFunction extends BasePHPElement
 
     /**
      * @param ReflectionFunction $reflectionObject
-     * @return static
+     * @throws ReflectionException
      */
     public function readObjectFromReflection($reflectionObject): static
     {
@@ -51,7 +52,6 @@ class PHPFunction extends BasePHPElement
 
     /**
      * @param Function_ $node
-     * @return static
      */
     public function readObjectFromStubNode($node): static
     {

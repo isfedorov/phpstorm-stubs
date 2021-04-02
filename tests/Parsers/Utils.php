@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace StubTests\Parsers;
 
+use LogicException;
 use phpDocumentor\Reflection\DocBlock\Tags\Deprecated;
 use phpDocumentor\Reflection\DocBlock\Tags\Since;
 use RecursiveArrayIterator;
@@ -22,18 +23,12 @@ class Utils
         return iterator_to_array(new RecursiveIteratorIterator(new RecursiveArrayIterator($array)), $group);
     }
 
-    /**
-     * @param Since|Deprecated|RemovedTag $tag
-     * @return bool
-     */
     public static function tagDoesNotHaveZeroPatchVersion(Since|RemovedTag|Deprecated $tag): bool
     {
         return (bool)preg_match('/^[1-9]+\.\d+(\.[1-9]+\d*)*$/', $tag->getVersion()); //find version like any but 7.4.0
     }
 
     /**
-     * @param BasePHPElement $element
-     * @return float|null
      * @throws RuntimeException
      */
     public static function getDeclaredSinceVersion(BasePHPElement $element): ?float
@@ -54,8 +49,6 @@ class Utils
     }
 
     /**
-     * @param BasePHPElement $element
-     * @return float|null
      * @throws RuntimeException
      */
     public static function getLatestAvailableVersion(BasePHPElement $element): ?float
@@ -80,8 +73,7 @@ class Utils
     }
 
     /**
-     * @param BasePHPElement $element
-     * @return array
+     * @return float[]
      * @throws RuntimeException
      */
     public static function getAvailableInVersions(BasePHPElement $element): array
@@ -99,7 +91,6 @@ class Utils
     }
 
     /**
-     * @param BasePHPElement $element
      * @return float[]
      */
     private static function getSinceVersionsFromPhpDoc(BasePHPElement $element): array
@@ -112,7 +103,6 @@ class Utils
     }
 
     /**
-     * @param BasePHPElement $element
      * @return float[]
      */
     private static function getLatestAvailableVersionFromPhpDoc(BasePHPElement $element): array
@@ -130,9 +120,8 @@ class Utils
     }
 
     /**
-     * @param PHPMethod|PHPConst $element
      * @return float[]
-     * @throws RuntimeException
+     * @throws RuntimeException|LogicException
      */
     private static function getSinceVersionsFromParentClass(PHPMethod|PHPConst $element): array
     {
@@ -146,9 +135,8 @@ class Utils
     }
 
     /**
-     * @param PHPMethod|PHPConst $element
      * @return float[]
-     * @throws RuntimeException
+     * @throws RuntimeException|LogicException
      */
     public static function getLatestAvailableVersionsFromParentClass(PHPMethod|PHPConst $element): array
     {
@@ -162,7 +150,6 @@ class Utils
     }
 
     /**
-     * @param BasePHPElement $element
      * @return float[]
      */
     private static function getSinceVersionsFromAttribute(BasePHPElement $element): array
@@ -175,7 +162,6 @@ class Utils
     }
 
     /**
-     * @param BasePHPElement $element
      * @return float[]
      */
     private static function getLatestAvailableVersionsFromAttribute(BasePHPElement $element): array

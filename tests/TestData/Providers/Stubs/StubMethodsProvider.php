@@ -4,15 +4,21 @@ declare(strict_types=1);
 namespace StubTests\TestData\Providers\Stubs;
 
 use Generator;
+use LogicException;
+use RuntimeException;
 use StubTests\Model\PHPFunction;
 use StubTests\Model\PHPMethod;
 use StubTests\Model\StubProblemType;
 use StubTests\Parsers\Utils;
 use StubTests\TestData\Providers\EntitiesFilter;
 use StubTests\TestData\Providers\PhpStormStubsSingleton;
+use UnexpectedValueException;
 
 class StubMethodsProvider
 {
+    /**
+     * @throws LogicException|UnexpectedValueException|RuntimeException
+     */
     public static function allMethodsProvider(): ?Generator
     {
         $classesAndInterfaces = PhpStormStubsSingleton::getPhpStormStubs()->getClasses() +
@@ -24,13 +30,16 @@ class StubMethodsProvider
         }
     }
 
+    /**
+     * @throws UnexpectedValueException|LogicException|RuntimeException
+     */
     public static function allFunctionAndMethodsWithReturnTypeHintsProvider(): ?Generator
     {
         $coreClassesAndInterfaces = PhpStormStubsSingleton::getPhpStormStubs()->getClasses() +
             PhpStormStubsSingleton::getPhpStormStubs()->getInterfaces();
         $allFunctions = PhpStormStubsSingleton::getPhpStormStubs()->getFunctions();
         $filteredMethods = [];
-        foreach (EntitiesFilter::getFiltered($coreClassesAndInterfaces) as $className => $class) {
+        foreach (EntitiesFilter::getFiltered($coreClassesAndInterfaces) as $class) {
             $filteredMethods = EntitiesFilter::getFiltered($class->methods,
                 fn (PHPMethod $method) => empty($method->returnTypesFromSignature) || empty($method->returnTypesFromPhpDoc)
                     || $method->parentName === '___PHPSTORM_HELPERS\object',
@@ -48,6 +57,9 @@ class StubMethodsProvider
         }
     }
 
+    /**
+     * @throws RuntimeException|LogicException
+     */
     public static function methodsForReturnTypeHintTestsProvider(): ?Generator
     {
         $filterFunction = EntitiesFilter::getFilterFunctionForLanguageLevel(7);
@@ -55,6 +67,9 @@ class StubMethodsProvider
             StubProblemType::WRONG_RETURN_TYPEHINT);
     }
 
+    /**
+     * @throws RuntimeException|LogicException
+     */
     public static function methodsForNullableReturnTypeHintTestsProvider(): ?Generator
     {
         $filterFunction = EntitiesFilter::getFilterFunctionForLanguageLevel(7.1);
@@ -62,6 +77,9 @@ class StubMethodsProvider
             StubProblemType::WRONG_RETURN_TYPEHINT);
     }
 
+    /**
+     * @throws RuntimeException|LogicException
+     */
     public static function methodsForUnionReturnTypeHintTestsProvider(): ?Generator
     {
         $filterFunction = EntitiesFilter::getFilterFunctionForLanguageLevel(8);
@@ -69,6 +87,9 @@ class StubMethodsProvider
             StubProblemType::WRONG_RETURN_TYPEHINT);
     }
 
+    /**
+     * @throws RuntimeException|LogicException
+     */
     private static function yieldFilteredMethods(callable $filterFunction, int ...$problemTypes): ?Generator
     {
         $coreClassesAndInterfaces = PhpStormStubsSingleton::getPhpStormStubs()->getCoreClasses() +

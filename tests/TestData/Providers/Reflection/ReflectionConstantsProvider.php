@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace StubTests\TestData\Providers\Reflection;
 
 use Generator;
+use ReflectionException;
 use StubTests\Model\PHPClass;
 use StubTests\Model\PHPConst;
 use StubTests\Model\PHPInterface;
@@ -13,6 +14,9 @@ use StubTests\TestData\Providers\ReflectionStubsSingleton;
 
 class ReflectionConstantsProvider
 {
+    /**
+     * @throws ReflectionException
+     */
     public static function constantProvider(): ?Generator
     {
         foreach (EntitiesFilter::getFiltered(ReflectionStubsSingleton::getReflectionStubs()->getConstants()) as $constant) {
@@ -20,6 +24,9 @@ class ReflectionConstantsProvider
         }
     }
 
+    /**
+     * @throws ReflectionException
+     */
     public static function constantValuesProvider(): ?Generator
     {
         foreach (self::getFilteredConstants() as $constant) {
@@ -27,6 +34,9 @@ class ReflectionConstantsProvider
         }
     }
 
+    /**
+     * @throws ReflectionException
+     */
     public static function classConstantProvider(): ?Generator
     {
         $classesAndInterfaces = ReflectionStubsSingleton::getReflectionStubs()->getClasses() +
@@ -38,6 +48,9 @@ class ReflectionConstantsProvider
         }
     }
 
+    /**
+     * @throws ReflectionException
+     */
     public static function classConstantValuesProvider(): ?Generator
     {
         $classesAndInterfaces = ReflectionStubsSingleton::getReflectionStubs()->getClasses() +
@@ -49,6 +62,9 @@ class ReflectionConstantsProvider
         }
     }
 
+    /**
+     * @throws ReflectionException
+     */
     public static function getFilteredConstants(PHPClass|PHPInterface $class = null): array
     {
         if ($class === null) {

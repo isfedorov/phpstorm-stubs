@@ -11,7 +11,6 @@ class PHPDefineConstant extends PHPConst
 {
     /**
      * @param array $reflectionObject
-     * @return static
      */
     public function readObjectFromReflection($reflectionObject): static
     {
@@ -38,7 +37,6 @@ class PHPDefineConstant extends PHPConst
 
     /**
      * @param FuncCall $node
-     * @return static
      */
     public function readObjectFromStubNode($node): static
     {

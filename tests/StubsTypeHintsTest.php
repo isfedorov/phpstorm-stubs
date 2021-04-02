@@ -3,6 +3,9 @@ declare(strict_types=1);
 
 namespace StubTests;
 
+use LogicException;
+use PHPUnit\Framework\Exception;
+use ReflectionException;
 use RuntimeException;
 use StubTests\Model\PHPClass;
 use StubTests\Model\PHPFunction;
@@ -20,8 +23,7 @@ class StubsTypeHintsTest extends BaseStubsTest
 {
     /**
      * @dataProvider \StubTests\TestData\Providers\Reflection\ReflectionFunctionsProvider::allFunctionsProvider
-     * @param PHPFunction $function
-     * @throws RuntimeException
+     * @throws RuntimeException|LogicException
      */
     public function testFunctionsReturnTypeHints(PHPFunction $function)
     {
@@ -42,9 +44,7 @@ class StubsTypeHintsTest extends BaseStubsTest
 
     /**
      * @dataProvider \StubTests\TestData\Providers\Reflection\ReflectionParametersProvider::functionParametersProvider
-     * @param PHPFunction $function
-     * @param PHPParameter $parameter
-     * @throws RuntimeException
+     * @throws RuntimeException|LogicException
      */
     public function testFunctionsParametersTypeHints(PHPFunction $function, PHPParameter $parameter)
     {
@@ -64,9 +64,7 @@ class StubsTypeHintsTest extends BaseStubsTest
 
     /**
      * @dataProvider \StubTests\TestData\Providers\Reflection\ReflectionMethodsProvider::classMethodsWithReturnTypeHintProvider
-     * @param PHPClass|PHPInterface $class
-     * @param PHPMethod $method
-     * @throws RuntimeException
+     * @throws RuntimeException|LogicException
      */
     public function testMethodsReturnTypeHints(PHPClass|PHPInterface $class, PHPMethod $method)
     {
@@ -82,10 +80,7 @@ class StubsTypeHintsTest extends BaseStubsTest
 
     /**
      * @dataProvider \StubTests\TestData\Providers\Reflection\ReflectionParametersProvider::methodParametersProvider
-     * @param PHPClass|PHPInterface $reflectionClass
-     * @param PHPMethod $reflectionMethod
-     * @param PHPParameter $reflectionParameter
-     * @throws RuntimeException
+     * @throws RuntimeException|LogicException
      */
     public function testMethodsParametersTypeHints(PHPClass|PHPInterface $reflectionClass, PHPMethod $reflectionMethod, PHPParameter $reflectionParameter)
     {
@@ -111,9 +106,6 @@ class StubsTypeHintsTest extends BaseStubsTest
 
     /**
      * @dataProvider \StubTests\TestData\Providers\Stubs\StubsParametersProvider::parametersForScalarTypeHintTestsProvider
-     * @param PHPClass|PHPInterface $class
-     * @param PHPMethod $stubMethod
-     * @param PHPParameter $parameter
      * @throws RuntimeException
      */
     public static function testMethodDoesNotHaveScalarTypeHintsInParameters(PHPClass|PHPInterface $class, PHPMethod $stubMethod, PHPParameter $parameter)
@@ -127,9 +119,6 @@ class StubsTypeHintsTest extends BaseStubsTest
 
     /**
      * @dataProvider \StubTests\TestData\Providers\Stubs\StubsParametersProvider::parametersForNullableTypeHintTestsProvider
-     * @param PHPClass|PHPInterface $class
-     * @param PHPMethod $stubMethod
-     * @param PHPParameter $parameter
      * @throws RuntimeException
      */
     public static function testMethodDoesNotHaveNullableTypeHintsInParameters(PHPClass|PHPInterface $class, PHPMethod $stubMethod, PHPParameter $parameter)
@@ -143,9 +132,6 @@ class StubsTypeHintsTest extends BaseStubsTest
 
     /**
      * @dataProvider \StubTests\TestData\Providers\Stubs\StubsParametersProvider::parametersForUnionTypeHintTestsProvider
-     * @param PHPClass|PHPInterface $class
-     * @param PHPMethod $stubMethod
-     * @param PHPParameter $parameter
      * @throws RuntimeException
      */
     public static function testMethodDoesNotHaveUnionTypeHintsInParameters(PHPClass|PHPInterface $class, PHPMethod $stubMethod, PHPParameter $parameter)
@@ -159,7 +145,6 @@ class StubsTypeHintsTest extends BaseStubsTest
 
     /**
      * @dataProvider \StubTests\TestData\Providers\Stubs\StubMethodsProvider::methodsForReturnTypeHintTestsProvider
-     * @param PHPMethod $stubMethod
      * @throws RuntimeException
      */
     public static function testMethodDoesNotHaveReturnTypeHint(PHPMethod $stubMethod)
@@ -171,7 +156,6 @@ class StubsTypeHintsTest extends BaseStubsTest
 
     /**
      * @dataProvider \StubTests\TestData\Providers\Stubs\StubMethodsProvider::methodsForNullableReturnTypeHintTestsProvider
-     * @param PHPMethod $stubMethod
      * @throws RuntimeException
      */
     public static function testMethodDoesNotHaveNullableReturnTypeHint(PHPMethod $stubMethod)
@@ -186,7 +170,6 @@ class StubsTypeHintsTest extends BaseStubsTest
 
     /**
      * @dataProvider \StubTests\TestData\Providers\Stubs\StubMethodsProvider::methodsForUnionReturnTypeHintTestsProvider
-     * @param PHPMethod $stubMethod
      * @throws RuntimeException
      */
     public static function testMethodDoesNotHaveUnionReturnTypeHint(PHPMethod $stubMethod)
@@ -200,10 +183,7 @@ class StubsTypeHintsTest extends BaseStubsTest
 
     /**
      * @dataProvider \StubTests\TestData\Providers\Stubs\StubsParametersProvider::parametersForAllowedScalarTypeHintTestsProvider
-     * @param PHPClass|PHPInterface $class
-     * @param PHPMethod $stubMethod
-     * @param PHPParameter $stubParameter
-     * @throws RuntimeException
+     * @throws RuntimeException|ReflectionException
      */
     public function testMethodScalarTypeHintsInParametersMatchReflection(PHPClass|PHPInterface $class, PHPMethod $stubMethod, PHPParameter $stubParameter)
     {
@@ -218,10 +198,7 @@ class StubsTypeHintsTest extends BaseStubsTest
 
     /**
      * @dataProvider \StubTests\TestData\Providers\Stubs\StubsParametersProvider::parametersForAllowedNullableTypeHintTestsProvider
-     * @param PHPClass|PHPInterface $class
-     * @param PHPMethod $stubMethod
-     * @param PHPParameter $stubParameter
-     * @throws RuntimeException
+     * @throws RuntimeException|ReflectionException
      */
     public function testMethodNullableTypeHintsInParametersMatchReflection(PHPClass|PHPInterface $class, PHPMethod $stubMethod, PHPParameter $stubParameter)
     {
@@ -236,10 +213,7 @@ class StubsTypeHintsTest extends BaseStubsTest
 
     /**
      * @dataProvider \StubTests\TestData\Providers\Stubs\StubsParametersProvider::parametersForAllowedUnionTypeHintTestsProvider
-     * @param PHPClass|PHPInterface $class
-     * @param PHPMethod $stubMethod
-     * @param PHPParameter $stubParameter
-     * @throws RuntimeException
+     * @throws RuntimeException|ReflectionException
      */
     public function testMethodUnionTypeHintsInParametersMatchReflection(PHPClass|PHPInterface $class, PHPMethod $stubMethod, PHPParameter $stubParameter)
     {
@@ -254,7 +228,7 @@ class StubsTypeHintsTest extends BaseStubsTest
 
     /**
      * @dataProvider \StubTests\TestData\Providers\Stubs\StubMethodsProvider::allFunctionAndMethodsWithReturnTypeHintsProvider
-     * @param PHPFunction|PHPMethod $method
+     * @throws Exception
      */
     public static function testSignatureTypeHintsComplainPhpDocInMethods(PHPFunction|PHPMethod $method)
     {
@@ -276,7 +250,7 @@ class StubsTypeHintsTest extends BaseStubsTest
             array_push($unifiedSignatureTypes, $typeName);
         }
         $typesIntersection = array_intersect($unifiedSignatureTypes, $unifiedPhpDocTypes);
-        self::assertEquals(count($unifiedSignatureTypes), count($typesIntersection),
+        self::assertSameSize($unifiedSignatureTypes, $typesIntersection,
             $method instanceof PHPMethod ? "Method $method->parentName::" : 'Function ' .
                 "$functionName has mismatch in phpdoc return type and signature return type\n
                 signature has " . implode('|', $unifiedSignatureTypes) . "\n

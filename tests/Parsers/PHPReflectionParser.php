@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace StubTests\Parsers;
 
 use ReflectionClass;
+use ReflectionException;
 use ReflectionFunction;
 use StubTests\Model\PHPClass;
 use StubTests\Model\PHPDefineConstant;
@@ -13,6 +14,9 @@ use StubTests\Model\StubsContainer;
 
 class PHPReflectionParser
 {
+    /**
+     * @throws ReflectionException
+     */
     public static function getStubs(): StubsContainer
     {
         $stubs = new StubsContainer();

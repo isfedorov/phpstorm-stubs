@@ -132,7 +132,6 @@ abstract class BasePHPElement
 
     /**
      * @param AttributeGroup[] $attrGroups
-     * @return array
      */
     #[ArrayShape(['from' => 'float', 'to' => 'float'])]
     protected static function findAvailableVersionsRangeFromAttribute(array $attrGroups): array

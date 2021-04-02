@@ -16,17 +16,11 @@ class ExpectedFunctionArgumentsInfo
      */
     public function __construct(private ?Expr $functionReference, private array $expectedArguments, private int $index) {}
 
-    /**
-     * @return Expr|null
-     */
     public function getFunctionReference(): ?Expr
     {
         return $this->functionReference;
     }
 
-    /**
-     * @param Expr $functionReference
-     */
     public function setFunctionReference(Expr $functionReference): void
     {
         $this->functionReference = $functionReference;
@@ -48,9 +42,6 @@ class ExpectedFunctionArgumentsInfo
         $this->expectedArguments = $expectedArguments;
     }
 
-    /**
-     * @return int
-     */
     public function getIndex(): int
     {
         return $this->index;

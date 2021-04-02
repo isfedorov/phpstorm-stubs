@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace StubTests;
 
+use JetBrains\PhpStorm\Pure;
+use LogicException;
 use PhpParser\Node\Expr;
 use PhpParser\Node\Expr\ClassConstFetch;
 use PhpParser\Node\Expr\ConstFetch;
@@ -10,6 +12,7 @@ use PhpParser\Node\Expr\FuncCall;
 use PhpParser\Node\Expr\StaticCall;
 use PhpParser\Node\Scalar\String_;
 use PHPUnit\Framework\Exception;
+use RuntimeException;
 use StubTests\Model\PHPClass;
 use StubTests\Model\PHPConst;
 use StubTests\Model\PHPFunction;
@@ -18,6 +21,7 @@ use StubTests\Model\StubsContainer;
 use StubTests\Parsers\ExpectedFunctionArgumentsInfo;
 use StubTests\Parsers\MetaExpectedArgumentsCollector;
 use StubTests\TestData\Providers\PhpStormStubsSingleton;
+use UnexpectedValueException;
 
 class StubsMetaExpectedArgumentsTest extends BaseStubsTest
 {
@@ -33,6 +37,11 @@ class StubsMetaExpectedArgumentsTest extends BaseStubsTest
     private static array $methodsFqns;
     private static array $constantsFqns;
 
+    /**
+     * @throws UnexpectedValueException
+     * @throws LogicException
+     * @throws RuntimeException
+     */
     public static function setUpBeforeClass(): void
     {
         parent::setUpBeforeClass();
@@ -227,6 +236,7 @@ class StubsMetaExpectedArgumentsTest extends BaseStubsTest
         }
     }
 
+    #[Pure]
     private static function getClassMemberFqn(string $className, string $memberName): string
     {
         return self::toPresentableFqn($className) . '.' . $memberName;

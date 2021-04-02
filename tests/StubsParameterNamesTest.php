@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace StubTests;
 
 use JetBrains\PhpStorm\Pure;
+use LogicException;
 use RuntimeException;
 use StubTests\Model\PHPClass;
 use StubTests\Model\PHPFunction;
@@ -16,20 +17,20 @@ class StubsParameterNamesTest extends BaseStubsTest
 {
     /**
      * @dataProvider \StubTests\TestData\Providers\Reflection\ReflectionParametersProvider::functionParametersProvider
-     * @throws RuntimeException
+     * @throws RuntimeException|LogicException
      */
     public function testFunctionsParameterNames(PHPFunction $function, PHPParameter $parameter)
     {
         $phpstormFunction = PhpStormStubsSingleton::getPhpStormStubs()->getFunction($function->name);
         self::assertNotEmpty(array_filter($phpstormFunction->parameters,
             fn (PHPParameter $stubParameter) => $stubParameter->name === $parameter->name),
-            "Function {$function->name} has signature {$function->name}(" . self::printParameters($function->parameters) . ')' .
-            " but stub function has signature {$phpstormFunction->name}(" . self::printParameters($phpstormFunction->parameters) . ')');
+            "Function $function->name has signature $function->name(" . self::printParameters($function->parameters) . ')' .
+            " but stub function has signature $phpstormFunction->name(" . self::printParameters($phpstormFunction->parameters) . ')');
     }
 
     /**
      * @dataProvider \StubTests\TestData\Providers\Reflection\ReflectionParametersProvider::methodParametersProvider
-     * @throws RuntimeException
+     * @throws RuntimeException|LogicException
      */
     public function testMethodsParameterNames(PHPClass|PHPInterface $reflectionClass, PHPMethod $reflectionMethod, PHPParameter $reflectionParameter)
     {

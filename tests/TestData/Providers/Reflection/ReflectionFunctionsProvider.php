@@ -4,12 +4,16 @@ declare(strict_types=1);
 namespace StubTests\TestData\Providers\Reflection;
 
 use Generator;
+use ReflectionException;
 use StubTests\Model\StubProblemType;
 use StubTests\TestData\Providers\EntitiesFilter;
 use StubTests\TestData\Providers\ReflectionStubsSingleton;
 
 class ReflectionFunctionsProvider
 {
+    /**
+     * @throws ReflectionException
+     */
     public static function allFunctionsProvider(): ?Generator
     {
         foreach (EntitiesFilter::getFiltered(ReflectionStubsSingleton::getReflectionStubs()->getFunctions()) as $function) {
@@ -17,6 +21,9 @@ class ReflectionFunctionsProvider
         }
     }
 
+    /**
+     * @throws ReflectionException
+     */
     public static function functionsForDeprecationTestsProvider(): ?Generator
     {
         foreach (EntitiesFilter::getFiltered(ReflectionStubsSingleton::getReflectionStubs()->getFunctions(),
@@ -25,6 +32,9 @@ class ReflectionFunctionsProvider
         }
     }
 
+    /**
+     * @throws ReflectionException
+     */
     public static function functionsForParamsAmountTestsProvider(): ?Generator
     {
         foreach (EntitiesFilter::getFiltered(ReflectionStubsSingleton::getReflectionStubs()->getFunctions(),
