@@ -1,8 +1,9 @@
 <?php
 
 use JetBrains\PhpStorm\ArrayShape;
-use JetBrains\PhpStorm\Pure;
+use JetBrains\PhpStorm\Internal\LanguageLevelTypeAware;
 use JetBrains\PhpStorm\Internal\PhpStormStubsElementAvailable;
+use JetBrains\PhpStorm\Pure;
 
 /**
  * @since 5.5
@@ -85,7 +86,10 @@ interface DateTimeInterface
      * The https://secure.php.net/manual/en/class.dateinterval.php DateInterval} object representing the
      * difference between the two dates or <b>FALSE</b> on failure.
      */
-    public function diff($targetObject, $absolute = false);
+    public function diff(
+        DateTimeInterface $targetObject,
+        #[LanguageLevelTypeAware(['8.0' => 'bool'], default: '')] $absolute = false
+    );
 
     /**
      * (PHP 5 &gt;=5.5.0)<br/>
@@ -97,7 +101,7 @@ interface DateTimeInterface
      * @return string
      * Returns the formatted date string on success or <b>FALSE</b> on failure.
      */
-    public function format($format);
+    public function format(#[LanguageLevelTypeAware(['8.0' => 'string'], default: '')] $format);
 
     /**
      * (PHP 5 &gt;=5.5.0)<br/>
