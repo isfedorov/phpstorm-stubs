@@ -102,7 +102,7 @@ interface ArrayAccess
      * <p>
      * The return value will be casted to boolean if non-boolean was returned.
      */
-    public function offsetExists($offset);
+    public function offsetExists(#[LanguageLevelTypeAware(['8.0' => 'mixed'], default: '')] $offset);
 
     /**
      * Offset to retrieve
@@ -112,7 +112,7 @@ interface ArrayAccess
      * </p>
      * @return mixed Can return all value types.
      */
-    public function offsetGet($offset);
+    public function offsetGet(#[LanguageLevelTypeAware(['8.0' => 'mixed'], default: '')] $offset);
 
     /**
      * Offset to set
@@ -125,7 +125,10 @@ interface ArrayAccess
      * </p>
      * @return void
      */
-    public function offsetSet($offset, $value);
+    public function offsetSet(
+        #[LanguageLevelTypeAware(['8.0' => 'mixed'], default: '')] $offset,
+        #[LanguageLevelTypeAware(['8.0' => 'mixed'], default: '')] $value
+    );
 
     /**
      * Offset to unset
@@ -135,7 +138,7 @@ interface ArrayAccess
      * </p>
      * @return void
      */
-    public function offsetUnset($offset);
+    public function offsetUnset(#[LanguageLevelTypeAware(['8.0' => 'mixed'], default: '')] $offset);
 }
 
 /**
@@ -158,7 +161,7 @@ interface Serializable
      * @param string $data The string representation of the object.
      * @return void
      */
-    public function unserialize($data);
+    public function unserialize(#[LanguageLevelTypeAware(['8.0' => 'string'], default: '')] $data);
 }
 
 /**
