@@ -3,6 +3,7 @@
 // Start of openssl v.
 use JetBrains\PhpStorm\Deprecated;
 use JetBrains\PhpStorm\Internal\LanguageLevelTypeAware;
+use JetBrains\PhpStorm\Internal\Optional;
 use JetBrains\PhpStorm\Internal\PhpStormStubsElementAvailable;
 
 /**
@@ -720,14 +721,14 @@ function openssl_verify(string $data, string $signature, $public_key, string|int
  * @param string &$sealed_data
  * @param array &$encrypted_keys
  * @param array $public_key
- * @param string $cipher_algo [optional]
+ * @param string $cipher_algo
  * @param string &$iv [optional]
  * @return int|false the length of the sealed data on success, or false on error.
  * If successful the sealed data is returned in
  * <i>sealed_data</i>, and the envelope keys in
  * <i>env_keys</i>.
  */
-function openssl_seal(string $data, &$sealed_data, &$encrypted_keys, array $public_key, string $cipher_algo, &$iv = ''): int|false {}
+function openssl_seal(string $data, &$sealed_data, &$encrypted_keys, array $public_key, #[Optional(from: '5.4', to: '7.4')] string $cipher_algo, &$iv = ''): int|false {}
 
 /**
  * Open sealed data
@@ -739,11 +740,11 @@ function openssl_seal(string $data, &$sealed_data, &$encrypted_keys, array $publ
  * </p>
  * @param string $encrypted_key
  * @param OpenSSLAsymmetricKey|OpenSSLCertificate|array|string $private_key
- * @param string $cipher_algo [optional] The cipher method.
+ * @param string $cipher_algo The cipher method.
  * @param string|null $iv [optional] The initialization vector.
  * @return bool true on success or false on failure.
  */
-function openssl_open(string $data, &$output, string $encrypted_key, $private_key, string $cipher_algo, ?string $iv): bool {}
+function openssl_open(string $data, &$output, string $encrypted_key, $private_key, #[Optional(from: '5.4', to: '7.4')] string $cipher_algo, ?string $iv): bool {}
 
 /**
  * Generates a PKCS5 v2 PBKDF2 string, defaults to SHA-1
