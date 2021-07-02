@@ -3,8 +3,8 @@
 // Start of openssl v.
 use JetBrains\PhpStorm\Deprecated;
 use JetBrains\PhpStorm\Internal\LanguageLevelTypeAware;
-use JetBrains\PhpStorm\Internal\Optional;
 use JetBrains\PhpStorm\Internal\PhpStormStubsElementAvailable;
+use JetBrains\PhpStorm\Internal\Required;
 
 /**
  * Frees a private key
@@ -728,7 +728,7 @@ function openssl_verify(string $data, string $signature, $public_key, string|int
  * <i>sealed_data</i>, and the envelope keys in
  * <i>env_keys</i>.
  */
-function openssl_seal(string $data, &$sealed_data, &$encrypted_keys, array $public_key, #[Optional(from: '5.4', to: '7.4')] string $cipher_algo, &$iv = ''): int|false {}
+function openssl_seal(string $data, &$sealed_data, &$encrypted_keys, array $public_key, #[Required(from: '8.0')] string $cipher_algo = "RC4", &$iv = ''): int|false {}
 
 /**
  * Open sealed data
@@ -744,7 +744,7 @@ function openssl_seal(string $data, &$sealed_data, &$encrypted_keys, array $publ
  * @param string|null $iv [optional] The initialization vector.
  * @return bool true on success or false on failure.
  */
-function openssl_open(string $data, &$output, string $encrypted_key, $private_key, #[Optional(from: '5.4', to: '7.4')] string $cipher_algo, ?string $iv): bool {}
+function openssl_open(string $data, &$output, string $encrypted_key, $private_key, #[Required(from: '8.0')] string $cipher_algo = "RC4", ?string $iv): bool {}
 
 /**
  * Generates a PKCS5 v2 PBKDF2 string, defaults to SHA-1
