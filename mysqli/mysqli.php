@@ -1912,7 +1912,7 @@ function mysqli_get_charset(mysqli $mysql): ?object {}
  * @return string|null A string that represents the MySQL client library version
  */
 #[LanguageLevelTypeAware(['8.0' => 'string'], default: '?string')]
-function mysqli_get_client_info(?mysqli $mysql) {}
+function mysqli_get_client_info(#[Required(from: '5.3', to: '7.4')] ?mysqli $mysql = null) {}
 
 /**
  * Returns the MySQL client version as an integer
@@ -2067,7 +2067,7 @@ function mysqli_more_results(mysqli $mysql): bool {}
  * @param string $query One or more queries which are separated by semicolons.
  * @return bool Returns FALSE if the first statement failed. To retrieve subsequent errors from other statements you have to call mysqli_next_result() first.
  */
-function mysqli_multi_query(mysqli $mysql, string $query = null): bool {}
+function mysqli_multi_query(mysqli $mysql, #[Required(from: '8.0')] string $query = null): bool {}
 
 /**
  * Prepare next result from multi_query
@@ -2219,7 +2219,7 @@ function mysqli_real_escape_string(mysqli $mysql, string $string): string {}
  * @param string $query
  * @return bool
  */
-function mysqli_real_query(mysqli $mysql, string $query = null): bool {}
+function mysqli_real_query(mysqli $mysql, #[Required(from: '8.0')] string $query = null): bool {}
 
 /**
  * Get result from async query
@@ -2391,7 +2391,6 @@ function mysqli_stmt_send_long_data(mysqli_stmt $statement, int $param_num, stri
 function mysqli_stmt_bind_param(
     mysqli_stmt $statement,
     string $types,
-    #[PhpStormStubsElementAvailable(from: '8.0')] mixed &$var1,
     #[Required(from: '5.3', to: '7.4')] mixed &...$vars
 ): bool {}
 
@@ -2399,14 +2398,12 @@ function mysqli_stmt_bind_param(
  * Binds variables to a prepared statement for result storage
  * @link https://php.net/manual/en/mysqli-stmt.bind-result.php
  * @param mysqli_stmt $statement Statement
- * @param mixed &$var1 The variable to be bound.
  * @param mixed &...$vars The variables to be bound.
  * @return bool
  */
 function mysqli_stmt_bind_result(
     mysqli_stmt $statement,
-    #[PhpStormStubsElementAvailable(from: '8.0')] mixed &$var1,
-    #[Required(from: '5.3', to: '8.0')] mixed &...$vars
+    #[Required(from: '5.3', to: '7.4')] mixed &...$vars
 ): bool {}
 
 /**

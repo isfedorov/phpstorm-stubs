@@ -1146,7 +1146,12 @@ function imagefill(GdImage $image, int $x, int $y, int $color): bool {}
  * </p>
  * @return bool true on success or false on failure.
  */
-function imagefilledpolygon(GdImage $image, array $points, int $num_points_or_color, ?int $color): bool {}
+function imagefilledpolygon(
+    GdImage $image,
+    array $points,
+    int $num_points_or_color,
+    #[Required(from: '5.3', to: '7.4')] ?int $color = null
+): bool {}
 
 /**
  * Draw a filled rectangle
@@ -1335,7 +1340,12 @@ function imageloadfont(string $filename) {}
  * </p>
  * @return bool true on success or false on failure.
  */
-function imagepolygon(GdImage $image, array $points, int $num_points_or_color, ?int $color): bool {}
+function imagepolygon(
+    GdImage $image,
+    array $points,
+    int $num_points_or_color,
+    #[Required(from: '5.3', to: '7.4')] ?int $color = null
+): bool {}
 
 /**
  * Draw a rectangle
@@ -2233,7 +2243,12 @@ function imagegetclip(GdImage $image): array {}
  * @since 7.2
  * @see imageplygon()
  */
-function imageopenpolygon(GdImage $image, array $points, int $num_points_or_color, ?int $color): bool {}
+function imageopenpolygon(
+    GdImage $image,
+    array $points,
+    int $num_points_or_color,
+    #[Required(from: '7.2', to: '7.4')] ?int $color = null
+): bool {}
 
 /**
  * <b>imagecreatefrombmp()</b> returns an image identifier representing the image obtained from the given filename.
