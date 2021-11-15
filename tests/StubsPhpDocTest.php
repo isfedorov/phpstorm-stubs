@@ -164,7 +164,7 @@ class StubsPhpDocTest extends AbstractBaseStubsTestCase
                         curl_exec($request);
                         $response = curl_getinfo($request, CURLINFO_RESPONSE_CODE);
                         curl_close($request);
-                        self::assertTrue($response < 400);
+                        self::assertTrue($response < 300 || $response === 302, $link->getLink() . " has response code $response");
                     }
                 }
             }
