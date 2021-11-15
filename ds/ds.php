@@ -760,7 +760,7 @@ namespace Ds;
 
         /**
          * Count elements of an object
-         * @link https://php.net/manual/en/ds-vector.count.php
+         * @link https://www.php.net/manual/en/ds-vector.count.php
          * @return int The custom count as an integer.
          * <p>
          * The return value is cast to an integer.
@@ -787,7 +787,7 @@ namespace Ds;
 
         /**
          * Specify data which should be serialized to JSON
-         * @link https://php.net/manual/en/ds-vector.jsonserialize.php
+         * @link https://www.php.net/manual/en/ds-vector.jsonserialize.php
          * @return mixed data which can be serialized by <b>json_encode</b>,
          * which is a value of any type other than a resource.
          * @since 5.4
@@ -807,7 +807,7 @@ namespace Ds;
 
         /**
          * Count elements of an object
-         * @link https://php.net/manual/en/countable.count.php
+         * @link https://www.php.net/manual/en/countable.count.php
          * @return int The custom count as an integer.
          * <p>
          * The return value is cast to an integer.
@@ -1134,7 +1134,7 @@ namespace Ds;
 
         /**
          * Specify data which should be serialized to JSON
-         * @link https://php.net/manual/en/ds-vector.jsonserialize.php
+         * @link https://www.php.net/manual/en/ds-vector.jsonserialize.php
          * @return mixed data which can be serialized by <b>json_encode</b>,
          * which is a value of any type other than a resource.
          * @since 5.4
@@ -1184,7 +1184,7 @@ namespace Ds;
 
         /**
          * Count elements of an object
-         * @link https://php.net/manual/en/countable.count.php
+         * @link https://www.php.net/manual/en/countable.count.php
          * @return int The custom count as an integer.
          * </p>
          * <p>
@@ -1339,7 +1339,7 @@ namespace Ds;
 
         /**
          * Specify data which should be serialized to JSON
-         * @link https://php.net/manual/en/jsonserializable.jsonserialize.php
+         * @link https://www.php.net/manual/en/jsonserializable.jsonserialize.php
          * @return mixed data which can be serialized by <b>json_encode</b>,
          * which is a value of any type other than a resource.
          * @since 5.4
@@ -1700,14 +1700,14 @@ namespace Ds;
          * @param mixed $key
          * @param mixed $value
          *
-         * @link https://php.net/manual/en/ds-pair.construct.php
+         * @link https://www.php.net/manual/en/ds-pair.construct.php
          */
         public function __construct($key = null, $value = null) {}
 
         /**
          * Removes all values from the pair.
          *
-         * @link https://php.net/manual/en/ds-pair.clear.php
+         * @link https://www.php.net/manual/en/ds-pair.clear.php
          */
         public function clear() {}
 
@@ -1716,7 +1716,7 @@ namespace Ds;
          *
          * @return Pair Returns a shallow copy of the pair.
          *
-         * @link https://php.net/manual/en/ds-pair.copy.php
+         * @link https://www.php.net/manual/en/ds-pair.copy.php
          */
         public function copy(): Pair {}
 
@@ -1725,7 +1725,7 @@ namespace Ds;
          *
          * @return bool Returns TRUE if the pair is empty, FALSE otherwise.
          *
-         * @link https://php.net/manual/en/ds-pair.isempty.php
+         * @link https://www.php.net/manual/en/ds-pair.isempty.php
          */
         public function isEmpty(): bool {}
 
@@ -1737,13 +1737,13 @@ namespace Ds;
          * @return array An array containing all the values in the same order as
          * the pair.
          *
-         * @link https://php.net/manual/en/ds-pair.toarray.php
+         * @link https://www.php.net/manual/en/ds-pair.toarray.php
          */
         public function toArray(): array {}
 
         /**
          * Specify data which should be serialized to JSON
-         * @link https://php.net/manual/en/ds-pair.jsonserialize.php
+         * @link https://www.php.net/manual/en/ds-pair.jsonserialize.php
          * @return mixed data which can be serialized by <b>json_encode</b>,
          * which is a value of any type other than a resource.
          */
@@ -1768,7 +1768,7 @@ namespace Ds;
          * @param iterable $values A traversable object of an array to
          * use the initial values.
          *
-         * @link https://php.net/manual/en/ds-set.construct.php
+         * @link https://www.php.net/manual/en/ds-set.construct.php
          */
         public function __construct(iterable $values = []) {}
 
@@ -1784,7 +1784,7 @@ namespace Ds;
          *
          * @param mixed ...$values Values to add to the set.
          *
-         * @link https://php.net/manual/en/ds-set.add.php
+         * @link https://www.php.net/manual/en/ds-set.add.php
          */
         public function add(...$values) {}
 
@@ -1799,7 +1799,7 @@ namespace Ds;
          *
          * <p>Capacity will always be rounded up to the nearest power of 2.
          *
-         * @link https://php.net/manual/en/ds-set.allocate.php
+         * @link https://www.php.net/manual/en/ds-set.allocate.php
          */
         public function allocate(int $capacity) {}
 
@@ -1817,7 +1817,7 @@ namespace Ds;
          *
          * @return bool
          *
-         * @link https://php.net/manual/en/ds-set.contains.php
+         * @link https://www.php.net/manual/en/ds-set.contains.php
          */
         public function contains(...$values): bool {}
 
@@ -1837,7 +1837,7 @@ namespace Ds;
 
         /**
          * Count elements of an object
-         * @link https://php.net/manual/en/ds-set.count.php
+         * @link https://www.php.net/manual/en/ds-set.count.php
          * @return int The custom count as an integer.
          * </p>
          * <p>
@@ -2142,7 +2142,7 @@ namespace Ds;
 
         /**
          * Specify data which should be serialized to JSON
-         * @link https://php.net/manual/en/ds-set.jsonserialize.php
+         * @link https://www.php.net/manual/en/ds-set.jsonserialize.php
          * @return mixed data which can be serialized by <b>json_encode</b>,
          * which is a value of any type other than a resource.
          * @since 5.4
@@ -2203,7 +2203,7 @@ namespace Ds;
 
         /**
          * Count elements of an object
-         * @link https://php.net/manual/en/ds-stack.count.php
+         * @link https://www.php.net/manual/en/ds-stack.count.php
          * @return int The custom count as an integer.
          * </p>
          * <p>
@@ -2239,7 +2239,7 @@ namespace Ds;
 
         /**
          * Specify data which should be serialized to JSON
-         * @link https://php.net/manual/en/jsonserializable.jsonserialize.php
+         * @link https://www.php.net/manual/en/jsonserializable.jsonserialize.php
          * @return mixed data which can be serialized by <b>json_encode</b>,
          * which is a value of any type other than a resource.
          * @since 5.4
@@ -2331,7 +2331,7 @@ namespace Ds;
 
         /**
          * Count elements of an object
-         * @link https://php.net/manual/en/ds-queue.count.php
+         * @link https://www.php.net/manual/en/ds-queue.count.php
          * @return int The custom count as an integer.
          * </p>
          * <p>
@@ -2367,7 +2367,7 @@ namespace Ds;
 
         /**
          * Specify data which should be serialized to JSON
-         * @link https://php.net/manual/en/jsonserializable.jsonserialize.php
+         * @link https://www.php.net/manual/en/jsonserializable.jsonserialize.php
          * @return mixed data which can be serialized by <b>json_encode</b>,
          * which is a value of any type other than a resource.
          * @since 5.4
@@ -2423,7 +2423,7 @@ namespace Ds;
 
         /**
          * Count elements of an object
-         * @link https://php.net/manual/en/countable.count.php
+         * @link https://www.php.net/manual/en/countable.count.php
          * @return int The custom count as an integer.
          * </p>
          * <p>
@@ -2482,7 +2482,7 @@ namespace Ds;
 
         /**
          * Specify data which should be serialized to JSON
-         * @link https://php.net/manual/en/jsonserializable.jsonserialize.php
+         * @link https://www.php.net/manual/en/jsonserializable.jsonserialize.php
          * @return mixed data which can be serialized by <b>json_encode</b>,
          * which is a value of any type other than a resource.
          * @since 5.4

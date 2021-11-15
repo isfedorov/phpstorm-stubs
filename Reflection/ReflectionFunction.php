@@ -10,7 +10,7 @@ use JetBrains\PhpStorm\Pure;
  * The <b>ReflectionFunction</b> class reports
  * information about a function.
  *
- * @link https://php.net/manual/en/class.reflectionfunction.php
+ * @link https://www.php.net/manual/en/class.reflectionfunction.php
  */
 class ReflectionFunction extends ReflectionFunctionAbstract
 {
@@ -30,7 +30,7 @@ class ReflectionFunction extends ReflectionFunctionAbstract
     /**
      * Constructs a ReflectionFunction object
      *
-     * @link https://php.net/manual/en/reflectionfunction.construct.php
+     * @link https://www.php.net/manual/en/reflectionfunction.construct.php
      * @param string|Closure $function The name of the function to reflect or a closure.
      * @throws ReflectionException if the function does not exist.
      */
@@ -39,7 +39,7 @@ class ReflectionFunction extends ReflectionFunctionAbstract
     /**
      * Returns the string representation of the ReflectionFunction object.
      *
-     * @link https://php.net/manual/en/reflectionfunction.tostring.php
+     * @link https://www.php.net/manual/en/reflectionfunction.tostring.php
      */
     #[TentativeType]
     public function __toString(): string {}
@@ -47,7 +47,7 @@ class ReflectionFunction extends ReflectionFunctionAbstract
     /**
      * Exports function
      *
-     * @link https://php.net/manual/en/reflectionfunction.export.php
+     * @link https://www.php.net/manual/en/reflectionfunction.export.php
      * @param string $name The reflection to export.
      * @param bool $return Setting to {@see true} will return the
      * export, as opposed to emitting it. Setting to {@see false} (the default)
@@ -62,7 +62,7 @@ class ReflectionFunction extends ReflectionFunctionAbstract
     /**
      * Checks if function is disabled
      *
-     * @link https://php.net/manual/en/reflectionfunction.isdisabled.php
+     * @link https://www.php.net/manual/en/reflectionfunction.isdisabled.php
      * @return bool {@see true} if it's disable, otherwise {@see false}
      */
     #[Deprecated(since: '8.0')]
@@ -85,7 +85,7 @@ class ReflectionFunction extends ReflectionFunctionAbstract
     /**
      * Invokes function args
      *
-     * @link https://php.net/manual/en/reflectionfunction.invokeargs.php
+     * @link https://www.php.net/manual/en/reflectionfunction.invokeargs.php
      * @param array $args The passed arguments to the function as an array, much
      * like {@see call_user_func_array} works.
      * @return mixed the result of the invoked function
@@ -96,7 +96,7 @@ class ReflectionFunction extends ReflectionFunctionAbstract
     /**
      * Returns a dynamically created closure for the function
      *
-     * @link https://php.net/manual/en/reflectionfunction.getclosure.php
+     * @link https://www.php.net/manual/en/reflectionfunction.getclosure.php
      * @return Closure|null Returns {@see Closure} or {@see null} in case of an error.
      */
     #[Pure]

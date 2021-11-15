@@ -19,7 +19,7 @@
  * @author     Robert Marks <robert@aerospike.com>
  * @copyright  Copyright 2013-2018 Aerospike, Inc.
  * @license    http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2
- * @link       https://www.aerospike.com/docs/client/php/
+ * @link       https://docs.aerospike.com/client/php/
  * @filesource
  */
 
@@ -497,11 +497,11 @@ class Aerospike
      * wrapped binary-string: string(10) "truncated"
      * The binary-string that was given to put() without a wrapper: trunc
      * ```
-     * @link https://www.aerospike.com/docs/architecture/data-model.html Aerospike Data Model
-     * @link https://www.aerospike.com/docs/guide/kvs.html Key-Value Store
+     * @link https://docs.aerospike.com/architecture/data-model.html Aerospike Data Model
+     * @link https://docs.aerospike.com/guide/kvs.html Key-Value Store
      * @link https://github.com/aerospike/aerospike-client-php/blob/master/doc/README.md#handling-unsupported-types Handling Unsupported Types
-     * @link https://www.aerospike.com/docs/client/c/usage/kvs/write.html#change-record-time-to-live-ttl Time-to-live
-     * @link https://www.aerospike.com/docs/guide/glossary.html Glossary
+     * @link https://docs.aerospike.com/client/c/usage/kvs/write.html#change-record-time-to-live-ttl Time-to-live
+     * @link https://docs.aerospike.com/guide/glossary.html Glossary
      * @param array $key The key identifying the record. An array with keys `['ns','set','key']` or `['ns','set','digest']`
      * @param array $bins The array of bin names and values to write. **Bin names cannot be longer than 14 characters.** Binary data containing the null byte (**\0**) may get truncated. See 'Handling Unsupported Types' for more details and a workaround
      * @param int $ttl The record's time-to-live in seconds
@@ -625,9 +625,9 @@ class Aerospike
      *   }
      * }
      * ```
-     * @link https://www.aerospike.com/docs/architecture/data-model.html Aerospike Data Model
-     * @link https://www.aerospike.com/docs/guide/kvs.html Key-Value Store
-     * @link https://www.aerospike.com/docs/guide/glossary.html Glossary
+     * @link https://docs.aerospike.com/architecture/data-model.html Aerospike Data Model
+     * @link https://docs.aerospike.com/guide/kvs.html Key-Value Store
+     * @link https://docs.aerospike.com/guide/glossary.html Glossary
      * @param array $key The key identifying the record. An array with keys `['ns','set','key']` or `['ns','set','digest']`
      * @param array &$record a reference to a variable which will contain the retrieved record of `['key', metadata', 'bins]` with the structure:
      * ```
@@ -697,7 +697,7 @@ class Aerospike
      * ```
      * A user with key 1234 does not exist in the database.
      * ```
-     * @link https://www.aerospike.com/docs/guide/glossary.html Glossary
+     * @link https://docs.aerospike.com/guide/glossary.html Glossary
      * @param array $key The key identifying the record. An array with keys `['ns','set','key']` or `['ns','set','digest']`
      * @param array &$metadata a reference to a variable which will be filled with an array of `['ttl', 'generation']` values
      * @param array $options an optional array of read policy options, whose keys include
@@ -749,9 +749,9 @@ class Aerospike
      * ```
      * A user with key 1234 does not exist in the database.
      * ```
-     * @link https://www.aerospike.com/docs/client/c/usage/kvs/write.html#change-record-time-to-live-ttl Time-to-live
-     * @link https://www.aerospike.com/docs/guide/FAQ.html FAQ
-     * @link https://discuss.aerospike.com/t/records-ttl-and-evictions/737 Record TTL and Evictions
+     * @link https://docs.aerospike.com/client/c/usage/kvs/write.html#change-record-time-to-live-ttl Time-to-live
+     * @link https://docs.aerospike.com/guide/FAQ.html FAQ
+     * @link https://discuss.aerospike.com/t/records-ttl-and-evictions-for-aerospike-server-version-prior-to-3-8/737 Record TTL and Evictions
      * @param array $key The key identifying the record. An array with keys `['ns','set','key']` or `['ns','set','digest']`
      * @param int $ttl The record's time-to-live in seconds
      * @param array $options an optional array of write policy options, whose keys include
@@ -865,7 +865,7 @@ class Aerospike
      * Remove records in a specified namespace/set efficiently. This method is
      * many orders of magnitude faster than deleting records one at a time.
      * **Note:** works with Aerospike Server versions >= 3.12
-     * See {@link https://www.aerospike.com/docs/reference/info#truncate Truncate command information}
+     * See {@link https://docs.aerospike.com/reference/info#truncate Truncate command information}
      *
      * This asynchronous server call may return before the truncation is complete.
      * The user can still write new records after the server returns because new
@@ -1084,10 +1084,10 @@ class Aerospike
      *   ["op" => Aerospike::OPERATOR_TOUCH, "ttl" => 20]
      * ]
      * ```
-     * @link https://www.aerospike.com/docs/guide/kvs.html Key-Value Store
+     * @link https://docs.aerospike.com/guide/kvs.html Key-Value Store
      * @link https://github.com/aerospike/aerospike-client-php/blob/master/doc/README.md#handling-unsupported-types Handling Unsupported Types
-     * @link https://www.aerospike.com/docs/client/c/usage/kvs/write.html#change-record-time-to-live-ttl Time-to-live
-     * @link https://www.aerospike.com/docs/guide/glossary.html Glossary
+     * @link https://docs.aerospike.com/client/c/usage/kvs/write.html#change-record-time-to-live-ttl Time-to-live
+     * @link https://docs.aerospike.com/guide/glossary.html Glossary
      * @param array $key The key identifying the record. An array with keys `['ns','set','key']` or `['ns','set','digest']`
      * @param array $operations The array of of one or more per-bin operations conforming to the following structure:
      * ```
@@ -1463,10 +1463,10 @@ class Aerospike
      * }
      * ```
      *
-     * @link https://www.aerospike.com/docs/guide/kvs.html Key-Value Store
+     * @link https://docs.aerospike.com/guide/kvs.html Key-Value Store
      * @link https://github.com/aerospike/aerospike-client-php/blob/master/doc/README.md#handling-unsupported-types Handling Unsupported Types
-     * @link https://www.aerospike.com/docs/client/c/usage/kvs/write.html#change-record-time-to-live-ttl Time-to-live
-     * @link https://www.aerospike.com/docs/guide/glossary.html Glossary
+     * @link https://docs.aerospike.com/client/c/usage/kvs/write.html#change-record-time-to-live-ttl Time-to-live
+     * @link https://docs.aerospike.com/guide/glossary.html Glossary
      * @param array $key The key identifying the record. An array with keys `['ns','set','key']` or `['ns','set','digest']`
      * @param array $operations The array of of one or more per-bin operations conforming to the following structure:
      * ```
@@ -2659,9 +2659,9 @@ class Aerospike
      * bar@example.com
      * I think a sample of 20 records is enough
      * ```
-     * @link https://www.aerospike.com/docs/architecture/data-model.html Aerospike Data Model
-     * @link https://www.aerospike.com/docs/guide/scan.html Scans
-     * @link https://www.aerospike.com/docs/operations/manage/scans/ Managing Scans
+     * @link https://docs.aerospike.com/architecture/data-model.html Aerospike Data Model
+     * @link https://docs.aerospike.com/guide/scan.html Scans
+     * @link https://docs.aerospike.com/operations/manage/scans/ Managing Scans
      * @param string   $ns the namespace
      * @param string   $set the set within the given namespace
      * @param callable $record_cb A callback function invoked for each record streaming back from the cluster
@@ -2706,9 +2706,9 @@ class Aerospike
      * bar@example.com
      * I think a sample of 20 records is enough
      * ```
-     * @link https://www.aerospike.com/docs/architecture/data-model.html Aerospike Data Model
-     * @link https://www.aerospike.com/docs/guide/query.html Query
-     * @link https://www.aerospike.com/docs/operations/manage/queries/index.html Managing Queries
+     * @link https://docs.aerospike.com/architecture/data-model.html Aerospike Data Model
+     * @link https://docs.aerospike.com/guide/query.html Query
+     * @link https://docs.aerospike.com/operations/manage/queries/index.html Managing Queries
      * @param string   $ns the namespace
      * @param string   $set the set within the given namespace
      * @param array $where the predicate for the query, usually created by the
@@ -2958,7 +2958,7 @@ class Aerospike
      *     echo "[{$client->errorno()}] ".$client->error();
      * }
      * ```
-     * @link https://www.aerospike.com/docs/udf/udf_guide.html UDF Development Guide
+     * @link https://docs.aerospike.com/docs/udf/udf_guide.html UDF Development Guide
      * @param string $path the path to the Lua file on the client-side machine
      * @param string $module the name of the UDF module to register with the cluster
      * @param int    $language
@@ -3108,9 +3108,9 @@ class Aerospike
      * ```
      * The email of the user with key 1234 starts with 'hey@'.
      * ```
-     * @link https://www.aerospike.com/docs/udf/udf_guide.html UDF Development Guide
-     * @link https://www.aerospike.com/docs/udf/developing_record_udfs.html Developing Record UDFs
-     * @link https://www.aerospike.com/docs/udf/api_reference.html Lua UDF - API Reference
+     * @link https://docs.aerospike.com/docs/udf/udf_guide.html UDF Development Guide
+     * @link https://docs.aerospike.com/udf/developing_record_udfs.html Developing Record UDFs
+     * @link https://docs.aerospike.com/udf/api_reference.html Lua UDF - API Reference
      * @param array $key The key identifying the record. An array with keys `['ns','set','key']` or `['ns','set','digest']`
      * @param string $module the name of the UDF module registered with the cluster
      * @param string $function the name of the UDF
@@ -3158,9 +3158,9 @@ class Aerospike
      * ```
      * string(12) "Job ID is 1"
      * ```
-     * @link https://www.aerospike.com/docs/udf/udf_guide.html UDF Development Guide
-     * @link https://www.aerospike.com/docs/udf/developing_record_udfs.html Developing Record UDFs
-     * @link https://www.aerospike.com/docs/udf/api_reference.html Lua UDF - API Reference
+     * @link https://docs.aerospike.com/docs/udf/udf_guide.html UDF Development Guide
+     * @link https://docs.aerospike.com/udf/developing_record_udfs.html Developing Record UDFs
+     * @link https://docs.aerospike.com/udf/api_reference.html Lua UDF - API Reference
      * @param string $ns the namespace
      * @param string $set the set within the given namespace
      * @param string $module the name of the UDF module registered with the cluster
@@ -3207,9 +3207,9 @@ class Aerospike
      * ```
      * string(12) "Job ID is 1"
      * ```
-     * @link https://www.aerospike.com/docs/udf/udf_guide.html UDF Development Guide
-     * @link https://www.aerospike.com/docs/udf/developing_record_udfs.html Developing Record UDFs
-     * @link https://www.aerospike.com/docs/udf/api_reference.html Lua UDF - API Reference
+     * @link https://docs.aerospike.com/docs/udf/udf_guide.html UDF Development Guide
+     * @link https://docs.aerospike.com/udf/developing_record_udfs.html Developing Record UDFs
+     * @link https://docs.aerospike.com/udf/api_reference.html Lua UDF - API Reference
      * @param string $ns the namespace
      * @param string $set the set within the given namespace
      * @param array $where the predicate for the query, usually created by the
@@ -3345,9 +3345,9 @@ class Aerospike
      *   int(3)
      * }
      * ```
-     * @link https://www.aerospike.com/docs/udf/udf_guide.html UDF Development Guide
-     * @link https://www.aerospike.com/docs/udf/developing_stream_udfs.html Developing Stream UDFs
-     * @link https://www.aerospike.com/docs/guide/aggregation.html Aggregation
+     * @link https://docs.aerospike.com/docs/udf/udf_guide.html UDF Development Guide
+     * @link https://docs.aerospike.com/udf/developing_stream_udfs.html Developing Stream UDFs
+     * @link https://docs.aerospike.com/guide/aggregation.html Aggregation
      * @param string $ns the namespace
      * @param string $set the set within the given namespace
      * @param array $where the predicate for the query, usually created by the
@@ -3470,7 +3470,7 @@ class Aerospike
      * ```
      * string(53) "bins/test	num-bin-names=2,bin-names-quota=32768,demo,characters"
      * ```
-     * @link https://www.aerospike.com/docs/reference/info Info Command Reference
+     * @link https://docs.aerospike.com/reference/info Info Command Reference
      * @param string $request  a formatted info command
      * @param string &$response a formatted response from the server, filled by reference
      * @param null|array $host an array holding the cluster node connection information cluster
@@ -3505,7 +3505,7 @@ class Aerospike
      *   string(6) "build  3.3.19"
      * }
      * ```
-     * @link https://www.aerospike.com/docs/reference/info Info Command Reference
+     * @link https://docs.aerospike.com/reference/info Info Command Reference
      * @param string $request  a formatted info command
      * @param null|array $host an array of _host_ arrays, each with ```[ 'addr' => $addr , 'port' =>  $port ]```
      * @param array  $options an optional array of policy options, whose keys include
@@ -3793,7 +3793,7 @@ class Aerospike
     /**
      * Accepts one of the POLICY_KEY_* values.
      *
-     * {@link https://www.aerospike.com/docs/client/php/usage/kvs/record-structure.html Records}
+     * {@link https://docs.aerospike.com/client/php/usage/kvs/record-structure.html Records}
      * are uniquely identified by their digest, and can optionally store the value of their primary key
      * (their unique ID in the application).
      * @const OPT_POLICY_KEY Key storage policy option (digest-only or send key)
@@ -3911,7 +3911,7 @@ class Aerospike
     /**
      * Accepts one of the POLICY_COMMIT_LEVEL_* values.
      *
-     * One of the {@link https://www.aerospike.com/docs/architecture/consistency.html per-transaction consistency levels}.
+     * One of the {@link https://docs.aerospike.com/architecture/consistency.html per-transaction consistency levels}.
      * Specifies the number of replicas required to be successfully committed
      * before returning success in a write operation to provide the desired
      * consistency level.
@@ -3934,7 +3934,7 @@ class Aerospike
     /**
      * Accepts one of the POLICY_REPLICA_* values.
      *
-     * One of the {@link https://www.aerospike.com/docs/architecture/consistency.html per-transaction consistency levels}.
+     * One of the {@link https://docs.aerospike.com/architecture/consistency.html per-transaction consistency levels}.
      * Specifies which partition replica to read from.
      * @const OPT_POLICY_REPLICA replica policy option
      */
@@ -3973,7 +3973,7 @@ class Aerospike
     /**
      * Accepts one of the POLICY_READ_MODE_AP_* values.
      *
-     * One of the {@link https://www.aerospike.com/docs/architecture/consistency.html per-transaction consistency levels}.
+     * One of the {@link https://docs.aerospike.com/architecture/consistency.html per-transaction consistency levels}.
      * Specifies the number of replicas to be consulted in a read operation to
      * provide the desired consistency level in availability mode.
      * @const OPT_POLICY_READ_MODE_AP policy read option for availability namespaces
@@ -3995,7 +3995,7 @@ class Aerospike
     /**
      * Accepts one of the POLICY_READ_MODE_SC_* values.
      *
-     * One of the {@link https://www.aerospike.com/docs/architecture/consistency.html per-transaction consistency levels}.
+     * One of the {@link https://docs.aerospike.com/architecture/consistency.html per-transaction consistency levels}.
      * Specifies the number of replicas to be consulted in a read operation to
      * provide the desired consistency level.
      * @const OPT_POLICY_READ_MODE_SC policy read option for consistency namespaces
@@ -4279,56 +4279,56 @@ class Aerospike
 
     /**
      * Do not return a result for the map operation (get and remove operations)
-     * @link https://www.aerospike.com/docs/guide/cdt-map.html#map-apis Map Result Types
+     * @link https://docs.aerospike.com/guide/cdt-map.html#map-apis Map Result Types
      * @const MAP_RETURN_NONE
      */
     public const MAP_RETURN_NONE = "AS_MAP_RETURN_NONE";
 
     /**
      * Return in key index order
-     * @link https://www.aerospike.com/docs/guide/cdt-map.html#map-apis Map Result Types
+     * @link https://docs.aerospike.com/guide/cdt-map.html#map-apis Map Result Types
      * @const AS_MAP_RETURN_INDEX
      */
     public const MAP_RETURN_INDEX = "AS_MAP_RETURN_INDEX";
 
     /**
      * Return in reverse key order
-     * @link https://www.aerospike.com/docs/guide/cdt-map.html#map-apis Map Result Types
+     * @link https://docs.aerospike.com/guide/cdt-map.html#map-apis Map Result Types
      * @const MAP_RETURN_REVERSE_INDEX
      */
     public const MAP_RETURN_REVERSE_INDEX = "AS_MAP_RETURN_REVERSE_INDEX";
 
     /**
      * Return in value order
-     * @link https://www.aerospike.com/docs/guide/cdt-map.html#map-apis Map Result Types
+     * @link https://docs.aerospike.com/guide/cdt-map.html#map-apis Map Result Types
      * @const MAP_RETURN_RANK
      */
     public const MAP_RETURN_RANK = "AS_MAP_RETURN_RANK";
 
     /**
      * Return in reverse value order
-     * @link https://www.aerospike.com/docs/guide/cdt-map.html#map-apis Map Result Types
+     * @link https://docs.aerospike.com/guide/cdt-map.html#map-apis Map Result Types
      * @const MAP_RETURN_REVERSE_RANK
      */
     public const MAP_RETURN_REVERSE_RANK = "AS_MAP_RETURN_REVERSE_RANK";
 
     /**
      * Return count of items selected
-     * @link https://www.aerospike.com/docs/guide/cdt-map.html#map-apis Map Result Types
+     * @link https://docs.aerospike.com/guide/cdt-map.html#map-apis Map Result Types
      * @const MAP_RETURN_COUNT
      */
     public const MAP_RETURN_COUNT = "AS_MAP_RETURN_COUNT";
 
     /**
      * Return key for single key read and key list for range read
-     * @link https://www.aerospike.com/docs/guide/cdt-map.html#map-apis Map Result Types
+     * @link https://docs.aerospike.com/guide/cdt-map.html#map-apis Map Result Types
      * @const MAP_RETURN_KEY
      */
     public const MAP_RETURN_KEY = "AS_MAP_RETURN_KEY";
 
     /**
      * Return value for single key read and value list for range read
-     * @link https://www.aerospike.com/docs/guide/cdt-map.html#map-apis Map Result Types
+     * @link https://docs.aerospike.com/guide/cdt-map.html#map-apis Map Result Types
      * @const MAP_RETURN_VALUE
      */
     public const MAP_RETURN_VALUE = "AS_MAP_RETURN_VALUE";
@@ -4336,7 +4336,7 @@ class Aerospike
     /**
      * Return key/value items
      * Will be of the form ['key1', 'val1', 'key2', 'val2', 'key3', 'val3]
-     * @link https://www.aerospike.com/docs/guide/cdt-map.html#map-apis Map Result Types
+     * @link https://docs.aerospike.com/guide/cdt-map.html#map-apis Map Result Types
      * @const MAP_RETURN_KEY_VALUE
      */
     public const MAP_RETURN_KEY_VALUE = "AS_MAP_RETURN_KEY_VALUE";
@@ -4773,7 +4773,7 @@ class Aerospike
      * @const ERR_INDEX_FOUND
      * Accepts one of the POLICY_KEY_* values.
      *
-     * {@link https://www.aerospike.com/docs/client/php/usage/kvs/record-structure.html Records}
+     * {@link https://docs.aerospike.com/client/php/usage/kvs/record-structure.html Records}
      * are uniquely identified by their digest, and can optionally store the value of their primary key
      * (their unique ID in the application).
      * @const OPT_POLICY_KEY Key storage policy option (digest-only or send key)
@@ -5258,41 +5258,41 @@ class Aerospike
     /**
      * Privilege to read data
      * @const PRIV_READ
-     * @link https://www.aerospike.com/docs/guide/security/access-control.html Access Control
+     * @link https://docs.aerospike.com/guide/security/access-control.html Access Control
      */
     public const PRIV_READ = "PRIV_READ";
 
     /**
      * Privilege to read and write data
      * @const PRIV_READ_WRITE
-     * @link https://www.aerospike.com/docs/guide/security/access-control.html Access Control
+     * @link https://docs.aerospike.com/guide/security/access-control.html Access Control
      */
     public const PRIV_READ_WRITE = "PRIV_READ_WRITE";
 
     /**
      * Privilege to read, write and execute user-defined functions
      * @const PRIV_READ_WRITE_UDF
-     * @link https://www.aerospike.com/docs/guide/security/access-control.html Access Control
+     * @link https://docs.aerospike.com/guide/security/access-control.html Access Control
      */
     public const PRIV_READ_WRITE_UDF = "PRIV_READ_WRITE_UDF";
 
     /**
      * Privilege to create and assign roles to users
      * @const PRIV_USER_ADMIN
-     * @link https://www.aerospike.com/docs/guide/security/access-control.html Access Control
+     * @link https://docs.aerospike.com/guide/security/access-control.html Access Control
      */
     public const PRIV_USER_ADMIN = "PRIV_USER_ADMIN";
 
     /**
      * Privilege to manage indexes and UDFs, monitor and abort scan/query jobs, get server config
      * @const PRIV_DATA_ADMIN
-     * @link https://www.aerospike.com/docs/guide/security/access-control.html Access Control
+     * @link https://docs.aerospike.com/guide/security/access-control.html Access Control
      */
     public const PRIV_DATA_ADMIN = "PRIV_DATA_ADMIN"; // can perform data admin functions that do not involve user admin
 
     /** Privilege to modify dynamic server configs, get config and stats, and all data admin privileges
      * @const PRIV_SYS_ADMIN
-     * @link https://www.aerospike.com/docs/guide/security/access-control.html Access Control
+     * @link https://docs.aerospike.com/guide/security/access-control.html Access Control
      */
     public const PRIV_SYS_ADMIN = "PRIV_SYS_ADMIN"; // can perform sysadmin functions that do not involve user admin
 

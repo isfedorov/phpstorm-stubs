@@ -5,7 +5,7 @@ use JetBrains\PhpStorm\Internal\LanguageLevelTypeAware;
 
 /**
  * Create or attach to a message queue
- * @link https://php.net/manual/en/function.msg-get-queue.php
+ * @link https://www.php.net/manual/en/function.msg-get-queue.php
  * @param int $key <p>
  * Message queue numeric ID
  * </p>
@@ -20,7 +20,7 @@ function msg_get_queue(int $key, int $permissions = 0666) {}
 
 /**
  * Send a message to a message queue
- * @link https://php.net/manual/en/function.msg-send.php
+ * @link https://www.php.net/manual/en/function.msg-send.php
  * @param SysvMessageQueue|resource $queue
  * @param int $message_type
  * @param mixed $message
@@ -58,7 +58,7 @@ function msg_send(#[LanguageLevelTypeAware(["8.0" => "SysvMessageQueue"], defaul
 
 /**
  * Receive a message from a message queue
- * @link https://php.net/manual/en/function.msg-receive.php
+ * @link https://www.php.net/manual/en/function.msg-receive.php
  * @param SysvMessageQueue|resource $queue
  * @param int $desired_message_type <p>
  * If <i>desiredmsgtype</i> is 0, the message from the front
@@ -145,7 +145,7 @@ function msg_receive(#[LanguageLevelTypeAware(["8.0" => "SysvMessageQueue"], def
 
 /**
  * Destroy a message queue
- * @link https://php.net/manual/en/function.msg-remove-queue.php
+ * @link https://www.php.net/manual/en/function.msg-remove-queue.php
  * @param SysvMessageQueue|resource $queue <p>
  * Message queue resource handle
  * </p>
@@ -155,7 +155,7 @@ function msg_remove_queue(#[LanguageLevelTypeAware(["8.0" => "SysvMessageQueue"]
 
 /**
  * Returns information from the message queue data structure
- * @link https://php.net/manual/en/function.msg-stat-queue.php
+ * @link https://www.php.net/manual/en/function.msg-stat-queue.php
  * @param SysvMessageQueue|resource $queue <p>
  * Message queue resource handle
  * </p>
@@ -231,7 +231,7 @@ function msg_stat_queue(#[LanguageLevelTypeAware(["8.0" => "SysvMessageQueue"], 
 
 /**
  * Set information in the message queue data structure
- * @link https://php.net/manual/en/function.msg-set-queue.php
+ * @link https://www.php.net/manual/en/function.msg-set-queue.php
  * @param SysvMessageQueue|resource $queue <p>
  * Message queue resource handle
  * </p>
@@ -245,7 +245,7 @@ function msg_set_queue(#[LanguageLevelTypeAware(["8.0" => "SysvMessageQueue"], d
 
 /**
  * Check whether a message queue exists
- * @link https://php.net/manual/en/function.msg-queue-exists.php
+ * @link https://www.php.net/manual/en/function.msg-queue-exists.php
  * @param int $key <p>
  * Queue key.
  * </p>

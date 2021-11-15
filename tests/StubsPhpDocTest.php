@@ -159,6 +159,7 @@ class StubsPhpDocTest extends AbstractBaseStubsTestCase
                 );
                 if (getenv('CHECK_LINKS') === 'true') {
                     if ($element->stubBelongsToCore) {
+                        sleep(1);
                         $request = curl_init($link->getLink());
                         curl_setopt($request, CURLOPT_RETURNTRANSFER, 1);
                         curl_exec($request);

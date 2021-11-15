@@ -103,7 +103,7 @@ function ldap_t61_to_8859(string $value): string {}
 
 /**
  * Connect to an LDAP server
- * @link https://php.net/manual/en/function.ldap-connect.php
+ * @link https://www.php.net/manual/en/function.ldap-connect.php
  * @param string|null $uri [optional] <p>
  * If you are using OpenLDAP 2.x.x you can specify a URL instead of the
  * hostname. To use LDAP with SSL, compile OpenLDAP 2.x.x with SSL
@@ -129,7 +129,7 @@ function ldap_connect(?string $uri, int $port = 389) {}
 
 /**
  * Alias of <b>ldap_unbind</b>
- * @link https://php.net/manual/en/function.ldap-close.php
+ * @link https://www.php.net/manual/en/function.ldap-close.php
  * @param resource $ldap
  * @return bool
  */
@@ -137,7 +137,7 @@ function ldap_close(#[PhpVersionAware(['8.1' => 'LDAP\Connection'], default: 're
 
 /**
  * Bind to LDAP directory
- * @link https://php.net/manual/en/function.ldap-bind.php
+ * @link https://www.php.net/manual/en/function.ldap-bind.php
  * @param resource $ldap <p>
  * An LDAP link identifier, returned by <b>ldap_connect</b>.
  * </p>
@@ -150,7 +150,7 @@ function ldap_bind(#[PhpVersionAware(['8.1' => 'LDAP\Connection'], default: 'res
 /**
  * Bind to LDAP directory
  * Does the same thing as ldap_bind() but returns the LDAP result resource to be parsed with ldap_parse_result().
- * @link https://php.net/manual/en/function.ldap-bind.php
+ * @link https://www.php.net/manual/en/function.ldap-bind.php
  * @param resource $ldap <p>
  * An LDAP link identifier, returned by <b>ldap_connect</b>.
  * </p>
@@ -170,7 +170,7 @@ function ldap_bind_ext(
 
 /**
  * Bind to LDAP directory using SASL
- * @link https://php.net/manual/en/function.ldap-sasl-bind.php
+ * @link https://www.php.net/manual/en/function.ldap-sasl-bind.php
  * @param resource $ldap
  * @param string $binddn [optional]
  * @param string $password [optional]
@@ -185,7 +185,7 @@ function ldap_sasl_bind(#[PhpVersionAware(['8.1' => 'LDAP\Connection'], default:
 
 /**
  * Unbind from LDAP directory
- * @link https://php.net/manual/en/function.ldap-unbind.php
+ * @link https://www.php.net/manual/en/function.ldap-unbind.php
  * @param resource $ldap <p>
  * An LDAP link identifier, returned by <b>ldap_connect</b>.
  * </p>
@@ -195,7 +195,7 @@ function ldap_unbind(#[PhpVersionAware(['8.1' => 'LDAP\Connection'], default: 'r
 
 /**
  * Read an entry
- * @link https://php.net/manual/en/function.ldap-read.php
+ * @link https://www.php.net/manual/en/function.ldap-read.php
  * @param resource $ldap <p>
  * An LDAP link identifier, returned by <b>ldap_connect</b>.
  * </p>
@@ -270,7 +270,7 @@ function ldap_read(
 
 /**
  * Single-level search
- * @link https://php.net/manual/en/function.ldap-list.php
+ * @link https://www.php.net/manual/en/function.ldap-list.php
  * @param resource $ldap <p>
  * An LDAP link identifier, returned by <b>ldap_connect</b>.
  * </p>
@@ -339,7 +339,7 @@ function ldap_list(
 
 /**
  * Search LDAP tree
- * @link https://php.net/manual/en/function.ldap-search.php
+ * @link https://www.php.net/manual/en/function.ldap-search.php
  * @param resource $ldap <p>
  * An LDAP link identifier, returned by <b>ldap_connect</b>.
  * </p>
@@ -412,7 +412,7 @@ function ldap_search(
 
 /**
  * Free result memory
- * @link https://php.net/manual/en/function.ldap-free-result.php
+ * @link https://www.php.net/manual/en/function.ldap-free-result.php
  * @param resource|Result $result
  * @return bool <b>TRUE</b> on success or <b>FALSE</b> on failure.
  */
@@ -423,7 +423,7 @@ function ldap_free_result(
 
 /**
  * Count the number of entries in a search
- * @link https://php.net/manual/en/function.ldap-count-entries.php
+ * @link https://www.php.net/manual/en/function.ldap-count-entries.php
  * @param resource $ldap <p>
  * An LDAP link identifier, returned by <b>ldap_connect</b>.
  * </p>
@@ -440,7 +440,7 @@ function ldap_count_entries(
 
 /**
  * Return first result id
- * @link https://php.net/manual/en/function.ldap-first-entry.php
+ * @link https://www.php.net/manual/en/function.ldap-first-entry.php
  * @param resource $ldap <p>
  * An LDAP link identifier, returned by <b>ldap_connect</b>.
  * </p>
@@ -456,7 +456,7 @@ function ldap_first_entry(
 
 /**
  * Get next result entry
- * @link https://php.net/manual/en/function.ldap-next-entry.php
+ * @link https://www.php.net/manual/en/function.ldap-next-entry.php
  * @param resource $ldap <p>
  * An LDAP link identifier, returned by <b>ldap_connect</b>.
  * </p>
@@ -473,7 +473,7 @@ function ldap_next_entry(
 
 /**
  * Get all result entries
- * @link https://php.net/manual/en/function.ldap-get-entries.php
+ * @link https://www.php.net/manual/en/function.ldap-get-entries.php
  * @param resource $ldap <p>
  * An LDAP link identifier, returned by <b>ldap_connect</b>.
  * </p>
@@ -504,7 +504,7 @@ function ldap_get_entries(
 
 /**
  * Return first attribute
- * @link https://php.net/manual/en/function.ldap-first-attribute.php
+ * @link https://www.php.net/manual/en/function.ldap-first-attribute.php
  * @param resource $ldap <p>
  * An LDAP link identifier, returned by <b>ldap_connect</b>.
  * </p>
@@ -519,7 +519,7 @@ function ldap_first_attribute(
 
 /**
  * Get the next attribute in result
- * @link https://php.net/manual/en/function.ldap-next-attribute.php
+ * @link https://www.php.net/manual/en/function.ldap-next-attribute.php
  * @param resource $ldap <p>
  * An LDAP link identifier, returned by <b>ldap_connect</b>.
  * </p>
@@ -534,7 +534,7 @@ function ldap_next_attribute(
 
 /**
  * Get attributes from a search result entry
- * @link https://php.net/manual/en/function.ldap-get-attributes.php
+ * @link https://www.php.net/manual/en/function.ldap-get-attributes.php
  * @param resource $ldap <p>
  * An LDAP link identifier, returned by <b>ldap_connect</b>.
  * </p>
@@ -549,7 +549,7 @@ function ldap_get_attributes(
 
 /**
  * Get all values from a result entry
- * @link https://php.net/manual/en/function.ldap-get-values.php
+ * @link https://www.php.net/manual/en/function.ldap-get-values.php
  * @param resource $ldap <p>
  * An LDAP link identifier, returned by <b>ldap_connect</b>.
  * </p>
@@ -576,7 +576,7 @@ function ldap_get_values(
 
 /**
  * Get all binary values from a result entry
- * @link https://php.net/manual/en/function.ldap-get-values-len.php
+ * @link https://www.php.net/manual/en/function.ldap-get-values-len.php
  * @param resource $ldap <p>
  * An LDAP link identifier, returned by <b>ldap_connect</b>.
  * </p>
@@ -595,7 +595,7 @@ function ldap_get_values_len(
 
 /**
  * Get the DN of a result entry
- * @link https://php.net/manual/en/function.ldap-get-dn.php
+ * @link https://www.php.net/manual/en/function.ldap-get-dn.php
  * @param resource $ldap <p>
  * An LDAP link identifier, returned by <b>ldap_connect</b>.
  * </p>
@@ -609,7 +609,7 @@ function ldap_get_dn(
 
 /**
  * Splits DN into its component parts
- * @link https://php.net/manual/en/function.ldap-explode-dn.php
+ * @link https://www.php.net/manual/en/function.ldap-explode-dn.php
  * @param string $dn <p>
  * The distinguished name of an LDAP entity.
  * </p>
@@ -628,7 +628,7 @@ function ldap_explode_dn(string $dn, int $with_attrib): array|false {}
 
 /**
  * Convert DN to User Friendly Naming format
- * @link https://php.net/manual/en/function.ldap-dn2ufn.php
+ * @link https://www.php.net/manual/en/function.ldap-dn2ufn.php
  * @param string $dn <p>
  * The distinguished name of an LDAP entity.
  * </p>
@@ -638,7 +638,7 @@ function ldap_dn2ufn(string $dn): string|false {}
 
 /**
  * Add entries to LDAP directory
- * @link https://php.net/manual/en/function.ldap-add.php
+ * @link https://www.php.net/manual/en/function.ldap-add.php
  * @param resource $ldap <p>
  * An LDAP link identifier, returned by <b>ldap_connect</b>.
  * </p>
@@ -701,7 +701,7 @@ function ldap_add_ext(
 
 /**
  * Delete an entry from a directory
- * @link https://php.net/manual/en/function.ldap-delete.php
+ * @link https://www.php.net/manual/en/function.ldap-delete.php
  * @param resource $ldap <p>
  * An LDAP link identifier, returned by <b>ldap_connect</b>.
  * </p>
@@ -720,7 +720,7 @@ function ldap_delete(
 /**
  * Delete an entry from a directory
  * Does the same thing as ldap_delete() but returns the LDAP result resource to be parsed with ldap_parse_result().
- * @link https://php.net/manual/en/function.ldap-delete-ext.php
+ * @link https://www.php.net/manual/en/function.ldap-delete-ext.php
  * @param resource $ldap <p>
  * An LDAP link identifier, returned by <b>ldap_connect</b>.
  * </p>
@@ -741,7 +741,7 @@ function ldap_delete_ext(
 /**
  * This function is an alias of: ldap_mod_replace().
  * Replace attribute values with new ones
- * @link https://php.net/manual/en/function.ldap-mod-replace.php
+ * @link https://www.php.net/manual/en/function.ldap-mod-replace.php
  * @param resource $ldap <p>
  * An LDAP link identifier, returned by <b>ldap_connect</b>.
  * </p>
@@ -762,7 +762,7 @@ function ldap_modify(
 
 /**
  * Add attribute values to current attributes
- * @link https://php.net/manual/en/function.ldap-mod-add.php
+ * @link https://www.php.net/manual/en/function.ldap-mod-add.php
  * @param resource $ldap <p>
  * An LDAP link identifier, returned by <b>ldap_connect</b>.
  * </p>
@@ -783,7 +783,7 @@ function ldap_mod_add(
 /**
  * Add attribute values to current attributes
  * Does the same thing as ldap_mod_add() but returns the LDAP result resource to be parsed with ldap_parse_result().
- * @link https://php.net/manual/en/function.ldap-mod-add-ext.php
+ * @link https://www.php.net/manual/en/function.ldap-mod_add-ext.php
  * @param resource $ldap <p>
  * An LDAP link identifier, returned by <b>ldap_connect</b>.
  * </p>
@@ -805,7 +805,7 @@ function ldap_mod_add_ext(
 
 /**
  * Replace attribute values with new ones
- * @link https://php.net/manual/en/function.ldap-mod-replace.php
+ * @link https://www.php.net/manual/en/function.ldap-mod-replace.php
  * @param resource $ldap <p>
  * An LDAP link identifier, returned by <b>ldap_connect</b>.
  * </p>
@@ -826,7 +826,7 @@ function ldap_mod_replace(
 /**
  * Replace attribute values with new ones
  * Does the same thing as ldap_mod_replace() but returns the LDAP result resource to be parsed with ldap_parse_result().
- * @link https://php.net/manual/en/function.ldap-mod-replace-ext.php
+ * @link https://www.php.net/manual/en/function.ldap-mod_replace-ext.php
  * @param resource $ldap <p>
  * An LDAP link identifier, returned by <b>ldap_connect</b>.
  * </p>
@@ -843,7 +843,7 @@ function ldap_mod_replace_ext(#[PhpVersionAware(['8.1' => 'LDAP\Connection'], de
 
 /**
  * Delete attribute values from current attributes
- * @link https://php.net/manual/en/function.ldap-mod-del.php
+ * @link https://www.php.net/manual/en/function.ldap-mod-del.php
  * @param resource $ldap <p>
  * An LDAP link identifier, returned by <b>ldap_connect</b>.
  * </p>
@@ -864,7 +864,7 @@ function ldap_mod_del(
 /**
  * Delete attribute values from current attributes
  * Does the same thing as ldap_mod_del() but returns the LDAP result resource to be parsed with ldap_parse_result().
- * @link https://php.net/manual/en/function.ldap-mod-del-ext.php
+ * @link https://www.php.net/manual/en/function.ldap-mod_del-ext
  * @param resource $ldap <p>
  * An LDAP link identifier, returned by <b>ldap_connect</b>.
  * </p>
@@ -881,7 +881,7 @@ function ldap_mod_del_ext(#[PhpVersionAware(['8.1' => 'LDAP\Connection'], defaul
 
 /**
  * Return the LDAP error number of the last LDAP command
- * @link https://php.net/manual/en/function.ldap-errno.php
+ * @link https://www.php.net/manual/en/function.ldap-errno.php
  * @param resource $ldap <p>
  * An LDAP link identifier, returned by <b>ldap_connect</b>.
  * </p>
@@ -892,7 +892,7 @@ function ldap_errno(#[PhpVersionAware(['8.1' => 'LDAP\Connection'], default: 're
 
 /**
  * Convert LDAP error number into string error message
- * @link https://php.net/manual/en/function.ldap-err2str.php
+ * @link https://www.php.net/manual/en/function.ldap-err2str.php
  * @param int $errno <p>
  * The error number.
  * </p>
@@ -902,7 +902,7 @@ function ldap_err2str(int $errno): string {}
 
 /**
  * Return the LDAP error message of the last LDAP command
- * @link https://php.net/manual/en/function.ldap-error.php
+ * @link https://www.php.net/manual/en/function.ldap-error.php
  * @param resource $ldap <p>
  * An LDAP link identifier, returned by <b>ldap_connect</b>.
  * </p>
@@ -912,7 +912,7 @@ function ldap_error(#[PhpVersionAware(['8.1' => 'LDAP\Connection'], default: 're
 
 /**
  * Compare value of attribute found in entry specified with DN
- * @link https://php.net/manual/en/function.ldap-compare.php
+ * @link https://www.php.net/manual/en/function.ldap-compare.php
  * @param resource $ldap <p>
  * An LDAP link identifier, returned by <b>ldap_connect</b>.
  * </p>
@@ -939,7 +939,7 @@ function ldap_compare(
 
 /**
  * Sort LDAP result entries
- * @link https://php.net/manual/en/function.ldap-sort.php
+ * @link https://www.php.net/manual/en/function.ldap-sort.php
  * @param resource $ldap <p>
  * An LDAP link identifier, returned by <b>ldap_connect</b>.
  * </p>
@@ -958,7 +958,7 @@ function ldap_sort(#[PhpVersionAware(['8.1' => 'LDAP\Connection'], default: 'res
 
 /**
  * Modify the name of an entry
- * @link https://php.net/manual/en/function.ldap-rename.php
+ * @link https://www.php.net/manual/en/function.ldap-rename.php
  * @param resource $ldap <p>
  * An LDAP link identifier, returned by <b>ldap_connect</b>.
  * </p>
@@ -990,7 +990,7 @@ function ldap_rename(
 /**
  * Modify the name of an entry
  * Does the same thing as ldap_rename() but returns the LDAP result resource to be parsed with ldap_parse_result().
- * @link https://php.net/manual/en/function.ldap-rename-ext.php
+ * @link https://www.php.net/manual/en/function.ldap-rename-ext.php
  * @param resource $ldap <p>
  * An LDAP link identifier, returned by <b>ldap_connect</b>.
  * </p>
@@ -1016,7 +1016,7 @@ function ldap_rename_ext(#[PhpVersionAware(['8.1' => 'LDAP\Connection'], default
 
 /**
  * Get the current value for given option
- * @link https://php.net/manual/en/function.ldap-get-option.php
+ * @link https://www.php.net/manual/en/function.ldap-get-option.php
  * @param resource $ldap <p>
  * An LDAP link identifier, returned by <b>ldap_connect</b>.
  * </p>
@@ -1093,7 +1093,7 @@ function ldap_get_option(
 
 /**
  * Set the value of the given option
- * @link https://php.net/manual/en/function.ldap-set-option.php
+ * @link https://www.php.net/manual/en/function.ldap-set-option.php
  * @param resource $ldap <p>
  * An LDAP link identifier, returned by <b>ldap_connect</b>.
  * </p>
@@ -1198,7 +1198,7 @@ function ldap_set_option(
 
 /**
  * Return first reference
- * @link https://php.net/manual/en/function.ldap-first-reference.php
+ * @link https://www.php.net/manual/en/function.ldap-first-reference.php
  * @param resource $ldap
  * @param resource $result
  * @return resource
@@ -1211,7 +1211,7 @@ function ldap_first_reference(
 
 /**
  * Get next reference
- * @link https://php.net/manual/en/function.ldap-next-reference.php
+ * @link https://www.php.net/manual/en/function.ldap-next-reference.php
  * @param resource $ldap
  * @param resource $entry
  * @return resource
@@ -1224,7 +1224,7 @@ function ldap_next_reference(
 
 /**
  * Extract information from reference entry
- * @link https://php.net/manual/en/function.ldap-parse-reference.php
+ * @link https://www.php.net/manual/en/function.ldap-parse-reference.php
  * @param resource $ldap
  * @param resource $entry
  * @param array &$referrals
@@ -1238,7 +1238,7 @@ function ldap_parse_reference(
 
 /**
  * Extract information from result
- * @link https://php.net/manual/en/function.ldap-parse-result.php
+ * @link https://www.php.net/manual/en/function.ldap-parse-result.php
  * @param resource $ldap
  * @param resource $result
  * @param int &$error_code
@@ -1260,7 +1260,7 @@ function ldap_parse_result(
 
 /**
  * Start TLS
- * @link https://php.net/manual/en/function.ldap-start-tls.php
+ * @link https://www.php.net/manual/en/function.ldap-start-tls.php
  * @param resource $ldap
  * @return bool
  */
@@ -1268,7 +1268,7 @@ function ldap_start_tls(#[PhpVersionAware(['8.1' => 'LDAP\Connection'], default:
 
 /**
  * Set a callback function to do re-binds on referral chasing
- * @link https://php.net/manual/en/function.ldap-set-rebind-proc.php
+ * @link https://www.php.net/manual/en/function.ldap-set-rebind-proc.php
  * @param resource $ldap
  * @param callable|null $callback
  * @return bool
@@ -1277,7 +1277,7 @@ function ldap_set_rebind_proc(#[PhpVersionAware(['8.1' => 'LDAP\Connection'], de
 
 /**
  * Send LDAP pagination control
- * @link https://php.net/manual/en/function.ldap-control-paged-result.php
+ * @link https://www.php.net/manual/en/function.ldap-control-paged-result.php
  * @param resource $ldap <p>
  * An LDAP link identifier, returned by <b>ldap_connect</b>.
  * </p>
@@ -1302,7 +1302,7 @@ function ldap_control_paged_result(#[PhpVersionAware(['8.1' => 'LDAP\Connection'
 
 /**
  * Retrieve the LDAP pagination cookie
- * @link https://php.net/manual/en/function.ldap-control-paged-result-response.php
+ * @link https://www.php.net/manual/en/function.ldap-control-paged-result-response.php
  * @param resource $ldap <p>
  * An LDAP link identifier, returned by <b>ldap_connect</b>.
  * </p>
@@ -1333,7 +1333,7 @@ function ldap_escape(string $value, string $ignore = "", int $flags = 0): string
 /**
  * (PHP 5.4 &gt;= 5.4.26, PHP 5.5 &gt;= 5.5.10, PHP 5.6 &gt;= 5.6.0)
  * Batch and execute modifications on an LDAP entry
- * @link https://php.net/manual/en/function.ldap-modify-batch.php
+ * @link https://www.php.net/manual/en/function.ldap-modify-batch.php
  * @param $ldap <p>
  * An LDAP link identifier, returned by
  * {@see ldap_connect()}.
@@ -1463,7 +1463,7 @@ define('LDAP_OPT_X_SASL_NOCANON', 24843);
 
 /**
  * Specifies alternative rules for following aliases at the server.
- * @link https://php.net/manual/en/ldap.constants.php
+ * @link https://www.php.net/manual/en/ldap.constants.php
  */
 define('LDAP_OPT_DEREF', 2);
 
@@ -1475,7 +1475,7 @@ define('LDAP_OPT_DEREF', 2);
  * The actual size limit for operations is also bounded
  * by the server's configured maximum number of return entries.
  * The lesser of these two settings is the actual size limit.
- * @link https://php.net/manual/en/ldap.constants.php
+ * @link https://www.php.net/manual/en/ldap.constants.php
  */
 define('LDAP_OPT_SIZELIMIT', 3);
 
@@ -1484,20 +1484,20 @@ define('LDAP_OPT_SIZELIMIT', 3);
  * The actual time limit for operations is also bounded
  * by the server's configured maximum time.
  * The lesser of these two settings is the actual time limit.
- * @link https://php.net/manual/en/ldap.constants.php
+ * @link https://www.php.net/manual/en/ldap.constants.php
  */
 define('LDAP_OPT_TIMELIMIT', 4);
 
 /**
  * Option for <b>ldap_set_option</b> to allow setting network timeout.
  * (Available as of PHP 5.3.0)
- * @link https://php.net/manual/en/ldap.constants.php
+ * @link https://www.php.net/manual/en/ldap.constants.php
  */
 define('LDAP_OPT_NETWORK_TIMEOUT', 20485);
 
 /**
  * Specifies the LDAP protocol to be used (V2 or V3).
- * @link https://php.net/manual/en/ldap.constants.php
+ * @link https://www.php.net/manual/en/ldap.constants.php
  */
 define('LDAP_OPT_PROTOCOL_VERSION', 17);
 define('LDAP_OPT_ERROR_NUMBER', 49);
@@ -1505,7 +1505,7 @@ define('LDAP_OPT_ERROR_NUMBER', 49);
 /**
  * Specifies whether to automatically follow referrals returned
  * by the LDAP server.
- * @link https://php.net/manual/en/ldap.constants.php
+ * @link https://www.php.net/manual/en/ldap.constants.php
  */
 define('LDAP_OPT_REFERRALS', 8);
 define('LDAP_OPT_RESTART', 9);
@@ -1515,19 +1515,19 @@ define('LDAP_OPT_MATCHED_DN', 51);
 
 /**
  * Specifies a default list of server controls to be sent with each request.
- * @link https://php.net/manual/en/ldap.constants.php
+ * @link https://www.php.net/manual/en/ldap.constants.php
  */
 define('LDAP_OPT_SERVER_CONTROLS', 18);
 
 /**
  * Specifies a default list of client controls to be processed with each request.
- * @link https://php.net/manual/en/ldap.constants.php
+ * @link https://www.php.net/manual/en/ldap.constants.php
  */
 define('LDAP_OPT_CLIENT_CONTROLS', 19);
 
 /**
  * Specifies a bitwise level for debug traces.
- * @link https://php.net/manual/en/ldap.constants.php
+ * @link https://www.php.net/manual/en/ldap.constants.php
  */
 define('LDAP_OPT_DEBUG_LEVEL', 20481);
 define('LDAP_OPT_X_SASL_MECH', 24832);
@@ -1537,14 +1537,14 @@ define('LDAP_OPT_X_SASL_AUTHZID', 24835);
 
 /**
  * Specifies the path of the directory containing CA certificates.
- * @link https://php.net/manual/en/ldap.constants.php
+ * @link https://www.php.net/manual/en/ldap.constants.php
  * @since 7.1
  */
 define('LDAP_OPT_X_TLS_CACERTDIR', 24579);
 
 /**
  * Specifies the full-path of the CA certificate file.
- * @link https://php.net/manual/en/ldap.constants.php
+ * @link https://www.php.net/manual/en/ldap.constants.php
  * @since 7.1
  */
 define('LDAP_OPT_X_TLS_CACERTFILE', 24578);
@@ -1557,168 +1557,168 @@ define('LDAP_OPT_DIAGNOSTIC_MESSAGE', 50);
 
 /**
  * Control Constant - Manage DSA IT (» RFC 3296)
- * @link https://php.net/manual/en/ldap.constants.php
+ * @link https://www.php.net/manual/en/ldap.constants.php
  * @since 7.2
  */
 define("LDAP_CONTROL_MANAGEDSAIT", "2.16.840.1.113730.3.4.2");
 
 /**
  * Control Constant - Proxied Authorization (» RFC 4370)
- * @link https://php.net/manual/en/ldap.constants.php
+ * @link https://www.php.net/manual/en/ldap.constants.php
  * @since 7.2
  */
 define("LDAP_CONTROL_PROXY_AUTHZ", "2.16.840.1.113730.3.4.18");
 
 /**
  * Control Constant - Subentries (» RFC 3672)
- * @link https://php.net/manual/en/ldap.constants.php
+ * @link https://www.php.net/manual/en/ldap.constants.php
  * @since 7.2
  */
 define("LDAP_CONTROL_SUBENTRIES", "1.3.6.1.4.1.4203.1.10.1");
 
 /**
  * Control Constant - Filter returned values (» RFC 3876)
- * @link https://php.net/manual/en/ldap.constants.php
+ * @link https://www.php.net/manual/en/ldap.constants.php
  * @since 7.2
  */
 define("LDAP_CONTROL_VALUESRETURNFILTER", "1.2.826.0.1.3344810.2.3");
 
 /**
  * Control Constant - Assertion (» RFC 4528)
- * @link https://php.net/manual/en/ldap.constants.php
+ * @link https://www.php.net/manual/en/ldap.constants.php
  * @since 7.2
  */
 define("LDAP_CONTROL_ASSERT", "1.3.6.1.1.12");
 
 /**
  * Control Constant - Pre read (» RFC 4527)
- * @link https://php.net/manual/en/ldap.constants.php
+ * @link https://www.php.net/manual/en/ldap.constants.php
  * @since 7.2
  */
 define("LDAP_CONTROL_PRE_READ", "1.3.6.1.1.13.1");
 
 /**
  * Control Constant - Post read (» RFC 4527)
- * @link https://php.net/manual/en/ldap.constants.php
+ * @link https://www.php.net/manual/en/ldap.constants.php
  * @since 7.2
  */
 define("LDAP_CONTROL_POST_READ", "1.3.6.1.1.13.2");
 
 /**
  * Control Constant - Sort request (» RFC 2891)
- * @link https://php.net/manual/en/ldap.constants.php
+ * @link https://www.php.net/manual/en/ldap.constants.php
  * @since 7.2
  */
 define("LDAP_CONTROL_SORTREQUEST", "1.2.840.113556.1.4.473");
 
 /**
  * Control Constant - Sort response (» RFC 2891)
- * @link https://php.net/manual/en/ldap.constants.php
+ * @link https://www.php.net/manual/en/ldap.constants.php
  * @since 7.2
  */
 define("LDAP_CONTROL_SORTRESPONSE", "1.2.840.113556.1.4.474");
 
 /**
  * Control Constant - Paged results (» RFC 2696)
- * @link https://php.net/manual/en/ldap.constants.php
+ * @link https://www.php.net/manual/en/ldap.constants.php
  * @since 7.2
  */
 define("LDAP_CONTROL_PAGEDRESULTS", "1.2.840.113556.1.4.319");
 
 /**
  * Control Constant - Content Synchronization Operation (» RFC 4533)
- * @link https://php.net/manual/en/ldap.constants.php
+ * @link https://www.php.net/manual/en/ldap.constants.php
  * @since 7.2
  */
 define("LDAP_CONTROL_SYNC", "1.3.6.1.4.1.4203.1.9.1.1");
 
 /**
  * Control Constant - Content Synchronization Operation State (» RFC 4533)
- * @link https://php.net/manual/en/ldap.constants.php
+ * @link https://www.php.net/manual/en/ldap.constants.php
  * @since 7.2
  */
 define("LDAP_CONTROL_SYNC_STATE", "1.3.6.1.4.1.4203.1.9.1.2");
 
 /**
  * Control Constant - Content Synchronization Operation Done (» RFC 4533)
- * @link https://php.net/manual/en/ldap.constants.php
+ * @link https://www.php.net/manual/en/ldap.constants.php
  * @since 7.2
  */
 define("LDAP_CONTROL_SYNC_DONE", "1.3.6.1.4.1.4203.1.9.1.3");
 
 /**
  * Control Constant - Don't Use Copy (» RFC 6171)
- * @link https://php.net/manual/en/ldap.constants.php
+ * @link https://www.php.net/manual/en/ldap.constants.php
  * @since 7.2
  */
 define("LDAP_CONTROL_DONTUSECOPY", "1.3.6.1.1.22");
 
 /**
  * Control Constant - Password Policy Request
- * @link https://php.net/manual/en/ldap.constants.php
+ * @link https://www.php.net/manual/en/ldap.constants.php
  * @since 7.2
  */
 define("LDAP_CONTROL_PASSWORDPOLICYREQUEST", "1.3.6.1.4.1.42.2.27.8.5.1");
 
 /**
  * Control Constant - Password Policy Response
- * @link https://php.net/manual/en/ldap.constants.php
+ * @link https://www.php.net/manual/en/ldap.constants.php
  * @since 7.2
  */
 define("LDAP_CONTROL_PASSWORDPOLICYRESPONSE", "1.3.6.1.4.1.42.2.27.8.5.1");
 
 /**
  * Control Constant - Active Directory Incremental Values
- * @link https://php.net/manual/en/ldap.constants.php
+ * @link https://www.php.net/manual/en/ldap.constants.php
  * @since 7.2
  */
 define("LDAP_CONTROL_X_INCREMENTAL_VALUES", "1.2.840.113556.1.4.802");
 
 /**
  * Control Constant - Active Directory Domain Scope
- * @link https://php.net/manual/en/ldap.constants.php
+ * @link https://www.php.net/manual/en/ldap.constants.php
  * @since 7.2
  */
 define("LDAP_CONTROL_X_DOMAIN_SCOPE", "1.2.840.113556.1.4.1339");
 
 /**
  * Control Constant - Active Directory Permissive Modify
- * @link https://php.net/manual/en/ldap.constants.php
+ * @link https://www.php.net/manual/en/ldap.constants.php
  * @since 7.2
  */
 define("LDAP_CONTROL_X_PERMISSIVE_MODIFY", "1.2.840.113556.1.4.1413");
 
 /**
  * Control Constant - Active Directory Search Options
- * @link https://php.net/manual/en/ldap.constants.php
+ * @link https://www.php.net/manual/en/ldap.constants.php
  * @since 7.2
  */
 define("LDAP_CONTROL_X_SEARCH_OPTIONS", "1.2.840.113556.1.4.1340");
 
 /**
  * Control Constant - Active Directory Tree Delete
- * @link https://php.net/manual/en/ldap.constants.php
+ * @link https://www.php.net/manual/en/ldap.constants.php
  * @since 7.2
  */
 define("LDAP_CONTROL_X_TREE_DELETE", "1.2.840.113556.1.4.805");
 
 /**
  * Control Constant - Active Directory Extended DN
- * @link https://php.net/manual/en/ldap.constants.php
+ * @link https://www.php.net/manual/en/ldap.constants.php
  * @since 7.2
  */
 define("LDAP_CONTROL_X_EXTENDED_DN", "1.2.840.113556.1.4.529");
 
 /**
  * Control Constant - Virtual List View Request
- * @link https://php.net/manual/en/ldap.constants.php
+ * @link https://www.php.net/manual/en/ldap.constants.php
  * @since 7.2
  */
 define("LDAP_CONTROL_VLVREQUEST", "2.16.840.1.113730.3.4.9");
 
 /**
  * Control Constant - Virtual List View Response
- * @link https://php.net/manual/en/ldap.constants.php
+ * @link https://www.php.net/manual/en/ldap.constants.php
  * @since 7.2
  */
 define("LDAP_CONTROL_VLVRESPONSE", "2.16.840.1.113730.3.4.10");
