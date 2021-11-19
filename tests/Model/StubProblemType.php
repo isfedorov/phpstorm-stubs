@@ -32,4 +32,6 @@ interface StubProblemType
     public const WRONG_RETURN_TYPEHINT = 24;
     public const WRONG_OPTIONALLITY = 27;
     public const PROPERTY_READONLY = 28;
+    public const RETURN_TYPE_IS_WRONG_IN_OFICIAL_DOCS = 29;
+    public const PARAMETER_TYPE_IS_WRONG_IN_OFICIAL_DOCS = 30;
 }

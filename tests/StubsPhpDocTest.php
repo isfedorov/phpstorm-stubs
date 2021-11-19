@@ -3,11 +3,15 @@ declare(strict_types=1);
 
 namespace StubTests;
 
+use phpDocumentor\Reflection\DocBlock\Tag;
 use phpDocumentor\Reflection\DocBlock\Tags\Deprecated;
 use phpDocumentor\Reflection\DocBlock\Tags\Link;
 use phpDocumentor\Reflection\DocBlock\Tags\Reference\Url;
 use phpDocumentor\Reflection\DocBlock\Tags\See;
 use phpDocumentor\Reflection\DocBlock\Tags\Since;
+use phpDocumentor\Reflection\Types\Compound;
+use phpDocumentor\Reflection\Types\Null_;
+use PhpParser\Comment\Doc;
 use PHPUnit\Framework\Exception;
 use StubTests\Model\BasePHPClass;
 use StubTests\Model\BasePHPElement;
@@ -15,7 +19,9 @@ use StubTests\Model\PHPConst;
 use StubTests\Model\PHPDocElement;
 use StubTests\Model\PHPFunction;
 use StubTests\Model\PHPMethod;
+use StubTests\Model\StubProblemType;
 use StubTests\Model\Tags\RemovedTag;
+use StubTests\Parsers\DocFactoryProvider;
 use StubTests\Parsers\ParserUtils;
 use function trim;
 
@@ -48,6 +54,7 @@ class StubsPhpDocTest extends BaseStubsTest
     public static function testFunctionPHPDocs(PHPFunction $function): void
     {
         self::assertNull($function->parseError, $function->parseError ?: '');
+        self::compareWithOfficialDocs($function);
         self::checkPHPDocCorrectness($function, "function $function->name");
     }
 
@@ -71,6 +78,7 @@ class StubsPhpDocTest extends BaseStubsTest
             self::assertEmpty($method->returnTypesFromPhpDoc, '@return tag for __construct should be omitted');
         }
         self::assertNull($method->parseError, $method->parseError ?: '');
+        self::compareWithOfficialDocs($method);
         self::checkPHPDocCorrectness($method, "method $method->name");
     }
 
@@ -230,4 +238,223 @@ class StubsPhpDocTest extends BaseStubsTest
         }
         self::checkContainsOnlyValidTags($element, $elementName);
     }
+    private static function compareWithOfficialDocs(PHPFunction|PHPMethod $function)
+    {
+        $doc = $function->doc;
+        $function_name = $function instanceof PHPMethod ? $function->parentName . "." . $function->name : $function->name;
+        if ($doc !== null) {
+            self::validateParameters($function, $doc, $function_name);
+        }
+        //$this->validateReturnType($function_name, $function);
+        //$docBlockSummary = $doc != null ? DocFactoryProvider::getDocFactory()->create($doc->getText())->getSummary() : "";
+        //$this->checkSummary($functionsData, $docBlockSummary, $function_name);
+    }
+
+    private static function normalizeSummary(string $summary)
+    {
+        $summary = preg_replace('/\s+/', ' ', $summary);
+        $summary = preg_replace('/\\n/', '', $summary);
+
+        // $summary = preg_replace("/\&Alias;/", "alias", $summary);
+        $summary = preg_replace("/{@see (" . self::ID_PATTERN . ")}/", "$1", $summary);
+        $summary = str_replace(".", '', $summary);
+        $summary = preg_replace('/<b>/', '', $summary);
+        $summary = preg_replace('/<\/b>/', '', $summary);
+        $summary = preg_replace('/<i>/', '', $summary);
+        $summary = preg_replace('/<\/i>/', '', $summary);
+
+        //TODO REWRITE THIS
+        if (strpos($summary, "(PECL") !== false || strpos($summary, "(PHP ") !== false) {
+            $strpos = max(strpos($summary, "\n"), strpos($summary, "<br>") + 4, strpos($summary, "</br>") + 5, strpos($summary, "<br/>") + 5);
+            $summary = substr($summary, $strpos);
+        }
+        return strtolower(trim($summary));
+    }
+
+    /**
+     * @param Doc|null $doc
+     * @param string $function_name
+     */
+    private static function validateParameters(PHPFunction $function, ?Doc $doc, string $function_name): void
+    {
+        if ($function_name === "parallel\Sync.__construct") {
+
+            var_dump($function->mutedProblems);
+        }
+        if ($function->hasMutedProblem(StubProblemType::PARAMETER_TYPE_IS_WRONG_IN_OFICIAL_DOCS)) {
+            static::markTestSkipped('function is excluded');
+        }
+        $docBlock = DocFactoryProvider::getDocFactory()->create($doc->getText());
+        $tags = $docBlock->getTagsByName("param");
+        foreach ($tags as $parameter) {
+            $paramsDataFromDocs = self::$SQLite3->query("select * from params where function_name = '$function_name' and name = '{$parameter->getVariableName()}' ")->fetchArray();
+            if ($paramsDataFromDocs !== false) {
+                $normalizedDocType = self::normalizeType($paramsDataFromDocs["type"]);
+                if ($normalizedDocType === "mixed") {
+                    self::markTestSkipped("Skipped for function '$function_name' parameter name '\${$parameter->getVariableName()}'");
+                } else {
+                    $noramlizedTypeFromStubs = self::normalizeType(self::filterNull($parameter) . "");
+                    foreach (explode("|", $normalizedDocType) as $docType) {
+                        if ($docType === 'array') {
+                            self::assertTrue(str_contains($noramlizedTypeFromStubs, "[]") || str_contains($noramlizedTypeFromStubs, "array"), "no $docType found in type: '$noramlizedTypeFromStubs' parameterName: \${$parameter->getVariableName()}");
+                        } else {
+                            self::assertTrue(self::hasType($docType, $noramlizedTypeFromStubs), "parameter: $" . $parameter->getVariableName() . "\nfunction name: $function_name doctype:$docType stubstype: $noramlizedTypeFromStubs");
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * @param Tag $parameter
+     * @return mixed
+     */
+    private static function filterNull(Tag $parameter)
+    {
+        $types = $parameter->getType();
+        if ($types instanceof Compound) {
+            $types = new Compound(array_filter($types->getIterator()->getArrayCopy(), function ($a) {
+                return !$a instanceof Null_;
+            }));
+        }
+        return $types;
+    }
+
+    /**
+     * @param string $parameterType
+     * @return string
+     */
+    private static function normalizeType(string $parameterType): string
+    {
+        $strtolower = strtolower(trim($parameterType));
+        $types = explode("|", $strtolower);
+        $types = self::trunkNamespaces($types);
+        return implode("|", $types);
+    }
+
+    /**
+     * @param mixed $functionsData
+     * @param string $docBlockSummary
+     * @param string|null $function_name
+     */
+    private static function checkSummary(mixed $functionsData, string $docBlockSummary, ?string $function_name): void
+    {
+        $summaryFromOfficialDocs = $functionsData === false ? "" : $functionsData["purpose"];
+        $stubs = self::normalizeSummary($docBlockSummary);
+        if ($summaryFromOfficialDocs !== '') {
+            $officialSummary = self::normalizeSummary($summaryFromOfficialDocs);
+            if ($officialSummary !== "description") {
+
+                self::assertEquals($officialSummary, $stubs, "function $function_name");
+            }
+        }
+    }
+
+    /**
+     * @param mixed $type
+     */
+    private static function trunkNameSpace(mixed $type): string
+    {
+        $explode = explode("\\", $type);
+        return $explode[sizeof($explode) - 1];
+    }
+
+    /**
+     * @param array|bool $types
+     */
+    private static function trunkNamespaces(array|bool $types): array
+    {
+        $newTypes = [];
+        foreach ($types as $type) {
+            $newTypes[] = self::trunkNameSpace($type);
+        }
+        return $newTypes;
+    }
+
+    /**
+     * @param string|null $function_name
+     * @param PHPFunction $function
+     */
+    private static function validateReturnType(?string $function_name, PHPFunction $function): void
+    {
+        $functionsData = self::$SQLite3->query("select * from functions where name = '$function_name'")->fetchArray();
+        if ($functionsData !== false) {
+            if ($function->hasMutedProblem(StubProblemType::RETURN_TYPE_IS_WRONG_IN_OFICIAL_DOCS)) {
+                static::markTestSkipped('function is excluded');
+            }
+            if ($functionsData !== null) {
+                // echo "return type for " . $function_name . " is not found in official docs";
+                self::assertEquals($functionsData["return_type"], $function->returnTag . "", "return type mismatch '$function_name'");
+            }
+        }
+    }
+
+    /**
+     * @param mixed $docType
+     * @param string $noramlizedTypeFromStubs
+     * @return bool
+     */
+    private static function hasType(mixed $docType, string $noramlizedTypeFromStubs): bool
+    {
+        $types = explode("|", $noramlizedTypeFromStubs);
+        foreach ($types as $type) {
+            if (self::typesAreEqual($type, $docType)) {
+                return true;
+            }
+        }
+        return false;
+
+    }
+
+    /**
+     * @param mixed $type
+     * @param mixed $docType
+     * @return bool
+     */
+    private static function typesAreEqual(mixed $type, mixed $docType): bool
+    {
+        if (StubsPhpDocTest::isInteger($docType) && StubsPhpDocTest::isInteger($type)) {
+            return true;
+        }
+        if (StubsPhpDocTest::isBoolean($docType) && StubsPhpDocTest::isBoolean($type)) {
+            return true;
+        }
+        if( StubsPhpDocTest::isFloat($docType) && StubsPhpDocTest::isFloat($type)) {
+            return true;
+        }
+        if( StubsPhpDocTest::isCallable($docType) && $type == "callable") {
+            return true;
+        }
+        return $type === $docType;
+    }
+
+    /**
+     * @param mixed $docType
+     * @return bool
+     */
+    private static function isBoolean(mixed $docType): bool
+    {
+        return ($docType === "bool" || $docType === "boolean");
+    }
+
+    /**
+     * @param mixed $docType
+     * @return bool
+     */
+    private static function isFloat(mixed $docType): bool
+    {
+        return ($docType === "float" || $docType === "double");
+    }
+
+    private static function isInteger(mixed $docType)
+    {
+        return ($docType === "int" || $docType === "integer");
+    }
+
+    private static function isCallable(mixed $docType)
+    {
+        return ($docType === "call" || $docType === "callable" || $docType === "callback");
+    }
+
 }

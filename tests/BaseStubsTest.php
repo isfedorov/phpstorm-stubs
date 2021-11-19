@@ -13,6 +13,7 @@ use PhpParser\Node\Scalar\String_;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
+use SQLite3;
 use StubTests\Model\PHPClass;
 use StubTests\Model\PHPConst;
 use StubTests\Model\PHPFunction;
@@ -27,9 +28,13 @@ use function strval;
 
 abstract class BaseStubsTest extends TestCase
 {
+    const ID_PATTERN = "[A-Za-z0-9_]+";
+    protected static SQLite3 $SQLite3;
+
     public static function setUpBeforeClass(): void
     {
         parent::setUpBeforeClass();
+        self::$SQLite3 = new SQLite3(__DIR__ . "/ide-sqlite.sqlite");
         PhpStormStubsSingleton::getPhpStormStubs();
         ReflectionStubsSingleton::getReflectionStubs();
     }

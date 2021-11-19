@@ -37,6 +37,9 @@ class PHPFunction extends BasePHPElement
     /** @var string[] */
     public $returnTypesFromSignature = [];
 
+    /** @var Doc|null */
+    public $doc = null;
+
     /**
      * @param ReflectionFunction|ReflectionFunctionAbstract $reflectionObject
      * @return static
@@ -92,7 +95,13 @@ class PHPFunction extends BasePHPElement
 
         $this->checkDeprecationTag($node);
         $this->checkReturnTag($node);
+        $this->checkDoc($node);
         return $this;
+    }
+
+    protected function checkDoc(FunctionLike $node)
+    {
+        $this->doc = $node->getDocComment();
     }
 
     protected function checkDeprecationTag(FunctionLike $node): void
@@ -160,6 +169,12 @@ class PHPFunction extends BasePHPElement
                                 break;
                             case 'has type mismatch in signature and phpdoc':
                                 $this->mutedProblems[StubProblemType::TYPE_IN_PHPDOC_DIFFERS_FROM_SIGNATURE] = $problem->versions;
+                                break;
+                            case 'wrong return type in docs':
+                                $this->mutedProblems[StubProblemType::RETURN_TYPE_IS_WRONG_IN_OFICIAL_DOCS] = $problem->versions;
+                                break;
+                            case 'wrong parmeter type in docs':
+                                $this->mutedProblems[StubProblemType::PARAMETER_TYPE_IS_WRONG_IN_OFICIAL_DOCS] = $problem->versions;
                                 break;
                             default:
                                 throw new Exception("Unexpected value $problem->description");
