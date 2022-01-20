@@ -305,7 +305,7 @@ class Exception implements Throwable
     /**
      * Clone the exception
      * Tries to clone the Exception, which results in Fatal error.
-     * @link https://php.net/manual/en/exception.clone.php
+     * @link https://www.php.net/manual/en/exception.clone.php
      * @return void
      */
     #[PhpStormStubsElementAvailable("8.1")]
@@ -517,7 +517,7 @@ class Error implements Throwable
      * Clone the error
      * Error can not be clone, so this method results in fatal error.
      * @return void
-     * @link https://php.net/manual/en/error.clone.php
+     * @link https://www.php.net/manual/en/error.clone.php
      */
     #[PhpStormStubsElementAvailable('8.1')]
     private function __clone(): void {}

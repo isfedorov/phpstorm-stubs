@@ -6,7 +6,7 @@ use JetBrains\PhpStorm\Internal\LanguageLevelTypeAware;
 
 /**
  * OCI8 LOB functionality for large binary (BLOB) and character (CLOB) objects.
- * @link https://www.php.net/manual/en/class.OCI-Lob.php
+ * @link https://www.php.net/manual/en/class.ocilob.php
  * @removed 8.0
  */
 class OCI_Lob
@@ -14,7 +14,7 @@ class OCI_Lob
     /**
      * (PHP 5, PECL OCI8 &gt;= 1.1.0)<br/>
      * Returns large object's contents
-     * @link https://www.php.net/manual/en/oci-lob.load.php
+     * @link https://www.php.net/manual/en/ocilob.load.php
      * @return string|false The contents of the object, or <b>FALSE</b> on errors.
      */
     public function load() {}
@@ -22,7 +22,7 @@ class OCI_Lob
     /**
      * (PHP 5, PECL OCI8 &gt;= 1.1.0)<br/>
      * Returns the current position of internal pointer of large object
-     * @link https://www.php.net/manual/en/oci-lob.tell.php
+     * @link https://www.php.net/manual/en/ocilob.tell.php
      * @return int|false Current position of a LOB's internal pointer or <b>FALSE</b> if an
      * error occurred.
      */
@@ -31,7 +31,7 @@ class OCI_Lob
     /**
      * (PHP 5, PECL OCI8 &gt;= 1.1.0)<br/>
      * Truncates large object
-     * @link https://www.php.net/manual/en/oci-lob.truncate.php
+     * @link https://www.php.net/manual/en/ocilob.truncate.php
      * @param int $length [optional] <p>
      * If provided, this method will truncate the LOB to
      * <i>length</i> bytes. Otherwise, it will completely
@@ -44,7 +44,7 @@ class OCI_Lob
     /**
      * (PHP 5, PECL OCI8 &gt;= 1.1.0)<br/>
      * Erases a specified portion of the internal LOB data
-     * @link https://www.php.net/manual/en/oci-lob.erase.php
+     * @link https://www.php.net/manual/en/ocilob.erase.php
      * @param int $offset [optional]
      * @param int $length [optional]
      * @return int|false The actual number of characters/bytes erased or <b>FALSE</b> on failure.
@@ -54,7 +54,7 @@ class OCI_Lob
     /**
      * (PHP 5, PECL OCI8 &gt;= 1.1.0)<br/>
      * Flushes/writes buffer of the LOB to the server
-     * @link https://www.php.net/manual/en/oci-lob.flush.php
+     * @link https://www.php.net/manual/en/ocilob.flush.php
      * @param int $flag [optional] <p>
      * By default, resources are not freed, but using flag
      * <b>OCI_LOB_BUFFER_FREE</b> you can do it explicitly.
@@ -74,7 +74,7 @@ class OCI_Lob
     /**
      * (PHP 5, PECL OCI8 &gt;= 1.1.0)<br/>
      * Changes current state of buffering for the large object
-     * @link https://www.php.net/manual/en/oci-lob.setbuffering.php
+     * @link https://www.php.net/manual/en/ocilob.setbuffering.php
      * @param bool $on_off <p>
      * <b>TRUE</b> for on and <b>FALSE</b> for off.
      * </p>
@@ -86,7 +86,7 @@ class OCI_Lob
     /**
      * (PHP 5, PECL OCI8 &gt;= 1.1.0)<br/>
      * Returns current state of buffering for the large object
-     * @link https://www.php.net/manual/en/oci-lob.getbuffering.php
+     * @link https://www.php.net/manual/en/ocilob.getbuffering.php
      * @return bool <b>FALSE</b> if buffering for the large object is off and <b>TRUE</b> if
      * buffering is used.
      */
@@ -95,7 +95,7 @@ class OCI_Lob
     /**
      * (PHP 5, PECL OCI8 &gt;= 1.1.0)<br/>
      * Moves the internal pointer to the beginning of the large object
-     * @link https://www.php.net/manual/en/oci-lob.rewind.php
+     * @link https://www.php.net/manual/en/ocilob.rewind.php
      * @return bool <b>TRUE</b> on success or <b>FALSE</b> on failure.
      */
     public function rewind() {}
@@ -103,7 +103,7 @@ class OCI_Lob
     /**
      * (PHP 5, PECL OCI8 &gt;= 1.1.0)<br/>
      * Reads part of the large object
-     * @link https://www.php.net/manual/en/oci-lob.read.php
+     * @link https://www.php.net/manual/en/ocilob.read.php
      * @param int $length <p>
      * The length of data to read, in bytes. Large values will be rounded down to 1 MB.
      * </p>
@@ -114,7 +114,7 @@ class OCI_Lob
     /**
      * (PHP 5, PECL OCI8 &gt;= 1.1.0)<br/>
      * Tests for end-of-file on a large object's descriptor
-     * @link https://www.php.net/manual/en/oci-lob.eof.php
+     * @link https://www.php.net/manual/en/ocilob.eof.php
      * @return bool <b>TRUE</b> if internal pointer of large object is at the end of LOB.
      * Otherwise returns <b>FALSE</b>.
      */
@@ -123,7 +123,7 @@ class OCI_Lob
     /**
      * (PHP 5, PECL OCI8 &gt;= 1.1.0)<br/>
      * Sets the internal pointer of the large object
-     * @link https://www.php.net/manual/en/oci-lob.seek.php
+     * @link https://www.php.net/manual/en/ocilob.seek.php
      * @param int $offset <p>
      * Indicates the amount of bytes, on which internal pointer should be
      * moved from the position, pointed by <i>whence</i>.
@@ -145,7 +145,7 @@ class OCI_Lob
     /**
      * (PHP 5, PECL OCI8 &gt;= 1.1.0)<br/>
      * Writes data to the large object
-     * @link https://www.php.net/manual/en/oci-lob.write.php
+     * @link https://www.php.net/manual/en/ocilob.write.php
      * @param string $data <p>
      * The data to write in the LOB.
      * </p>
@@ -161,7 +161,7 @@ class OCI_Lob
     /**
      * (PHP 5, PECL OCI8 &gt;= 1.1.0)<br/>
      * Appends data from the large object to another large object
-     * @link https://www.php.net/manual/en/oci-lob.append.php
+     * @link https://www.php.net/manual/en/ocilob.append.php
      * @param OCI_Lob $lob_from <p>
      * The copied LOB.
      * </p>
@@ -172,7 +172,7 @@ class OCI_Lob
     /**
      * (PHP 5, PECL OCI8 &gt;= 1.1.0)<br/>
      * Returns size of large object
-     * @link https://www.php.net/manual/en/oci-lob.size.php
+     * @link https://www.php.net/manual/en/ocilob.size.php
      * @return int|false Length of large object value or <b>FALSE</b> on failure.
      * Empty objects have zero length.
      */
@@ -181,7 +181,7 @@ class OCI_Lob
     /**
      * (PHP 5, PECL OCI8 &gt;= 1.1.0)<br/>
      * Alias of {@see OCI_Lob::export}
-     * @link https://www.php.net/manual/en/oci-lob.writetofile.php
+     * @link https://www.php.net/manual/en/ocilob.writetofile.php
      * @param $filename
      * @param $start [optional]
      * @param $length [optional]
@@ -192,7 +192,7 @@ class OCI_Lob
     /**
      * (PHP 5, PECL OCI8 &gt;= 1.1.0)<br/>
      * Exports LOB's contents to a file
-     * @link https://www.php.net/manual/en/oci-lob.export.php
+     * @link https://www.php.net/manual/en/ocilob.export.php
      * @param string $filename <p>
      * Path to the file.
      * </p>
@@ -209,7 +209,7 @@ class OCI_Lob
     /**
      * (PHP 5, PECL OCI8 &gt;= 1.1.0)<br/>
      * Imports file data to the LOB
-     * @link https://www.php.net/manual/en/oci-lob.import.php
+     * @link https://www.php.net/manual/en/ocilob.import.php
      * @param string $filename <p>
      * Path to the file.
      * </p>
@@ -220,7 +220,7 @@ class OCI_Lob
     /**
      * (PHP 5, PECL OCI8 &gt;= 1.1.0)<br/>
      * Writes a temporary large object
-     * @link https://www.php.net/manual/en/oci-lob.writetemporary.php
+     * @link https://www.php.net/manual/en/ocilob.writetemporary.php
      * @param string $data <p>
      * The data to write.
      * </p>
@@ -237,7 +237,7 @@ class OCI_Lob
     /**
      * (PHP 5, PECL OCI8 &gt;= 1.1.0)<br/>
      * Closes LOB descriptor
-     * @link https://www.php.net/manual/en/oci-lob.close.php
+     * @link https://www.php.net/manual/en/ocilob.close.php
      * @return bool <b>TRUE</b> on success or <b>FALSE</b> on failure.
      */
     public function close() {}
@@ -245,7 +245,7 @@ class OCI_Lob
     /**
      * (PHP 5, PECL OCI8 &gt;= 1.1.0)<br/>
      * Saves data to the large object
-     * @link https://www.php.net/manual/en/oci-lob.save.php
+     * @link https://www.php.net/manual/en/ocilob.save.php
      * @param string $data <p>
      * The data to be saved.
      * </p>
@@ -259,7 +259,7 @@ class OCI_Lob
     /**
      * (PHP 5, PECL OCI8 &gt;= 1.1.0)<br/>
      * Alias of {@see OCI_Lob::import}
-     * @link https://www.php.net/manual/en/oci-lob.savefile.php
+     * @link https://www.php.net/manual/en/ocilob.savefile.php
      * @param $filename
      * @return bool Return true on success and false on failure
      */
@@ -268,7 +268,7 @@ class OCI_Lob
     /**
      * (PHP 5, PECL OCI8 &gt;= 1.1.0)<br/>
      * Frees resources associated with the LOB descriptor
-     * @link https://www.php.net/manual/en/oci-lob.free.php
+     * @link https://www.php.net/manual/en/ocilob.free.php
      * @return bool <b>TRUE</b> on success or <b>FALSE</b> on failure.
      */
     public function free() {}
@@ -276,7 +276,7 @@ class OCI_Lob
 
 /**
  * OCI8 Collection functionality.
- * @link https://www.php.net/manual/en/class.OCI-Collection.php
+ * @link https://www.php.net/manual/en/class.ocicollection.php
  * @removed 8.0
  */
 class OCI_Collection
@@ -284,7 +284,7 @@ class OCI_Collection
     /**
      * (PHP 5, PECL OCI8 &gt;= 1.1.0)<br/>
      * Appends element to the collection
-     * @link https://www.php.net/manual/en/oci-collection.append.php
+     * @link https://www.php.net/manual/en/ocicollection.append.php
      * @param mixed $value <p>
      * The value to be added to the collection. Can be a string or a number.
      * </p>
@@ -295,7 +295,7 @@ class OCI_Collection
     /**
      * (PHP 5, PECL OCI8 &gt;= 1.1.0)<br/>
      * Returns value of the element
-     * @link https://www.php.net/manual/en/oci-collection.getelem.php
+     * @link https://www.php.net/manual/en/ocicollection.getelem.php
      * @param int $index <p>
      * The element index. First index is 0.
      * </p>
@@ -308,7 +308,7 @@ class OCI_Collection
     /**
      * (PHP 5, PECL OCI8 &gt;= 1.1.0)<br/>
      * Assigns a value to the element of the collection
-     * @link https://www.php.net/manual/en/oci-collection.assignelem.php
+     * @link https://www.php.net/manual/en/ocicollection.assignelem.php
      * @param int $index <p>
      * The element index. First index is 0.
      * </p>
@@ -322,7 +322,7 @@ class OCI_Collection
     /**
      * (PHP 5, PECL OCI8 &gt;= 1.1.0)<br/>
      * Assigns a value to the collection from another existing collection
-     * @link https://www.php.net/manual/en/oci-collection.assign.php
+     * @link https://www.php.net/manual/en/ocicollection.assign.php
      * @param OCI_Collection $from <p>
      * An instance of OCI-Collection.
      * </p>
@@ -333,7 +333,7 @@ class OCI_Collection
     /**
      * (PHP 5, PECL OCI8 &gt;= 1.1.0)<br/>
      * Returns size of the collection
-     * @link https://www.php.net/manual/en/oci-collection.size.php
+     * @link https://www.php.net/manual/en/ocicollection.size.php
      * @return int|false The number of elements in the collection or <b>FALSE</b> on error.
      */
     public function size() {}
@@ -341,7 +341,7 @@ class OCI_Collection
     /**
      * (PHP 5, PECL OCI8 &gt;= 1.1.0)<br/>
      * Returns the maximum number of elements in the collection
-     * @link https://www.php.net/manual/en/oci-collection.max.php
+     * @link https://www.php.net/manual/en/ocicollection.max.php
      * @return int|false The maximum number as an integer, or <b>FALSE</b> on errors.
      * </p>
      * <p>
@@ -352,7 +352,7 @@ class OCI_Collection
     /**
      * (PHP 5, PECL OCI8 &gt;= 1.1.0)<br/>
      * Trims elements from the end of the collection
-     * @link https://www.php.net/manual/en/oci-collection.trim.php
+     * @link https://www.php.net/manual/en/ocicollection.trim.php
      * @param int $num <p>
      * The number of elements to be trimmed.
      * </p>
@@ -363,7 +363,7 @@ class OCI_Collection
     /**
      * (PHP 5, PECL OCI8 &gt;= 1.1.0)<br/>
      * Frees the resources associated with the collection object
-     * @link https://www.php.net/manual/en/oci-collection.free.php
+     * @link https://www.php.net/manual/en/ocicollection.free.php
      * @return bool <b>TRUE</b> on success or <b>FALSE</b> on failure.
      */
     public function free() {}

@@ -114,7 +114,6 @@ function session_decode(string $data): bool {}
 
 /**
  * Register one or more global variables with the current session
- * @link https://www.php.net/manual/ro/function.session-register.php
  * @param mixed $name <p>
  * A string holding the name of a variable or an array consisting of
  * variable names or other arrays.
@@ -128,7 +127,6 @@ function session_register(mixed $name, ...$_): bool {}
 
 /**
  * Unregister a global variable from the current session
- * @link https://www.php.net/manual/ro/function.session-unregister.php
  * @param string $name <p>
  * The variable name.
  * </p>
@@ -140,7 +138,6 @@ function session_unregister(string $name): bool {}
 
 /**
  * Find out whether a global variable is registered in a session
- * @link https://www.php.net/manual/ro/function.session-is-registered.php
  * @param string $name <p>
  * The variable name.
  * </p>

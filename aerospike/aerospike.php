@@ -497,10 +497,10 @@ class Aerospike
      * wrapped binary-string: string(10) "truncated"
      * The binary-string that was given to put() without a wrapper: trunc
      * ```
-     * @link https://docs.aerospike.com/architecture/data-model.html Aerospike Data Model
+     * @link https://docs.aerospike.com/architecture/data-model Aerospike Data Model
      * @link https://docs.aerospike.com/guide/kvs.html Key-Value Store
      * @link https://github.com/aerospike/aerospike-client-php/blob/master/doc/README.md#handling-unsupported-types Handling Unsupported Types
-     * @link https://docs.aerospike.com/client/c/usage/kvs/write.html#change-record-time-to-live-ttl Time-to-live
+     * @link https://docs.aerospike.com/client/c/usage/kvs/write Time-to-live
      * @link https://docs.aerospike.com/guide/glossary.html Glossary
      * @param array $key The key identifying the record. An array with keys `['ns','set','key']` or `['ns','set','digest']`
      * @param array $bins The array of bin names and values to write. **Bin names cannot be longer than 14 characters.** Binary data containing the null byte (**\0**) may get truncated. See 'Handling Unsupported Types' for more details and a workaround
@@ -625,7 +625,7 @@ class Aerospike
      *   }
      * }
      * ```
-     * @link https://docs.aerospike.com/architecture/data-model.html Aerospike Data Model
+     * @link https://docs.aerospike.com/architecture/data-model Aerospike Data Model
      * @link https://docs.aerospike.com/guide/kvs.html Key-Value Store
      * @link https://docs.aerospike.com/guide/glossary.html Glossary
      * @param array $key The key identifying the record. An array with keys `['ns','set','key']` or `['ns','set','digest']`
@@ -749,8 +749,8 @@ class Aerospike
      * ```
      * A user with key 1234 does not exist in the database.
      * ```
-     * @link https://docs.aerospike.com/client/c/usage/kvs/write.html#change-record-time-to-live-ttl Time-to-live
-     * @link https://docs.aerospike.com/guide/FAQ.html FAQ
+     * @link https://docs.aerospike.com/client/c/usage/kvs/write Time-to-live
+     * @link https://docs.aerospike.com/guide/FAQ FAQ
      * @link https://discuss.aerospike.com/t/records-ttl-and-evictions-for-aerospike-server-version-prior-to-3-8/737 Record TTL and Evictions
      * @param array $key The key identifying the record. An array with keys `['ns','set','key']` or `['ns','set','digest']`
      * @param int $ttl The record's time-to-live in seconds
@@ -1086,7 +1086,7 @@ class Aerospike
      * ```
      * @link https://docs.aerospike.com/guide/kvs.html Key-Value Store
      * @link https://github.com/aerospike/aerospike-client-php/blob/master/doc/README.md#handling-unsupported-types Handling Unsupported Types
-     * @link https://docs.aerospike.com/client/c/usage/kvs/write.html#change-record-time-to-live-ttl Time-to-live
+     * @link https://docs.aerospike.com/client/c/usage/kvs/write Time-to-live
      * @link https://docs.aerospike.com/guide/glossary.html Glossary
      * @param array $key The key identifying the record. An array with keys `['ns','set','key']` or `['ns','set','digest']`
      * @param array $operations The array of of one or more per-bin operations conforming to the following structure:
@@ -1465,7 +1465,7 @@ class Aerospike
      *
      * @link https://docs.aerospike.com/guide/kvs.html Key-Value Store
      * @link https://github.com/aerospike/aerospike-client-php/blob/master/doc/README.md#handling-unsupported-types Handling Unsupported Types
-     * @link https://docs.aerospike.com/client/c/usage/kvs/write.html#change-record-time-to-live-ttl Time-to-live
+     * @link https://docs.aerospike.com/client/c/usage/kvs/write Time-to-live
      * @link https://docs.aerospike.com/guide/glossary.html Glossary
      * @param array $key The key identifying the record. An array with keys `['ns','set','key']` or `['ns','set','digest']`
      * @param array $operations The array of of one or more per-bin operations conforming to the following structure:
@@ -2659,8 +2659,8 @@ class Aerospike
      * bar@example.com
      * I think a sample of 20 records is enough
      * ```
-     * @link https://docs.aerospike.com/architecture/data-model.html Aerospike Data Model
-     * @link https://docs.aerospike.com/guide/scan.html Scans
+     * @link https://docs.aerospike.com/architecture/data-model Aerospike Data Model
+     * @link https://docs.aerospike.com/guide/scan Scans
      * @link https://docs.aerospike.com/operations/manage/scans/ Managing Scans
      * @param string   $ns the namespace
      * @param string   $set the set within the given namespace
@@ -2706,8 +2706,8 @@ class Aerospike
      * bar@example.com
      * I think a sample of 20 records is enough
      * ```
-     * @link https://docs.aerospike.com/architecture/data-model.html Aerospike Data Model
-     * @link https://docs.aerospike.com/guide/query.html Query
+     * @link https://docs.aerospike.com/architecture/data-model Aerospike Data Model
+     * @link https://docs.aerospike.com/guide/query Query
      * @link https://docs.aerospike.com/operations/manage/queries/index.html Managing Queries
      * @param string   $ns the namespace
      * @param string   $set the set within the given namespace
@@ -2958,7 +2958,7 @@ class Aerospike
      *     echo "[{$client->errorno()}] ".$client->error();
      * }
      * ```
-     * @link https://docs.aerospike.com/docs/udf/udf_guide.html UDF Development Guide
+     * @link https://docs.aerospike.com/udf/udf_guide UDF Development Guide
      * @param string $path the path to the Lua file on the client-side machine
      * @param string $module the name of the UDF module to register with the cluster
      * @param int    $language
@@ -3108,8 +3108,8 @@ class Aerospike
      * ```
      * The email of the user with key 1234 starts with 'hey@'.
      * ```
-     * @link https://docs.aerospike.com/docs/udf/udf_guide.html UDF Development Guide
-     * @link https://docs.aerospike.com/udf/developing_record_udfs.html Developing Record UDFs
+     * @link https://docs.aerospike.com/udf/udf_guide UDF Development Guide
+     * @link https://docs.aerospike.com/udf/developing_record_udfs Developing Record UDFs
      * @link https://docs.aerospike.com/udf/api_reference.html Lua UDF - API Reference
      * @param array $key The key identifying the record. An array with keys `['ns','set','key']` or `['ns','set','digest']`
      * @param string $module the name of the UDF module registered with the cluster
@@ -3158,9 +3158,9 @@ class Aerospike
      * ```
      * string(12) "Job ID is 1"
      * ```
-     * @link https://docs.aerospike.com/docs/udf/udf_guide.html UDF Development Guide
-     * @link https://docs.aerospike.com/udf/developing_record_udfs.html Developing Record UDFs
-     * @link https://docs.aerospike.com/udf/api_reference.html Lua UDF - API Reference
+     * @link https://docs.aerospike.com/udf/udf_guide UDF Development Guide
+     * @link https://docs.aerospike.com/udf/developing_record_udfs Developing Record UDFs
+     * @link https://docs.aerospike.com/udf/api_reference Lua UDF - API Reference
      * @param string $ns the namespace
      * @param string $set the set within the given namespace
      * @param string $module the name of the UDF module registered with the cluster
@@ -3207,9 +3207,9 @@ class Aerospike
      * ```
      * string(12) "Job ID is 1"
      * ```
-     * @link https://docs.aerospike.com/docs/udf/udf_guide.html UDF Development Guide
-     * @link https://docs.aerospike.com/udf/developing_record_udfs.html Developing Record UDFs
-     * @link https://docs.aerospike.com/udf/api_reference.html Lua UDF - API Reference
+     * @link https://docs.aerospike.com/udf/udf_guide UDF Development Guide
+     * @link https://docs.aerospike.com/udf/developing_record_udfs Developing Record UDFs
+     * @link https://docs.aerospike.com/udf/api_reference Lua UDF - API Reference
      * @param string $ns the namespace
      * @param string $set the set within the given namespace
      * @param array $where the predicate for the query, usually created by the
@@ -3345,9 +3345,9 @@ class Aerospike
      *   int(3)
      * }
      * ```
-     * @link https://docs.aerospike.com/docs/udf/udf_guide.html UDF Development Guide
-     * @link https://docs.aerospike.com/udf/developing_stream_udfs.html Developing Stream UDFs
-     * @link https://docs.aerospike.com/guide/aggregation.html Aggregation
+     * @link https://docs.aerospike.com/udf/udf_guide UDF Development Guide
+     * @link https://docs.aerospike.com/udf/developing_stream_udfs Developing Stream UDFs
+     * @link https://docs.aerospike.com/guide/aggregation Aggregation
      * @param string $ns the namespace
      * @param string $set the set within the given namespace
      * @param array $where the predicate for the query, usually created by the
