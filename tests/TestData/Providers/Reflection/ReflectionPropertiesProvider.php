@@ -13,36 +13,45 @@ class ReflectionPropertiesProvider
 {
     public static function classPropertiesProvider(): Generator
     {
-        return self::yieldFilteredMethodProperties();
+        return self::yieldFilteredMethodProperties(null);
     }
 
     public static function classStaticPropertiesProvider(): Generator
     {
-        return self::yieldFilteredMethodProperties(StubProblemType::PROPERTY_IS_STATIC);
+        return self::yieldFilteredMethodProperties(
+            fn (PHPProperty $property) => $property->isStatic === false,
+            StubProblemType::PROPERTY_IS_STATIC
+        );
     }
 
     public static function classPropertiesWithAccessProvider(): Generator
     {
-        return self::yieldFilteredMethodProperties(StubProblemType::PROPERTY_ACCESS);
+        return self::yieldFilteredMethodProperties(
+            fn (PHPProperty $property) => empty($property->access),
+            StubProblemType::PROPERTY_ACCESS
+        );
     }
 
     public static function classPropertiesWithTypeProvider(): Generator
     {
-        return self::yieldFilteredMethodProperties(StubProblemType::PROPERTY_TYPE);
+        return self::yieldFilteredMethodProperties(null, StubProblemType::PROPERTY_TYPE);
     }
 
     public static function classReadonlyPropertiesProvider(): Generator
     {
-        return self::yieldFilteredMethodProperties(StubProblemType::WRONG_READONLY);
+        return self::yieldFilteredMethodProperties(
+            fn (PHPProperty $property) => $property->isReadonly === true,
+            StubProblemType::WRONG_READONLY
+        );
     }
 
-    private static function yieldFilteredMethodProperties(int ...$problemTypes): ?Generator
+    private static function yieldFilteredMethodProperties(?callable $additionalFilter, int ...$problemTypes): ?Generator
     {
         $classesAndInterfaces = ReflectionStubsSingleton::getReflectionStubs()->getClasses();
         foreach (EntitiesFilter::getFiltered($classesAndInterfaces) as $class) {
             foreach (EntitiesFilter::getFiltered(
                 $class->properties,
-                fn (PHPProperty $property) => $property->access === 'private',
+                $additionalFilter,
                 ...$problemTypes
             ) as $property) {
                 yield "Property $class->name::$property->name" => [$class, $property];

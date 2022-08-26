@@ -31,7 +31,7 @@ class StubsPhpDocTest extends AbstractBaseStubsTestCase
     #[DataProviderExternal(StubConstantsProvider::class, 'classConstantProvider')]
     public static function testClassConstantsPHPDocs(BasePHPClass $class, PHPConst $constant): void
     {
-        self::assertNull($constant->parseError, $constant->parseError ?: '');
+        self::assertNull($constant->parseError, $constant->parseError?->getMessage() ?: '');
         self::checkPHPDocCorrectness($constant, "constant $class->sourceFilePath/$class->name::$constant->name");
     }
 
@@ -41,7 +41,7 @@ class StubsPhpDocTest extends AbstractBaseStubsTestCase
     #[DataProviderExternal(StubConstantsProvider::class, 'globalConstantProvider')]
     public static function testConstantsPHPDocs(PHPConst $constant): void
     {
-        self::assertNull($constant->parseError, $constant->parseError ?: '');
+        self::assertNull($constant->parseError, $constant->parseError?->getMessage() ?: '');
         self::checkPHPDocCorrectness($constant, "constant $constant->name");
     }
 
@@ -74,7 +74,7 @@ class StubsPhpDocTest extends AbstractBaseStubsTestCase
         if ($method->name === '__construct') {
             self::assertEmpty($method->returnTypesFromPhpDoc, '@return tag for __construct should be omitted');
         }
-        self::assertNull($method->parseError, $method->parseError ?: '');
+        self::assertNull($method->parseError, $method->parseError?->getMessage() ?: '');
         self::checkPHPDocCorrectness($method, "method $method->name");
     }
 

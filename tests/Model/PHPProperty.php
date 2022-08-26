@@ -3,9 +3,17 @@
 namespace StubTests\Model;
 
 use Exception;
+use PhpParser\Node\Expr\Array_;
+use PhpParser\Node\Expr\ClassConstFetch;
+use PhpParser\Node\Expr\ConstFetch;
+use PhpParser\Node\Expr\UnaryMinus;
 use PhpParser\Node\Stmt\Property;
 use ReflectionProperty;
 use stdClass;
+use function is_array;
+use function method_exists;
+use function sprintf;
+use function strval;
 
 class PHPProperty extends BasePHPElement
 {
@@ -18,9 +26,10 @@ class PHPProperty extends BasePHPElement
     /** @var string[] */
     public $typesFromPhpDoc = [];
     public $access = '';
-    public $is_static = false;
+    public $isStatic = false;
     public $parentName;
     public $isReadonly = false;
+    public $defaultValue = null;
 
     /**
      * @param string|null $parentName
@@ -45,12 +54,17 @@ class PHPProperty extends BasePHPElement
             $access = 'public';
         }
         $this->access = $access;
-        $this->is_static = $reflectionObject->isStatic();
+        $this->isStatic = $reflectionObject->isStatic();
         if (method_exists($reflectionObject, 'getType')) {
             $this->typesFromSignature = self::getReflectionTypeAsArray($reflectionObject->getType());
         }
         if (method_exists($reflectionObject, 'isReadonly')) {
             $this->isReadonly = $reflectionObject->isReadOnly();
+        }
+        if (method_exists($reflectionObject, 'hasDefaultValue') &&
+            method_exists($reflectionObject, 'getDefaultValue') &&
+            $reflectionObject->hasDefaultValue()) {
+            $this->defaultValue = $reflectionObject->getDefaultValue();
         }
         return $this;
     }
@@ -63,7 +77,7 @@ class PHPProperty extends BasePHPElement
     {
         $this->name = $node->props[0]->name->name;
         $this->collectTags($node);
-        $this->is_static = $node->isStatic();
+        $this->isStatic = $node->isStatic();
         if ($node->isProtected()) {
             $access = 'protected';
         } elseif ($node->isPrivate()) {
@@ -71,6 +85,7 @@ class PHPProperty extends BasePHPElement
         } else {
             $access = 'public';
         }
+        $this->attributes = $node->attrGroups;
         $this->access = $access;
         $this->isReadonly = $node->isReadonly();
         $this->typesFromSignature = self::convertParsedTypeToArray($node->type);
@@ -83,6 +98,8 @@ class PHPProperty extends BasePHPElement
         if ($parentNode !== null) {
             $this->parentName = self::getFQN($parentNode);
         }
+        $this->defaultValue = self::getDefaultValueOfProperty($node);
+        $this->collectTags($node);
         return $this;
     }
 
@@ -107,6 +124,28 @@ class PHPProperty extends BasePHPElement
                     }
                 }
             }
+        }
+    }
+
+    /**
+     * @param Property $node
+     * @return string|null
+     */
+    private static function getDefaultValueOfProperty(Property $node) {
+        if($node->props[0]->default !== null) {
+            if ($node->props[0]->default instanceof ConstFetch) {
+                return (string)$node->props[0]->default->name;
+            }elseif ($node->props[0]->default instanceof ClassConstFetch) {
+                return sprintf("\%s::%s", $node->props[0]->default->class, $node->props[0]->default->name);
+            } elseif ($node->props[0]->default instanceof UnaryMinus) {
+                return '-' . $node->props[0]->default->expr->value;
+            } elseif (is_array($node->props[0]->default) || $node->props[0]->default instanceof Array_) {
+                return '[]';
+            } else {
+                return strval($node->props[0]->default->value);
+            }
+        } else {
+            return null;
         }
     }
 }

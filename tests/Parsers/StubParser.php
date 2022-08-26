@@ -21,6 +21,7 @@ use StubTests\Parsers\Visitors\CoreStubASTVisitor;
 use StubTests\Parsers\Visitors\ParentConnector;
 use StubTests\TestData\Providers\Stubs\PhpCoreStubsProvider;
 use UnexpectedValueException;
+use function basename;
 use function dirname;
 use function in_array;
 use function strlen;
@@ -94,10 +95,12 @@ class StubParser
             $traverser->addVisitor($nameResolver);
             if ($coreStubASTVisitor !== null && self::stubBelongsToCore($file, $coreStubDirectories)) {
                 $coreStubASTVisitor->sourceFilePath = $file->getPath();
+                $coreStubASTVisitor->sourceFileName = basename($file->getRealPath());
                 $traverser->addVisitor($coreStubASTVisitor);
             } else {
                 if ($visitor instanceof ASTVisitor) {
                     $visitor->sourceFilePath = $file->getPath();
+                    $visitor->sourceFileName = basename($file->getRealPath());
                 }
                 $traverser->addVisitor($visitor);
             }

@@ -78,6 +78,7 @@ class PHPMethod extends PHPFunction
     {
         $this->parentName = self::getFQN($node->getAttribute('parent'));
         $this->name = $node->name->name;
+        $this->attributes = $node->attrGroups;
         $typesFromAttribute = self::findTypesFromAttribute($node->attrGroups);
         $this->isReturnTypeTentative = self::hasTentativeTypeAttribute($node->attrGroups);
         $this->availableVersionsRangeFromAttribute = self::findAvailableVersionsRangeFromAttribute($node->attrGroups);

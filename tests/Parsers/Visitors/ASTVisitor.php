@@ -31,7 +31,8 @@ class ASTVisitor extends NodeVisitorAbstract
     public function __construct(
         protected StubsContainer $stubs,
         protected bool $isStubCore = false,
-        public ?string $sourceFilePath = null
+        public ?string $sourceFilePath = null,
+        public ?string $sourceFileName = null
     ) {}
 
     /**
@@ -42,6 +43,7 @@ class ASTVisitor extends NodeVisitorAbstract
         if ($node instanceof Function_) {
             $function = (new PHPFunction())->readObjectFromStubNode($node);
             $function->sourceFilePath = $this->sourceFilePath;
+            $function->sourceFileName = $this->sourceFileName;
             if ($this->isStubCore) {
                 $function->stubBelongsToCore = true;
             }
@@ -58,6 +60,7 @@ class ASTVisitor extends NodeVisitorAbstract
         } elseif ($node instanceof Const_) {
             $constant = (new PHPConst())->readObjectFromStubNode($node);
             $constant->sourceFilePath = $this->sourceFilePath;
+            $constant->sourceFileName = $this->sourceFileName;
             if ($this->isStubCore) {
                 $constant->stubBelongsToCore = true;
             }
@@ -74,6 +77,7 @@ class ASTVisitor extends NodeVisitorAbstract
             if ((string)$node->name === 'define') {
                 $constant = (new PHPDefineConstant())->readObjectFromStubNode($node);
                 $constant->sourceFilePath = $this->sourceFilePath;
+                $constant->sourceFileName = $this->sourceFileName;
                 if ($this->isStubCore) {
                     $constant->stubBelongsToCore = true;
                 }
@@ -82,6 +86,7 @@ class ASTVisitor extends NodeVisitorAbstract
         } elseif ($node instanceof ClassMethod) {
             $method = (new PHPMethod())->readObjectFromStubNode($node);
             $method->sourceFilePath = $this->sourceFilePath;
+            $method->sourceFileName = $this->sourceFileName;
             if ($this->isStubCore) {
                 $method->stubBelongsToCore = true;
             }
@@ -96,6 +101,7 @@ class ASTVisitor extends NodeVisitorAbstract
         } elseif ($node instanceof Interface_) {
             $interface = (new PHPInterface())->readObjectFromStubNode($node);
             $interface->sourceFilePath = $this->sourceFilePath;
+            $interface->sourceFileName = $this->sourceFileName;
             if ($this->isStubCore) {
                 $interface->stubBelongsToCore = true;
             }
@@ -103,6 +109,7 @@ class ASTVisitor extends NodeVisitorAbstract
         } elseif ($node instanceof Class_) {
             $class = (new PHPClass())->readObjectFromStubNode($node);
             $class->sourceFilePath = $this->sourceFilePath;
+            $class->sourceFileName = $this->sourceFileName;
             if ($this->isStubCore) {
                 $class->stubBelongsToCore = true;
             }
@@ -114,9 +121,13 @@ class ASTVisitor extends NodeVisitorAbstract
                 $enum->stubBelongsToCore = true;
             }
             $this->stubs->addEnum($enum);
-        } elseif ($node instanceof Node\Stmt\Property) {
+        } elseif($node instanceof Node\Stmt\Namespace_) {
+
+        }
+        /*elseif ($node instanceof Node\Stmt\Property) {
             $property = (new PHPProperty())->readObjectFromStubNode($node);
             $property->sourceFilePath = $this->sourceFilePath;
+            $property->sourceFileName = $this->sourceFileName;
             if ($this->isStubCore) {
                 $property->stubBelongsToCore = true;
             }
@@ -124,7 +135,7 @@ class ASTVisitor extends NodeVisitorAbstract
             if ($this->stubs->getClass($property->parentName, $this->sourceFilePath, false) !== null) {
                 $this->stubs->getClass($property->parentName, $this->sourceFilePath, false)->addProperty($property);
             }
-        }
+        }*/
     }
 
     /**

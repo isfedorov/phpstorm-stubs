@@ -3,29 +3,17 @@ declare(strict_types=1);
 
 namespace StubTests;
 
-use PhpParser\Node\Expr\Array_;
-use PhpParser\Node\Expr\BinaryOp\BitwiseOr;
-use PhpParser\Node\Expr\ClassConstFetch;
-use PhpParser\Node\Expr\ConstFetch;
-use PhpParser\Node\Expr\UnaryMinus;
-use PhpParser\Node\Scalar\DNumber;
-use PhpParser\Node\Scalar\LNumber;
-use PhpParser\Node\Scalar\String_;
-use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
 use StubTests\Model\PHPClass;
 use StubTests\Model\PHPConst;
 use StubTests\Model\PHPEnum;
 use StubTests\Model\PHPFunction;
-use StubTests\Model\PHPInterface;
 use StubTests\Parsers\ParserUtils;
 use StubTests\TestData\Providers\PhpStormStubsSingleton;
 use StubTests\TestData\Providers\ReflectionStubsSingleton;
 use function array_filter;
 use function array_pop;
-use function property_exists;
-use function strval;
 
 abstract class AbstractBaseStubsTestCase extends TestCase
 {

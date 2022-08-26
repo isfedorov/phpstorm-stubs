@@ -11,21 +11,25 @@ use phpDocumentor\Reflection\Types\Array_;
 use phpDocumentor\Reflection\Types\Collection;
 use phpDocumentor\Reflection\Types\Compound;
 use PhpParser\Comment\Doc;
+use PhpParser\Node\Expr\Array_;
+use PhpParser\Node\Expr\BinaryOp\BitwiseOr;
+use PhpParser\Node\Expr\ClassConstFetch;
+use PhpParser\Node\Expr\ConstFetch;
+use PhpParser\Node\Expr\UnaryMinus;
 use PhpParser\Node\FunctionLike;
+use PhpParser\Node\Scalar\DNumber;
+use PhpParser\Node\Scalar\LNumber;
+use PhpParser\Node\Scalar\String_;
 use PhpParser\Node\Stmt\Function_;
 use ReflectionFunction;
 use ReflectionFunctionAbstract;
 use RuntimeException;
 use stdClass;
 use StubTests\Parsers\DocFactoryProvider;
+use StubTests\TestData\Providers\PhpStormStubsSingleton;
 
 class PHPFunction extends BasePHPElement
 {
-    /**
-     * @var bool
-     */
-    public $isDeprecated;
-
     /**
      * @var PHPParameter[]
      */
@@ -40,6 +44,78 @@ class PHPFunction extends BasePHPElement
     /** @var string[] */
     public $returnTypesFromSignature = [];
     public $hasTentativeReturnType = false;
+
+    /**
+     * @param mixed $defaultValue
+     * @param PHPClass|PHPInterface|null $contextClass
+     * @return float|bool|int|string|null
+     * @throws RuntimeException
+     * @throws \PHPUnit\Framework\Exception
+     */
+    public static function getStringRepresentationOfDefaultParameterValue($defaultValue, $contextClass = null)
+    {
+        if ($defaultValue instanceof ConstFetch) {
+            $defaultValueName = (string)$defaultValue->name;
+            if ($defaultValueName !== 'false' && $defaultValueName !== 'true' && $defaultValueName !== 'null') {
+                $constant = PhpStormStubsSingleton::getPhpStormStubs()->getConstant($defaultValueName);
+                $value = $constant->value;
+            } else {
+                $value = $defaultValueName;
+            }
+        } elseif ($defaultValue instanceof String_ || $defaultValue instanceof LNumber || $defaultValue instanceof DNumber) {
+            $value = strval($defaultValue->value);
+        } elseif ($defaultValue instanceof BitwiseOr) {
+            if ($defaultValue->left instanceof ConstFetch && $defaultValue->right instanceof ConstFetch) {
+                $constants = array_filter(
+                    PhpStormStubsSingleton::getPhpStormStubs()->getConstants(),
+                    function (PHPConst $const) use ($defaultValue) {
+                        return property_exists($defaultValue->left, 'name') &&
+                            $const->name === (string)$defaultValue->left->name;
+                    }
+                );
+                /** @var PHPConst $leftConstant */
+                $leftConstant = array_pop($constants);
+                $constants = array_filter(
+                    PhpStormStubsSingleton::getPhpStormStubs()->getConstants(),
+                    function (PHPConst $const) use ($defaultValue) {
+                        return property_exists($defaultValue->right, 'name') &&
+                            $const->name === (string)$defaultValue->right->name;
+                    }
+                );
+                /** @var PHPConst $rightConstant */
+                $rightConstant = array_pop($constants);
+                $value = $leftConstant->value|$rightConstant->value;
+            }
+        } elseif ($defaultValue instanceof UnaryMinus && property_exists($defaultValue->expr, 'value')) {
+            $value = '-' . $defaultValue->expr->value;
+        } elseif ($defaultValue instanceof ClassConstFetch) {
+            $class = (string)$defaultValue->class;
+            if ($class === 'self' && $contextClass !== null) {
+                $class = $contextClass->name;
+            }
+            if(PhpStormStubsSingleton::getPhpStormStubs()->getClass($class) !== null) {
+                $parentClass = PhpStormStubsSingleton::getPhpStormStubs()->getClass($class);
+            } else {
+                $parentClass = PhpStormStubsSingleton::getPhpStormStubs()->getInterface($class);
+            }
+            if ($parentClass === null) {
+                throw new \PHPUnit\Framework\Exception("Class $class not found in stubs");
+            }
+            if ((string)$defaultValue->name === 'class') {
+                $value = (string)$defaultValue->class;
+            } else {
+                $constant = $parentClass->getConstant((string)$defaultValue->name);;
+                $value = $constant->value;
+            }
+        } elseif ($defaultValue === null) {
+            $value = "null";
+        } elseif (is_array($defaultValue) || $defaultValue instanceof Array_) {
+            $value = '[]';
+        } else {
+            $value = strval($defaultValue);
+        }
+        return $value;
+    }
 
     /**
      * @param ReflectionFunction|ReflectionFunctionAbstract $reflectionObject
@@ -70,6 +146,7 @@ class PHPFunction extends BasePHPElement
     {
         $functionName = self::getFQN($node);
         $this->name = $functionName;
+        $this->attributes = $node->attrGroups;
         $typesFromAttribute = self::findTypesFromAttribute($node->attrGroups);
         $this->availableVersionsRangeFromAttribute = self::findAvailableVersionsRangeFromAttribute($node->attrGroups);
         $this->returnTypesFromAttribute = $typesFromAttribute;

@@ -77,6 +77,7 @@ class PHPClass extends BasePHPClass
     {
         $this->name = self::getFQN($node);
         $this->isFinal = $node->isFinal();
+        $this->attributes = $node->attrGroups;
         $this->availableVersionsRangeFromAttribute = self::findAvailableVersionsRangeFromAttribute($node->attrGroups);
         $this->collectTags($node);
         if (!empty($node->extends)) {
@@ -98,7 +99,7 @@ class PHPClass extends BasePHPClass
                 $propertyName = $property->getVariableName();
                 assert($propertyName !== '', "@property name is empty in class $this->name");
                 $newProperty = new PHPProperty($this->name);
-                $newProperty->is_static = false;
+                $newProperty->isStatic = false;
                 $newProperty->access = 'public';
                 $newProperty->name = $propertyName;
                 $newProperty->parentName = $this->name;

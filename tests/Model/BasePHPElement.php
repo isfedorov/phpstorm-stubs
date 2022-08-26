@@ -25,6 +25,7 @@ use StubTests\Parsers\ParserUtils;
 use function array_key_exists;
 use function count;
 use function in_array;
+use function number_format;
 
 abstract class BasePHPElement
 {
@@ -42,8 +43,18 @@ abstract class BasePHPElement
     /** @var string|null */
     public $sourceFilePath;
 
+    /** @var string|null */
+    public $sourceFileName;
+
     /** @var bool */
     public $duplicateOtherElement = false;
+    /** @var array  */
+    public $attributes = [];
+
+    /**
+     * @var bool
+     */
+    public $isDeprecated;
 
     /**
      * @param Reflector $reflectionObject
@@ -156,14 +167,17 @@ abstract class BasePHPElement
                 if ($attr->name->toString() === LanguageLevelTypeAware::class) {
                     $types = [];
                     $versionTypesMap = $attr->args[0]->value->items;
+                    usort($versionTypesMap, function ($item1, $item2) {
+                        return (float)$item1->key->value < (float)$item2->key->value ? -1 : 1;
+                    });
                     foreach ($versionTypesMap as $item) {
-                        $types[number_format((float)$item->key->value, 1)] =
+                        $phpVersion = number_format((float)$item->key->value, 1);
+                        $types[$phpVersion] =
                             explode('|', preg_replace('/\w+\[]/', 'array', $item->value->value));
-                    }
-                    $maxVersion = max(array_keys($types));
-                    foreach (new PhpVersions() as $version) {
-                        if ($version > (float)$maxVersion) {
-                            $types[number_format($version, 1)] = $types[$maxVersion];
+                        foreach (new PhpVersions() as $version) {
+                            if ($version > (float)$phpVersion) {
+                                $types[number_format($version, 1)] = $types[$phpVersion];
+                            }
                         }
                     }
                     $types[$attr->args[1]->name->name] = explode('|', preg_replace('/\w+\[]/', 'array', $attr->args[1]->value->value));

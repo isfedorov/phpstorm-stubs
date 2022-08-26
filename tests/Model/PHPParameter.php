@@ -58,7 +58,7 @@ class PHPParameter extends BasePHPElement
     public function readObjectFromStubNode($node)
     {
         $this->name = $node->var->name;
-
+        $this->attributes = $node->attrGroups;
         $this->typesFromAttribute = self::findTypesFromAttribute($node->attrGroups);
         $this->typesFromSignature = self::convertParsedTypeToArray($node->type);
         $this->availableVersionsRangeFromAttribute = self::findAvailableVersionsRangeFromAttribute($node->attrGroups);

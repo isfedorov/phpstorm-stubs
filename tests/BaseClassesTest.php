@@ -197,8 +197,8 @@ class BaseClassesTest extends AbstractBaseStubsTestCase
         $className = $class->name;
         $stubProperty = PhpStormStubsSingleton::getPhpStormStubs()->getClass($class->name)->getProperty($property->name);
         static::assertEquals(
-            $property->is_static,
-            $stubProperty->is_static,
+            $property->isStatic,
+            $stubProperty->isStatic,
             "Property $className::$property->name static modifier is incorrect"
         );
     }

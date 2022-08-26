@@ -14,6 +14,10 @@ use phpDocumentor\Reflection\DocBlock\Tags\Var_;
 use PhpParser\Node;
 use StubTests\Model\Tags\RemovedTag;
 use StubTests\Parsers\DocFactoryProvider;
+use function array_map;
+use function preg_replace;
+use function preg_split;
+use function stripos;
 
 trait PHPDocElement
 {
@@ -81,8 +85,14 @@ trait PHPDocElement
     protected function collectTags(Node $node)
     {
         if ($node->getDocComment() !== null) {
+            $text = $node->getDocComment()->getText();
+        } elseif ($node->getAttribute('parent') !== null && $node->getAttribute('parent')->getDocComment() != null) {
+            $text = $node->getAttribute('parent')->getDocComment()->getText();
+        } else {
+            $text = "";
+        }
+        if (!empty($text)) {
             try {
-                $text = $node->getDocComment()->getText();
                 $text = preg_replace("/int\<\w+,\s*\w+\>/", "int", $text);
                 $text = preg_replace("/callable\(\w+(,\s*\w+)*\)(:\s*\w*)?/", "callable", $text);
                 $this->phpdoc = $text;
@@ -114,3 +124,4 @@ trait PHPDocElement
         }
     }
 }
+

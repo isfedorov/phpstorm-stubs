@@ -62,6 +62,7 @@ class PHPConst extends BasePHPElement
         $parentNode = $node->getAttribute('parent');
         if (property_exists($parentNode, 'attrGroups')) {
             $this->availableVersionsRangeFromAttribute = self::findAvailableVersionsRangeFromAttribute($parentNode->attrGroups);
+            $this->attributes = $parentNode->attrGroups;
         }
         if ($parentNode instanceof ClassConst) {
             if ($parentNode->isPrivate()) {

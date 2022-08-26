@@ -43,6 +43,7 @@ class PHPInterface extends BasePHPClass
     public function readObjectFromStubNode($node)
     {
         $this->name = self::getFQN($node);
+        $this->attributes = $node->attrGroups;
         $this->collectTags($node);
         $this->availableVersionsRangeFromAttribute = self::findAvailableVersionsRangeFromAttribute($node->attrGroups);
         if (!empty($node->extends)) {
