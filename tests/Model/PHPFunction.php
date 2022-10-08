@@ -19,7 +19,9 @@ use PhpParser\Node\Expr\UnaryMinus;
 use PhpParser\Node\FunctionLike;
 use PhpParser\Node\Scalar\DNumber;
 use PhpParser\Node\Scalar\LNumber;
+use PhpParser\Node\Scalar\MagicConst;
 use PhpParser\Node\Scalar\String_;
+use PhpParser\Node\Stmt\ClassMethod;
 use PhpParser\Node\Stmt\Function_;
 use ReflectionFunction;
 use ReflectionFunctionAbstract;
@@ -27,6 +29,13 @@ use RuntimeException;
 use stdClass;
 use StubTests\Parsers\DocFactoryProvider;
 use StubTests\TestData\Providers\PhpStormStubsSingleton;
+use function array_filter;
+use function array_pop;
+use function array_push;
+use function implode;
+use function property_exists;
+use function sizeof;
+use function strval;
 
 class PHPFunction extends BasePHPElement
 {
@@ -52,69 +61,178 @@ class PHPFunction extends BasePHPElement
      * @throws RuntimeException
      * @throws \PHPUnit\Framework\Exception
      */
-    public static function getStringRepresentationOfDefaultParameterValue($defaultValue, $contextClass = null)
+    public static function getStringRepresentationOfDefaultParameterValue(
+        $defaultValue,
+        $contextClass = null,
+        $preserveConstantNamesInsteadOfValues = false
+    )
     {
         if ($defaultValue instanceof ConstFetch) {
             $defaultValueName = (string)$defaultValue->name;
             if ($defaultValueName !== 'false' && $defaultValueName !== 'true' && $defaultValueName !== 'null') {
                 $constant = PhpStormStubsSingleton::getPhpStormStubs()->getConstant($defaultValueName);
-                $value = $constant->value;
+                $value = $preserveConstantNamesInsteadOfValues ? $constant->name : $constant->value;
             } else {
                 $value = $defaultValueName;
             }
-        } elseif ($defaultValue instanceof String_ || $defaultValue instanceof LNumber || $defaultValue instanceof DNumber) {
-            $value = strval($defaultValue->value);
+        } elseif ($defaultValue instanceof String_ || $defaultValue instanceof DNumber) {
+            $value = "'" . $defaultValue->value . "'";
+        } elseif ($defaultValue instanceof LNumber) {
+            $value = $defaultValue->value;
         } elseif ($defaultValue instanceof BitwiseOr) {
-            if ($defaultValue->left instanceof ConstFetch && $defaultValue->right instanceof ConstFetch) {
-                $constants = array_filter(
-                    PhpStormStubsSingleton::getPhpStormStubs()->getConstants(),
-                    function (PHPConst $const) use ($defaultValue) {
-                        return property_exists($defaultValue->left, 'name') &&
-                            $const->name === (string)$defaultValue->left->name;
-                    }
-                );
-                /** @var PHPConst $leftConstant */
-                $leftConstant = array_pop($constants);
-                $constants = array_filter(
-                    PhpStormStubsSingleton::getPhpStormStubs()->getConstants(),
-                    function (PHPConst $const) use ($defaultValue) {
-                        return property_exists($defaultValue->right, 'name') &&
-                            $const->name === (string)$defaultValue->right->name;
-                    }
-                );
-                /** @var PHPConst $rightConstant */
-                $rightConstant = array_pop($constants);
-                $value = $leftConstant->value|$rightConstant->value;
-            }
+            $constants = [];
+            self::combineUnionDefaultValues($defaultValue, $constants, $contextClass, $preserveConstantNamesInsteadOfValues);
+            $value = implode('|', $constants);
         } elseif ($defaultValue instanceof UnaryMinus && property_exists($defaultValue->expr, 'value')) {
             $value = '-' . $defaultValue->expr->value;
         } elseif ($defaultValue instanceof ClassConstFetch) {
-            $class = (string)$defaultValue->class;
-            if ($class === 'self' && $contextClass !== null) {
-                $class = $contextClass->name;
-            }
-            if(PhpStormStubsSingleton::getPhpStormStubs()->getClass($class) !== null) {
-                $parentClass = PhpStormStubsSingleton::getPhpStormStubs()->getClass($class);
-            } else {
-                $parentClass = PhpStormStubsSingleton::getPhpStormStubs()->getInterface($class);
-            }
-            if ($parentClass === null) {
-                throw new \PHPUnit\Framework\Exception("Class $class not found in stubs");
-            }
-            if ((string)$defaultValue->name === 'class') {
-                $value = (string)$defaultValue->class;
-            } else {
-                $constant = $parentClass->getConstant((string)$defaultValue->name);;
-                $value = $constant->value;
-            }
+            $value = self::getClassConstantDefaultValue($defaultValue, $contextClass, $preserveConstantNamesInsteadOfValues);
         } elseif ($defaultValue === null) {
             $value = "null";
         } elseif (is_array($defaultValue) || $defaultValue instanceof Array_) {
             $value = '[]';
+        } elseif ($defaultValue instanceof MagicConst) {
+            $value = $defaultValue->getName();
         } else {
             $value = strval($defaultValue);
         }
         return $value;
+    }
+
+    /**
+     * @param $defaultValue
+     * @param array $constants
+     */
+    public static function combineUnionDefaultValues(
+        $defaultValue,
+        array &$result,
+        $contextClass,
+        $preserveConstantNamesInsteadOfValues
+    )
+    {
+        if ($defaultValue->left instanceof BitwiseOr) {
+            self::combineUnionDefaultValues(
+                $defaultValue->left,
+                $result,
+                $contextClass,
+                $preserveConstantNamesInsteadOfValues
+            );
+        }
+        if ($defaultValue->left instanceof ConstFetch) {
+            $constants = array_filter(
+                PhpStormStubsSingleton::getPhpStormStubs()->getConstants(),
+                function (PHPConst $const) use ($defaultValue) {
+                    return property_exists($defaultValue->left, 'name') &&
+                        $const->name === (string)$defaultValue->left->name;
+                }
+            );
+            $constant = array_pop($constants);
+            array_push($result, $preserveConstantNamesInsteadOfValues ? $constant->name : $constant->value);
+        }
+        if ($defaultValue->right instanceof ConstFetch) {
+            $constants = array_filter(
+                PhpStormStubsSingleton::getPhpStormStubs()->getConstants(),
+                function (PHPConst $const) use ($defaultValue) {
+                    return property_exists($defaultValue->right, 'name') &&
+                        $const->name === (string)$defaultValue->right->name;
+                }
+            );
+            $constant = array_pop($constants);
+            array_push($result, $preserveConstantNamesInsteadOfValues ? $constant->name : $constant->value);
+        }
+        if ($defaultValue->left instanceof ClassConstFetch) {
+            array_push($result, self::getClassConstantDefaultValue(
+                $defaultValue->left,
+                $contextClass,
+                $preserveConstantNamesInsteadOfValues
+            ));
+        }
+        if ($defaultValue->right instanceof ClassConstFetch) {
+            array_push($result, self::getClassConstantDefaultValue(
+                $defaultValue->right,
+                $contextClass,
+                $preserveConstantNamesInsteadOfValues
+            ));
+        }
+    }
+
+    /**
+     * @param ClassConstFetch $defaultValue
+     * @param PHPInterface|PHPClass|null $contextClass
+     * @return bool|float|int|string|null
+     * @throws RuntimeException
+     * @throws \PHPUnit\Framework\Exception
+     */
+    public static function getClassConstantDefaultValue(
+        ClassConstFetch $defaultValue,
+        PHPInterface|PHPClass|null $contextClass,
+        $preserveConstantNamesInsteadOfValues = false
+    ): string|int|bool|null|float
+    {
+        $class = (string)$defaultValue->class;
+        if ($class === 'self' && $contextClass !== null) {
+            $class = $contextClass->name;
+        }
+        if (PhpStormStubsSingleton::getPhpStormStubs()->getClass($class) !== null) {
+            $parentClass = PhpStormStubsSingleton::getPhpStormStubs()->getClass($class);
+        } else {
+            $parentClass = PhpStormStubsSingleton::getPhpStormStubs()->getInterface($class);
+        }
+        if ($parentClass === null) {
+            throw new \PHPUnit\Framework\Exception("Class $class not found in stubs");
+        }
+        if ((string)$defaultValue->name === 'class') {
+            $value = (string)$defaultValue->class;
+        } else {
+            $constant = $parentClass->getConstant((string)$defaultValue->name);
+            $value = $preserveConstantNamesInsteadOfValues ? $parentClass->name . "::" . $constant->name : $constant->value;
+        }
+        return $value;
+    }
+
+    /**
+     * @param ClassMethod $node
+     * @param int $index
+     * @throws RuntimeException
+     */
+    public function parseParameters(FunctionLike $node, $instance)
+    {
+        $index = 0;
+        foreach ($node->getParams() as $parameter) {
+            $parsedParameter = (new PHPParameter($this->shouldSuitCurrentPhpVersion))->readObjectFromStubNode($parameter);
+            $key = $parsedParameter->name;
+            if ($this->shouldSuitCurrentPhpVersion && BasePHPElement::entitySuitsCurrentPhpVersion($parsedParameter)) {
+                $parsedParameter->indexInSignature = $index;
+                $addedParameters = array_filter(
+                    $instance->parameters,
+                    function (PHPParameter $addedParameter) use ($parsedParameter) {
+                        return $addedParameter->name === $parsedParameter->name;
+                    }
+                );
+                if (!empty($addedParameters)) {
+                    if ($parsedParameter->is_vararg) {
+                        $parsedParameter->isOptional = false;
+                        $index--;
+                        $parsedParameter->indexInSignature = $index;
+                    } else {
+                        $key = $parsedParameter->name . '_duplicated';
+                    }
+                }
+                $index++;
+            } elseif (!$this->shouldSuitCurrentPhpVersion) {
+                $addedParameters = array_filter(
+                    $instance->parameters,
+                    function (PHPParameter $addedParameter) use ($parsedParameter) {
+                        return $addedParameter->name === $parsedParameter->name;
+                    }
+                );
+
+                if (!empty($addedParameters)) {
+                    $key = $parsedParameter->name . '_duplicated_' . sizeof($addedParameters);
+                }
+            }
+            $instance->parameters[$key] = $parsedParameter;
+        }
     }
 
     /**
@@ -126,7 +244,7 @@ class PHPFunction extends BasePHPElement
         $this->name = $reflectionObject->name;
         $this->isDeprecated = $reflectionObject->isDeprecated();
         foreach ($reflectionObject->getParameters() as $parameter) {
-            $this->parameters[] = (new PHPParameter())->readObjectFromReflection($parameter);
+            $this->parameters[] = (new PHPParameter($this->shouldSuitCurrentPhpVersion))->readObjectFromReflection($parameter);
         }
         if (method_exists($reflectionObject, 'getReturnType')) {
             $returnTypes = self::getReflectionTypeAsArray($reflectionObject->getReturnType());
@@ -151,25 +269,7 @@ class PHPFunction extends BasePHPElement
         $this->availableVersionsRangeFromAttribute = self::findAvailableVersionsRangeFromAttribute($node->attrGroups);
         $this->returnTypesFromAttribute = $typesFromAttribute;
         array_push($this->returnTypesFromSignature, ...self::convertParsedTypeToArray($node->getReturnType()));
-        $index = 0;
-        foreach ($node->getParams() as $parameter) {
-            $parsedParameter = (new PHPParameter())->readObjectFromStubNode($parameter);
-            if (self::entitySuitsCurrentPhpVersion($parsedParameter)) {
-                $parsedParameter->indexInSignature = $index;
-                $addedParameters = array_filter($this->parameters, function (PHPParameter $addedParameter) use ($parsedParameter) {
-                    return $addedParameter->name === $parsedParameter->name;
-                });
-                if (!empty($addedParameters)) {
-                    if ($parsedParameter->is_vararg) {
-                        $parsedParameter->isOptional = false;
-                        $index--;
-                        $parsedParameter->indexInSignature = $index;
-                    }
-                }
-                $this->parameters[$parsedParameter->name] = $parsedParameter;
-                $index++;
-            }
-        }
+        $this->parseParameters($node, $this);
 
         $this->collectTags($node);
         foreach ($this->parameters as $parameter) {

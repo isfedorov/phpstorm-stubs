@@ -8,6 +8,9 @@ use StubTests\Model\CommonUtils;
 class PhpCoreStubsProvider
 {
     public static array $StubDirectoryMap = [
+        'MIGRATION' => [
+            'migration'
+        ],
         'CORE' => [
             'Core',
             'date',
@@ -216,6 +219,7 @@ class PhpCoreStubsProvider
      */
     public static function getCoreStubsDirectories(): array
     {
+//        $coreStubs = [self::$StubDirectoryMap['MIGRATION']];
         $coreStubs = [self::$StubDirectoryMap['CORE']];
         $coreStubs[] = self::$StubDirectoryMap['BUNDLED'];
         $coreStubs[] = self::$StubDirectoryMap['EXTERNAL'];

@@ -81,7 +81,7 @@ class ParserUtils
             }
             $array_filter = array_filter(
                 iterator_to_array(new PhpVersions()),
-                fn($version) => $version >= $firstSinceVersion && $version <= $lastAvailableVersion
+                fn ($version) => $version >= $firstSinceVersion && $version <= $lastAvailableVersion
             );
             return $array_filter;
         }

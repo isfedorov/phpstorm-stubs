@@ -8,6 +8,7 @@ use PhpParser\Node\Stmt\ClassMethod;
 use ReflectionMethod;
 use RuntimeException;
 use stdClass;
+use function array_filter;
 use function strlen;
 
 class PHPMethod extends PHPFunction
@@ -92,25 +93,7 @@ class PHPMethod extends PHPFunction
         if (strncmp($this->name, 'PS_UNRESERVE_PREFIX_', 20) === 0) {
             $this->name = substr($this->name, strlen('PS_UNRESERVE_PREFIX_'));
         }
-        $index = 0;
-        foreach ($node->getParams() as $parameter) {
-            $parsedParameter = (new PHPParameter())->readObjectFromStubNode($parameter);
-            if (self::entitySuitsCurrentPhpVersion($parsedParameter)) {
-                $parsedParameter->indexInSignature = $index;
-                $addedParameters = array_filter($this->parameters, function (PHPParameter $addedParameter) use ($parsedParameter) {
-                    return $addedParameter->name === $parsedParameter->name;
-                });
-                if (!empty($addedParameters)) {
-                    if ($parsedParameter->is_vararg) {
-                        $parsedParameter->isOptional = false;
-                        $index--;
-                        $parsedParameter->indexInSignature = $index;
-                    }
-                }
-                $this->parameters[$parsedParameter->name] = $parsedParameter;
-                $index++;
-            }
-        }
+        $this->parseParameters($node, $this);
 
         foreach ($this->parameters as $parameter) {
             $relatedParamTags = array_filter($this->paramTags, function (Param $tag) use ($parameter) {

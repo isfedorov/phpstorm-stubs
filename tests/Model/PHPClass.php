@@ -45,7 +45,7 @@ class PHPClass extends BasePHPClass
             if ($method->getDeclaringClass()->getName() !== $this->name) {
                 continue;
             }
-            $parsedMethod = (new PHPMethod())->readObjectFromReflection($method);
+            $parsedMethod = (new PHPMethod($this->shouldSuitCurrentPhpVersion))->readObjectFromReflection($method);
             $this->addMethod($parsedMethod);
         }
 
@@ -54,7 +54,7 @@ class PHPClass extends BasePHPClass
                 if ($constant->getDeclaringClass()->getName() !== $this->name) {
                     continue;
                 }
-                $parsedConstant = (new PHPConst())->readObjectFromReflection($constant);
+                $parsedConstant = (new PHPConst($this->shouldSuitCurrentPhpVersion))->readObjectFromReflection($constant);
                 $this->addConstant($parsedConstant);
             }
         }
@@ -63,7 +63,7 @@ class PHPClass extends BasePHPClass
             if ($property->getDeclaringClass()->getName() !== $this->name) {
                 continue;
             }
-            $parsedProperty = (new PHPProperty())->readObjectFromReflection($property);
+            $parsedProperty = (new PHPProperty($this->shouldSuitCurrentPhpVersion))->readObjectFromReflection($property);
             $this->addProperty($parsedProperty);
         }
         return $this;
@@ -188,7 +188,7 @@ class PHPClass extends BasePHPClass
     {
         $properties = array_filter($this->properties, function (PHPProperty $property) use ($propertyName) {
             return $property->name === $propertyName && $property->duplicateOtherElement === false
-                && BasePHPElement::entitySuitsCurrentPhpVersion($property);
+                && (!$this->shouldSuitCurrentPhpVersion || BasePHPElement::entitySuitsCurrentPhpVersion($property));
         });
         if (empty($properties)) {
             throw new RuntimeException("Property $propertyName not found in stubs for set language version");

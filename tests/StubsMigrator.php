@@ -14,6 +14,7 @@ use JetBrains\PhpStorm\Language;
 use JetBrains\PhpStorm\NoReturn;
 use JetBrains\PhpStorm\Pure;
 use PhpParser\Node\Expr\ConstFetch;
+use PhpParser\Node\Expr\UnaryMinus;
 use StubTests\Model\BasePHPClass;
 use StubTests\Model\BasePHPElement;
 use StubTests\Model\PHPClass;
@@ -35,6 +36,7 @@ use function file_put_contents;
 use function implode;
 use function in_array;
 use function is_dir;
+use function is_int;
 use function is_string;
 use function mkdir;
 use function number_format;
@@ -43,20 +45,21 @@ use function realpath;
 use function str_replace;
 use function strval;
 use function trim;
+use function var_dump;
 use const FILE_APPEND;
 
 class StubsMigrator
 {
     public static function migrateStubs()
     {
-        $allStubs = PhpStormStubsSingleton::getPhpStormStubs();
-        /*foreach ($allStubs->getConstants() as $constant) {
+        $allStubs = PhpStormStubsSingleton::getPhpStormStubs(false);
+        foreach ($allStubs->getCoreConstants() as $constant) {
             $versions = ParserUtils::getAvailableInVersions($constant);
             foreach ($versions as $version) {
                 self::moveToVersionedDir($constant, $version);
             }
         }
-        foreach ($allStubs->getFunctions() as $function) {
+        foreach ($allStubs->getCoreFunctions() as $function) {
             $versions = ParserUtils::getAvailableInVersions($function);
             foreach ($versions as $version) {
                 self::moveToVersionedDir($function, $version);
@@ -68,17 +71,18 @@ class StubsMigrator
             foreach ($versions as $version) {
                 self::moveToVersionedDir($interface, $version);
             }
-        }*/
+        }
 
-        foreach ($allStubs->getCoreClasses() as $function) {
-            $versions = ParserUtils::getAvailableInVersions($function);
+        foreach ($allStubs->getCoreClasses() as $class) {
+            $versions = ParserUtils::getAvailableInVersions($class);
             foreach ($versions as $version) {
-                self::moveToVersionedDir($function, $version);
+                self::moveToVersionedDir($class, $version);
             }
         }
     }
 
-    private static function moveToVersionedDir($element, $version) {
+    private static function moveToVersionedDir($element, $version)
+    {
         $folderName = basename($element->sourceFilePath);
         $fileName = $element->sourceFileName;
         $folderLabel = str_replace(".", "", $version);
@@ -104,21 +108,24 @@ class StubsMigrator
         }
     }
 
-    private static function writeFunction(PHPFunction $element, $file, $version) {
+    private static function writeFunction(PHPFunction $element, $file, $version)
+    {
         $parameters = self::convertParametersToString($element, $version);
         $attributes = implode("\n", self::getAttributesAsStrings($element->attributes, $version));
-        $returnType = "";
-        $joinedTypes = implode('|', $element->returnTypesFromSignature);
-        $returnTypesFromAttributes = $element->returnTypesFromAttribute;
-        if (!empty($returnTypesFromAttributes)) {
-            if (array_key_exists(number_format($version, 1), $returnTypesFromAttributes)) {
-                $joinedTypes .= implode('|', $returnTypesFromAttributes[number_format($version, 1)]);
+        $returnType = implode('|', $element->returnTypesFromSignature);;
+        $typesFromAttribute = $element->returnTypesFromAttribute;
+        if (!empty($typesFromAttribute)) {
+            if (array_key_exists(number_format($version, 1), $typesFromAttribute)) {
+                $typesFromAttributes = implode('|', $typesFromAttribute[number_format($version, 1)]);
             } else {
-                $joinedTypes .= implode('|', $returnTypesFromAttributes['default']);
+                $typesFromAttributes = implode('|', $typesFromAttribute['default']);
+            }
+            if (!empty($typesFromAttributes)) {
+                $returnType = "$typesFromAttributes";
             }
         }
-        if (!empty($joinedTypes)) {
-            $returnType = ": $joinedTypes";
+        if (!empty($returnType)) {
+            $returnType = ": $returnType";
         }
         $template = <<<EOF
 
@@ -187,11 +194,10 @@ EOF;
         if (!empty($parentClass)) {
             $extendsBlock = " extends $parentClass";
         }
-        $parentInterfaces = implode(",", $element->interfaces);
+        $parentInterfaces = implode(",", array_map(fn (PHPInterface $interface) => $interface->name, $element->interfaces));
         if (!empty($parentInterfaces)) {
             $implementsBlock = " implements $parentInterfaces";
         }
-        $namespace = self::getNamespaceOfClass($element);
         $constants = self::getAllConstantsOfClassAsString($element, $version);
         $properties = self::getAllPropertiesOfClassAsString($element, $version);
         $methods = self::getAllMethodsOfClassAsString($element, $version);
@@ -210,11 +216,19 @@ EOF;
         file_put_contents($file, $template, FILE_APPEND);
     }
 
-    private static function getExtendedInterfacesAsString(PHPInterface $interface, $version): string {
-        return implode(',', $interface->parentInterfaces);
+    private static function getExtendedInterfacesAsString(PHPInterface $interface, $version): string
+    {
+        if (!empty($interface->parentInterfaces)) {
+            if (in_array(null, $interface->parentInterfaces)) {
+                var_dump($interface->parentInterfaces);
+            }
+            return implode(',', array_map(fn (PHPInterface $in) => $in->name, $interface->parentInterfaces));
+        }
+        return "";
     }
 
-    private static function getAllPropertiesOfClassAsString(PHPClass $class, $version) {
+    private static function getAllPropertiesOfClassAsString(PHPClass $class, $version)
+    {
         $props = $class->properties;
         $properties = array_filter($props, function (PHPProperty $property) use ($version) {
             return in_array($version, ParserUtils::getAvailableInVersions($property));
@@ -259,7 +273,8 @@ EOF;
         return $resulString;
     }
 
-    private static function getAllConstantsOfClassAsString(BasePHPClass $interface, $version): string {
+    private static function getAllConstantsOfClassAsString(BasePHPClass $interface, $version): string
+    {
         $constants = array_filter($interface->constants, function (PHPConst $const) use ($version) {
             return in_array($version, ParserUtils::getAvailableInVersions($const));
         });
@@ -275,7 +290,8 @@ EOF;
         return $resulString;
     }
 
-    private static function getAllMethodsOfClassAsString(BasePHPClass $classLike, $version): string {
+    private static function getAllMethodsOfClassAsString(BasePHPClass $classLike, $version): string
+    {
         $methods = "";
         if ($classLike instanceof PHPInterface) {
             $end = ";";
@@ -296,11 +312,20 @@ EOF;
             }
             $parameters = self::convertParametersToString($method, $version, $classLike);
             $attributes = implode("\n", self::getAttributesAsStrings($method->attributes, $version));
-            $returnType = '';
-            $joinedTypes = implode('|', $method->returnTypesFromSignature);
-            //merge LanguageLevelTypeAware and joinedTypes
-            if (!empty($joinedTypes)) {
-                $returnType = ": $joinedTypes";
+            $returnType = implode('|', $method->returnTypesFromSignature);;
+            $typesFromAttribute = $method->returnTypesFromAttribute;
+            if (!empty($typesFromAttribute)) {
+                if (array_key_exists(number_format($version, 1), $typesFromAttribute)) {
+                    $typesFromAttributes = implode('|', $typesFromAttribute[number_format($version, 1)]);
+                } else {
+                    $typesFromAttributes = implode('|', $typesFromAttribute['default']);
+                }
+                if (!empty($typesFromAttributes)) {
+                    $returnType = "$typesFromAttributes";
+                }
+            }
+            if (!empty($returnType)) {
+                $returnType = ": $returnType";
             }
             $template = <<<EOF
 {$method->phpdoc}{$attributes}
@@ -312,10 +337,12 @@ EOF;
         return $methods;
     }
 
-    private static function convertParametersToString(PHPFunction $element, $version, BasePHPClass $parentClass = null) {
+    private static function convertParametersToString(PHPFunction $element, $version, BasePHPClass $parentClass = null)
+    {
         $result = "";
         $availableParameters = array_filter($element->parameters, function (PHPParameter $parameter) use ($version) {
-            return in_array($version, ParserUtils::getAvailableInVersions($parameter));
+            $availableInVersions = ParserUtils::getAvailableInVersions($parameter);
+            return in_array($version, $availableInVersions);
         });
         foreach ($availableParameters as $parameter) {
             $result .= implode("\n", self::getAttributesAsStrings($parameter->attributes, $version));
@@ -331,18 +358,24 @@ EOF;
                     if (empty($resultType)) {
                         $resultType .= "$typesFromAttributes";
                     } else {
-                        $resultType .= "|$typesFromAttributes";
+                        $resultType = "$typesFromAttributes";
                     }
                 }
             }
-            $result .= "$resultType $$parameter->name";
+            $isReference = $parameter->is_passed_by_ref;
+
+            $result .= $isReference ? "$resultType &$$parameter->name" : "$resultType $$parameter->name";
             if (!empty($parameter->defaultValue)) {
                 if ($parameter->defaultValue instanceof ConstFetch) {
                     $default = (string)$parameter->defaultValue->name;
                 } else {
-                    $default = PHPFunction::getStringRepresentationOfDefaultParameterValue($parameter->defaultValue, $parentClass);
+                    $default = PHPFunction::getStringRepresentationOfDefaultParameterValue(
+                        $parameter->defaultValue,
+                        $parentClass,
+                        preserveConstantNamesInsteadOfValues: true
+                    );
                 }
-                if (empty($default)) {
+                if (!is_int($default) && empty($default)) {
                     $default = "\"\"";
                 }
                 $result .= " = $default,";
@@ -451,7 +484,11 @@ EOF;
         $value = '';
         if (property_exists($args[0]->value, "items")) {
             foreach ($args[0]->value->items as $item) {
-                $value = $item->value->name ?? strval($item->value->value);
+                if ($item->value instanceof UnaryMinus) {
+                    $value = "-" . $item->value->expr->value;
+                } else {
+                    $value = $item->value->name ?? strval($item->value->value);
+                }
                 $parameters .= $value . ', ';
             }
         } else {

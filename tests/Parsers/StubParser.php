@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace StubTests\Parsers;
 
+use Exception;
 use FilesystemIterator;
 use JsonException;
 use LogicException;
@@ -14,7 +15,6 @@ use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 use RuntimeException;
 use SplFileInfo;
-use StubTests\Model\CommonUtils;
 use StubTests\Model\StubsContainer;
 use StubTests\Parsers\Visitors\ASTVisitor;
 use StubTests\Parsers\Visitors\CoreStubASTVisitor;
@@ -36,21 +36,20 @@ class StubParser
      * @throws UnexpectedValueException
      * @throws JsonException
      */
-    public static function getPhpStormStubs(): StubsContainer
+    public static function getPhpStormStubs($shouldSuitCurrentPhpVersion): StubsContainer
     {
-        self::$stubs = new StubsContainer();
-        $visitor = new ASTVisitor(self::$stubs);
-        $coreStubVisitor = new CoreStubASTVisitor(self::$stubs);
+        self::$stubs = new StubsContainer($shouldSuitCurrentPhpVersion);
+        $visitor = new ASTVisitor(self::$stubs, shouldSuitCurrentPhpVersion: $shouldSuitCurrentPhpVersion);
+        $coreStubVisitor = new CoreStubASTVisitor(self::$stubs, $shouldSuitCurrentPhpVersion);
         self::processStubs(
             $visitor,
             $coreStubVisitor,
             fn (SplFileInfo $file): bool => $file->getFilename() !== '.phpstorm.meta.php'
         );
-
+        self::convertStringInterfacesToObjects();
         $jsonData = json_decode(file_get_contents(__DIR__ . '/../TestData/mutedProblems.json'), false, 512, JSON_THROW_ON_ERROR);
         foreach (self::$stubs->getInterfaces() as $interface) {
             $interface->readMutedProblems($jsonData->interfaces);
-            $interface->parentInterfaces = $visitor->combineParentInterfaces($interface);
         }
         foreach (self::$stubs->getClasses() as $class) {
             $class->readMutedProblems($jsonData->classes);
@@ -118,5 +117,32 @@ class StubParser
             $filePath = dirname($filePath);
         }
         return false;
+    }
+
+    private static function convertStringInterfacesToObjects() {
+        foreach (self::$stubs->getClasses() as $class) {
+            $interfaceObjects = [];
+            foreach ($class->interfaces as $interface) {
+                try {
+                    $interfaceObject = self::$stubs->getInterface($interface, shouldSuitCurrentPhpVersion: false);
+                } catch (Exception $exception) {
+                    $interfaceObject = self::$stubs->getInterface($interface, $class->sourceFilePath, shouldSuitCurrentPhpVersion: false);
+                }
+                $interfaceObjects[] = $interfaceObject;
+            }
+            $class->interfaces = $interfaceObjects;
+        }
+        foreach (self::$stubs->getInterfaces() as $interface) {
+            $interfaceObjects = [];
+            foreach ($interface->parentInterfaces as $interfaceAsString) {
+                try {
+                    $interfaceObject = self::$stubs->getInterface($interfaceAsString, shouldSuitCurrentPhpVersion: false);
+                } catch (Exception $exception) {
+                    $interfaceObject = self::$stubs->getInterface($interfaceAsString, $interface->sourceFilePath, false);
+                }
+                $interfaceObjects[] = $interfaceObject;
+            }
+            $interface->parentInterfaces = $interfaceObjects;
+        }
     }
 }

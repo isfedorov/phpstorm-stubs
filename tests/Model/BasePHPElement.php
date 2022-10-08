@@ -48,13 +48,23 @@ abstract class BasePHPElement
 
     /** @var bool */
     public $duplicateOtherElement = false;
-    /** @var array  */
+
+    /** @var array */
     public $attributes = [];
 
     /**
      * @var bool
      */
     public $isDeprecated;
+    public $shouldSuitCurrentPhpVersion;
+
+    /**
+     * @param $shouldSuitCurrentPhpVersion
+     */
+    public function __construct($shouldSuitCurrentPhpVersion)
+    {
+        $this->shouldSuitCurrentPhpVersion = $shouldSuitCurrentPhpVersion;
+    }
 
     /**
      * @param Reflector $reflectionObject

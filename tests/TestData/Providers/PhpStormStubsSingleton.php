@@ -10,10 +10,10 @@ class PhpStormStubsSingleton
 {
     private static ?StubsContainer $phpstormStubs = null;
 
-    public static function getPhpStormStubs(): StubsContainer
+    public static function getPhpStormStubs($shouldSuitCurrentPhpVersion = true): StubsContainer
     {
         if (self::$phpstormStubs === null) {
-            self::$phpstormStubs = StubParser::getPhpStormStubs();
+            self::$phpstormStubs = StubParser::getPhpStormStubs($shouldSuitCurrentPhpVersion);
         }
         return self::$phpstormStubs;
     }

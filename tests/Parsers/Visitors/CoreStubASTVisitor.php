@@ -9,9 +9,9 @@ use StubTests\Model\StubsContainer;
 class CoreStubASTVisitor extends ASTVisitor
 {
     #[Pure]
-    public function __construct(StubsContainer $stubs)
+    public function __construct(StubsContainer $stubs, $shouldSuitCurrentPhpVersion)
     {
-        parent::__construct($stubs);
+        parent::__construct($stubs, shouldSuitCurrentPhpVersion: $shouldSuitCurrentPhpVersion);
         $this->isStubCore = true;
     }
 }

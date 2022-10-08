@@ -3,6 +3,7 @@
 namespace StubTests\Model;
 
 use RuntimeException;
+use function array_filter;
 use function array_key_exists;
 use function count;
 
@@ -27,6 +28,11 @@ class StubsContainer
      * @var PHPInterface[]
      */
     private $interfaces = [];
+    private $shouldSuitCurrentPhpVersion;
+
+    public function __construct($shouldSuitCurrentPhpVersion) {
+        $this->shouldSuitCurrentPhpVersion = $shouldSuitCurrentPhpVersion;
+    }
 
     /**
      * @var PHPEnum[]
@@ -42,6 +48,16 @@ class StubsContainer
     }
 
     /**
+     * @return PHPConst[]
+     */
+    public function getCoreConstants()
+    {
+        return array_filter($this->constants, function (PHPConst $constant) {
+            return $constant->stubBelongsToCore === true;
+        });
+    }
+
+    /**
      * @param string $constantName
      * @param string|null $sourceFilePath
      * @return PHPConst|null
@@ -51,7 +67,7 @@ class StubsContainer
     {
         $constants = array_filter($this->constants, function (PHPConst $const) use ($constantName) {
             return $const->name === $constantName && $const->duplicateOtherElement === false
-                && BasePHPElement::entitySuitsCurrentPhpVersion($const);
+                && (!$this->shouldSuitCurrentPhpVersion || BasePHPElement::entitySuitsCurrentPhpVersion($const));
         });
         if (count($constants) === 1) {
             return array_pop($constants);
@@ -60,7 +76,7 @@ class StubsContainer
         if ($sourceFilePath !== null) {
             $constants = array_filter($constants, function (PHPConst $constant) use ($sourceFilePath) {
                 return $constant->sourceFilePath === $sourceFilePath
-                    && BasePHPElement::entitySuitsCurrentPhpVersion($constant);
+                    && (!$this->shouldSuitCurrentPhpVersion || BasePHPElement::entitySuitsCurrentPhpVersion($constant));
             });
         }
         if (count($constants) > 1) {
@@ -96,6 +112,16 @@ class StubsContainer
     public function getFunctions()
     {
         return $this->functions;
+    }
+
+    /**
+     * @return PHPFunction[]
+     */
+    public function getCoreFunctions()
+    {
+        return array_filter($this->functions, function (PHPFunction $function) {
+            return $function->stubBelongsToCore === true;
+        });
     }
 
     /**

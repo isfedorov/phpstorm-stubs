@@ -34,8 +34,9 @@ class PHPProperty extends BasePHPElement
     /**
      * @param string|null $parentName
      */
-    public function __construct($parentName = null)
+    public function __construct($shouldSuitCurrentPhpVersion, $parentName = null)
     {
+        parent::__construct($shouldSuitCurrentPhpVersion);
         $this->parentName = $parentName;
     }
 
@@ -132,7 +133,7 @@ class PHPProperty extends BasePHPElement
      * @return string|null
      */
     private static function getDefaultValueOfProperty(Property $node) {
-        if($node->props[0]->default !== null) {
+        if ($node->props[0]->default !== null) {
             if ($node->props[0]->default instanceof ConstFetch) {
                 return (string)$node->props[0]->default->name;
             }elseif ($node->props[0]->default instanceof ClassConstFetch) {

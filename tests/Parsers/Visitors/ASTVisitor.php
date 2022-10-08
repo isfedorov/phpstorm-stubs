@@ -13,8 +13,6 @@ use PhpParser\Node\Stmt\ClassMethod;
 use PhpParser\Node\Stmt\Function_;
 use PhpParser\Node\Stmt\Interface_;
 use PhpParser\NodeVisitorAbstract;
-use RuntimeException;
-use StubTests\Model\CommonUtils;
 use StubTests\Model\PHPClass;
 use StubTests\Model\PHPConst;
 use StubTests\Model\PHPDefineConstant;
@@ -30,6 +28,7 @@ class ASTVisitor extends NodeVisitorAbstract
 {
     public function __construct(
         protected StubsContainer $stubs,
+        protected bool $shouldSuitCurrentPhpVersion,
         protected bool $isStubCore = false,
         public ?string $sourceFilePath = null,
         public ?string $sourceFileName = null
@@ -41,7 +40,7 @@ class ASTVisitor extends NodeVisitorAbstract
     public function enterNode(Node $node): void
     {
         if ($node instanceof Function_) {
-            $function = (new PHPFunction())->readObjectFromStubNode($node);
+            $function = (new PHPFunction($this->shouldSuitCurrentPhpVersion))->readObjectFromStubNode($node);
             $function->sourceFilePath = $this->sourceFilePath;
             $function->sourceFileName = $this->sourceFileName;
             if ($this->isStubCore) {
@@ -58,7 +57,7 @@ class ASTVisitor extends NodeVisitorAbstract
                 $this->stubs->getEnum($constant->parentName, $this->sourceFilePath, false)->addEnumCase($constant);
             }
         } elseif ($node instanceof Const_) {
-            $constant = (new PHPConst())->readObjectFromStubNode($node);
+            $constant = (new PHPConst($this->shouldSuitCurrentPhpVersion))->readObjectFromStubNode($node);
             $constant->sourceFilePath = $this->sourceFilePath;
             $constant->sourceFileName = $this->sourceFileName;
             if ($this->isStubCore) {
@@ -75,7 +74,7 @@ class ASTVisitor extends NodeVisitorAbstract
             }
         } elseif ($node instanceof FuncCall) {
             if ((string)$node->name === 'define') {
-                $constant = (new PHPDefineConstant())->readObjectFromStubNode($node);
+                $constant = (new PHPDefineConstant($this->shouldSuitCurrentPhpVersion))->readObjectFromStubNode($node);
                 $constant->sourceFilePath = $this->sourceFilePath;
                 $constant->sourceFileName = $this->sourceFileName;
                 if ($this->isStubCore) {
@@ -84,7 +83,7 @@ class ASTVisitor extends NodeVisitorAbstract
                 $this->stubs->addConstant($constant);
             }
         } elseif ($node instanceof ClassMethod) {
-            $method = (new PHPMethod())->readObjectFromStubNode($node);
+            $method = (new PHPMethod($this->shouldSuitCurrentPhpVersion))->readObjectFromStubNode($node);
             $method->sourceFilePath = $this->sourceFilePath;
             $method->sourceFileName = $this->sourceFileName;
             if ($this->isStubCore) {
@@ -99,7 +98,7 @@ class ASTVisitor extends NodeVisitorAbstract
                 $this->stubs->getInterface($method->parentName, $this->sourceFilePath, false)->addMethod($method);
             }
         } elseif ($node instanceof Interface_) {
-            $interface = (new PHPInterface())->readObjectFromStubNode($node);
+            $interface = (new PHPInterface($this->shouldSuitCurrentPhpVersion))->readObjectFromStubNode($node);
             $interface->sourceFilePath = $this->sourceFilePath;
             $interface->sourceFileName = $this->sourceFileName;
             if ($this->isStubCore) {
@@ -107,7 +106,7 @@ class ASTVisitor extends NodeVisitorAbstract
             }
             $this->stubs->addInterface($interface);
         } elseif ($node instanceof Class_) {
-            $class = (new PHPClass())->readObjectFromStubNode($node);
+            $class = (new PHPClass($this->shouldSuitCurrentPhpVersion))->readObjectFromStubNode($node);
             $class->sourceFilePath = $this->sourceFilePath;
             $class->sourceFileName = $this->sourceFileName;
             if ($this->isStubCore) {
@@ -122,7 +121,7 @@ class ASTVisitor extends NodeVisitorAbstract
             }
             $this->stubs->addEnum($enum);
         } elseif($node instanceof Node\Stmt\Namespace_) {
-
+            
         }
         /*elseif ($node instanceof Node\Stmt\Property) {
             $property = (new PHPProperty())->readObjectFromStubNode($node);
@@ -136,75 +135,5 @@ class ASTVisitor extends NodeVisitorAbstract
                 $this->stubs->getClass($property->parentName, $this->sourceFilePath, false)->addProperty($property);
             }
         }*/
-    }
-
-    /**
-     * @throws RuntimeException
-     */
-    public function combineParentInterfaces(PHPInterface $interface): array
-    {
-        $parents = [];
-        if (empty($interface->parentInterfaces)) {
-            return $parents;
-        }
-        /** @var string $parentInterface */
-        foreach ($interface->parentInterfaces as $parentInterface) {
-            $parents[] = $parentInterface;
-            if ($this->stubs->getInterface(
-                $parentInterface,
-                $interface->stubBelongsToCore ? null : $interface->sourceFilePath,
-                false
-            ) !== null) {
-                foreach ($this->combineParentInterfaces(
-                    $this->stubs->getInterface(
-                        $parentInterface,
-                        $interface->stubBelongsToCore ? null : $interface->sourceFilePath,
-                        false
-                    )
-                ) as $value) {
-                    $parents[] = $value;
-                }
-            }
-        }
-        return $parents;
-    }
-
-    /**
-     * @throws RuntimeException
-     */
-    public function combineImplementedInterfaces(PHPClass $class): array
-    {
-        $interfaces = [];
-        /** @var string $interface */
-        foreach ($class->interfaces as $interface) {
-            $interfaces[] = $interface;
-            if ($this->stubs->getInterface(
-                $interface,
-                $class->stubBelongsToCore ? null : $class->sourceFilePath,
-                false
-            ) !== null) {
-                $interfaces[] = $this->stubs->getInterface(
-                    $interface,
-                    $class->stubBelongsToCore ? null : $class->sourceFilePath,
-                    false
-                )->parentInterfaces;
-            }
-        }
-        if ($class->parentClass === null) {
-            return $interfaces;
-        }
-        if ($this->stubs->getClass(
-            $class->parentClass,
-            $class->stubBelongsToCore ? null : $class->sourceFilePath,
-            false
-        ) !== null) {
-            $inherited = $this->combineImplementedInterfaces($this->stubs->getClass(
-                $class->parentClass,
-                $class->stubBelongsToCore ? null : $class->sourceFilePath,
-                false
-            ));
-            $interfaces[] = CommonUtils::flattenArray($inherited, false);
-        }
-        return $interfaces;
     }
 }

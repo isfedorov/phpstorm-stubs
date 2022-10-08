@@ -22,7 +22,7 @@ class PHPInterface extends BasePHPClass
             if ($method->getDeclaringClass()->getName() !== $this->name) {
                 continue;
             }
-            $this->methods[$method->name] = (new PHPMethod())->readObjectFromReflection($method);
+            $this->methods[$method->name] = (new PHPMethod($this->shouldSuitCurrentPhpVersion))->readObjectFromReflection($method);
         }
         $this->parentInterfaces = $reflectionObject->getInterfaceNames();
         if (method_exists($reflectionObject, 'getReflectionConstants')) {
@@ -30,7 +30,7 @@ class PHPInterface extends BasePHPClass
                 if ($constant->getDeclaringClass()->getName() !== $this->name) {
                     continue;
                 }
-                $this->constants[$constant->name] = (new PHPConst())->readObjectFromReflection($constant);
+                $this->constants[$constant->name] = (new PHPConst($this->shouldSuitCurrentPhpVersion))->readObjectFromReflection($constant);
             }
         }
         return $this;
