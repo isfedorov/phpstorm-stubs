@@ -3,7 +3,9 @@
 use JetBrains\PhpStorm\ArrayShape;
 use JetBrains\PhpStorm\Deprecated;
 use JetBrains\PhpStorm\ExpectedValues;
+use JetBrains\PhpStorm\ExpectedValues as EV;
 use JetBrains\PhpStorm\Internal\LanguageLevelTypeAware;
+use JetBrains\PhpStorm\Internal\LanguageLevelTypeAware as TypeAware;
 use JetBrains\PhpStorm\Internal\PhpStormStubsElementAvailable;
 use JetBrains\PhpStorm\Internal\ReturnTypeContract as TypeContract;
 use JetBrains\PhpStorm\NoReturn;
@@ -31,7 +33,11 @@ function testFoo(
     #[PhpStormStubsElementAvailable(from: '7.2', to: '8.1')]
     #[ExpectedValues([CONSTANT_TO_MIGRATE, 2, 3])]
     $third = 3,
-    $fourth = 0,
+    #[ExpectedValues([
+        'boolean', 'integer', 'double', 'string', 'array', 'object', 'resource', 'NULL', 'unknown type', 'resource (closed)'
+    ])]
+    $fourth,
+    $class = stdClass::class,
     string $datetime = 'now',
     #[TypeContract(true: 'int', false: 'int')]
     $affectingReturn = true,
@@ -39,7 +45,8 @@ function testFoo(
     #[PhpStormStubsElementAvailable(from: '7.3')] #[LanguageLevelTypeAware(['8.0' => 'int|null'], default: 'int')] $scale = null,
     #[ArrayShape(['first' => 'int', 'second' => 'string'])]
     $array = [],
-    #[PhpStormStubsElementAvailable(from: '5.3', to: '7.4')] $arrays, array ...$arrays
+    #[TypeAware(['8.0' => 'int'], default: '')] #[EV([Collator::PRIMARY])] $strength = 0,
+    #[PhpStormStubsElementAvailable(from: '5.3', to: '7.4')] $arrays, array ...$arrays,
 ): bool|stdClass {}
 
 #[NoReturn]
