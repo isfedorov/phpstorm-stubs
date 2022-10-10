@@ -37,6 +37,8 @@ function testFoo(
         'boolean', 'integer', 'double', 'string', 'array', 'object', 'resource', 'NULL', 'unknown type', 'resource (closed)'
     ])]
     $fourth,
+    $special = "\n",
+    $special2 = "\\",
     $class = stdClass::class,
     string $datetime = 'now',
     #[TypeContract(true: 'int', false: 'int')]
