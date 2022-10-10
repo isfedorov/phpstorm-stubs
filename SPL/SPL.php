@@ -782,7 +782,7 @@ class CachingIterator extends IteratorIterator implements ArrayAccess, Countable
      * @param Iterator $iterator The iterator to cache.
      * @param int $flags [optional] A bitmask of flags. See CachingIterator class constants for details.
      */
-    public function __construct(Iterator $iterator, #[LanguageLevelTypeAware(['8.0' => 'int'], default: '')] $flags = self::CALL_TOSTRING) {}
+    public function __construct(Iterator $iterator, #[LanguageLevelTypeAware(['8.0' => 'int'], default: '')] $flags = CachingIterator::CALL_TOSTRING) {}
 
     /**
      * Rewind the iterator
@@ -1177,7 +1177,7 @@ class RegexIterator extends FilterIterator
     public function __construct(
         Iterator $iterator,
         #[LanguageLevelTypeAware(['8.0' => 'string'], default: '')] $pattern,
-        #[LanguageLevelTypeAware(['8.0' => 'int'], default: '')] $mode = self::MATCH,
+        #[LanguageLevelTypeAware(['8.0' => 'int'], default: '')] $mode = RegexIterator::MATCH,
         #[LanguageLevelTypeAware(['8.0' => 'int'], default: '')] $flags = 0,
         #[LanguageLevelTypeAware(['8.0' => 'int'], default: '')] $pregFlags = 0
     ) {}
