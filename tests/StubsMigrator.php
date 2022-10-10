@@ -13,8 +13,10 @@ use JetBrains\PhpStorm\Internal\TentativeType;
 use JetBrains\PhpStorm\Language;
 use JetBrains\PhpStorm\NoReturn;
 use JetBrains\PhpStorm\Pure;
+use PhpParser\Node\Expr\ClassConstFetch;
 use PhpParser\Node\Expr\ConstFetch;
 use PhpParser\Node\Expr\UnaryMinus;
+use PhpParser\Node\Scalar\String_;
 use StubTests\Model\BasePHPClass;
 use StubTests\Model\BasePHPElement;
 use StubTests\Model\PHPClass;
@@ -365,12 +367,14 @@ EOF;
             }
             $isReference = $parameter->is_passed_by_ref;
             $isVariadic = $parameter->is_vararg;
-            $typeAdvanced = $isVariadic ? "..." : "";
-            $typeAdvanced .= $isReference ? "&" : "";
+            $typeAdvanced = $isReference ? '&' : '';
+            $typeAdvanced .= $isVariadic ? "..." : "";
             $result .= "$resultType $typeAdvanced$$parameter->name";
             if (!empty($parameter->defaultValue)) {
                 if ($parameter->defaultValue instanceof ConstFetch) {
                     $default = (string)$parameter->defaultValue->name;
+                } elseif($parameter->defaultValue instanceof ClassConstFetch) {
+                    $default = $parameter->defaultValue->class . "::" . $parameter->defaultValue->name;
                 } else {
                     $default = PHPFunction::getStringRepresentationOfDefaultParameterValue(
                         $parameter->defaultValue,
@@ -489,6 +493,8 @@ EOF;
             foreach ($args[0]->value->items as $item) {
                 if ($item->value instanceof UnaryMinus) {
                     $value = "-" . $item->value->expr->value;
+                } elseif($item->value instanceof String_) {
+                    $value = "\"{$item->value->value}\"";
                 } else {
                     $value = $item->value->name ?? strval($item->value->value);
                 }
