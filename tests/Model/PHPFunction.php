@@ -33,8 +33,11 @@ use function array_filter;
 use function array_pop;
 use function array_push;
 use function implode;
+use function json_encode;
+use function preg_match;
 use function property_exists;
 use function sizeof;
+use function str_starts_with;
 use function strval;
 
 class PHPFunction extends BasePHPElement
@@ -76,7 +79,11 @@ class PHPFunction extends BasePHPElement
                 $value = $defaultValueName;
             }
         } elseif ($defaultValue instanceof String_ || $defaultValue instanceof DNumber) {
-            $value = "'" . $defaultValue->value . "'";
+            if (preg_match( '/\R/', $defaultValue->value) === 1 || preg_match( '/\\\\/', $defaultValue->value) === 1) {
+                $value = json_encode($defaultValue->value);
+            } else {
+                $value = "'" . $defaultValue->value . "'";
+            }
         } elseif ($defaultValue instanceof LNumber) {
             $value = $defaultValue->value;
         } elseif ($defaultValue instanceof BitwiseOr) {
