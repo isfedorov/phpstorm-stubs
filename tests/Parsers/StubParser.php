@@ -107,7 +107,7 @@ class StubParser
         }
     }
 
-    private static function stubBelongsToCore(SplFileInfo $file, array $coreStubDirectories): bool
+    public static function stubBelongsToCore(SplFileInfo $file, array $coreStubDirectories): bool
     {
         $filePath = dirname($file->getRealPath());
         while (stripos($filePath, 'phpstorm-stubs') !== strlen($filePath) - strlen('phpstorm-stubs')) {

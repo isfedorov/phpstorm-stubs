@@ -273,17 +273,18 @@ EOF;
         return $resulString;
     }
 
-    private static function getAllConstantsOfClassAsString(BasePHPClass $interface, $version): string
+    private static function getAllConstantsOfClassAsString(BasePHPClass $class, $version): string
     {
-        $constants = array_filter($interface->constants, function (PHPConst $const) use ($version) {
+        $constants = array_filter($class->constants, function (PHPConst $const) use ($version) {
             return in_array($version, ParserUtils::getAvailableInVersions($const));
         });
         $resulString = implode("\n", array_map(function (PHPConst $const) use ($version) {
             $attributes = implode("\n", self::getAttributesAsStrings($const->attributes, $version));
+            $value = is_string($const->value) ? "'$const->value'" : $const->value;
             $result = <<<EOF
 {$const->phpdoc}
 {$attributes}
-{$const->visibility} const {$const->name}={$const->value};\n
+{$const->visibility} const {$const->name}={$value};\n
 EOF;
             return $result;
         }, $constants));
@@ -363,8 +364,10 @@ EOF;
                 }
             }
             $isReference = $parameter->is_passed_by_ref;
-
-            $result .= $isReference ? "$resultType &$$parameter->name" : "$resultType $$parameter->name";
+            $isVariadic = $parameter->is_vararg;
+            $typeAdvanced = $isVariadic ? "..." : "";
+            $typeAdvanced .= $isReference ? "&" : "";
+            $result .= "$resultType $typeAdvanced$$parameter->name";
             if (!empty($parameter->defaultValue)) {
                 if ($parameter->defaultValue instanceof ConstFetch) {
                     $default = (string)$parameter->defaultValue->name;
