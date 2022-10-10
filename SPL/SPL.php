@@ -268,7 +268,7 @@ class RecursiveIteratorIterator implements OuterIterator
      */
     public function __construct(
         Traversable $iterator,
-        #[LanguageLevelTypeAware(['8.0' => 'int'], default: '')] $mode = self::LEAVES_ONLY,
+        #[LanguageLevelTypeAware(['8.0' => 'int'], default: '')] $mode = RecursiveIteratorIterator::LEAVES_ONLY,
         #[LanguageLevelTypeAware(['8.0' => 'int'], default: '')] $flags = 0
     ) {}
 
