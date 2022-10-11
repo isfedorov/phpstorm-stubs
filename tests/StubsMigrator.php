@@ -496,7 +496,7 @@ EOF;
                 } elseif($item->value instanceof String_) {
                     $value = "\"{$item->value->value}\"";
                 } elseif($item->value instanceof ClassConstFetch) {
-                    $value = "\\{$args[0]->value->class}::{$args[0]->value->name}";
+                    $value = "\\{$item->value->class}::{$item->value->name}";
                 } else {
                     $value = $item->value->name ?? strval($item->value->value);
                 }
