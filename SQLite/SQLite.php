@@ -9,7 +9,7 @@ use JetBrains\PhpStorm\Pure;
 class SQLiteDatabase
 {
     /**
-     * (PHP 5 &lt; 5.4.0, PECL sqlite &gt;= 1.0.0)
+     * (PHP 5 &lt; 5.4.0, PECL sqlite >= 1.0.0)
      * @link https://php.net/manual/en/function.sqlite-open.php
      * @param string $filename <p>The filename of the SQLite database. If the file does not exist, SQLite will attempt to create it. PHP must have write permissions to the file if data is inserted, the database schema is modified or to create the database if it does not exist.</p>
      * @param int $mode [optional] <p>The mode of the file. Intended to be used to open the database in read-only mode. Presently, this parameter is ignored by the sqlite library. The default value for mode is the octal value 0666 and this is the recommended value.</p>
@@ -18,7 +18,7 @@ class SQLiteDatabase
     final public function __construct($filename, $mode = 0666, &$error_message) {}
 
     /**
-     * (PHP 5 &lt; 5.4.0, PECL sqlite &gt;= 1.0.0)
+     * (PHP 5 &lt; 5.4.0, PECL sqlite >= 1.0.0)
      * @link https://php.net/manual/en/function.sqlite-query.php
      * @param string $query <p>
      * The query to be executed.
@@ -52,7 +52,7 @@ class SQLiteDatabase
     public function query($query, $result_type, &$error_message) {}
 
     /**
-     * (PHP 5 &lt; 5.4.0, PECL sqlite &gt;= 1.0.0)
+     * (PHP 5 &lt; 5.4.0, PECL sqlite >= 1.0.0)
      * @link https://php.net/manual/en/function.sqlite-exec.php
      * @param string $query <p>
      * The query to be executed.
@@ -75,7 +75,7 @@ class SQLiteDatabase
     public function queryExec($query, &$error_message) {}
 
     /**
-     * (PHP 5 &lt; 5.4.0, PECL sqlite &gt;= 1.0.0)
+     * (PHP 5 &lt; 5.4.0, PECL sqlite >= 1.0.0)
      * Execute a query against a given database and returns an array
      * @link https://php.net/manual/en/function.sqlite-array-query.php
      * @param string $query <p>
@@ -110,7 +110,7 @@ class SQLiteDatabase
     public function arrayQuery($query, $result_type, $decode_binary) {}
 
     /**
-     * (PHP 5 &lt; 5.4.0, PECL sqlite &gt;= 1.0.1)
+     * (PHP 5 &lt; 5.4.0, PECL sqlite >= 1.0.1)
      * Executes a query and returns either an array for one single column or the value of the first row
      * @link https://php.net/manual/en/function.sqlite-single-query.php
      * @param string $query
@@ -121,7 +121,7 @@ class SQLiteDatabase
     public function singleQuery($query, $first_row_only, $decode_binary) {}
 
     /**
-     * (PHP 5 &lt; 5.4.0, PECL sqlite &gt;= 1.0.0)
+     * (PHP 5 &lt; 5.4.0, PECL sqlite >= 1.0.0)
      * Execute a query that does not prefetch and buffer all data
      * @link https://php.net/manual/en/function.sqlite-unbuffered-query.php
      * @param string $query  <p>
@@ -141,7 +141,7 @@ class SQLiteDatabase
     public function unbufferedQuery($query, $result_type = SQLITE_BOTH, &$error_message = null) {}
 
     /**
-     * (PHP 5 &lt; 5.4.0, PECL sqlite &gt;= 1.0.0)
+     * (PHP 5 &lt; 5.4.0, PECL sqlite >= 1.0.0)
      * Returns the rowid of the most recently inserted row
      * @link https://php.net/manual/en/function.sqlite-last-insert-rowid.php
      * @return int Returns the row id, as an integer.
@@ -149,7 +149,7 @@ class SQLiteDatabase
     public function lastInsertRowid() {}
 
     /**
-     * (PHP 5 &lt; 5.4.0, PECL sqlite &gt;= 1.0.0)
+     * (PHP 5 &lt; 5.4.0, PECL sqlite >= 1.0.0)
      * Returns the number of rows that were changed by the most recent SQL statement
      * @link https://php.net/manual/en/function.sqlite-changes.php
      * @return int Returns the number of changed rows.
@@ -157,7 +157,7 @@ class SQLiteDatabase
     public function changes() {}
 
     /**
-     * (PHP 5 &lt; 5.4.0, PECL sqlite &gt;= 1.0.0)
+     * (PHP 5 &lt; 5.4.0, PECL sqlite >= 1.0.0)
      * Register an aggregating UDF for use in SQL statements
      * @link https://php.net/manual/en/function.sqlite-create-aggregate.php
      * @param string $function_name <p>The name of the function used in SQL statements.</p>
@@ -168,7 +168,7 @@ class SQLiteDatabase
     public function createAggregate($function_name, $step_func, $finalize_func, $num_args = -1) {}
 
     /**
-     * (PHP 5 &lt; 5.4.0, PECL sqlite &gt;= 1.0.0)
+     * (PHP 5 &lt; 5.4.0, PECL sqlite >= 1.0.0)
      * Registers a "regular" User Defined Function for use in SQL statements
      * @link https://php.net/manual/en/function.sqlite-create-function.php
      * @param string $function_name <p>The name of the function used in SQL statements.</p>
@@ -187,7 +187,7 @@ class SQLiteDatabase
     public function createFunction($function_name, $callback, $num_args = -1) {}
 
     /**
-     * (PHP 5 &lt; 5.4.0, PECL sqlite &gt;= 1.0.0)
+     * (PHP 5 &lt; 5.4.0, PECL sqlite >= 1.0.0)
      * Set busy timeout duration, or disable busy handlers
      * @link https://php.net/manual/en/function.sqlite-busy-timeout.php
      * @param int $milliseconds <p> The number of milliseconds. When set to 0, busy handlers will be disabled and SQLite will return immediately with a <b>SQLITE_BUSY</b> status code if another process/thread has the database locked for an update.
@@ -197,7 +197,7 @@ class SQLiteDatabase
     public function busyTimeout($milliseconds) {}
 
     /**
-     * (PHP 5 &lt; 5.4.0, PECL sqlite &gt;= 1.0.0)
+     * (PHP 5 &lt; 5.4.0, PECL sqlite >= 1.0.0)
      * Returns the error code of the last error for a database
      * @link https://php.net/manual/en/function.sqlite-last-error.php
      * @return int Returns an error code, or 0 if no error occurred.
@@ -236,7 +236,7 @@ class SQLiteDatabase
 final class SQLiteResult implements Iterator, Countable
 {
     /**
-     * (PHP 5 &lt; 5.4.0, PECL sqlite &gt;= 1.0.0)
+     * (PHP 5 &lt; 5.4.0, PECL sqlite >= 1.0.0)
      * Fetches the next row from a result set as an array
      * @link https://php.net/manual/en/function.sqlite-fetch-array.php
      * @param int $result_type [optional]
@@ -280,7 +280,7 @@ final class SQLiteResult implements Iterator, Countable
     public function fetchObject($class_name, $ctor_params, $decode_binary = true) {}
 
     /**
-     * (PHP 5 &lt; 5.4.0, PECL sqlite &gt;= 1.0.1)
+     * (PHP 5 &lt; 5.4.0, PECL sqlite >= 1.0.1)
      * Fetches the first column of a result set as a string
      * @link https://php.net/manual/en/function.sqlite-fetch-single.php
      * @param bool $decode_binary [optional]
@@ -304,7 +304,7 @@ final class SQLiteResult implements Iterator, Countable
     public function fetchAll($result_type, $decode_binary = true) {}
 
     /**
-     * (PHP 5 &lt; 5.4.0, PECL sqlite &gt;= 1.0.0)
+     * (PHP 5 &lt; 5.4.0, PECL sqlite >= 1.0.0)
      * Fetches a column from the current row of a result set
      * @link https://php.net/manual/en/function.sqlite-column.php
      * @param $index_or_name
@@ -319,7 +319,7 @@ final class SQLiteResult implements Iterator, Countable
     public function column($index_or_name, $decode_binary = true) {}
 
     /**
-     * (PHP 5 &lt; 5.4.0, PECL sqlite &gt;= 1.0.0)
+     * (PHP 5 &lt; 5.4.0, PECL sqlite >= 1.0.0)
      * Returns the number of fields in a result set
      * @link https://php.net/manual/en/function.sqlite-num-fields.php
      * @return int <p>Returns the number of fields, as an integer.</p>
@@ -327,7 +327,7 @@ final class SQLiteResult implements Iterator, Countable
     public function numFields() {}
 
     /**
-     * (PHP 5 &lt; 5.4.0, PECL sqlite &gt;= 1.0.0)
+     * (PHP 5 &lt; 5.4.0, PECL sqlite >= 1.0.0)
      * Returns the name of a particular field
      * @link https://php.net/manual/en/function.sqlite-field-name.php
      * @param int $field_index <p>The ordinal column number in the result set.</p>
@@ -344,7 +344,7 @@ final class SQLiteResult implements Iterator, Countable
     public function fieldName($field_index) {}
 
     /**
-     * (PHP 5 &lt; 5.4.0, PECL sqlite &gt;= 1.0.0)
+     * (PHP 5 &lt; 5.4.0, PECL sqlite >= 1.0.0)
      * Fetches the current row from a result set as an array
      * @link https://php.net/manual/en/function.sqlite-current.php
      * @param int $result_type [optional] <p>The optional <i>result_type</i>
@@ -440,7 +440,7 @@ final class SQLiteResult implements Iterator, Countable
     public function hasPrev() {}
 
     /**
-     * (PHP 5 &lt; 5.4.0, PECL sqlite &gt;= 1.0.0)
+     * (PHP 5 &lt; 5.4.0, PECL sqlite >= 1.0.0)
      * Returns the number of rows in a buffered result set
      * @link https://php.net/manual/en/function.sqlite-num-rows.php
      * @return int Returns the number of rows, as an integer.
@@ -448,7 +448,7 @@ final class SQLiteResult implements Iterator, Countable
     public function numRows() {}
 
     /**
-     * (PHP 5 &lt; 5.4.0, PECL sqlite &gt;= 1.0.0)
+     * (PHP 5 &lt; 5.4.0, PECL sqlite >= 1.0.0)
      * Seek to a particular row number of a buffered result set
      * @link https://php.net/manual/en/function.sqlite-seek.php
      * @param $row
@@ -553,7 +553,7 @@ final class SQLiteException extends RuntimeException
 }
 
 /**
- * (PHP 5, PECL sqlite &gt;= 1.0.0)<br/>
+ * (PHP 5, PECL sqlite >= 1.0.0)<br/>
  * Opens a SQLite database and create the database if it does not exist
  * @link https://php.net/manual/en/function.sqlite-open.php
  * @param string $filename <p>
@@ -577,7 +577,7 @@ final class SQLiteException extends RuntimeException
 function sqlite_open($filename, $mode = null, &$error_message = null) {}
 
 /**
- * (PHP 5, PECL sqlite &gt;= 1.0.0)<br/>
+ * (PHP 5, PECL sqlite >= 1.0.0)<br/>
  * Opens a persistent handle to an SQLite database and create the database if it does not exist
  * @link https://php.net/manual/en/function.sqlite-popen.php
  * @param string $filename <p>
@@ -601,7 +601,7 @@ function sqlite_open($filename, $mode = null, &$error_message = null) {}
 function sqlite_popen($filename, $mode = null, &$error_message = null) {}
 
 /**
- * (PHP 5, PECL sqlite &gt;= 1.0.0)<br/>
+ * (PHP 5, PECL sqlite >= 1.0.0)<br/>
  * Closes an open SQLite database
  * @link https://php.net/manual/en/function.sqlite-close.php
  * @param resource $dbhandle <p>
@@ -613,7 +613,7 @@ function sqlite_popen($filename, $mode = null, &$error_message = null) {}
 function sqlite_close($dbhandle) {}
 
 /**
- * (PHP 5 &lt; 5.4.0, PECL sqlite &gt;= 1.0.0)<br/>
+ * (PHP 5 &lt; 5.4.0, PECL sqlite >= 1.0.0)<br/>
  * Executes a query against a given database and returns a result handle
  * there are two signatures with <i>$query</i> first and with <i>$dbhandle</i> first.
  * @link https://php.net/manual/en/function.sqlite-query.php
@@ -659,7 +659,7 @@ function sqlite_close($dbhandle) {}
 function sqlite_query($query, $dbhandle, $result_type = SQLITE_BOTH, &$error_msg = null) {}
 
 /**
- * (PHP 5, PECL sqlite &gt;= 1.0.3)<br/>
+ * (PHP 5, PECL sqlite >= 1.0.3)<br/>
  * Executes a result-less query against a given database
  * @link https://php.net/manual/en/function.sqlite-exec.php
  * @param string $query <p>
@@ -685,7 +685,7 @@ function sqlite_query($query, $dbhandle, $result_type = SQLITE_BOTH, &$error_msg
 function sqlite_exec($dbhandle, $query, &$error_msg = null) {}
 
 /**
- * (PHP 5, PECL sqlite &gt;= 1.0.0)<br/>
+ * (PHP 5, PECL sqlite >= 1.0.0)<br/>
  * Execute a query against a given database and returns an array
  * @link https://php.net/manual/en/function.sqlite-array-query.php
  * @param string $query <p>
@@ -723,7 +723,7 @@ function sqlite_exec($dbhandle, $query, &$error_msg = null) {}
 function sqlite_array_query($dbhandle, $query, $result_type = null, $decode_binary = null) {}
 
 /**
- * (PHP 5, PECL sqlite &gt;= 1.0.1)<br/>
+ * (PHP 5, PECL sqlite >= 1.0.1)<br/>
  * Executes a query and returns either an array for one single column or the value of the first row
  * @link https://php.net/manual/en/function.sqlite-single-query.php
  * @param resource $db
@@ -735,7 +735,7 @@ function sqlite_array_query($dbhandle, $query, $result_type = null, $decode_bina
 function sqlite_single_query($db, $query, $first_row_only = null, $decode_binary = null) {}
 
 /**
- * (PHP 5, PECL sqlite &gt;= 1.0.0)<br/>
+ * (PHP 5, PECL sqlite >= 1.0.0)<br/>
  * Fetches the next row from a result set as an array
  * @link https://php.net/manual/en/function.sqlite-fetch-array.php
  * @param resource $result <p>The SQLite result resource. This parameter is not required when using the object-oriented method.</p>
@@ -758,7 +758,7 @@ function sqlite_fetch_array($result, $result_type = SQLITE_BOTH, $decode_binary 
 function sqlite_fetch_object($result, $class_name = null, ?array $ctor_params = null, $decode_binary = null) {}
 
 /**
- * (PHP 5, PECL sqlite &gt;= 1.0.1)<br/>
+ * (PHP 5, PECL sqlite >= 1.0.1)<br/>
  * Fetches the first column of a result set as a string
  * @link https://php.net/manual/en/function.sqlite-fetch-single.php
  * @param resource $result <p>The SQLite result resource. This parameter is not required when using the object-oriented method.</p>
@@ -773,7 +773,7 @@ function sqlite_fetch_object($result, $class_name = null, ?array $ctor_params = 
 function sqlite_fetch_single($result, $decode_binary = null) {}
 
 /**
- * (PHP 5, PECL sqlite &gt;= 1.0.0)<br/>
+ * (PHP 5, PECL sqlite >= 1.0.0)<br/>
  * Alias:
  * {@see sqlite_fetch_single}
  * @link https://php.net/manual/en/function.sqlite-fetch-string.php
@@ -789,7 +789,7 @@ function sqlite_fetch_single($result, $decode_binary = null) {}
 function sqlite_fetch_string($result, $decode_binary) {}
 
 /**
- * (PHP 5, PECL sqlite &gt;= 1.0.0)<br/>
+ * (PHP 5, PECL sqlite >= 1.0.0)<br/>
  * Fetches all rows from a result set as an array of arrays
  * @link https://php.net/manual/en/function.sqlite-fetch-all.php
  * @param int $result_type [optional]
@@ -806,7 +806,7 @@ function sqlite_fetch_string($result, $decode_binary) {}
 function sqlite_fetch_all($result_type = null, $decode_binary = null) {}
 
 /**
- * (PHP 5, PECL sqlite &gt;= 1.0.0)<br/>
+ * (PHP 5, PECL sqlite >= 1.0.0)<br/>
  * Fetches the current row from a result set as an array
  * @link https://php.net/manual/en/function.sqlite-current.php
  * @param resource $result <p>The SQLite result resource. This parameter is not required when using the object-oriented method.</p>
@@ -818,7 +818,7 @@ function sqlite_fetch_all($result_type = null, $decode_binary = null) {}
 function sqlite_current($result, $result_type = null, $decode_binary = null) {}
 
 /**
- * (PHP 5, PECL sqlite &gt;= 1.0.0)<br/>
+ * (PHP 5, PECL sqlite >= 1.0.0)<br/>
  * Fetches a column from the current row of a result set
  * @link https://php.net/manual/en/function.sqlite-column.php
  * @param resource $result <p>The SQLite result resource. This parameter is not required when using the object-oriented method.</p>
@@ -836,7 +836,7 @@ function sqlite_current($result, $result_type = null, $decode_binary = null) {}
 function sqlite_column($result, $index_or_name, $decode_binary = null) {}
 
 /**
- * (PHP 5, PECL sqlite &gt;= 1.0.0)<br/>
+ * (PHP 5, PECL sqlite >= 1.0.0)<br/>
  * Returns the version of the linked SQLite library
  * @link https://php.net/manual/en/function.sqlite-libversion.php
  * @return string the library version, as a string.
@@ -844,7 +844,7 @@ function sqlite_column($result, $index_or_name, $decode_binary = null) {}
 function sqlite_libversion() {}
 
 /**
- * (PHP 5, PECL sqlite &gt;= 1.0.0)<br/>
+ * (PHP 5, PECL sqlite >= 1.0.0)<br/>
  * Returns the encoding of the linked SQLite library
  * @link https://php.net/manual/en/function.sqlite-libencoding.php
  * @return string the library encoding.
@@ -852,7 +852,7 @@ function sqlite_libversion() {}
 function sqlite_libencoding() {}
 
 /**
- * (PHP 5, PECL sqlite &gt;= 1.0.0)<br/>
+ * (PHP 5, PECL sqlite >= 1.0.0)<br/>
  * Returns the number of rows that were changed by the most
  * recent SQL statement
  * @link https://php.net/manual/en/function.sqlite-changes.php
@@ -862,7 +862,7 @@ function sqlite_libencoding() {}
 function sqlite_changes($db) {}
 
 /**
- * (PHP 5, PECL sqlite &gt;= 1.0.0)<br/>
+ * (PHP 5, PECL sqlite >= 1.0.0)<br/>
  * Returns the rowid of the most recently inserted row
  * @link https://php.net/manual/en/function.sqlite-last-insert-rowid.php
  * @param resource $dbhandle <p>The SQLite Database resource; returned from
@@ -872,7 +872,7 @@ function sqlite_changes($db) {}
 function sqlite_last_insert_rowid($dbhandle) {}
 
 /**
- * (PHP 5, PECL sqlite &gt;= 1.0.0)<br/>
+ * (PHP 5, PECL sqlite >= 1.0.0)<br/>
  * Returns the number of rows in a buffered result set
  * @link https://php.net/manual/en/function.sqlite-num-rows.php
  * @param resource $result <p>
@@ -886,7 +886,7 @@ function sqlite_last_insert_rowid($dbhandle) {}
 function sqlite_num_rows($result) {}
 
 /**
- * (PHP 5, PECL sqlite &gt;= 1.0.0)<br/>
+ * (PHP 5, PECL sqlite >= 1.0.0)<br/>
  * Returns the number of fields in a result set
  * @link https://php.net/manual/en/function.sqlite-num-fields.php
  * @param resource $result <p>The SQLite result resource. This parameter is not required when using the object-oriented method.</p>
@@ -895,7 +895,7 @@ function sqlite_num_rows($result) {}
 function sqlite_num_fields($result) {}
 
 /**
- * (PHP 5, PECL sqlite &gt;= 1.0.0)<br/>
+ * (PHP 5, PECL sqlite >= 1.0.0)<br/>
  * Returns the name of a particular field
  * @link https://php.net/manual/en/function.sqlite-field-name.php
  * @param resource $result <p>The SQLite result resource. This parameter is not required when using the object-oriented method.</p>
@@ -908,7 +908,7 @@ function sqlite_num_fields($result) {}
 function sqlite_field_name($result, $field_index) {}
 
 /**
- * (PHP 5, PECL sqlite &gt;= 1.0.0)<br/>
+ * (PHP 5, PECL sqlite >= 1.0.0)<br/>
  * Seek to a particular row number of a buffered result set
  * @link https://php.net/manual/en/function.sqlite-seek.php
  * @param resource $result <p>
@@ -926,7 +926,7 @@ function sqlite_field_name($result, $field_index) {}
 function sqlite_seek($result, $rownum) {}
 
 /**
- * (PHP 5, PECL sqlite &gt;= 1.0.0)<br/>
+ * (PHP 5, PECL sqlite >= 1.0.0)<br/>
  * Seek to the first row number
  * @link https://php.net/manual/en/function.sqlite-rewind.php
  * @param resource $result <p>
@@ -940,7 +940,7 @@ function sqlite_seek($result, $rownum) {}
 function sqlite_rewind($result) {}
 
 /**
- * (PHP 5, PECL sqlite &gt;= 1.0.0)<br/>
+ * (PHP 5, PECL sqlite >= 1.0.0)<br/>
  * Seek to the next row number
  * @link https://php.net/manual/en/function.sqlite-next.php
  * @param resource $result <p>
@@ -981,7 +981,7 @@ function sqlite_prev($result) {}
 function sqlite_valid($result) {}
 
 /**
- * (PHP 5, PECL sqlite &gt;= 1.0.0)<br/>
+ * (PHP 5, PECL sqlite >= 1.0.0)<br/>
  * Finds whether or not more rows are available
  * @link https://php.net/manual/en/function.sqlite-has-more.php
  * @param resource $result <p>
@@ -1005,7 +1005,7 @@ function sqlite_has_more($result) {}
 function sqlite_has_prev($result) {}
 
 /**
- * (PHP 5, PECL sqlite &gt;= 1.0.0)<br/>
+ * (PHP 5, PECL sqlite >= 1.0.0)<br/>
  * Escapes a string for use as a query parameter
  * @link https://php.net/manual/en/function.sqlite-escape-string.php
  * @param string $item <p>
@@ -1022,7 +1022,7 @@ function sqlite_has_prev($result) {}
 function sqlite_escape_string($item) {}
 
 /**
- * (PHP 5, PECL sqlite &gt;= 1.0.0)<br/>
+ * (PHP 5, PECL sqlite >= 1.0.0)<br/>
  * Set busy timeout duration, or disable busy handlers
  * @link https://php.net/manual/en/function.sqlite-busy-timeout.php
  * @param resource $dbhandle <p>The SQLite Database resource; returned from
@@ -1046,7 +1046,7 @@ function sqlite_escape_string($item) {}
 function sqlite_busy_timeout($dbhandle, $milliseconds) {}
 
 /**
- * (PHP 5, PECL sqlite &gt;= 1.0.0)<br/>
+ * (PHP 5, PECL sqlite >= 1.0.0)<br/>
  * Returns the error code of the last error for a database
  * @link https://php.net/manual/en/function.sqlite-last-error.php
  * @param resource $dbhandle <p>The SQLite Database resource; returned from
@@ -1057,7 +1057,7 @@ function sqlite_busy_timeout($dbhandle, $milliseconds) {}
 function sqlite_last_error($dbhandle) {}
 
 /**
- * (PHP 5, PECL sqlite &gt;= 1.0.0)<br/>
+ * (PHP 5, PECL sqlite >= 1.0.0)<br/>
  * Returns the textual description of an error code
  * @link https://php.net/manual/en/function.sqlite-error-string.php
  * @param int $error_code <p>
@@ -1070,7 +1070,7 @@ function sqlite_last_error($dbhandle) {}
 function sqlite_error_string($error_code) {}
 
 /**
- * (PHP 5, PECL sqlite &gt;= 1.0.0)<br/>
+ * (PHP 5, PECL sqlite >= 1.0.0)<br/>
  * Execute a query that does not prefetch and buffer all data
  * @link https://php.net/manual/en/function.sqlite-unbuffered-query.php
  * @param resource $dbhandle <p>The SQLite Database resource; returned from
@@ -1098,7 +1098,7 @@ function sqlite_error_string($error_code) {}
 function sqlite_unbuffered_query($dbhandle, $query, $result_type = SQLITE_BOTH, &$error_msg = null) {}
 
 /**
- * (PHP 5, PECL sqlite &gt;= 1.0.0)<br/>
+ * (PHP 5, PECL sqlite >= 1.0.0)<br/>
  * Register an aggregating UDF for use in SQL statements
  * @link https://php.net/manual/en/function.sqlite-create-aggregate.php
  * @param resource $dbhandle <p>The SQLite Database resource; returned from
@@ -1122,7 +1122,7 @@ function sqlite_unbuffered_query($dbhandle, $query, $result_type = SQLITE_BOTH, 
 function sqlite_create_aggregate($dbhandle, $function_name, $step_func, $finalize_func, $num_args = null) {}
 
 /**
- * (PHP 5, sqlite &gt;= 1.0.0)<br/>
+ * (PHP 5, sqlite >= 1.0.0)<br/>
  * Registers a "regular" User Defined Function for use in SQL statements
  * @link https://php.net/manual/en/function.sqlite-create-function.php
  * @param resource $dbhandle <p>The SQLite Database resource; returned from
@@ -1165,7 +1165,7 @@ function sqlite_create_function($dbhandle, $function_name, $callback, $num_args 
 function sqlite_factory($filename, $mode = null, &$error_message = null) {}
 
 /**
- * (PHP 5, PECL sqlite &gt;= 1.0.0)<br/>
+ * (PHP 5, PECL sqlite >= 1.0.0)<br/>
  * Encode binary data before returning it from an UDF
  * @link https://php.net/manual/en/function.sqlite-udf-encode-binary.php
  * @param string $data <p>
@@ -1176,7 +1176,7 @@ function sqlite_factory($filename, $mode = null, &$error_message = null) {}
 function sqlite_udf_encode_binary($data) {}
 
 /**
- * (PHP 5, PECL sqlite &gt;= 1.0.0)<br/>
+ * (PHP 5, PECL sqlite >= 1.0.0)<br/>
  * Decode binary data passed as parameters to an <acronym>UDF</acronym>
  * @link https://php.net/manual/en/function.sqlite-udf-decode-binary.php
  * @param string $data <p>

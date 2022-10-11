@@ -1332,7 +1332,7 @@ function ldap_control_paged_result_response(#[PhpVersionAware(['8.1' => 'LDAP\Co
 function ldap_escape(string $value, string $ignore = "", int $flags = 0): string {}
 
 /**
- * (PHP 5.4 &gt;= 5.4.26, PHP 5.5 &gt;= 5.5.10, PHP 5.6 &gt;= 5.6.0)
+ * (PHP 5.4 >= 5.4.26, PHP 5.5 >= 5.5.10, PHP 5.6 >= 5.6.0)
  * Batch and execute modifications on an LDAP entry
  * @link https://php.net/manual/en/function.ldap-modify-batch.php
  * @param $ldap <p>

@@ -967,6 +967,7 @@ function date_create(string $datetime = 'now', ?DateTimeZone $timezone): DateTim
  * Time zone of the time.
  * </p>
  * @return DateTimeImmutable|false DateTime object on success or false on failure.
+ * @since 5.5
  */
 #[Pure(true)]
 function date_create_immutable(string $datetime = 'now', ?DateTimeZone $timezone): DateTimeImmutable|false {}

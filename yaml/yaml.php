@@ -61,7 +61,7 @@ define('YAML_MERGE_TAG', 'tag:yaml.org,2002:merge');
 define('YAML_BINARY_TAG', 'tag:yaml.org,2002:binary');
 
 /**
- * (PHP 5 &gt;= 5.2.0, PECL yaml &gt;= 0.5.0)<br/>
+ * (PHP 5 >= 5.2.0, PECL yaml >= 0.5.0)<br/>
  * Send the YAML representation of a value to a file
  * @link https://php.net/manual/en/function.yaml-emit-file.php
  * @param string $filename Path to the file.
@@ -74,7 +74,7 @@ define('YAML_BINARY_TAG', 'tag:yaml.org,2002:binary');
 function yaml_emit_file($filename, $data, $encoding = YAML_ANY_ENCODING, $linebreak = YAML_ANY_BREAK, array $callbacks = []) {}
 
 /**
- * (PHP 5 &gt;= 5.2.0, PECL yaml &gt;= 0.5.0)<br/>
+ * (PHP 5 >= 5.2.0, PECL yaml >= 0.5.0)<br/>
  * @link https://php.net/manual/en/function.yaml-emit.php
  * @param mixed $data The data being encoded. Can be any type except a resource.
  * @param int $encoding [optional] Output character encoding chosen from YAML_ANY_ENCODING, YAML_UTF8_ENCODING, YAML_UTF16LE_ENCODING, YAML_UTF16BE_ENCODING.
@@ -85,7 +85,7 @@ function yaml_emit_file($filename, $data, $encoding = YAML_ANY_ENCODING, $linebr
 function yaml_emit($data, $encoding = YAML_ANY_ENCODING, $linebreak = YAML_ANY_BREAK, array $callbacks = []) {}
 
 /**
- * (PHP 5 &gt;= 5.2.0, PECL yaml &gt;= 0.4.0)<br/>
+ * (PHP 5 >= 5.2.0, PECL yaml >= 0.4.0)<br/>
  * Parse a YAML stream from a file
  * @link https://php.net/manual/en/function.yaml-parse-file.php
  * @param string $filename Path to the file.
@@ -97,7 +97,7 @@ function yaml_emit($data, $encoding = YAML_ANY_ENCODING, $linebreak = YAML_ANY_B
 function yaml_parse_file($filename, $pos = 0, &$ndocs = null, array $callbacks = []) {}
 
 /**
- * (PHP 5 &gt;= 5.2.0, PECL yaml &gt;= 0.4.0)<br/>
+ * (PHP 5 >= 5.2.0, PECL yaml >= 0.4.0)<br/>
  * Parse a Yaml stream from a URL
  * @link https://php.net/manual/en/function.yaml-parse-url.php
  * @param string $url url should be of the form "scheme://...". PHP will search for a protocol handler (also known as a wrapper) for that scheme. If no wrappers for that protocol are registered, PHP will emit a notice to help you track potential problems in your script and then continue as though filename specifies a regular file.
@@ -109,7 +109,7 @@ function yaml_parse_file($filename, $pos = 0, &$ndocs = null, array $callbacks =
 function yaml_parse_url($url, $pos = 0, &$ndocs = null, array $callbacks = []) {}
 
 /**
- * (PHP 5 &gt;= 5.2.0, PECL yaml &gt;= 0.4.0)<br/>
+ * (PHP 5 >= 5.2.0, PECL yaml >= 0.4.0)<br/>
  * Parse a YAML stream
  * @link https://php.net/manual/en/function.yaml-parse.php
  * @param string $input The string to parse as a YAML document stream.

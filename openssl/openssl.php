@@ -768,7 +768,7 @@ function openssl_decrypt(
 ): string|false {}
 
 /**
- * (PHP 5 &gt;= PHP 5.3.3)<br/>
+ * (PHP 5 >= PHP 5.3.3)<br/>
  * Gets the cipher iv length
  * @link https://php.net/manual/en/function.openssl-cipher-iv-length.php
  * @param string $cipher_algo <p>

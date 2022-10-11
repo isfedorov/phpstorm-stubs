@@ -87,12 +87,13 @@ interface DateTimeInterface
 
     /* Methods */
     /**
-     * (PHP 5 &gt;=5.5.0)<br/>
+     * (PHP 5 >=5.5.0)<br/>
      * Returns the difference between two DateTime objects
      * @link https://secure.php.net/manual/en/datetime.diff.php
      * @param DateTimeInterface $targetObject <p>The date to compare to.</p>
      * @param bool $absolute <p>Should the interval be forced to be positive?</p>
      * @return DateInterval
+     * @since 5.5
      * The https://secure.php.net/manual/en/class.dateinterval.php DateInterval} object representing the
      * difference between the two dates.
      */
@@ -103,13 +104,14 @@ interface DateTimeInterface
     ): DateInterval;
 
     /**
-     * (PHP 5 &gt;=5.5.0)<br/>
+     * (PHP 5 >=5.5.0)<br/>
      * Returns date formatted according to given format
      * @link https://secure.php.net/manual/en/datetime.format.php
      * @param string $format <p>
      * Format accepted by  {@link https://secure.php.net/manual/en/function.date.php date()}.
      * </p>
      * @return string
+     * @since 5.5
      * Returns the formatted date string on success or <b>FALSE</b> on failure.
      * Since PHP8, it always returns <b>STRING</b>.
      */
@@ -117,20 +119,22 @@ interface DateTimeInterface
     public function format(#[LanguageLevelTypeAware(['8.0' => 'string'], default: '')] $format): string;
 
     /**
-     * (PHP 5 &gt;=5.5.0)<br/>
+     * (PHP 5 >=5.5.0)<br/>
      * Returns the timezone offset
      * @return int|false
      * Returns the timezone offset in seconds from UTC on success
      * or <b>FALSE</b> on failure. Since PHP8, it always returns <b>INT</b>.
+     * @since 5.5
      */
     #[LanguageLevelTypeAware(["8.0" => "int"], default: "int|false")]
     #[TentativeType]
     public function getOffset(): int;
 
     /**
-     * (PHP 5 &gt;=5.5.0)<br/>
+     * (PHP 5 >=5.5.0)<br/>
      * Gets the Unix timestamp
      * @return int
+     * @since 5.5
      * Returns the Unix timestamp representing the date.
      */
     #[TentativeType]
@@ -138,10 +142,11 @@ interface DateTimeInterface
     public function getTimestamp();
 
     /**
-     * (PHP 5 &gt;=5.5.0)<br/>
+     * (PHP 5 >=5.5.0)<br/>
      * Return time zone relative to given DateTime
      * @link https://secure.php.net/manual/en/datetime.gettimezone.php
      * @return DateTimeZone|false
+     * @since 5.5
      * Returns a {@link https://secure.php.net/manual/en/class.datetimezone.php DateTimeZone} object on success
      * or <b>FALSE</b> on failure.
      */
@@ -149,10 +154,11 @@ interface DateTimeInterface
     public function getTimezone(): DateTimeZone|false;
 
     /**
-     * (PHP 5 &gt;=5.5.0)<br/>
+     * (PHP 5 >=5.5.0)<br/>
      * The __wakeup handler
      * @link https://secure.php.net/manual/en/datetime.wakeup.php
      * @return void Initializes a DateTime object.
+     * @since 5.5
      */
     #[TentativeType]
     public function __wakeup(): void;
@@ -171,7 +177,7 @@ class DateTimeImmutable implements DateTimeInterface
 {
     /* Methods */
     /**
-     * (PHP 5 &gt;=5.5.0)<br/>
+     * (PHP 5 >=5.5.0)<br/>
      * @link https://secure.php.net/manual/en/datetimeimmutable.construct.php
      * @param string $datetime [optional]
      * <p>A date/time string. Valid formats are explained in {@link https://secure.php.net/manual/en/datetime.formats.php Date and Time Formats}.</p>
@@ -185,6 +191,7 @@ class DateTimeImmutable implements DateTimeInterface
      * is a UNIX timestamp (e.g. <em>@946684800</em>) or specifies a timezone (e.g. <em>2010-01-28T15:00:00+02:00</em>).
      * </p></blockquote>
      * @throws Exception Emits Exception in case of an error.
+     * @since 5.5
      */
     public function __construct(
         #[LanguageLevelTypeAware(['8.0' => 'string'], default: '')] $datetime = "now",
@@ -192,23 +199,25 @@ class DateTimeImmutable implements DateTimeInterface
     ) {}
 
     /**
-     * (PHP 5 &gt;=5.5.0)<br/>
+     * (PHP 5 >=5.5.0)<br/>
      * Adds an amount of days, months, years, hours, minutes and seconds
      * @param DateInterval $interval
      * @return static
      * @link https://secure.php.net/manual/en/datetimeimmutable.add.php
+     * @since 5.5
      */
     #[TentativeType]
     public function add(DateInterval $interval): DateTimeImmutable {}
 
     /**
-     * (PHP 5 &gt;=5.5.0)<br/>
+     * (PHP 5 >=5.5.0)<br/>
      * Returns new DateTimeImmutable object formatted according to the specified format
      * @link https://secure.php.net/manual/en/datetimeimmutable.createfromformat.php
      * @param string $format
      * @param string $datetime
      * @param null|DateTimeZone $timezone [optional]
      * @return DateTimeImmutable|false
+     * @since 5.5
      */
     #[TentativeType]
     public static function createFromFormat(
@@ -218,51 +227,55 @@ class DateTimeImmutable implements DateTimeInterface
     ): DateTimeImmutable|false {}
 
     /**
-     * (PHP 5 &gt;=5.6.0)<br/>
+     * (PHP 5 >=5.6.0)<br/>
      * Returns new DateTimeImmutable object encapsulating the given DateTime object
      * @link https://secure.php.net/manual/en/datetimeimmutable.createfrommutable.php
      * @param DateTime $object The mutable DateTime object that you want to convert to an immutable version. This object is not modified, but instead a new DateTimeImmutable object is created containing the same date time and timezone information.
      * @return DateTimeImmutable returns a new DateTimeImmutable instance.
+     * @since 5.6
      */
     #[TentativeType]
     #[LanguageLevelTypeAware(['8.2' => 'static'], default: 'DateTimeImmutable')]
     public static function createFromMutable(DateTime $object) {}
 
     /**
-     * (PHP 5 &gt;=5.5.0)<br/>
+     * (PHP 5 >=5.5.0)<br/>
      * Returns the warnings and errors
      * @link https://secure.php.net/manual/en/datetimeimmutable.getlasterrors.php
      * @return array|false Returns array containing info about warnings and errors.
+     * @since 5.5
      */
     #[ArrayShape(["warning_count" => "int", "warnings" => "string[]", "error_count" => "int", "errors" => "string[]"])]
     #[TentativeType]
     public static function getLastErrors(): array|false {}
 
     /**
-     * (PHP 5 &gt;=5.5.0)<br/>
+     * (PHP 5 >=5.5.0)<br/>
      * Alters the timestamp
      * @link https://secure.php.net/manual/en/datetimeimmutable.modify.php
      * @param string $modifier <p>A date/time string. Valid formats are explained in
      * {@link https://secure.php.net/manual/en/datetime.formats.php Date and Time Formats}.</p>
      * @return static|false Returns the newly created object or false on failure.
      * Returns the {@link https://secure.php.net/manual/en/class.datetimeimmutable.php DateTimeImmutable} object for method chaining or <b>FALSE</b> on failure.
+     * @since 5.5
      */
     #[Pure]
     #[TentativeType]
     public function modify(#[LanguageLevelTypeAware(['8.0' => 'string'], default: '')] $modifier): DateTimeImmutable|false {}
 
     /**
-     * (PHP 5 &gt;=5.5.0)<br/>
+     * (PHP 5 >=5.5.0)<br/>
      * The __set_state handler
      * @link https://secure.php.net/manual/en/datetimeimmutable.set-state.php
      * @param array $array <p>Initialization array.</p>
      * @return DateTimeImmutable
      * Returns a new instance of a {@link https://secure.php.net/manual/en/class.datetimeimmutable.php DateTimeImmutable} object.
+     * @since 5.5
      */
     public static function __set_state(array $array) {}
 
     /**
-     * (PHP 5 &gt;=5.5.0)<br/>
+     * (PHP 5 >=5.5.0)<br/>
      * Sets the date
      * @link https://secure.php.net/manual/en/datetimeimmutable.setdate.php
      * @param int $year <p>Year of the date.</p>
@@ -270,6 +283,7 @@ class DateTimeImmutable implements DateTimeInterface
      * @param int $day <p>Day of the date.</p>
      * @return static|false
      * Returns the {@link https://secure.php.net/manual/en/class.datetimeimmutable.php DateTimeImmutable} object for method chaining or <b>FALSE</b> on failure.
+     * @since 5.5
      */
     #[TentativeType]
     public function setDate(
@@ -279,7 +293,7 @@ class DateTimeImmutable implements DateTimeInterface
     ): DateTimeImmutable {}
 
     /**
-     * (PHP 5 &gt;=5.5.0)<br/>
+     * (PHP 5 >=5.5.0)<br/>
      * Sets the ISO date
      * @link https://php.net/manual/en/class.datetimeimmutable.php
      * @param int $year <p>Year of the date.</p>
@@ -287,6 +301,7 @@ class DateTimeImmutable implements DateTimeInterface
      * @param int $dayOfWeek [optional] <p>Offset from the first day of the week.</p>
      * @return static|false
      * Returns the {@link https://secure.php.net/manual/en/class.datetimeimmutable.php DateTimeImmutable} object for method chaining or <b>FALSE</b> on failure.
+     * @since 5.5
      */
     #[TentativeType]
     public function setISODate(
@@ -296,7 +311,7 @@ class DateTimeImmutable implements DateTimeInterface
     ): DateTimeImmutable {}
 
     /**
-     * (PHP 5 &gt;=5.5.0)<br/>
+     * (PHP 5 >=5.5.0)<br/>
      * Sets the time
      * @link https://secure.php.net/manual/en/datetimeimmutable.settime.php
      * @param int $hour <p> Hour of the time. </p>
@@ -305,6 +320,7 @@ class DateTimeImmutable implements DateTimeInterface
      * @param int $microsecond [optional] <p> Microseconds of the time. Added since 7.1</p>
      * @return static|false
      * Returns the {@link https://secure.php.net/manual/en/class.datetimeimmutable.php DateTimeImmutable} object for method chaining or <b>FALSE</b> on failure.
+     * @since 5.5
      */
     #[TentativeType]
     public function setTime(
@@ -315,18 +331,19 @@ class DateTimeImmutable implements DateTimeInterface
     ): DateTimeImmutable {}
 
     /**
-     * (PHP 5 &gt;=5.5.0)<br/>
+     * (PHP 5 >=5.5.0)<br/>
      * Sets the date and time based on an Unix timestamp
      * @link https://secure.php.net/manual/en/datetimeimmutable.settimestamp.php
      * @param int $timestamp <p>Unix timestamp representing the date.</p>
      * @return static
      * Returns the {@link https://secure.php.net/manual/en/class.datetimeimmutable.php DateTimeImmutable} object for method chaining or <b>FALSE</b> on failure.
+     * @since 5.5
      */
     #[TentativeType]
     public function setTimestamp(#[LanguageLevelTypeAware(['8.0' => 'int'], default: '')] $timestamp): DateTimeImmutable {}
 
     /**
-     * (PHP 5 &gt;=5.5.0)<br/>
+     * (PHP 5 >=5.5.0)<br/>
      * Sets the time zone
      * @link https://secure.php.net/manual/en/datetimeimmutable.settimezone.php
      * @param DateTimeZone $timezone <p>
@@ -335,12 +352,13 @@ class DateTimeImmutable implements DateTimeInterface
      * </p>
      * @return static
      * Returns the {@link https://secure.php.net/manual/en/class.datetimeimmutable.php DateTimeImmutable} object for method chaining or <b>FALSE</b> on failure.
+     * @since 5.5
      */
     #[TentativeType]
     public function setTimezone(DateTimeZone $timezone): DateTimeImmutable {}
 
     /**
-     * (PHP 5 &gt;=5.5.0)<br/>
+     * (PHP 5 >=5.5.0)<br/>
      * Subtracts an amount of days, months, years, hours, minutes and seconds
      * @link https://secure.php.net/manual/en/datetimeimmutable.sub.php
      * @param DateInterval $interval <p>
@@ -348,12 +366,13 @@ class DateTimeImmutable implements DateTimeInterface
      * </p>
      * @return static
      * Returns the {@link https://secure.php.net/manual/en/class.datetimeimmutable.php DateTimeImmutable} object for method chaining or <b>FALSE</b> on failure.
+     * @since 5.5
      */
     #[TentativeType]
     public function sub(DateInterval $interval): DateTimeImmutable {}
 
     /**
-     * (PHP 5 &gt;=5.5.0)<br/>
+     * (PHP 5 >=5.5.0)<br/>
      * Returns the difference between two DateTime objects
      * @link https://secure.php.net/manual/en/datetime.diff.php
      * @param DateTimeInterface $targetObject <p>The date to compare to.</p>
@@ -361,6 +380,7 @@ class DateTimeImmutable implements DateTimeInterface
      * @return DateInterval|false
      * The {@link https://secure.php.net/manual/en/class.dateinterval.php DateInterval} object representing the
      * difference between the two dates or <b>FALSE</b> on failure.
+     * @since 5.5
      */
     #[TentativeType]
     public function diff(
@@ -369,7 +389,7 @@ class DateTimeImmutable implements DateTimeInterface
     ): DateInterval {}
 
     /**
-     * (PHP 5 &gt;=5.5.0)<br/>
+     * (PHP 5 >=5.5.0)<br/>
      * Returns date formatted according to given format
      * @link https://secure.php.net/manual/en/datetime.format.php
      * @param string $format <p>
@@ -377,45 +397,50 @@ class DateTimeImmutable implements DateTimeInterface
      * </p>
      * @return string
      * Returns the formatted date string on success or <b>FALSE</b> on failure.
+     * @since 5.5
      */
     #[TentativeType]
     public function format(#[LanguageLevelTypeAware(['8.0' => 'string'], default: '')] $format): string {}
 
     /**
-     * (PHP 5 &gt;=5.5.0)<br/>
+     * (PHP 5 >=5.5.0)<br/>
      * Returns the timezone offset
      * @return int
      * Returns the timezone offset in seconds from UTC on success
      * or <b>FALSE</b> on failure.
+     * @since 5.5
      */
     #[TentativeType]
     public function getOffset(): int {}
 
     /**
-     * (PHP 5 &gt;=5.5.0)<br/>
+     * (PHP 5 >=5.5.0)<br/>
      * Gets the Unix timestamp
      * @return int
      * Returns the Unix timestamp representing the date.
+     * @since 5.5
      */
     #[TentativeType]
     public function getTimestamp(): int {}
 
     /**
-     * (PHP 5 &gt;=5.5.0)<br/>
+     * (PHP 5 >=5.5.0)<br/>
      * Return time zone relative to given DateTime
      * @link https://secure.php.net/manual/en/datetime.gettimezone.php
      * @return DateTimeZone|false
      * Returns a {@link https://secure.php.net/manual/en/class.datetimezone.php DateTimeZone} object on success
      * or <b>FALSE</b> on failure.
+     * @since 5.5
      */
     #[TentativeType]
     public function getTimezone(): DateTimeZone|false {}
 
     /**
-     * (PHP 5 &gt;=5.5.0)<br/>
+     * (PHP 5 >=5.5.0)<br/>
      * The __wakeup handler
      * @link https://secure.php.net/manual/en/datetime.wakeup.php
      * @return void Initializes a DateTime object.
+     * @since 5.5
      */
     #[TentativeType]
     public function __wakeup(): void {}
@@ -506,7 +531,7 @@ class DateTime implements DateTimeInterface
     public const W3C = 'Y-m-d\TH:i:sP';
 
     /**
-     * (PHP 5 &gt;=5.2.0)<br/>
+     * (PHP 5 >=5.2.0)<br/>
      * @link https://php.net/manual/en/datetime.construct.php
      * @param string $datetime [optional]
      * <p>A date/time string. Valid formats are explained in {@link https://php.net/manual/en/datetime.formats.php Date and Time Formats}.</p>
@@ -532,6 +557,7 @@ class DateTime implements DateTimeInterface
      * (e.g. <em>2010-01-28T15:00:00+02:00</em>).
      * </p> <p></p></blockquote>
      * @throws Exception Emits Exception in case of an error.
+     * @since 5.2
      */
     public function __construct(
         #[LanguageLevelTypeAware(['8.0' => 'string'], default: '')] $datetime = 'now',

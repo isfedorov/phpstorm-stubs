@@ -3,7 +3,7 @@
 // Start of ssh2 v.0.11.0-dev
 
 /**
- * (PECL ssh2 &gt;= 0.9.0)<br/>
+ * (PECL ssh2 >= 0.9.0)<br/>
  * Connect to an SSH server
  * @link https://php.net/manual/en/function.ssh2-connect.php
  * @param string $host <p>
@@ -178,7 +178,7 @@
 function ssh2_connect($host, $port = 22, ?array $methods = null, ?array $callbacks = null) {}
 
 /**
- * (PECL ssh2 &gt;= 1.0)<br/>
+ * (PECL ssh2 >= 1.0)<br/>
  * Close a connection to a remote SSH server
  * @link https://php.net/manual/en/function.ssh2-disconnect.php
  * @param resource $session <p>
@@ -190,7 +190,7 @@ function ssh2_connect($host, $port = 22, ?array $methods = null, ?array $callbac
 function ssh2_disconnect($session) {}
 
 /**
- * (PECL ssh2 &gt;= 0.9.0)<br/>
+ * (PECL ssh2 >= 0.9.0)<br/>
  * Return list of negotiated methods
  * @link https://php.net/manual/en/function.ssh2-methods-negotiated.php
  * @param resource $session <p>
@@ -202,7 +202,7 @@ function ssh2_disconnect($session) {}
 function ssh2_methods_negotiated($session) {}
 
 /**
- * (PECL ssh2 &gt;= 0.9.0)<br/>
+ * (PECL ssh2 >= 0.9.0)<br/>
  * Retrieve fingerprint of remote server
  * @link https://php.net/manual/en/function.ssh2-fingerprint.php
  * @param resource $session <p>
@@ -221,7 +221,7 @@ function ssh2_methods_negotiated($session) {}
 function ssh2_fingerprint($session, $flags = null) {}
 
 /**
- * (PECL ssh2 &gt;= 0.9.0)<br/>
+ * (PECL ssh2 >= 0.9.0)<br/>
  * Authenticate as "none"
  * @link https://php.net/manual/en/function.ssh2-auth-none.php
  * @param resource $session <p>
@@ -237,7 +237,7 @@ function ssh2_fingerprint($session, $flags = null) {}
 function ssh2_auth_none($session, $username) {}
 
 /**
- * (PECL ssh2 &gt;= 0.9.0)<br/>
+ * (PECL ssh2 >= 0.9.0)<br/>
  * Authenticate over SSH using a plain password
  * @link https://php.net/manual/en/function.ssh2-auth-password.php
  * @param resource $session <p>
@@ -255,7 +255,7 @@ function ssh2_auth_none($session, $username) {}
 function ssh2_auth_password($session, $username, $password) {}
 
 /**
- * (PECL ssh2 &gt;= 0.9.0)<br/>
+ * (PECL ssh2 >= 0.9.0)<br/>
  * Authenticate using a public key
  * @link https://php.net/manual/en/function.ssh2-auth-pubkey-file.php
  * @param resource $session <p>
@@ -277,7 +277,7 @@ function ssh2_auth_password($session, $username, $password) {}
 function ssh2_auth_pubkey_file($session, $username, $pubkeyfile, $privkeyfile, $passphrase = null) {}
 
 /**
- * (PECL ssh2 &gt;= 0.9.0)<br/>
+ * (PECL ssh2 >= 0.9.0)<br/>
  * Authenticate using a public hostkey
  * @link https://php.net/manual/en/function.ssh2-auth-hostbased-file.php
  * @param resource $session <p>
@@ -309,7 +309,7 @@ function ssh2_forward_listen() {}
 function ssh2_forward_accept() {}
 
 /**
- * (PECL ssh2 &gt;= 0.9.0)<br/>
+ * (PECL ssh2 >= 0.9.0)<br/>
  * Request an interactive shell
  * @link https://php.net/manual/en/function.ssh2-shell.php
  * @param resource $session <p>
@@ -340,7 +340,7 @@ function ssh2_forward_accept() {}
 function ssh2_shell($session, $term_type = null, ?array $env = null, $width = null, $height = null, $width_height_type = null) {}
 
 /**
- * (PECL ssh2 &gt;= 0.9.0)<br/>
+ * (PECL ssh2 >= 0.9.0)<br/>
  * Execute a command on a remote server
  * @link https://php.net/manual/en/function.ssh2-exec.php
  * @param resource $session <p>
@@ -371,7 +371,7 @@ function ssh2_shell($session, $term_type = null, ?array $env = null, $width = nu
 function ssh2_exec($session, $command, $pty = null, ?array $env = null, $width = null, $height = null, $width_height_type = null) {}
 
 /**
- * (PECL ssh2 &gt;= 0.9.0)<br/>
+ * (PECL ssh2 >= 0.9.0)<br/>
  * Open a tunnel through a remote server
  * @link https://php.net/manual/en/function.ssh2-tunnel.php
  * @param resource $session <p>
@@ -387,7 +387,7 @@ function ssh2_exec($session, $command, $pty = null, ?array $env = null, $width =
 function ssh2_tunnel($session, $host, $port) {}
 
 /**
- * (PECL ssh2 &gt;= 0.9.0)<br/>
+ * (PECL ssh2 >= 0.9.0)<br/>
  * Request a file via SCP
  * @link https://php.net/manual/en/function.ssh2-scp-recv.php
  * @param resource $session <p>
@@ -405,7 +405,7 @@ function ssh2_tunnel($session, $host, $port) {}
 function ssh2_scp_recv($session, $remote_file, $local_file) {}
 
 /**
- * (PECL ssh2 &gt;= 0.9.0)<br/>
+ * (PECL ssh2 >= 0.9.0)<br/>
  * Send a file via SCP
  * @link https://php.net/manual/en/function.ssh2-scp-send.php
  * @param resource $session <p>
@@ -427,7 +427,7 @@ function ssh2_scp_recv($session, $remote_file, $local_file) {}
 function ssh2_scp_send($session, $local_file, $remote_file, $create_mode = null) {}
 
 /**
- * (PECL ssh2 &gt;= 0.9.0)<br/>
+ * (PECL ssh2 >= 0.9.0)<br/>
  * Fetch an extended data stream
  * @link https://php.net/manual/en/function.ssh2-fetch-stream.php
  * @param resource $channel <p>
@@ -445,7 +445,7 @@ function ssh2_fetch_stream($channel, $streamid) {}
 function ssh2_poll(&$var1) {}
 
 /**
- * (PECL ssh2 &gt;= 0.9.0)<br/>
+ * (PECL ssh2 >= 0.9.0)<br/>
  * Initialize SFTP subsystem
  * @link https://php.net/manual/en/function.ssh2-sftp.php
  * @param resource $session <p>
@@ -459,7 +459,7 @@ function ssh2_poll(&$var1) {}
 function ssh2_sftp($session) {}
 
 /**
- * (PECL ssh2 &gt;= 0.9.0)<br/>
+ * (PECL ssh2 >= 0.9.0)<br/>
  * Rename a remote file
  * @link https://php.net/manual/en/function.ssh2-sftp-rename.php
  * @param resource $sftp <p>
@@ -476,7 +476,7 @@ function ssh2_sftp($session) {}
 function ssh2_sftp_rename($sftp, $from, $to) {}
 
 /**
- * (PECL ssh2 &gt;= 0.9.0)<br/>
+ * (PECL ssh2 >= 0.9.0)<br/>
  * Delete a file
  * @link https://php.net/manual/en/function.ssh2-sftp-unlink.php
  * @param resource $sftp <p>
@@ -489,7 +489,7 @@ function ssh2_sftp_rename($sftp, $from, $to) {}
 function ssh2_sftp_unlink($sftp, $filename) {}
 
 /**
- * (PECL ssh2 &gt;= 0.9.0)<br/>
+ * (PECL ssh2 >= 0.9.0)<br/>
  * Create a directory
  * @link https://php.net/manual/en/function.ssh2-sftp-mkdir.php
  * @param resource $sftp <p>
@@ -510,7 +510,7 @@ function ssh2_sftp_unlink($sftp, $filename) {}
 function ssh2_sftp_mkdir($sftp, $dirname, $mode = null, $recursive = null) {}
 
 /**
- * (PECL ssh2 &gt;= 0.9.0)<br/>
+ * (PECL ssh2 >= 0.9.0)<br/>
  * Remove a directory
  * @link https://php.net/manual/en/function.ssh2-sftp-rmdir.php
  * @param resource $sftp <p>
@@ -523,7 +523,7 @@ function ssh2_sftp_mkdir($sftp, $dirname, $mode = null, $recursive = null) {}
 function ssh2_sftp_rmdir($sftp, $dirname) {}
 
 /**
- * (PECL ssh2 &gt;= 0.9.0)<br/>
+ * (PECL ssh2 >= 0.9.0)<br/>
  * Stat a file on a remote filesystem
  * @link https://php.net/manual/en/function.ssh2-sftp-stat.php
  * @param resource $sftp <p>
@@ -537,7 +537,7 @@ function ssh2_sftp_rmdir($sftp, $dirname) {}
 function ssh2_sftp_stat($sftp, $path) {}
 
 /**
- * (PECL ssh2 &gt;= 0.9.0)<br/>
+ * (PECL ssh2 >= 0.9.0)<br/>
  * Stat a symbolic link
  * @link https://php.net/manual/en/function.ssh2-sftp-lstat.php
  * @param resource $sftp <p>
@@ -551,7 +551,7 @@ function ssh2_sftp_stat($sftp, $path) {}
 function ssh2_sftp_lstat($sftp, $path) {}
 
 /**
- * (PECL ssh2 &gt;= 0.9.0)<br/>
+ * (PECL ssh2 >= 0.9.0)<br/>
  * Create a symlink
  * @link https://php.net/manual/en/function.ssh2-sftp-symlink.php
  * @param resource $sftp <p>
@@ -567,7 +567,7 @@ function ssh2_sftp_lstat($sftp, $path) {}
 function ssh2_sftp_symlink($sftp, $target, $link) {}
 
 /**
- * (PECL ssh2 &gt;= 0.9.0)<br/>
+ * (PECL ssh2 >= 0.9.0)<br/>
  * Return the target of a symbolic link
  * @link https://php.net/manual/en/function.ssh2-sftp-readlink.php
  * @param resource $sftp <p>
@@ -581,7 +581,7 @@ function ssh2_sftp_symlink($sftp, $target, $link) {}
 function ssh2_sftp_readlink($sftp, $link) {}
 
 /**
- * (PECL ssh2 &gt;= 0.9.0)<br/>
+ * (PECL ssh2 >= 0.9.0)<br/>
  * Resolve the realpath of a provided path string
  * @link https://php.net/manual/en/function.ssh2-sftp-realpath.php
  * @param resource $sftp <p>
@@ -594,7 +594,7 @@ function ssh2_sftp_readlink($sftp, $link) {}
 function ssh2_sftp_realpath($sftp, $filename) {}
 
 /**
- * (PECL ssh2 &gt;= 0.10)<br/>
+ * (PECL ssh2 >= 0.10)<br/>
  * Initialize Publickey subsystem
  * @link https://php.net/manual/en/function.ssh2-publickey-init.php
  * @param resource $session <p>
@@ -605,7 +605,7 @@ function ssh2_sftp_realpath($sftp, $filename) {}
 function ssh2_publickey_init($session) {}
 
 /**
- * (PECL ssh2 &gt;= 0.10)<br/>
+ * (PECL ssh2 >= 0.10)<br/>
  * Add an authorized publickey
  * @link https://php.net/manual/en/function.ssh2-publickey-add.php
  * @param resource $pkey <p>
@@ -632,7 +632,7 @@ function ssh2_publickey_init($session) {}
 function ssh2_publickey_add($pkey, $algoname, $blob, $overwrite = null, ?array $attributes = null) {}
 
 /**
- * (PECL ssh2 &gt;= 0.10)<br/>
+ * (PECL ssh2 >= 0.10)<br/>
  * Remove an authorized publickey
  * @link https://php.net/manual/en/function.ssh2-publickey-remove.php
  * @param resource $pkey <p>
@@ -649,7 +649,7 @@ function ssh2_publickey_add($pkey, $algoname, $blob, $overwrite = null, ?array $
 function ssh2_publickey_remove($pkey, $algoname, $blob) {}
 
 /**
- * (PECL ssh2 &gt;= 0.10)<br/>
+ * (PECL ssh2 >= 0.10)<br/>
  * List currently authorized publickeys
  * @link https://php.net/manual/en/function.ssh2-publickey-list.php
  * @param resource $pkey <p>
@@ -687,7 +687,7 @@ function ssh2_publickey_remove($pkey, $algoname, $blob) {}
 function ssh2_publickey_list($pkey) {}
 
 /**
- * (PECL ssh2 &gt;= 0.12)<br/>
+ * (PECL ssh2 >= 0.12)<br/>
  * ssh2_sftp_chmod — Changes file mode
  * @link https://php.net/manual/en/function.ssh2-sftp-chmod.php
  * @param resource $sftp <p>An SSH2 SFTP resource opened by ssh2_sftp().</p>
@@ -698,7 +698,7 @@ function ssh2_publickey_list($pkey) {}
 function ssh2_sftp_chmod($sftp, $filename, $mode) {}
 
 /**
- * (PECL ssh2 &gt;= 0.12)<br/>
+ * (PECL ssh2 >= 0.12)<br/>
  * ssh2_auth_agent — Authenticate over SSH using the ssh agent
  * @link https://php.net/manual/en/function.ssh2-auth-agent.php
  * <p>

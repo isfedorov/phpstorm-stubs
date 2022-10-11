@@ -247,7 +247,7 @@ define('LIBXML_PEDANTIC', 128);
  * Activate small nodes allocation optimization. This may speed up your
  * application without needing to change the code.
  * <p>
- * Only available in Libxml &gt;= 2.6.21
+ * Only available in Libxml >= 2.6.21
  * </p>
  * @link https://php.net/manual/en/libxml.constants.php
  */
@@ -256,7 +256,7 @@ define('LIBXML_COMPACT', 65536);
 /**
  * Allows line numbers greater than 65535 to be reported correctly.
  * <p>
- * Only available in Libxml &gt;= 2.9.0
+ * Only available in Libxml >= 2.9.0
  * </p>
  * @link https://php.net/manual/en/libxml.constants.php
  */
@@ -265,7 +265,7 @@ define('LIBXML_BIGLINES', 65535);
 /**
  * Drop the XML declaration when saving a document
  * <p>
- * Only available in Libxml &gt;= 2.6.21
+ * Only available in Libxml >= 2.6.21
  * </p>
  * @link https://php.net/manual/en/libxml.constants.php
  */
@@ -276,7 +276,7 @@ define('LIBXML_NOXMLDECL', 2);
  * limits like maximum depth of a document or the entity recursion, as well as limits of the
  * size of text nodes.
  * <p>
- * Only available in Libxml &gt;= 2.7.0 (as of PHP &gt;= 5.3.2 and PHP &gt;= 5.2.12)
+ * Only available in Libxml >= 2.7.0 (as of PHP >= 5.3.2 and PHP >= 5.2.12)
  * </p>
  * @link https://php.net/manual/en/libxml.constants.php
  */
@@ -297,7 +297,7 @@ define('LIBXML_NOEMPTYTAG', 4);
 /**
  * Create default/fixed value nodes during XSD schema validation
  * <p>
- * Only available in Libxml &gt;= 2.6.14 (as of PHP &gt;= 5.5.2)
+ * Only available in Libxml >= 2.6.14 (as of PHP >= 5.5.2)
  * </p>
  * @link https://php.net/manual/en/libxml.constants.php
  */
@@ -307,7 +307,7 @@ define('LIBXML_SCHEMA_CREATE', 1);
  * Sets HTML_PARSE_NOIMPLIED flag, which turns off the
  * automatic adding of implied html/body... elements.
  * <p>
- * Only available in Libxml &gt;= 2.7.7 (as of PHP &gt;= 5.4.0)
+ * Only available in Libxml >= 2.7.7 (as of PHP >= 5.4.0)
  * </p>
  * @link https://php.net/manual/en/libxml.constants.php
  */
@@ -317,7 +317,7 @@ define('LIBXML_HTML_NOIMPLIED', 8192);
  * Sets HTML_PARSE_NODEFDTD flag, which prevents a default doctype
  * being added when one is not found.
  * <p>
- * Only available in Libxml &gt;= 2.7.8 (as of PHP &gt;= 5.4.0)
+ * Only available in Libxml >= 2.7.8 (as of PHP >= 5.4.0)
  * </p>
  * @link https://php.net/manual/en/libxml.constants.php
  */

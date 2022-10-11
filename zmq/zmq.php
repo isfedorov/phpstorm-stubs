@@ -355,7 +355,7 @@ class ZMQContext
     public function __construct($io_threads = 1, $is_persistent = true) {}
 
     /**
-     * (PECL zmq &gt;= 1.0.4)
+     * (PECL zmq >= 1.0.4)
      * Returns the value of a context option.
      *
      * @link https://secure.php.net/manual/en/zmqcontext.getopt.php
@@ -367,7 +367,7 @@ class ZMQContext
     public function getOpt($key) {}
 
     /**
-     * (PECL zmq &gt;= 0.5.0)
+     * (PECL zmq >= 0.5.0)
      * Shortcut for creating new sockets from the context.
      * If the context is not persistent the persistent_id parameter is ignored
      * and the socket falls back to being non-persistent.
@@ -384,7 +384,7 @@ class ZMQContext
     public function getSocket($type, $persistent_id = null, $on_new_socket = null) {}
 
     /**
-     * (PECL zmq &gt;= 0.5.0)
+     * (PECL zmq >= 0.5.0)
      * Whether the context is persistent.
      * Persistent context is needed for persistent connections as each socket is allocated from a context.
      *
@@ -395,7 +395,7 @@ class ZMQContext
     public function isPersistent() {}
 
     /**
-     * (PECL zmq &gt;= 1.0.4)
+     * (PECL zmq >= 1.0.4)
      * Sets a ZMQ context option. The type of the value depends on the key.
      * See ZMQ Constant Types for more information.
      *
@@ -415,7 +415,7 @@ class ZMQContext
 class ZMQSocket
 {
     /**
-     * (PECL zmq &gt;= 0.5.0)
+     * (PECL zmq >= 0.5.0)
      * Constructs a ZMQSocket object.
      * The persistent_id parameter can be used to allocated a persistent socket.
      * A persistent socket has to be allocated from a persistent context and it stays connected over multiple requests.
@@ -434,7 +434,7 @@ class ZMQSocket
     public function __construct(ZMQContext $context, $type, $persistent_id = null, $on_new_socket = null) {}
 
     /**
-     * (PECL zmq &gt;= 0.5.0)
+     * (PECL zmq >= 0.5.0)
      * Bind the socket to an endpoint.
      * The endpoint is defined in format transport://address
      * where transport is one of the following: inproc, ipc, tcp, pgm or epgm.
@@ -450,7 +450,7 @@ class ZMQSocket
     public function bind($dsn, $force = false) {}
 
     /**
-     * (PECL zmq &gt;= 0.5.0)
+     * (PECL zmq >= 0.5.0)
      * Connect the socket to a remote endpoint.
      * The endpoint is defined in format transport://address
      * where transport is one of the following: inproc, ipc, tcp, pgm or epgm.
@@ -466,7 +466,7 @@ class ZMQSocket
     public function connect($dsn, $force = false) {}
 
     /**
-     * (PECL zmq &gt;= 1.0.4)
+     * (PECL zmq >= 1.0.4)
      * Disconnect the socket from a previously connected remote endpoint.
      * The endpoint is defined in format transport://address
      * where transport is one of the following: inproc, ipc, tcp, pgm or epgm.
@@ -635,7 +635,7 @@ class ZMQSocket
 class ZMQPoll
 {
     /**
-     * (PECL zmq &gt;= 0.5.0)
+     * (PECL zmq >= 0.5.0)
      * Adds a new item to the poll set and returns the internal id of the added item.
      * The item can be removed from the poll set using the returned string id.
      * Returns a string id of the added item which can be later used to remove the item.
@@ -651,7 +651,7 @@ class ZMQPoll
     public function add(ZMQSocket $entry, $type) {}
 
     /**
-     * (PECL zmq &gt;= 1.0.4)
+     * (PECL zmq >= 1.0.4)
      * Clears all elements from the poll set.
      *
      * @link https://secure.php.net/manual/en/zmqpoll.clear.php
@@ -661,7 +661,7 @@ class ZMQPoll
     public function clear() {}
 
     /**
-     * (PECL zmq &gt;= 0.5.0)
+     * (PECL zmq >= 0.5.0)
      * Count the items in the poll set.
      *
      * @link https://secure.php.net/manual/en/zmqpoll.count.php
@@ -671,7 +671,7 @@ class ZMQPoll
     public function count() {}
 
     /**
-     * (PECL zmq &gt;= 0.5.0)
+     * (PECL zmq >= 0.5.0)
      * Returns the ids of the objects that had errors in the last poll.
      * Returns an array containing ids for the items that had errors in the last poll.
      * Empty array is returned if there were no errors.
@@ -683,7 +683,7 @@ class ZMQPoll
     public function getLastErrors() {}
 
     /**
-     * (PECL zmq &gt;= 0.5.0)
+     * (PECL zmq >= 0.5.0)
      * Polls the items in the current poll set.
      * The readable and writable items are returned in the readable and writable parameters.
      * ZMQPoll::getLastErrors() can be used to check if there were errors.
@@ -701,7 +701,7 @@ class ZMQPoll
     public function poll(array &$readable, array &$writable, $timeout = -1) {}
 
     /**
-     * (PECL zmq &gt;= 0.5.0)
+     * (PECL zmq >= 0.5.0)
      * Remove item from the poll set.
      * The item parameter can be ZMQSocket object, a stream resource or the id returned from ZMQPoll::add() method.
      * Returns true if the item was removed and false if the object with given id does not exist in the poll set.
@@ -720,7 +720,7 @@ class ZMQPoll
 class ZMQDevice
 {
     /**
-     * (PECL zmq &gt;= 1.0.4)
+     * (PECL zmq >= 1.0.4)
      * Construct a new device.
      * "ØMQ devices can do intermediation of addresses, services, queues, or any other abstraction you care
      * to define above the message and socket layers." -- zguide

@@ -919,7 +919,7 @@ class PDO
     public const FB_ATTR_TIMESTAMP_FORMAT = 1002;
 
     /**
-     * (PHP 5 &gt;= 5.1.0, PHP 7, PECL pdo &gt;= 0.1.0)<br/>
+     * (PHP 5 >= 5.1.0, PHP 7, PECL pdo >= 0.1.0)<br/>
      * Creates a PDO instance representing a connection to a database
      * @link https://php.net/manual/en/pdo.construct.php
      * @param string $dsn
@@ -936,7 +936,7 @@ class PDO
     ) {}
 
     /**
-     * (PHP 5 &gt;= 5.1.0, PHP 7, PECL pdo &gt;= 0.1.0)<br/>
+     * (PHP 5 >= 5.1.0, PHP 7, PECL pdo >= 0.1.0)<br/>
      * Prepares a statement for execution and returns a statement object
      * @link https://php.net/manual/en/pdo.prepare.php
      * @param string $query <p>
@@ -969,7 +969,7 @@ class PDO
     ): PDOStatement|false {}
 
     /**
-     * (PHP 5 &gt;= 5.1.0, PHP 7, PECL pdo &gt;= 0.1.0)<br/>
+     * (PHP 5 >= 5.1.0, PHP 7, PECL pdo >= 0.1.0)<br/>
      * Initiates a transaction
      * <p>
      * Turns off autocommit mode. While autocommit mode is turned off,
@@ -996,7 +996,7 @@ class PDO
     public function beginTransaction(): bool {}
 
     /**
-     * (PHP 5 &gt;= 5.1.0, PHP 7, PECL pdo &gt;= 0.1.0)<br/>
+     * (PHP 5 >= 5.1.0, PHP 7, PECL pdo >= 0.1.0)<br/>
      * Commits a transaction
      * @link https://php.net/manual/en/pdo.commit.php
      * @return bool <b>TRUE</b> on success or <b>FALSE</b> on failure.
@@ -1006,7 +1006,7 @@ class PDO
     public function commit(): bool {}
 
     /**
-     * (PHP 5 &gt;= 5.1.0, PHP 7, PECL pdo &gt;= 0.1.0)<br/>
+     * (PHP 5 >= 5.1.0, PHP 7, PECL pdo >= 0.1.0)<br/>
      * Rolls back a transaction
      * @link https://php.net/manual/en/pdo.rollback.php
      * @return bool <b>TRUE</b> on success or <b>FALSE</b> on failure.
@@ -1016,7 +1016,7 @@ class PDO
     public function rollBack(): bool {}
 
     /**
-     * (PHP 5 &gt;= 5.3.3, Bundled pdo_pgsql, PHP 7)<br/>
+     * (PHP 5 >= 5.3.3, Bundled pdo_pgsql, PHP 7)<br/>
      * Checks if inside a transaction
      * @link https://php.net/manual/en/pdo.intransaction.php
      * @return bool <b>TRUE</b> if a transaction is currently active, and <b>FALSE</b> if not.
@@ -1025,7 +1025,7 @@ class PDO
     public function inTransaction(): bool {}
 
     /**
-     * (PHP 5 &gt;= 5.1.0, PHP 7, PECL pdo &gt;= 0.1.0)<br/>
+     * (PHP 5 >= 5.1.0, PHP 7, PECL pdo >= 0.1.0)<br/>
      * Set an attribute
      * @link https://php.net/manual/en/pdo.setattribute.php
      * @param int $attribute
@@ -1039,7 +1039,7 @@ class PDO
     ): bool {}
 
     /**
-     * (PHP 5 &gt;= 5.1.0, PHP 7, PECL pdo &gt;= 0.1.0)<br/>
+     * (PHP 5 >= 5.1.0, PHP 7, PECL pdo >= 0.1.0)<br/>
      * Execute an SQL statement and return the number of affected rows
      * @link https://php.net/manual/en/pdo.exec.php
      * @param string $statement <p>
@@ -1070,7 +1070,7 @@ class PDO
     public function exec(#[LanguageLevelTypeAware(['8.0' => 'string'], default: '')] $statement): int|false {}
 
     /**
-     * (PHP 5 &gt;= 5.1.0, PHP 7, PECL pdo &gt;= 0.2.0)<br/>
+     * (PHP 5 >= 5.1.0, PHP 7, PECL pdo >= 0.2.0)<br/>
      * Executes an SQL statement, returning a result set as a PDOStatement object
      * @link https://php.net/manual/en/pdo.query.php
      * @param string $query <p>
@@ -1097,7 +1097,7 @@ class PDO
     public function query($query, $fetchMode = PDO::ATTR_DEFAULT_FETCH_MODE, $arg3 = null, $ctorargs = []) {}
 
     /**
-     * (PHP 5 >= 5.1.0, PHP 7, PHP 8, PECL pdo &gt;= 0.2.0)<br/>
+     * (PHP 5 >= 5.1.0, PHP 7, PHP 8, PECL pdo >= 0.2.0)<br/>
      * Executes an SQL statement, returning a result set as a PDOStatement object
      * @link https://php.net/manual/en/pdo.query.php
      * @param string $query <p>
@@ -1125,7 +1125,7 @@ class PDO
     ) {}
 
     /**
-     * (PHP 5 &gt;= 5.1.0, PHP 7, PECL pdo &gt;= 0.1.0)<br/>
+     * (PHP 5 >= 5.1.0, PHP 7, PECL pdo >= 0.1.0)<br/>
      * Returns the ID of the last inserted row or sequence value
      * @link https://php.net/manual/en/pdo.lastinsertid.php
      * @param string $name [optional] <p>
@@ -1152,7 +1152,7 @@ class PDO
     public function lastInsertId(#[LanguageLevelTypeAware(['8.0' => 'string|null'], default: '')] $name = null): string|false {}
 
     /**
-     * (PHP 5 &gt;= 5.1.0, PHP 7, PECL pdo &gt;= 0.1.0)<br/>
+     * (PHP 5 >= 5.1.0, PHP 7, PECL pdo >= 0.1.0)<br/>
      * Fetch the SQLSTATE associated with the last operation on the database handle
      * @link https://php.net/manual/en/pdo.errorcode.php
      * @return mixed an SQLSTATE, a five characters alphanumeric identifier defined in
@@ -1181,7 +1181,7 @@ class PDO
     public function errorCode(): ?string {}
 
     /**
-     * (PHP 5 &gt;= 5.1.0, PHP 7, PECL pdo &gt;= 0.1.0)<br/>
+     * (PHP 5 >= 5.1.0, PHP 7, PECL pdo >= 0.1.0)<br/>
      * Fetch extended error information associated with the last operation on the database handle
      * @link https://php.net/manual/en/pdo.errorinfo.php
      * @return array <b>PDO::errorInfo</b> returns an array of error information
@@ -1224,7 +1224,7 @@ class PDO
     public function errorInfo(): array {}
 
     /**
-     * (PHP 5 &gt;= 5.1.0, PHP 7, PECL pdo &gt;= 0.2.0)<br/>
+     * (PHP 5 >= 5.1.0, PHP 7, PECL pdo >= 0.2.0)<br/>
      * Retrieve a database connection attribute
      * @link https://php.net/manual/en/pdo.getattribute.php
      * @param int $attribute <p>
@@ -1250,7 +1250,7 @@ class PDO
     public function getAttribute(#[LanguageLevelTypeAware(['8.0' => 'int'], default: '')] $attribute): mixed {}
 
     /**
-     * (PHP 5 &gt;= 5.1.0, PHP 7, PECL pdo &gt;= 0.2.1)<br/>
+     * (PHP 5 >= 5.1.0, PHP 7, PECL pdo >= 0.2.1)<br/>
      * Quotes a string for use in a query.
      * @link https://php.net/manual/en/pdo.quote.php
      * @param string $string <p>
@@ -1274,7 +1274,7 @@ class PDO
     final public function __sleep() {}
 
     /**
-     * (PHP 5 &gt;= 5.1.3, PHP 7, PECL pdo &gt;= 1.0.3)<br/>
+     * (PHP 5 >= 5.1.3, PHP 7, PECL pdo >= 1.0.3)<br/>
      * Return an array of available PDO drivers
      * @link https://php.net/manual/en/pdo.getavailabledrivers.php
      * @return array <b>PDO::getAvailableDrivers</b> returns an array of PDO driver names. If
@@ -1318,7 +1318,7 @@ class PDO
     public function sqliteCreateCollation($name, $callback) {}
 
     /**
-     * (PHP 5 &gt;= 5.1.0, PHP 7, PECL pdo_sqlite &gt;= 1.0.0)<br/>
+     * (PHP 5 >= 5.1.0, PHP 7, PECL pdo_sqlite >= 1.0.0)<br/>
      * Registers a User Defined Function for use in SQL statements
      * @link https://php.net/manual/en/pdo.sqlitecreatefunction.php
      * @param string $function_name <p>
@@ -1341,7 +1341,7 @@ class PDO
     public function sqliteCreateFunction($function_name, $callback, $num_args = -1, $flags = 0) {}
 
     /**
-     * (PHP 5 &gt;= 5.3.3, PHP 7, PHP 8)<br/>
+     * (PHP 5 >= 5.3.3, PHP 7, PHP 8)<br/>
      * Copy data from PHP array into table
      * @link https://www.php.net/manual/en/pdo.pgsqlcopyfromarray.php
      * @param string $tableName <p>
@@ -1364,7 +1364,7 @@ class PDO
     public function pgsqlCopyFromArray(string $tableName, array $rows, string $separator = "\t", string $nullAs = "\\\\N", ?string $fields = null): bool {}
 
     /**
-     * (PHP 5 &gt;= 5.3.3, PHP 7, PHP 8)<br/>
+     * (PHP 5 >= 5.3.3, PHP 7, PHP 8)<br/>
      * Copy data from file into table
      * @link https://www.php.net/manual/en/pdo.pgsqlcopyfromfile.php
      * @param string $tableName <p>
@@ -1387,7 +1387,7 @@ class PDO
     public function pgsqlCopyFromFile(string $tableName, string $filename, string $separator = "\t", string $nullAs = "\\\\N", ?string $fields = null): bool {}
 
     /**
-     * (PHP 5 &gt;= 5.3.3, PHP 7, PHP 8)<br/>
+     * (PHP 5 >= 5.3.3, PHP 7, PHP 8)<br/>
      * Copy data from database table into PHP array
      * @link https://www.php.net/manual/en/pdo.pgsqlcopytoarray.php
      * @param string $tableName <p>
@@ -1407,7 +1407,7 @@ class PDO
     public function pgsqlCopyToArray(string $tableName, string $separator = "\t", string $nullAs = "\\\\N", ?string $fields = null): array|false {}
 
     /**
-     * (PHP 5 &gt;= 5.3.3, PHP 7, PHP 8)<br/>
+     * (PHP 5 >= 5.3.3, PHP 7, PHP 8)<br/>
      * Copy data from table into file
      * @link https://www.php.net/manual/en/pdo.pgsqlcopytofile.php
      * @param string $tableName <p>
@@ -1430,7 +1430,7 @@ class PDO
     public function pgsqlCopyToFile(string $tableName, string $filename, string $separator = "\t", string $nullAs = "\\\\N", ?string $fields = null): bool {}
 
     /**
-     * (PHP 5 &gt;= 5.1.2, PHP 7, PHP 8, PECL pdo_pgsql &gt;= 1.0.2)<br/>
+     * (PHP 5 >= 5.1.2, PHP 7, PHP 8, PECL pdo_pgsql >= 1.0.2)<br/>
      * Creates a new large object
      * @link https://www.php.net/manual/en/pdo.pgsqllobcreate.php
      * @return string|false returns the OID of the newly created large object on success,
@@ -1439,7 +1439,7 @@ class PDO
     public function pgsqlLOBCreate(): string|false {}
 
     /**
-     * (PHP 5 &gt;= 5.1.2, PHP 7, PHP 8, PECL pdo_pgsql &gt;= 1.0.2)<br/>
+     * (PHP 5 >= 5.1.2, PHP 7, PHP 8, PECL pdo_pgsql >= 1.0.2)<br/>
      * Opens an existing large object stream
      * @link https://www.php.net/manual/en/pdo.pgsqllobopen.php
      * @param string $oid <p>
@@ -1453,7 +1453,7 @@ class PDO
     public function pgsqlLOBOpen(string $oid, string $mode = "rb") {}
 
     /**
-     * (PHP 5 &gt;= 5.1.2, PHP 7, PHP 8, PECL pdo_pgsql &gt;= 1.0.2)<br/>
+     * (PHP 5 >= 5.1.2, PHP 7, PHP 8, PECL pdo_pgsql >= 1.0.2)<br/>
      * Deletes the large object
      * @link https://www.php.net/manual/en/pdo.pgsqllobunlink.php
      * @param string $oid <p>
@@ -1464,7 +1464,7 @@ class PDO
     public function pgsqlLOBUnlink(string $oid): bool {}
 
     /**
-     * (PHP 5 &gt;= 5.6.0, PHP 7, PHP 8)<br/>
+     * (PHP 5 >= 5.6.0, PHP 7, PHP 8)<br/>
      * Get asynchronous notification
      * @link https://www.php.net/manual/en/pdo.pgsqlgetnotify.php
      * @param int $fetchMode <p>
@@ -1475,20 +1475,22 @@ class PDO
      * </p>
      * @return array|false if one or more notifications is pending, returns a single row,
      * with fields message and pid, otherwise <b>FALSE</b>.
+     * @since 5.6
      */
     public function pgsqlGetNotify(int $fetchMode = PDO::FETCH_DEFAULT, int $timeoutMilliseconds = 0): array|false {}
 
     /**
-     * (PHP 5 &gt;= 5.6.0, PHP 7, PHP 8)<br/>
+     * (PHP 5 >= 5.6.0, PHP 7, PHP 8)<br/>
      * Get the server PID
      * @link https://www.php.net/manual/en/pdo.pgsqlgetpid.php
      * @return int The server's PID.
+     * @since 5.6
      */
     public function pgsqlGetPid(): int {}
 }
 
 /**
- * (PHP 5 &gt;= 5.1.0, PHP 7, PECL pdo &gt;= 1.0.0)<br/>
+ * (PHP 5 >= 5.1.0, PHP 7, PECL pdo >= 1.0.0)<br/>
  * Represents a prepared statement and, after the statement is executed, an
  * associated result set.
  * @link https://php.net/manual/en/class.pdostatement.php
@@ -1502,7 +1504,7 @@ class PDOStatement implements IteratorAggregate
     public $queryString;
 
     /**
-     * (PHP 5 &gt;= 5.1.0, PHP 7, PECL pdo &gt;= 0.1.0)<br/>
+     * (PHP 5 >= 5.1.0, PHP 7, PECL pdo >= 0.1.0)<br/>
      * Executes a prepared statement
      * @link https://php.net/manual/en/pdostatement.execute.php
      * @param array $params [optional] <p>
@@ -1528,7 +1530,7 @@ class PDOStatement implements IteratorAggregate
     public function execute(#[LanguageLevelTypeAware(['8.0' => 'array|null'], default: '')] $params = null): bool {}
 
     /**
-     * (PHP 5 &gt;= 5.1.0, PHP 7, PECL pdo &gt;= 0.1.0)<br/>
+     * (PHP 5 >= 5.1.0, PHP 7, PECL pdo >= 0.1.0)<br/>
      * Fetches the next row from a result set
      * @link https://php.net/manual/en/pdostatement.fetch.php
      * @param int $mode [optional] <p>
@@ -1563,7 +1565,7 @@ class PDOStatement implements IteratorAggregate
     ): mixed {}
 
     /**
-     * (PHP 5 &gt;= 5.1.0, PHP 7, PECL pdo &gt;= 0.1.0)<br/>
+     * (PHP 5 >= 5.1.0, PHP 7, PECL pdo >= 0.1.0)<br/>
      * Binds a parameter to the specified variable name
      * @link https://php.net/manual/en/pdostatement.bindparam.php
      * @param mixed $param <p>
@@ -1602,7 +1604,7 @@ class PDOStatement implements IteratorAggregate
     ): bool {}
 
     /**
-     * (PHP 5 &gt;= 5.1.0, PHP 7, PECL pdo &gt;= 0.1.0)<br/>
+     * (PHP 5 >= 5.1.0, PHP 7, PECL pdo >= 0.1.0)<br/>
      * Bind a column to a PHP variable
      * @link https://php.net/manual/en/pdostatement.bindcolumn.php
      * @param mixed $column <p>
@@ -1634,7 +1636,7 @@ class PDOStatement implements IteratorAggregate
     ): bool {}
 
     /**
-     * (PHP 5 &gt;= 5.1.0, PHP 7, PECL pdo &gt;= 1.0.0)<br/>
+     * (PHP 5 >= 5.1.0, PHP 7, PECL pdo >= 1.0.0)<br/>
      * Binds a value to a parameter
      * @link https://php.net/manual/en/pdostatement.bindvalue.php
      * @param mixed $param <p>
@@ -1661,7 +1663,7 @@ class PDOStatement implements IteratorAggregate
     ): bool {}
 
     /**
-     * (PHP 5 &gt;= 5.1.0, PHP 7, PECL pdo &gt;= 0.1.0)<br/>
+     * (PHP 5 >= 5.1.0, PHP 7, PECL pdo >= 0.1.0)<br/>
      * Returns the number of rows affected by the last SQL statement
      * @link https://php.net/manual/en/pdostatement.rowcount.php
      * @return int the number of rows.
@@ -1670,7 +1672,7 @@ class PDOStatement implements IteratorAggregate
     public function rowCount(): int {}
 
     /**
-     * (PHP 5 &gt;= 5.1.0, PHP 7, PECL pdo &gt;= 0.9.0)<br/>
+     * (PHP 5 >= 5.1.0, PHP 7, PECL pdo >= 0.9.0)<br/>
      * Returns a single column from the next row of a result set
      * @link https://php.net/manual/en/pdostatement.fetchcolumn.php
      * @param int $column [optional] <p>
@@ -1689,7 +1691,7 @@ class PDOStatement implements IteratorAggregate
     public function fetchColumn(#[LanguageLevelTypeAware(['8.0' => 'int'], default: '')] $column = 0): mixed {}
 
     /**
-     * (PHP 5 &gt;= 5.1.0, PHP 7, PECL pdo &gt;= 0.1.0)<br/>
+     * (PHP 5 >= 5.1.0, PHP 7, PECL pdo >= 0.1.0)<br/>
      * Returns an array containing all of the result set rows
      * @link https://php.net/manual/en/pdostatement.fetchall.php
      * @param int $mode [optional] <p>
@@ -1742,7 +1744,7 @@ class PDOStatement implements IteratorAggregate
     /**
      * @template T
      *
-     * (PHP 5 &gt;= 5.1.0, PHP 7, PECL pdo &gt;= 0.2.4)<br/>
+     * (PHP 5 >= 5.1.0, PHP 7, PECL pdo >= 0.2.4)<br/>
      * Fetches the next row and returns it as an object.
      * @link https://php.net/manual/en/pdostatement.fetchobject.php
      * @param class-string<T> $class [optional] <p>
@@ -1761,7 +1763,7 @@ class PDOStatement implements IteratorAggregate
     ): object|false {}
 
     /**
-     * (PHP 5 &gt;= 5.1.0, PHP 7, PECL pdo &gt;= 0.1.0)<br/>
+     * (PHP 5 >= 5.1.0, PHP 7, PECL pdo >= 0.1.0)<br/>
      * Fetch the SQLSTATE associated with the last operation on the statement handle
      * @link https://php.net/manual/en/pdostatement.errorcode.php
      * @return string Identical to <b>PDO::errorCode</b>, except that
@@ -1772,7 +1774,7 @@ class PDOStatement implements IteratorAggregate
     public function errorCode(): ?string {}
 
     /**
-     * (PHP 5 &gt;= 5.1.0, PHP 7, PECL pdo &gt;= 0.1.0)<br/>
+     * (PHP 5 >= 5.1.0, PHP 7, PECL pdo >= 0.1.0)<br/>
      * Fetch extended error information associated with the last operation on the statement handle
      * @link https://php.net/manual/en/pdostatement.errorinfo.php
      * @return array <b>PDOStatement::errorInfo</b> returns an array of
@@ -1801,7 +1803,7 @@ class PDOStatement implements IteratorAggregate
     public function errorInfo(): array {}
 
     /**
-     * (PHP 5 &gt;= 5.1.0, PHP 7, PECL pdo &gt;= 0.2.0)<br/>
+     * (PHP 5 >= 5.1.0, PHP 7, PECL pdo >= 0.2.0)<br/>
      * Set a statement attribute
      * @link https://php.net/manual/en/pdostatement.setattribute.php
      * @param int $attribute
@@ -1815,7 +1817,7 @@ class PDOStatement implements IteratorAggregate
     ): bool {}
 
     /**
-     * (PHP 5 &gt;= 5.1.0, PHP 7, PECL pdo &gt;= 0.2.0)<br/>
+     * (PHP 5 >= 5.1.0, PHP 7, PECL pdo >= 0.2.0)<br/>
      * Retrieve a statement attribute
      * @link https://php.net/manual/en/pdostatement.getattribute.php
      * @param int $name
@@ -1825,7 +1827,7 @@ class PDOStatement implements IteratorAggregate
     public function getAttribute(#[LanguageLevelTypeAware(['8.0' => 'int'], default: '')] $name): mixed {}
 
     /**
-     * (PHP 5 &gt;= 5.1.0, PHP 7, PECL pdo &gt;= 0.2.0)<br/>
+     * (PHP 5 >= 5.1.0, PHP 7, PECL pdo >= 0.2.0)<br/>
      * Returns the number of columns in the result set
      * @link https://php.net/manual/en/pdostatement.columncount.php
      * @return int the number of columns in the result set represented by the
@@ -1836,7 +1838,7 @@ class PDOStatement implements IteratorAggregate
     public function columnCount(): int {}
 
     /**
-     * (PHP 5 &gt;= 5.1.0, PHP 7, PECL pdo &gt;= 0.2.0)<br/>
+     * (PHP 5 >= 5.1.0, PHP 7, PECL pdo >= 0.2.0)<br/>
      * Returns metadata for a column in a result set
      * @link https://php.net/manual/en/pdostatement.getcolumnmeta.php
      * @param int $column <p>
@@ -1909,7 +1911,7 @@ class PDOStatement implements IteratorAggregate
     public function getColumnMeta(#[LanguageLevelTypeAware(['8.0' => 'int'], default: '')] $column): array|false {}
 
     /**
-     * (PHP 5 &gt;= 5.1.0, PHP 7, PECL pdo &gt;= 0.2.0)<br/>
+     * (PHP 5 >= 5.1.0, PHP 7, PECL pdo >= 0.2.0)<br/>
      * Set the default fetch mode for this statement
      * @link https://php.net/manual/en/pdostatement.setfetchmode.php
      * @param int $mode <p>
@@ -1925,7 +1927,7 @@ class PDOStatement implements IteratorAggregate
     public function setFetchMode($mode, $className = null, $params = []) {}
 
     /**
-     * (PHP 5 &gt;= 5.1.0, PHP 7, PECL pdo &gt;= 0.2.0)<br/>
+     * (PHP 5 >= 5.1.0, PHP 7, PECL pdo >= 0.2.0)<br/>
      * Set the default fetch mode for this statement
      * @link https://php.net/manual/en/pdostatement.setfetchmode.php
      * @param int $mode <p>
@@ -1941,7 +1943,7 @@ class PDOStatement implements IteratorAggregate
     public function setFetchMode($mode, $className = null, ...$params) {}
 
     /**
-     * (PHP 5 &gt;= 5.1.0, PHP 7, PECL pdo &gt;= 0.2.0)<br/>
+     * (PHP 5 >= 5.1.0, PHP 7, PECL pdo >= 0.2.0)<br/>
      * Advances to the next rowset in a multi-rowset statement handle
      * @link https://php.net/manual/en/pdostatement.nextrowset.php
      * @return bool <b>TRUE</b> on success or <b>FALSE</b> on failure.
@@ -1950,7 +1952,7 @@ class PDOStatement implements IteratorAggregate
     public function nextRowset(): bool {}
 
     /**
-     * (PHP 5 &gt;= 5.1.0, PHP 7, PECL pdo &gt;= 0.9.0)<br/>
+     * (PHP 5 >= 5.1.0, PHP 7, PECL pdo >= 0.9.0)<br/>
      * Closes the cursor, enabling the statement to be executed again.
      * @link https://php.net/manual/en/pdostatement.closecursor.php
      * @return bool <b>TRUE</b> on success or <b>FALSE</b> on failure.
@@ -1959,7 +1961,7 @@ class PDOStatement implements IteratorAggregate
     public function closeCursor(): bool {}
 
     /**
-     * (PHP 5 &gt;= 5.1.0, PHP 7, PECL pdo &gt;= 0.9.0)<br/>
+     * (PHP 5 >= 5.1.0, PHP 7, PECL pdo >= 0.9.0)<br/>
      * Dump an SQL prepared command
      * @link https://php.net/manual/en/pdostatement.debugdumpparams.php
      * @return bool|null No value is returned.
@@ -1985,7 +1987,7 @@ final class PDORow
 }
 
 /**
- * (PHP 5 &gt;= 5.1.3, PHP 7, PECL pdo &gt;= 1.0.3)<br/>
+ * (PHP 5 >= 5.1.3, PHP 7, PECL pdo >= 1.0.3)<br/>
  * Return an array of available PDO drivers
  * @link https://php.net/manual/en/pdo.getavailabledrivers.php
  * @return array <b>PDO::getAvailableDrivers</b> returns an array of PDO driver names. If

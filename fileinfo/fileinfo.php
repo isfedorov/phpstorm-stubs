@@ -26,7 +26,7 @@ class finfo
     public function finfo($options, $arg) {}
 
     /**
-     * (PHP &gt;= 5.3.0, PECL fileinfo &gt;= 0.1.0)<br/>
+     * (PHP >= 5.3.0, PECL fileinfo >= 0.1.0)<br/>
      * Set libmagic configuration options
      * @link https://php.net/manual/en/function.finfo-set-flags.php
      * @param int $flags <p>
@@ -38,7 +38,7 @@ class finfo
     public function set_flags(#[LanguageLevelTypeAware(['8.0' => 'int'], default: '')] $flags) {}
 
     /**
-     * (PHP &gt;= 5.3.0, PECL fileinfo &gt;= 0.1.0)<br/>
+     * (PHP >= 5.3.0, PECL fileinfo >= 0.1.0)<br/>
      * Return information about a file
      * @link https://php.net/manual/en/function.finfo-file.php
      * @param string $filename <p>
@@ -63,7 +63,7 @@ class finfo
     ): string|false {}
 
     /**
-     * (PHP 5 &gt;= 5.3.0, PECL fileinfo &gt;= 0.1.0)<br/>
+     * (PHP 5 >= 5.3.0, PECL fileinfo >= 0.1.0)<br/>
      * Return information about a string buffer
      * @link https://php.net/manual/en/function.finfo-buffer.php
      * @param string $string <p>
@@ -87,7 +87,7 @@ class finfo
 }
 
 /**
- * (PHP &gt;= 5.3.0, PECL fileinfo &gt;= 0.1.0)<br/>
+ * (PHP >= 5.3.0, PECL fileinfo >= 0.1.0)<br/>
  * Create a new fileinfo resource
  * @link https://php.net/manual/en/function.finfo-open.php
  * @param int $flags <p>
@@ -108,7 +108,7 @@ class finfo
 function finfo_open(int $flags = 0, ?string $magic_database = null) {}
 
 /**
- * (PHP &gt;= 5.3.0, PECL fileinfo &gt;= 0.1.0)<br/>
+ * (PHP >= 5.3.0, PECL fileinfo >= 0.1.0)<br/>
  * Close fileinfo resource
  * @link https://php.net/manual/en/function.finfo-close.php
  * @param resource $finfo <p>
@@ -119,7 +119,7 @@ function finfo_open(int $flags = 0, ?string $magic_database = null) {}
 function finfo_close(#[LanguageLevelTypeAware(['8.1' => 'finfo'], default: 'resource')] $finfo): bool {}
 
 /**
- * (PHP &gt;= 5.3.0, PECL fileinfo &gt;= 0.1.0)<br/>
+ * (PHP >= 5.3.0, PECL fileinfo >= 0.1.0)<br/>
  * Set libmagic configuration options
  * @link https://php.net/manual/en/function.finfo-set-flags.php
  * @param resource $finfo <p>
@@ -134,7 +134,7 @@ function finfo_close(#[LanguageLevelTypeAware(['8.1' => 'finfo'], default: 'reso
 function finfo_set_flags(#[LanguageLevelTypeAware(['8.1' => 'finfo'], default: 'resource')] $finfo, int $flags): bool {}
 
 /**
- * (PHP &gt;= 5.3.0, PECL fileinfo &gt;= 0.1.0)<br/>
+ * (PHP >= 5.3.0, PECL fileinfo >= 0.1.0)<br/>
  * Return information about a file
  * @link https://php.net/manual/en/function.finfo-file.php
  * @param resource $finfo <p>
@@ -156,7 +156,7 @@ function finfo_set_flags(#[LanguageLevelTypeAware(['8.1' => 'finfo'], default: '
 function finfo_file(#[LanguageLevelTypeAware(['8.1' => 'finfo'], default: 'resource')] $finfo, string $filename, int $flags = 0, $context): string|false {}
 
 /**
- * (PHP 5 &gt;= 5.3.0, PECL fileinfo &gt;= 0.1.0)<br/>
+ * (PHP 5 >= 5.3.0, PECL fileinfo >= 0.1.0)<br/>
  * Return information about a string buffer
  * @link https://php.net/manual/en/function.finfo-buffer.php
  * @param resource $finfo <p>

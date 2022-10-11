@@ -2135,7 +2135,7 @@ function curl_setopt(#[LanguageLevelTypeAware(['8.0' => 'CurlHandle'], default: 
 function curl_setopt_array(#[LanguageLevelTypeAware(['8.0' => 'CurlHandle'], default: 'resource')] $handle, array $options): bool {}
 
 /**
- * (PHP 5 &gt;=5.5.0)<br/>
+ * (PHP 5 >=5.5.0)<br/>
  * Close a cURL share handle
  * @link https://secure.php.net/manual/en/function.curl-share-close.php
  * @param CurlShareHandle|resource $share_handle <p>
@@ -2147,7 +2147,7 @@ function curl_setopt_array(#[LanguageLevelTypeAware(['8.0' => 'CurlHandle'], def
 function curl_share_close(#[LanguageLevelTypeAware(['8.0' => 'CurlShareHandle'], default: 'resource')] $share_handle): void {}
 
 /**
- * (PHP 5 &gt;=5.5.0)<br/>
+ * (PHP 5 >=5.5.0)<br/>
  * Initialize a cURL share handle
  * @link https://secure.php.net/manual/en/function.curl-share-init.php
  * @return resource|CurlShareHandle Returns resource of type "cURL Share Handle".
@@ -2157,7 +2157,7 @@ function curl_share_close(#[LanguageLevelTypeAware(['8.0' => 'CurlShareHandle'],
 function curl_share_init() {}
 
 /**
- * (PHP 5 &gt;=5.5.0)<br/>
+ * (PHP 5 >=5.5.0)<br/>
  * Set an option for a cURL share handle.
  * @link https://secure.php.net/manual/en/function.curl-share-setopt.php
  * @param CurlShareHandle|resource $share_handle <p>
@@ -2236,7 +2236,7 @@ function curl_share_init() {}
 function curl_share_setopt(#[LanguageLevelTypeAware(['8.0' => 'CurlShareHandle'], default: 'resource')] $share_handle, int $option, mixed $value): bool {}
 
 /**
- * (PHP 5 &gt;=5.5.0)<br/>
+ * (PHP 5 >=5.5.0)<br/>
  * Return string describing the given error code
  * @link https://secure.php.net/manual/en/function.curl-strerror.php
  * @param int $error_code <p>
@@ -2249,7 +2249,7 @@ function curl_share_setopt(#[LanguageLevelTypeAware(['8.0' => 'CurlShareHandle']
 function curl_strerror(int $error_code): ?string {}
 
 /**
- * (PHP 5 &gt;=5.5.0)<br/>
+ * (PHP 5 >=5.5.0)<br/>
  * Decodes the given URL encoded string
  * @link https://secure.php.net/manual/en/function.curl-unescape.php
  * @param CurlHandle|resource $handle <p>A cURL handle returned by
@@ -2632,7 +2632,7 @@ function curl_multi_remove_handle(#[LanguageLevelTypeAware(['8.0' => 'CurlMultiH
 function curl_multi_select(#[LanguageLevelTypeAware(['8.0' => 'CurlMultiHandle'], default: 'resource')] $multi_handle, float $timeout = 1.0): int {}
 
 /**
- * (PHP 5 &gt;=5.5.0)<br/>
+ * (PHP 5 >=5.5.0)<br/>
  * Set an option for the cURL multi handle
  * @link https://secure.php.net/manual/en/function.curl-multi-setopt.php
  * @param CurlMultiHandle|resource $multi_handle
@@ -2684,7 +2684,7 @@ function curl_multi_select(#[LanguageLevelTypeAware(['8.0' => 'CurlMultiHandle']
 function curl_multi_setopt(#[LanguageLevelTypeAware(['8.0' => 'CurlMultiHandle'], default: 'resource')] $multi_handle, int $option, mixed $value): bool {}
 
 /**
- * (PHP 5 &gt;=5.5.0)<br/>
+ * (PHP 5 >=5.5.0)<br/>
  * Return string describing error code
  * @link https://secure.php.net/manual/en/function.curl-multi-strerror.php
  * @param int $error_code <p>
@@ -2696,7 +2696,7 @@ function curl_multi_setopt(#[LanguageLevelTypeAware(['8.0' => 'CurlMultiHandle']
 function curl_multi_strerror(int $error_code): ?string {}
 
 /**
- * (PHP 5 &gt;=5.5.0)<br/>
+ * (PHP 5 >=5.5.0)<br/>
  * Pause and unpause a connection
  * @link https://secure.php.net/manual/en/function.curl-pause.php
  * @param CurlHandle|resource $handle
@@ -2708,7 +2708,7 @@ function curl_multi_strerror(int $error_code): ?string {}
 function curl_pause(#[LanguageLevelTypeAware(['8.0' => 'CurlHandle'], default: 'resource')] $handle, int $flags): int {}
 
 /**
- * (PHP 5 &gt;=5.5.0)<br/>
+ * (PHP 5 >=5.5.0)<br/>
  * Reset all options of a libcurl session handle
  * @link https://secure.php.net/manual/en/function.curl-reset.php
  * @param CurlHandle|resource $handle <p>A cURL handle returned by

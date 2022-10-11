@@ -7,7 +7,7 @@
  */
 
 /**
- * (PECL solr &gt;= 0.9.1)<br/>
+ * (PECL solr >= 0.9.1)<br/>
  * Returns the current version of the Apache Solr extension
  * @link https://php.net/manual/en/function.solr-get-version.php
  * @return string|false <p>

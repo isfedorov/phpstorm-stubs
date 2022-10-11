@@ -59,7 +59,7 @@ class JsonIncrementalParser
 }
 
 /**
- * (PHP 5 &gt;= 5.2.0, PECL json &gt;= 1.2.0)<br/>
+ * (PHP 5 >= 5.2.0, PECL json >= 1.2.0)<br/>
  * Returns the JSON representation of a value
  * @link https://php.net/manual/en/function.json-encode.php
  * @param mixed $value <p>
@@ -95,7 +95,7 @@ class JsonIncrementalParser
 function json_encode(mixed $value, int $flags = 0, int $depth = 512): string|false {}
 
 /**
- * (PHP 5 &gt;= 5.2.0, PECL json &gt;= 1.2.0)<br/>
+ * (PHP 5 >= 5.2.0, PECL json >= 1.2.0)<br/>
  * Decodes a JSON string
  * @link https://php.net/manual/en/function.json-decode.php
  * @param string $json <p>

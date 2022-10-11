@@ -265,6 +265,7 @@ function session_set_save_handler(callable $open, callable $close, callable $rea
  * to register as the session handler. Since PHP 5.4 only.
  * @param bool $register_shutdown [optional] Register session_write_close() as a register_shutdown_function() function.
  * @return bool true on success or false on failure.
+ * @since 5.4
  */
 function session_set_save_handler(SessionHandlerInterface $sessionhandler, bool $register_shutdown = true): bool {}
 

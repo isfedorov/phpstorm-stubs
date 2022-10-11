@@ -7,7 +7,7 @@
  */
 
 /**
- * (PECL solr &gt;= 0.9.2)<br/>
+ * (PECL solr >= 0.9.2)<br/>
  * Class SolrException<br/>
  * This is the base class for all exception thrown by the Solr extension classes.
  * @link https://php.net/manual/en/class.solrexception.php
@@ -24,7 +24,7 @@ class SolrException extends Exception
     protected $zif_name;
 
     /**
-     * (PECL solr &gt;= 0.9.2)<br/>
+     * (PECL solr >= 0.9.2)<br/>
      * Returns internal information where the Exception was thrown
      * @link https://php.net/manual/en/solrexception.getinternalinfo.php
      * @return array <p>

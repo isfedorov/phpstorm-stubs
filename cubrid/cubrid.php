@@ -3,7 +3,7 @@
 // Start of cubrid v.1.1
 
 /**
- * (PHP 5, CUBRID &gt;= 8.3.1)<br/>
+ * (PHP 5, CUBRID >= 8.3.1)<br/>
  * Open a connection to a CUBRID Server
  * @link https://php.net/manual/en/function.cubrid-connect.php
  * @param string $host <p>
@@ -40,7 +40,7 @@
 function cubrid_connect($host, $port, $dbname, $userid = 'PUBLIC', $passwd = '', $new_link = false) {}
 
 /**
- * (PHP 5, CUBRID &gt;= 8.3.1)<br/>
+ * (PHP 5, CUBRID >= 8.3.1)<br/>
  * Establish the environment for connecting to CUBRID server.
  * @link https://php.net/manual/en/function.cubrid-connect.php
  * @param string $conn_url <p>
@@ -72,7 +72,7 @@ function cubrid_connect($host, $port, $dbname, $userid = 'PUBLIC', $passwd = '',
 function cubrid_connect_with_url($conn_url, $userid = 'PUBLIC', $passwd = '', $new_link = false) {}
 
 /**
- * (PHP 5, CUBRID &gt;= 8.3.1)<br/>
+ * (PHP 5, CUBRID >= 8.3.1)<br/>
  * Open a persistent connection to a CUBRID server
  * @link https://php.net/manual/en/function.cubrid-pconnect.php
  * @param string $host <p>
@@ -100,7 +100,7 @@ function cubrid_connect_with_url($conn_url, $userid = 'PUBLIC', $passwd = '', $n
 function cubrid_pconnect($host, $port, $dbname, $userid = 'PUBLIC', $passwd = '') {}
 
 /**
- * (PHP 5, CUBRID &gt;= 8.3.1)<br/>
+ * (PHP 5, CUBRID >= 8.3.1)<br/>
  * Open a persistent connection to CUBRID server
  * @link https://secure.php.net/manual/en/function.cubrid-pconnect-with-url.php
  * @param string $conn_url <p>
@@ -123,7 +123,7 @@ function cubrid_pconnect($host, $port, $dbname, $userid = 'PUBLIC', $passwd = ''
 function cubrid_pconnect_with_url($conn_url, $userid = 'PUBLIC', $passwd = '') {}
 
 /**
- * (PHP 5, CUBRID &gt;= 8.3.0)<br/>
+ * (PHP 5, CUBRID >= 8.3.0)<br/>
  * Close CUBRID connection. Same as cubrid_disconnect().
  * @link https://php.net/manual/en/function.cubrid-close.php
  * @param resource $conn_identifier [optional] <p>
@@ -139,7 +139,7 @@ function cubrid_pconnect_with_url($conn_url, $userid = 'PUBLIC', $passwd = '') {
 function cubrid_close($conn_identifier = null) {}
 
 /**
- * (PHP 5, CUBRID &gt;= 8.3.0)<br/>
+ * (PHP 5, CUBRID >= 8.3.0)<br/>
  * Close CUBRID connection. Same as cubrid_close().
  * @link https://php.net/manual/en/function.cubrid-disconnect.php
  * @param resource $conn_identifier [optional] <p>
@@ -150,7 +150,7 @@ function cubrid_close($conn_identifier = null) {}
 function cubrid_disconnect($conn_identifier = null) {}
 
 /**
- * (PHP 5, CUBRID &gt;= 8.3.1)<br/>
+ * (PHP 5, CUBRID >= 8.3.1)<br/>
  * Send a CUBRID query
  * @link https://php.net/manual/en/function.cubrid-query.php
  * @param string $query <p>
@@ -194,7 +194,7 @@ function cubrid_disconnect($conn_identifier = null) {}
 function cubrid_query($query, $conn_identifier = null) {}
 
 /**
- * (PHP 5, CUBRID &gt;= 8.3.0)<br/>
+ * (PHP 5, CUBRID >= 8.3.0)<br/>
  * Execute a prepared SQL statement
  * @link https://php.net/manual/en/function.cubrid-execute.php
  * @param resource $conn_identifier <p>
@@ -215,7 +215,7 @@ function cubrid_query($query, $conn_identifier = null) {}
 function cubrid_execute($conn_identifier, $sql, $option = null) {}
 
 /**
- * (PHP 5, CUBRID &gt;= 8.3.0)<br/>
+ * (PHP 5, CUBRID >= 8.3.0)<br/>
  * Execute a prepared SQL statement
  * @link https://php.net/manual/en/function.cubrid-execute.php
  * @param resource $request_identifier <p>
@@ -233,7 +233,7 @@ function cubrid_execute($conn_identifier, $sql, $option = null) {}
 function cubrid_execute($request_identifier, $option = null) {}
 
 /**
- * (PHP 5, CUBRID &gt;= 8.3.0)<br/>
+ * (PHP 5, CUBRID >= 8.3.0)<br/>
  * Bind variables to a prepared statement as parameters
  * @link https://php.net/manual/en/function.cubrid-bind.php
  * @param resource $req_identifier <p>
@@ -261,7 +261,7 @@ function cubrid_execute($request_identifier, $option = null) {}
 function cubrid_bind($req_identifier, $bind_index, $bind_value, $bind_value_type = null) {}
 
 /**
- * (PHP 5, CUBRID &gt;= 8.3.0)<br/>
+ * (PHP 5, CUBRID >= 8.3.0)<br/>
  * Close the request handle. Same as cubrid_close_request().
  * @link https://php.net/manual/en/function.cubrid-close-prepare.php
  * @param resource $req_identifier <p>
@@ -272,7 +272,7 @@ function cubrid_bind($req_identifier, $bind_index, $bind_value, $bind_value_type
 function cubrid_close_prepare($req_identifier) {}
 
 /**
- * (PHP 5, CUBRID &gt;= 8.3.0)<br/>
+ * (PHP 5, CUBRID >= 8.3.0)<br/>
  * Close the request handle. Same as cubrid_close_prepare().
  * @link https://php.net/manual/en/function.cubrid-close-request.php
  * @param resource $req_identifier <p>
@@ -283,7 +283,7 @@ function cubrid_close_prepare($req_identifier) {}
 function cubrid_close_request($req_identifier) {}
 
 /**
- * (PHP 5, CUBRID &gt;= 8.3.0)<br/>
+ * (PHP 5, CUBRID >= 8.3.0)<br/>
  * Get contents of collection type column using OID
  * @link https://php.net/manual/en/function.cubrid-col-get.php
  * @param resource $conn_identifier <p>
@@ -311,7 +311,7 @@ function cubrid_close_request($req_identifier) {}
 function cubrid_col_get($conn_identifier, $oid, $attr_name) {}
 
 /**
- * (PHP 5, CUBRID &gt;= 8.3.0)<br/>
+ * (PHP 5, CUBRID >= 8.3.0)<br/>
  * Get the number of elements in collection type column using OID
  * @link https://php.net/manual/en/function.cubrid-col-size.php
  * @param resource $conn_identifier <p>
@@ -331,7 +331,7 @@ function cubrid_col_get($conn_identifier, $oid, $attr_name) {}
 function cubrid_col_size($conn_identifier, $oid, $attr_name) {}
 
 /**
- * (PHP 5, CUBRID &gt;= 8.3.0)<br/>
+ * (PHP 5, CUBRID >= 8.3.0)<br/>
  * Perform a query without fetching the results into memory
  * @link https://php.net/manual/en/function.cubrid-unbuffered-query.php
  * @param string $query <p>
@@ -355,7 +355,7 @@ function cubrid_col_size($conn_identifier, $oid, $attr_name) {}
 function cubrid_unbuffered_query($query, $conn_identifier = null) {}
 
 /**
- * (PHP 5, CUBRID &gt;= 8.3.0)<br/>
+ * (PHP 5, CUBRID >= 8.3.0)<br/>
  * Return an array with the list of all existing CUBRID databases
  * @link https://php.net/manual/en/function.cubrid-list-dbs.php
  * @param resource $conn_identifier [optional] <p>
@@ -369,7 +369,7 @@ function cubrid_unbuffered_query($query, $conn_identifier = null) {}
 function cubrid_list_dbs($conn_identifier) {}
 
 /**
- * (PHP 5, CUBRID &gt;= 8.3.1)<br/>
+ * (PHP 5, CUBRID >= 8.3.1)<br/>
  * Get the error message. Same as cubrid_error_msg();
  * @link https://php.net/manual/en/function.cubrid-error.php
  * @param resource $connection [optional] <p>
@@ -382,7 +382,7 @@ function cubrid_list_dbs($conn_identifier) {}
 function cubrid_error($connection = null) {}
 
 /**
- * (PHP 5, CUBRID &gt;= 8.3.0)<br/>
+ * (PHP 5, CUBRID >= 8.3.0)<br/>
  * Get last error message for the most recent function call.
  * Same as cubrid_error();
  * @link https://php.net/manual/en/function.cubrid-error-msg.php
@@ -393,7 +393,7 @@ function cubrid_error($connection = null) {}
 function cubrid_error_msg() {}
 
 /**
- * (PHP 5, CUBRID &gt;= 8.3.1)<br/>
+ * (PHP 5, CUBRID >= 8.3.1)<br/>
  * Returns the numerical value of the error message from previous
  * CUBRID operation. Same as cubrid_error_code();
  * @link https://php.net/manual/en/function.cubrid-errno.php
@@ -410,7 +410,7 @@ function cubrid_error_msg() {}
 function cubrid_errno($conn_identifier = null) {}
 
 /**
- * (PHP 5, CUBRID &gt;= 8.3.0)<br/>
+ * (PHP 5, CUBRID >= 8.3.0)<br/>
  * Get error code for the most recent function call.
  * Same as cubrid_errno();
  * @link https://php.net/manual/en/function.cubrid-error-code.php
@@ -422,7 +422,7 @@ function cubrid_errno($conn_identifier = null) {}
 function cubrid_error_code() {}
 
 /**
- * (PHP 5, CUBRID &gt;= 8.3.0)<br/>
+ * (PHP 5, CUBRID >= 8.3.0)<br/>
  * Return the number of rows affected by the last SQL statement
  * @link https://php.net/manual/en/function.cubrid-affected-rows.php
  * @param resource $conn_identifier [optional] <p>
@@ -439,7 +439,7 @@ function cubrid_error_code() {}
 function cubrid_affected_rows($conn_identifier = null) {}
 
 /**
- * (PHP 5, CUBRID &gt;= 8.3.0)<br/>
+ * (PHP 5, CUBRID >= 8.3.0)<br/>
  * Return the ID generated for the last updated AUTO_INCREMENT column
  * @link https://php.net/manual/en/function.cubrid-insert-id.php
  * @param resource $conn_identifier [optional] <p>
@@ -455,7 +455,7 @@ function cubrid_affected_rows($conn_identifier = null) {}
 function cubrid_insert_id($conn_identifier = null) {}
 
 /**
- * (PHP 5, CUBRID &gt;= 8.3.0)<br/>
+ * (PHP 5, CUBRID >= 8.3.0)<br/>
  * Return the value of a specific field in a specific row
  * @link https://php.net/manual/en/function.cubrid-result.php
  * @param resource $result
@@ -480,7 +480,7 @@ function cubrid_insert_id($conn_identifier = null) {}
 function cubrid_result($result, $row, $field = 0) {}
 
 /**
- * (PHP 5, CUBRID &gt;= 8.3.0)<br/>
+ * (PHP 5, CUBRID >= 8.3.0)<br/>
  * Get the number of rows in the result set
  * @link https://php.net/manual/en/function.cubrid-num-rows.php
  * @param resource $result <p>
@@ -497,7 +497,7 @@ function cubrid_result($result, $row, $field = 0) {}
 function cubrid_num_rows($result) {}
 
 /**
- * (PHP 5, CUBRID &gt;= 8.3.0)<br/>
+ * (PHP 5, CUBRID >= 8.3.0)<br/>
  * Return the number of columns in the result set
  * @link https://php.net/manual/en/function.cubrid-num-cols.php
  * @param resource $result <p>
@@ -511,7 +511,7 @@ function cubrid_num_rows($result) {}
 function cubrid_num_cols($result) {}
 
 /**
- * (PHP 5, CUBRID &gt;= 8.3.0)<br/>
+ * (PHP 5, CUBRID >= 8.3.0)<br/>
  * Return the number of columns in the result set
  * @link https://php.net/manual/en/function.cubrid-num-fields.php
  * @param resource $result <p>
@@ -527,7 +527,7 @@ function cubrid_num_cols($result) {}
 function cubrid_num_fields($result) {}
 
 /**
- * (PHP 5, CUBRID &gt;= 8.3.0)<br/>
+ * (PHP 5, CUBRID >= 8.3.0)<br/>
  * Fetch the next row from a result set
  * @link https://php.net/manual/en/function.cubrid-fetch.php
  * @param resource $result <p>
@@ -568,7 +568,7 @@ function cubrid_num_fields($result) {}
 function cubrid_fetch($result, $type = CUBRID_BOTH) {}
 
 /**
- * (PHP 5, CUBRID &gt;= 8.3.0)<br/>
+ * (PHP 5, CUBRID >= 8.3.0)<br/>
  * Return a numerical array with the values of the current row
  * @link https://php.net/manual/en/function.cubrid-fetch-row.php
  * @param resource $result <p>
@@ -587,7 +587,7 @@ function cubrid_fetch($result, $type = CUBRID_BOTH) {}
 function cubrid_fetch_row($result, $type = null) {}
 
 /**
- * (PHP 5, CUBRID &gt;= 8.3.0)<br/>
+ * (PHP 5, CUBRID >= 8.3.0)<br/>
  * Fetch a result row as an associative array, a numeric array, or both
  * @link https://php.net/manual/en/function.cubrid-fetch-array.php
  * @param resource $result
@@ -617,7 +617,7 @@ function cubrid_fetch_row($result, $type = null) {}
 function cubrid_fetch_array($result, $type = CUBRID_BOTH) {}
 
 /**
- * (PHP 5, CUBRID &gt;= 8.3.0)<br/>
+ * (PHP 5, CUBRID >= 8.3.0)<br/>
  * Return the associative array that corresponds to the fetched row
  * @link https://php.net/manual/en/function.cubrid-fetch-assoc.php
  * @param resource $result <p>
@@ -636,7 +636,7 @@ function cubrid_fetch_array($result, $type = CUBRID_BOTH) {}
 function cubrid_fetch_assoc($result, $type = null) {}
 
 /**
- * (PHP 5, CUBRID &gt;= 8.3.0)<br/>
+ * (PHP 5, CUBRID >= 8.3.0)<br/>
  * Fetch the next row and return it as an object
  * @link https://php.net/manual/en/function.cubrid-fetch-object.php
  * @param resource $result <p>
@@ -664,7 +664,7 @@ function cubrid_fetch_assoc($result, $type = null) {}
 function cubrid_fetch_object($result, $class_name = null, $params = null, $type = null) {}
 
 /**
- * (PHP 5, CUBRID &gt;= 8.3.0)<br/>
+ * (PHP 5, CUBRID >= 8.3.0)<br/>
  * Move the internal row pointer of the CUBRID result
  * @link https://php.net/manual/en/function.cubrid-data-seek.php
  * @param resource $result <p>
@@ -680,7 +680,7 @@ function cubrid_fetch_object($result, $class_name = null, $params = null, $type 
 function cubrid_data_seek($result, $row_number) {}
 
 /**
- * (PHP 5, CUBRID &gt;= 8.3.0)<br/>
+ * (PHP 5, CUBRID >= 8.3.0)<br/>
  * Return an array with the lengths of the values of
  * each field from the current row
  * @link https://php.net/manual/en/function.cubrid-fetch-lengths.php
@@ -695,7 +695,7 @@ function cubrid_data_seek($result, $row_number) {}
 function cubrid_fetch_lengths($result) {}
 
 /**
- * (PHP 5, CUBRID &gt;= 8.3.1)<br/>
+ * (PHP 5, CUBRID >= 8.3.1)<br/>
  * Get column information from a result and return as an object
  * @link https://php.net/manual/en/function.cubrid-fetch-field.php
  * @param resource $result <p>
@@ -729,7 +729,7 @@ function cubrid_fetch_lengths($result) {}
 function cubrid_fetch_field($result, $field_offset = 0) {}
 
 /**
- * (PHP 5, CUBRID &gt;= 8.3.0)<br/>
+ * (PHP 5, CUBRID >= 8.3.0)<br/>
  * Get the column names in result
  * @link https://php.net/manual/en/function.cubrid-column-names.php
  * @param resource $req_identifier <p>
@@ -743,7 +743,7 @@ function cubrid_fetch_field($result, $field_offset = 0) {}
 function cubrid_column_names($req_identifier) {}
 
 /**
- * (PHP 5, CUBRID &gt;= 8.3.0)<br/>
+ * (PHP 5, CUBRID >= 8.3.0)<br/>
  * Get column types in result
  * @link https://php.net/manual/en/function.cubrid-column-names.php
  * @param resource $req_identifier <p>
@@ -757,7 +757,7 @@ function cubrid_column_names($req_identifier) {}
 function cubrid_column_types($req_identifier) {}
 
 /**
- * (PHP 5, CUBRID &gt;= 8.3.0)<br/>
+ * (PHP 5, CUBRID >= 8.3.0)<br/>
  * Move the result set cursor to the specified field offset
  * @link https://php.net/manual/en/function.cubrid-field-seek.php
  * @param resource $result <p>
@@ -775,7 +775,7 @@ function cubrid_column_types($req_identifier) {}
 function cubrid_field_seek($result, $field_offset) {}
 
 /**
- * (PHP 5, CUBRID &gt;= 8.3.0)<br/>
+ * (PHP 5, CUBRID >= 8.3.0)<br/>
  * Free the memory occupied by the result data
  * @link https://php.net/manual/en/function.cubrid-free-result.php
  * @param resource $req_identifier <p>
@@ -793,7 +793,7 @@ function cubrid_field_seek($result, $field_offset) {}
 function cubrid_free_result($req_identifier) {}
 
 /**
- * (PHP 5, CUBRID &gt;= 8.3.0)<br/>
+ * (PHP 5, CUBRID >= 8.3.0)<br/>
  * Return the name of the specified field index
  * @link https://php.net/manual/en/function.cubrid-field-name.php
  * @param resource $result <p>
@@ -811,7 +811,7 @@ function cubrid_free_result($req_identifier) {}
 function cubrid_field_name($result, $field_offset) {}
 
 /**
- * (PHP 5, CUBRID &gt;= 8.3.0)<br/>
+ * (PHP 5, CUBRID >= 8.3.0)<br/>
  * Return the name of the table of the specified field
  * @link https://php.net/manual/en/function.cubrid-field-table.php
  * @param resource $result <p>
@@ -830,7 +830,7 @@ function cubrid_field_name($result, $field_offset) {}
 function cubrid_field_table($result, $field_offset) {}
 
 /**
- * (PHP 5, CUBRID &gt;= 8.3.0)<br/>
+ * (PHP 5, CUBRID >= 8.3.0)<br/>
  * Get the maximum length of the specified field
  * @link https://php.net/manual/en/function.cubrid-field-len.php
  * @param resource $result <p>
@@ -847,7 +847,7 @@ function cubrid_field_table($result, $field_offset) {}
 function cubrid_field_len($result, $field_offset) {}
 
 /**
- * (PHP 5, CUBRID &gt;= 8.3.0)<br/>
+ * (PHP 5, CUBRID >= 8.3.0)<br/>
  * Return the type of the column corresponding to the given field offset
  * @link https://php.net/manual/en/function.cubrid-field-type.php
  * @param resource $result <p>
@@ -868,7 +868,7 @@ function cubrid_field_len($result, $field_offset) {}
 function cubrid_field_type($result, $field_offset) {}
 
 /**
- * (PHP 5, CUBRID &gt;= 8.3.0)<br/>
+ * (PHP 5, CUBRID >= 8.3.0)<br/>
  * Return a string with the flags of the given field offset
  * @link https://php.net/manual/en/function.cubrid-field-flags.php
  * @param resource $result <p>
@@ -894,7 +894,7 @@ function cubrid_field_type($result, $field_offset) {}
 function cubrid_field_flags($result, $field_offset) {}
 
 /**
- * (PHP 5, CUBRID &gt;= 8.3.0)<br/>
+ * (PHP 5, CUBRID >= 8.3.0)<br/>
  * Escapes special characters in a string for use in an SQL statement
  * @link https://php.net/manual/en/function.cubrid-real-escape-string.php
  * @param string $unescaped_string <p>
@@ -912,7 +912,7 @@ function cubrid_field_flags($result, $field_offset) {}
 function cubrid_real_escape_string($unescaped_string, $conn_identifier = null) {}
 
 /**
- * (PHP 5, CUBRID &gt;= 8.3.0)<br/>
+ * (PHP 5, CUBRID >= 8.3.0)<br/>
  * Return the current CUBRID connection charset
  * @link https://php.net/manual/en/function.cubrid-client-encoding.php
  * @param resource $conn_identifier [optional] <p>
@@ -927,7 +927,7 @@ function cubrid_real_escape_string($unescaped_string, $conn_identifier = null) {
 function cubrid_client_encoding($conn_identifier = null) {}
 
 /**
- * (PHP 5, CUBRID &gt;= 8.3.1)<br/>
+ * (PHP 5, CUBRID >= 8.3.1)<br/>
  * Ping a server connection or reconnect if there is no connection
  * @link https://php.net/manual/en/function.cubrid-ping.php
  * @param resource $conn_identifier [optional] <p>
@@ -943,7 +943,7 @@ function cubrid_client_encoding($conn_identifier = null) {}
 function cubrid_ping($conn_identifier = null) {}
 
 /**
- * (PHP 5, CUBRID &gt;= 8.3.0)<br/>
+ * (PHP 5, CUBRID >= 8.3.0)<br/>
  * Return the client library version
  * @link https://php.net/manual/en/function.cubrid-get-client-info.php
  * @return string <p>
@@ -954,7 +954,7 @@ function cubrid_ping($conn_identifier = null) {}
 function cubrid_get_client_info() {}
 
 /**
- * (PHP 5, CUBRID &gt;= 8.3.0)<br/>
+ * (PHP 5, CUBRID >= 8.3.0)<br/>
  * Return the CUBRID server version
  * @link https://php.net/manual/en/function.cubrid-get-server-info.php
  * @param resource $conn_identifier
@@ -966,7 +966,7 @@ function cubrid_get_client_info() {}
 function cubrid_get_server_info($conn_identifier) {}
 
 /**
- * (PHP 5, CUBRID &gt;= 8.3.0)<br/>
+ * (PHP 5, CUBRID >= 8.3.0)<br/>
  * Returns the CUBRID database parameters
  * @link https://secure.php.net/manual/en/function.cubrid-get-db-parameter.php
  * @param resource $conn_identifier <p>
@@ -980,7 +980,7 @@ function cubrid_get_server_info($conn_identifier) {}
 function cubrid_get_db_parameter($conn_identifier) {}
 
 /**
- * (PHP 5, CUBRID &gt;= 8.4.0)<br/>
+ * (PHP 5, CUBRID >= 8.4.0)<br/>
  * Get auto-commit mode of the connection
  * @link https://php.net/manual/en/function.cubrid-get-autocommit.php
  * @param resource $conn_identifier <p>
@@ -994,7 +994,7 @@ function cubrid_get_db_parameter($conn_identifier) {}
 function cubrid_get_autocommit($conn_identifier) {}
 
 /**
- * (PHP 5, CUBRID &gt;= 8.3.0)<br/>
+ * (PHP 5, CUBRID >= 8.3.0)<br/>
  * Return the current CUBRID connection charset
  * @link https://secure.php.net/manual/en/function.cubrid-get-charset.php
  * @param resource $conn_identifier <p>
@@ -1008,7 +1008,7 @@ function cubrid_get_autocommit($conn_identifier) {}
 function cubrid_get_charset($conn_identifier) {}
 
 /**
- * (PHP 5, CUBRID &gt;= 8.4.0)<br/>
+ * (PHP 5, CUBRID >= 8.4.0)<br/>
  * Set auto-commit mode of the connection
  * @link https://php.net/manual/en/function.cubrid-set-autocommit.php
  * @param resource $conn_identifier <p>
@@ -1026,7 +1026,7 @@ function cubrid_get_charset($conn_identifier) {}
 function cubrid_set_autocommit($conn_identifier, $mode) {}
 
 /**
- * (PHP 5, CUBRID &gt;= 8.3.1)<br/>
+ * (PHP 5, CUBRID >= 8.3.1)<br/>
  * Get db name from results of cubrid_list_dbs
  * @link https://php.net/manual/en/function.cubrid-db-name.php
  * @param array $result <p>
@@ -1044,7 +1044,7 @@ function cubrid_set_autocommit($conn_identifier, $mode) {}
 function cubrid_db_name($result, $index) {}
 
 /**
- * (PHP 5, CUBRID &gt;= 8.3.1)<br/>
+ * (PHP 5, CUBRID >= 8.3.1)<br/>
  * Get result data
  * @link https://php.net/manual/en/function.cubrid-db-parameter.php
  * @param resource $conn_identifier <p>
@@ -1059,7 +1059,7 @@ function cubrid_db_name($result, $index) {}
 function cubrid_db_parameter($conn_identifier) {}
 
 /**
- * (PHP 5, CUBRID &gt;= 8.4.0)<br/>
+ * (PHP 5, CUBRID >= 8.4.0)<br/>
  * Sets the CUBRID database parameters
  * @link https://php.net/manual/en/function.cubrid-set-db-parameter.php
  * @param resource $conn_identifier <p>
@@ -1080,7 +1080,7 @@ function cubrid_db_parameter($conn_identifier) {}
 function cubrid_set_db_parameter($conn_identifier, $param_type, $param_value) {}
 
 /**
- * (PHP 5, CUBRID &gt;= 8.4.1)<br/>
+ * (PHP 5, CUBRID >= 8.4.1)<br/>
  * Get the query timeout value of the request
  * @link https://php.net/manual/en/function.cubrid-get-query-timeout.php
  * @param resource $req_identifier <p>
@@ -1094,7 +1094,7 @@ function cubrid_set_db_parameter($conn_identifier, $param_type, $param_value) {}
 function cubrid_get_query_timeout($req_identifier) {}
 
 /**
- * (PHP 5, CUBRID &gt;= 8.4.1)<br/>
+ * (PHP 5, CUBRID >= 8.4.1)<br/>
  * Set the query timeout value of the request
  * @link https://php.net/manual/en/function.cubrid-set-query-timeout.php
  * @param resource $req_identifier <p>
@@ -1111,7 +1111,7 @@ function cubrid_get_query_timeout($req_identifier) {}
 function cubrid_set_query_timeout($req_identifier, $timeout) {}
 
 /**
- * (PHP 5, CUBRID &gt;= 8.3.0)<br/>
+ * (PHP 5, CUBRID >= 8.3.0)<br/>
  * Get the class name using OID
  * @link https://php.net/manual/en/function.cubrid-tablename.php
  * @param resource $conn_identifier <p>
@@ -1130,7 +1130,7 @@ function cubrid_set_query_timeout($req_identifier, $timeout) {}
 function cubrid_get_class_name($conn_identifier, $oid) {}
 
 /**
- * (PHP 5, CUBRID &gt;= 8.3.0)<br/>
+ * (PHP 5, CUBRID >= 8.3.0)<br/>
  * Get a column using OID
  * @link https://php.net/manual/en/function.cubrid-get.php
  * @param resource $conn_identifier <p>
@@ -1162,7 +1162,7 @@ function cubrid_get_class_name($conn_identifier, $oid) {}
 function cubrid_get($conn_identifier, $oid, $attr = null) {}
 
 /**
- * (PHP 5, CUBRID &gt;= 8.3.0)<br/>
+ * (PHP 5, CUBRID >= 8.3.0)<br/>
  * Check whether the instance pointed by OID exists
  * @link https://php.net/manual/en/function.cubrid-is-instance.php
  * @param resource $conn_identifier <p>
@@ -1181,7 +1181,7 @@ function cubrid_get($conn_identifier, $oid, $attr = null) {}
 function cubrid_is_instance($conn_identifier, $oid) {}
 
 /**
- * (PHP 5, CUBRID &gt;= 8.3.0)<br/>
+ * (PHP 5, CUBRID >= 8.3.0)<br/>
  * Commit a transaction
  * @link https://php.net/manual/en/function.cubrid-commit.php
  * @param resource $conn_identifier <p>
@@ -1195,7 +1195,7 @@ function cubrid_is_instance($conn_identifier, $oid) {}
 function cubrid_commit($conn_identifier) {}
 
 /**
- * (PHP 5, CUBRID &gt;= 8.3.0)<br/>
+ * (PHP 5, CUBRID >= 8.3.0)<br/>
  * Roll back a transaction
  * @link https://php.net/manual/en/function.cubrid-rollback.php
  * @param resource $conn_identifier <p>
@@ -1209,7 +1209,7 @@ function cubrid_commit($conn_identifier) {}
 function cubrid_rollback($conn_identifier) {}
 
 /**
- * (PHP 5, CUBRID &gt;= 8.3.0)<br/>
+ * (PHP 5, CUBRID >= 8.3.0)<br/>
  * Get OID of the current cursor location
  * @link https://php.net/manual/en/function.cubrid-commit.php
  * @param resource $req_identifier <p>
@@ -1223,7 +1223,7 @@ function cubrid_rollback($conn_identifier) {}
 function cubrid_current_oid($req_identifier) {}
 
 /**
- * (PHP 5, CUBRID &gt;= 8.3.0)<br/>
+ * (PHP 5, CUBRID >= 8.3.0)<br/>
  * Delete an instance using OID
  * @link https://php.net/manual/en/function.cubrid-commit.php
  * @param resource $conn_identifier <p>
@@ -1240,7 +1240,7 @@ function cubrid_current_oid($req_identifier) {}
 function cubrid_drop($conn_identifier, $oid) {}
 
 /**
- * (PHP 5, CUBRID &gt;= 8.3.0)<br/>
+ * (PHP 5, CUBRID >= 8.3.0)<br/>
  * Get the facility code of error
  * @link https://php.net/manual/en/function.cubrid-error-code-facility.php
  * @return int <p>
@@ -1252,7 +1252,7 @@ function cubrid_drop($conn_identifier, $oid) {}
 function cubrid_error_code_facility() {}
 
 /**
- * (PHP 5, CUBRID &gt;= 8.3.1)<br/>
+ * (PHP 5, CUBRID >= 8.3.1)<br/>
  * Close BLOB/CLOB data
  * @link https://php.net/manual/en/function.cubrid-lob-close.php
  * @param array $lob_identifier_array <p>
@@ -1266,7 +1266,7 @@ function cubrid_error_code_facility() {}
 function cubrid_lob_close($lob_identifier_array) {}
 
 /**
- * (PHP 5, CUBRID &gt;= 8.3.1)<br/>
+ * (PHP 5, CUBRID >= 8.3.1)<br/>
  * Export BLOB/CLOB data to file
  * @link https://php.net/manual/en/function.cubrid-lob-export.php
  * @param resource $conn_identifier <p>
@@ -1286,7 +1286,7 @@ function cubrid_lob_close($lob_identifier_array) {}
 function cubrid_lob_export($conn_identifier, $lob_identifier, $path_name) {}
 
 /**
- * (PHP 5, CUBRID &gt;= 8.3.1)<br/>
+ * (PHP 5, CUBRID >= 8.3.1)<br/>
  * cubrid_lob_get() is used to get BLOB/CLOB meta info from
  * CUBRID database. CUBRID gets BLOB/CLOB by executing the SQL statement,
  * and returns all LOBs as a resource array. Be sure that the SQL
@@ -1308,7 +1308,7 @@ function cubrid_lob_export($conn_identifier, $lob_identifier, $path_name) {}
 function cubrid_lob_get($conn_identifier, $sql) {}
 
 /**
- * (PHP 5, CUBRID &gt;= 8.3.1)<br/>
+ * (PHP 5, CUBRID >= 8.3.1)<br/>
  * Read BLOB/CLOB data and send straight to browser
  * @link https://php.net/manual/en/function.cubrid-lob-send.php
  * @param resource $conn_identifier <p>
@@ -1325,7 +1325,7 @@ function cubrid_lob_get($conn_identifier, $sql) {}
 function cubrid_lob_send($conn_identifier, $lob_identifier) {}
 
 /**
- * (PHP 5, CUBRID &gt;= 8.3.1)<br/>
+ * (PHP 5, CUBRID >= 8.3.1)<br/>
  * Get BLOB/CLOB data size
  * @link https://php.net/manual/en/function.cubrid-lob-size.php
  * @param resource $lob_identifier <p>
@@ -1339,7 +1339,7 @@ function cubrid_lob_send($conn_identifier, $lob_identifier) {}
 function cubrid_lob_size($lob_identifier) {}
 
 /**
- * (PHP 5, CUBRID &gt;= 8.4.1)<br/>
+ * (PHP 5, CUBRID >= 8.4.1)<br/>
  * Bind a lob object or a string as a lob object to a
  * prepared statement as parameters.
  * @link https://secure.php.net/manual/en/function.cubrid-lob2-bind.php
@@ -1364,7 +1364,7 @@ function cubrid_lob_size($lob_identifier) {}
 function cubrid_lob2_bind($req_identifier, $bind_index, $bind_value, $bind_value_type = null) {}
 
 /**
- * (PHP 5, CUBRID &gt;= 8.4.1)<br/>
+ * (PHP 5, CUBRID >= 8.4.1)<br/>
  * Close BLOB/CLOB data
  * @link https://php.net/manual/en/function.cubrid-lob2-close.php
  * @param resource $lob_identifier <p>
@@ -1379,7 +1379,7 @@ function cubrid_lob2_bind($req_identifier, $bind_index, $bind_value, $bind_value
 function cubrid_lob2_close($lob_identifier) {}
 
 /**
- * (PHP 5, CUBRID &gt;= 8.4.1)<br/>
+ * (PHP 5, CUBRID >= 8.4.1)<br/>
  * Export the lob object to a file.
  * @link https://php.net/manual/en/function.cubrid-lob2-export.php
  * @param resource $lob_identifier <p>
@@ -1397,7 +1397,7 @@ function cubrid_lob2_close($lob_identifier) {}
 function cubrid_lob2_export($lob_identifier, $file_name) {}
 
 /**
- * (PHP 5, CUBRID &gt;= 8.4.1)<br/>
+ * (PHP 5, CUBRID >= 8.4.1)<br/>
  * Import the lob object from a file.
  * @link https://php.net/manual/en/function.cubrid-lob2-import.php
  * @param resource $lob_identifier <p>
@@ -1415,7 +1415,7 @@ function cubrid_lob2_export($lob_identifier, $file_name) {}
 function cubrid_lob2_import($lob_identifier, $file_name) {}
 
 /**
- * (PHP 5, CUBRID &gt;= 8.4.1)<br/>
+ * (PHP 5, CUBRID >= 8.4.1)<br/>
  * Create a lob object.
  * @link https://php.net/manual/en/function.cubrid-lob2-new.php
  * @param resource $conn_identifier [optional] <p>
@@ -1434,7 +1434,7 @@ function cubrid_lob2_import($lob_identifier, $file_name) {}
 function cubrid_lob2_new($conn_identifier = null, $type = "BLOB") {}
 
 /**
- * (PHP 5, CUBRID &gt;= 8.4.1)<br/>
+ * (PHP 5, CUBRID >= 8.4.1)<br/>
  * Read from BLOB/CLOB data.
  * @link https://php.net/manual/en/function.cubrid-lob2-read.php
  * @param resource $lob_identifier <p>
@@ -1453,7 +1453,7 @@ function cubrid_lob2_new($conn_identifier = null, $type = "BLOB") {}
 function cubrid_lob2_read($lob_identifier, $len) {}
 
 /**
- * (PHP 5, CUBRID &gt;= 8.4.1)<br/>
+ * (PHP 5, CUBRID >= 8.4.1)<br/>
  * Move the cursor of a lob object.
  * @link https://php.net/manual/en/function.cubrid-lob2-seek64.php
  * @param resource $lob_identifier <p>
@@ -1480,7 +1480,7 @@ function cubrid_lob2_read($lob_identifier, $len) {}
 function cubrid_lob2_seek64($lob_identifier, $offset, $origin = CUBRID_CURSOR_CURRENT) {}
 
 /**
- * (PHP 5, CUBRID &gt;= 8.4.1)<br/>
+ * (PHP 5, CUBRID >= 8.4.1)<br/>
  * Move the cursor of a lob object.
  * @link https://php.net/manual/en/function.cubrid-lob2-seek.php
  * @param resource $lob_identifier <p>
@@ -1507,7 +1507,7 @@ function cubrid_lob2_seek64($lob_identifier, $offset, $origin = CUBRID_CURSOR_CU
 function cubrid_lob2_seek($lob_identifier, $offset, $origin = CUBRID_CURSOR_CURRENT) {}
 
 /**
- * (PHP 5, CUBRID &gt;= 8.4.1)<br/>
+ * (PHP 5, CUBRID >= 8.4.1)<br/>
  * Get a lob object's size.
  * @link https://php.net/manual/en/function.cubrid-lob2-size64.php
  * @param resource $lob_identifier <p>
@@ -1522,7 +1522,7 @@ function cubrid_lob2_seek($lob_identifier, $offset, $origin = CUBRID_CURSOR_CURR
 function cubrid_lob2_size64($lob_identifier) {}
 
 /**
- * (PHP 5, CUBRID &gt;= 8.4.1)<br/>
+ * (PHP 5, CUBRID >= 8.4.1)<br/>
  * Get a lob object's size.
  * @link https://php.net/manual/en/function.cubrid-lob2-size.php
  * @param resource $lob_identifier <p>
@@ -1537,7 +1537,7 @@ function cubrid_lob2_size64($lob_identifier) {}
 function cubrid_lob2_size($lob_identifier) {}
 
 /**
- * (PHP 5, CUBRID &gt;= 8.4.1)<br/>
+ * (PHP 5, CUBRID >= 8.4.1)<br/>
  * Tell the cursor position of the LOB object.
  * @link https://php.net/manual/en/function.cubrid-lob2-tell64.php
  * @param resource $lob_identifier <p>
@@ -1552,7 +1552,7 @@ function cubrid_lob2_size($lob_identifier) {}
 function cubrid_lob2_tell64($lob_identifier) {}
 
 /**
- * (PHP 5, CUBRID &gt;= 8.4.1)<br/>
+ * (PHP 5, CUBRID >= 8.4.1)<br/>
  * Tell the cursor position of the LOB object.
  * @link https://php.net/manual/en/function.cubrid-lob2-tell.php
  * @param resource $lob_identifier <p>
@@ -1567,7 +1567,7 @@ function cubrid_lob2_tell64($lob_identifier) {}
 function cubrid_lob2_tell($lob_identifier) {}
 
 /**
- * (PHP 5, CUBRID &gt;= 8.3.0)<br/>
+ * (PHP 5, CUBRID >= 8.3.0)<br/>
  * Set a read lock on the given OID
  * @link https://php.net/manual/en/function.cubrid-lock-read.php
  * @param resource $conn_identifier <p>
@@ -1584,7 +1584,7 @@ function cubrid_lob2_tell($lob_identifier) {}
 function cubrid_lock_read($conn_identifier, $oid) {}
 
 /**
- * (PHP 5, CUBRID &gt;= 8.3.0)<br/>
+ * (PHP 5, CUBRID >= 8.3.0)<br/>
  * Set a write lock on the given OID
  * @link https://php.net/manual/en/function.cubrid-lock-write.php
  * @param resource $conn_identifier <p>
@@ -1601,7 +1601,7 @@ function cubrid_lock_read($conn_identifier, $oid) {}
 function cubrid_lock_write($conn_identifier, $oid) {}
 
 /**
- * (PHP 5, CUBRID &gt;= 8.3.0)<br/>
+ * (PHP 5, CUBRID >= 8.3.0)<br/>
  * Move the cursor in the result
  * @link https://php.net/manual/en/function.cubrid-move-cursor.php
  * @param resource $req_identifier <p>
@@ -1623,7 +1623,7 @@ function cubrid_lock_write($conn_identifier, $oid) {}
 function cubrid_move_cursor($req_identifier, $offset, $origin = CUBRID_CURSOR_CURRENT) {}
 
 /**
- * (PHP 5, CUBRID &gt;= 8.4.0)<br/>
+ * (PHP 5, CUBRID >= 8.4.0)<br/>
  * Get result of next query when executing multiple SQL statements
  * @link https://php.net/manual/en/function.cubrid-next-result.php
  * @param resource $result <p>
@@ -1637,7 +1637,7 @@ function cubrid_move_cursor($req_identifier, $offset, $origin = CUBRID_CURSOR_CU
 function cubrid_next_result($result) {}
 
 /**
- * (PHP 5, CUBRID &gt;= 8.3.0)<br/>
+ * (PHP 5, CUBRID >= 8.3.0)<br/>
  * Prepare an SQL statement for execution
  * @link https://php.net/manual/en/function.cubrid-prepare.php
  * @param resource $conn_identifier <p>
@@ -1657,7 +1657,7 @@ function cubrid_next_result($result) {}
 function cubrid_prepare($conn_identifier, $prepare_stmt, $option = 0) {}
 
 /**
- * (PHP 5, CUBRID &gt;= 8.3.0)<br/>
+ * (PHP 5, CUBRID >= 8.3.0)<br/>
  * Update a column using OID
  * @link https://php.net/manual/en/function.cubrid-put.php
  * @param resource $conn_identifier <p>
@@ -1680,7 +1680,7 @@ function cubrid_prepare($conn_identifier, $prepare_stmt, $option = 0) {}
 function cubrid_put($conn_identifier, $oid, $attr = null, $value) {}
 
 /**
- * (PHP 5, CUBRID &gt;= 8.3.0)<br/>
+ * (PHP 5, CUBRID >= 8.3.0)<br/>
  * Get the requested schema information
  * @link https://php.net/manual/en/function.cubrid-schema.php
  * @param resource $conn_identifier <p>
@@ -1704,7 +1704,7 @@ function cubrid_put($conn_identifier, $oid, $attr = null, $value) {}
 function cubrid_schema($conn_identifier, $schema_type, $class_name = null, $attr_name = null) {}
 
 /**
- * (PHP 5, CUBRID &gt;= 8.3.0)<br/>
+ * (PHP 5, CUBRID >= 8.3.0)<br/>
  * Delete an element from sequence type column using OID
  * @link https://php.net/manual/en/function.cubrid-seq-drop.php
  * @param resource $conn_identifier <p>
@@ -1727,7 +1727,7 @@ function cubrid_schema($conn_identifier, $schema_type, $class_name = null, $attr
 function cubrid_seq_drop($conn_identifier, $oid, $attr_name, $index) {}
 
 /**
- * (PHP 5, CUBRID &gt;= 8.3.0)<br/>
+ * (PHP 5, CUBRID >= 8.3.0)<br/>
  * Insert an element to a sequence type column using OID
  * @link https://php.net/manual/en/function.cubrid-seq-insert.php
  * @param resource $conn_identifier <p>
@@ -1753,7 +1753,7 @@ function cubrid_seq_drop($conn_identifier, $oid, $attr_name, $index) {}
 function cubrid_seq_insert($conn_identifier, $oid, $attr_name, $index, $seq_element) {}
 
 /**
- * (PHP 5, CUBRID &gt;= 8.3.0)<br/>
+ * (PHP 5, CUBRID >= 8.3.0)<br/>
  * Update the element value of sequence type column using OID
  * @link https://php.net/manual/en/function.cubrid-seq-put.php
  * @param resource $conn_identifier <p>
@@ -1779,7 +1779,7 @@ function cubrid_seq_insert($conn_identifier, $oid, $attr_name, $index, $seq_elem
 function cubrid_seq_put($conn_identifier, $oid, $attr_name, $index, $seq_element) {}
 
 /**
- * (PHP 5, CUBRID &gt;= 8.3.0)<br/>
+ * (PHP 5, CUBRID >= 8.3.0)<br/>
  * Insert a single element to set type column using OID
  * @link https://php.net/manual/en/function.cubrid-seq-add.php
  * @param resource $conn_identifier <p>
@@ -1802,7 +1802,7 @@ function cubrid_seq_put($conn_identifier, $oid, $attr_name, $index, $seq_element
 function cubrid_seq_add($conn_identifier, $oid, $attr_name, $seq_element) {}
 
 /**
- * (PHP 5, CUBRID &gt;= 8.3.0)<br/>
+ * (PHP 5, CUBRID >= 8.3.0)<br/>
  * Insert a single element to set type column using OID
  * @link https://php.net/manual/en/function.cubrid-set-add.php
  * @param resource $conn_identifier <p>
@@ -1825,7 +1825,7 @@ function cubrid_seq_add($conn_identifier, $oid, $attr_name, $seq_element) {}
 function cubrid_set_add($conn_identifier, $oid, $attr_name, $set_element) {}
 
 /**
- * (PHP 5, CUBRID &gt;= 8.3.0)<br/>
+ * (PHP 5, CUBRID >= 8.3.0)<br/>
  * Delete an element from set type column using OID
  * @link https://php.net/manual/en/function.cubrid-set-drop.php
  * @param resource $conn_identifier <p>
@@ -1848,7 +1848,7 @@ function cubrid_set_add($conn_identifier, $oid, $attr_name, $set_element) {}
 function cubrid_set_drop($conn_identifier, $oid, $attr_name, $set_element) {}
 
 /**
- * (PHP 5, CUBRID &gt;= 8.3.0)<br/>
+ * (PHP 5, CUBRID >= 8.3.0)<br/>
  * Get the CUBRID PHP module's version
  * @link https://php.net/manual/en/function.cubrid-version.php
  * @return string <p>

@@ -58,7 +58,7 @@ define('PTHREADS_INHERIT_COMMENTS', 1048576);
 define('PTHREADS_ALLOW_HEADERS', 268435456);
 
 /**
- * (PECL pthreads &gt;= 2.0.0)<br/>
+ * (PECL pthreads >= 2.0.0)<br/>
  * A Pool is a container for, and controller of, an adjustable number of
  * Workers.<br/>
  * Pooling provides a higher level abstraction of the Worker functionality,
@@ -98,7 +98,7 @@ class Pool
     protected $last;
 
     /**
-     * (PECL pthreads &gt;= 2.0.0)<br/>
+     * (PECL pthreads >= 2.0.0)<br/>
      * Construct a new pool of workers. Pools lazily create their threads, which means
      * new threads will only be spawned when they are required to execute tasks.
      * @link https://secure.php.net/manual/en/pool.construct.php
@@ -111,7 +111,7 @@ class Pool
     public function __construct(int $size, string $class = 'Worker', array $ctor = []) {}
 
     /**
-     * (PECL pthreads &gt;= 2.0.0)<br/>
+     * (PECL pthreads >= 2.0.0)<br/>
      * Allows the pool to collect references determined to be garbage by the
      * optionally given collector
      * @link https://secure.php.net/manual/en/pool.collect.php
@@ -123,7 +123,7 @@ class Pool
     public function collect(?callable $collector = null) {}
 
     /**
-     * (PECL pthreads &gt;= 2.0.0)<br/>
+     * (PECL pthreads >= 2.0.0)<br/>
      * Resize the Pool
      * @link https://secure.php.net/manual/en/pool.resize.php
      * @param int $size <p>The maximum number of Workers this Pool can create</p>
@@ -132,7 +132,7 @@ class Pool
     public function resize(int $size) {}
 
     /**
-     * (PECL pthreads &gt;= 2.0.0)<br/>
+     * (PECL pthreads >= 2.0.0)<br/>
      * Shuts down all of the workers in the pool. This will block until all submitted
      * tasks have been executed.
      * @link https://secure.php.net/manual/en/pool.shutdown.php
@@ -141,7 +141,7 @@ class Pool
     public function shutdown() {}
 
     /**
-     * (PECL pthreads &gt;= 2.0.0)<br/>
+     * (PECL pthreads >= 2.0.0)<br/>
      * Submit the task to the next Worker in the Pool
      * @link https://secure.php.net/manual/en/pool.submit.php
      * @param Threaded $task <p>The task for execution</p>
@@ -150,7 +150,7 @@ class Pool
     public function submit(Threaded $task) {}
 
     /**
-     * (PECL pthreads &gt;= 2.0.0)<br/>
+     * (PECL pthreads >= 2.0.0)<br/>
      * Submit a task to the specified worker in the pool. The workers are indexed
      * from 0, and will only exist if the pool has needed to create them (since
      * threads are lazily spawned).
@@ -180,14 +180,14 @@ class Threaded implements Collectable, Traversable, Countable, ArrayAccess
     protected $worker;
 
     /**
-     * (PECL pthreads &gt;= 3.0.0)<br/>
+     * (PECL pthreads >= 3.0.0)<br/>
      * Increments the internal number of references to a Threaded object
      * @return void
      */
     public function addRef() {}
 
     /**
-     * (PECL pthreads &gt;= 2.0.0)<br/>
+     * (PECL pthreads >= 2.0.0)<br/>
      * Fetches a chunk of the objects property table of the given size,
      * optionally preserving keys
      * @link https://secure.php.net/manual/en/threaded.chunk.php
@@ -198,7 +198,7 @@ class Threaded implements Collectable, Traversable, Countable, ArrayAccess
     public function chunk($size, $preserve = false) {}
 
     /**
-     * (PECL pthreads &gt;= 2.0.0)<br/>
+     * (PECL pthreads >= 2.0.0)<br/>
      * Returns the number of properties for this object
      * @link https://secure.php.net/manual/en/threaded.count.php
      * @return int <p>The number of properties for this object</p>
@@ -206,14 +206,14 @@ class Threaded implements Collectable, Traversable, Countable, ArrayAccess
     public function count() {}
 
     /**
-     * (PECL pthreads &gt;= 3.0.0)<br/>
+     * (PECL pthreads >= 3.0.0)<br/>
      * Decrements the internal number of references to a Threaded object
      * @return void
      */
     public function delRef() {}
 
     /**
-     * (PECL pthreads &gt;= 2.0.8)<br/>
+     * (PECL pthreads >= 2.0.8)<br/>
      * Makes thread safe standard class at runtime
      * @link https://secure.php.net/manual/en/threaded.extend.php
      * @param string $class <p>The class to extend</p>
@@ -222,14 +222,14 @@ class Threaded implements Collectable, Traversable, Countable, ArrayAccess
     public static function extend($class) {}
 
     /**
-     * (PECL pthreads &gt;= 3.0.0)<br/>
+     * (PECL pthreads >= 3.0.0)<br/>
      * Retrieves the internal number of references to a Threaded object
      * @return int <p>The number of references to the Threaded object</p>
      */
     public function getRefCount() {}
 
     /**
-     * (PECL pthreads &gt;= 2.0.0)<br/>
+     * (PECL pthreads >= 2.0.0)<br/>
      * Tell if the referenced object is executing
      * @link https://secure.php.net/manual/en/thread.isrunning.php
      * @return bool <p>A boolean indication of state</p>
@@ -237,14 +237,14 @@ class Threaded implements Collectable, Traversable, Countable, ArrayAccess
     public function isRunning() {}
 
     /**
-     * (PECL pthreads &gt;= 3.1.0)<br/>
+     * (PECL pthreads >= 3.1.0)<br/>
      * @inheritdoc
      * @see Collectable::isGarbage()
      */
     public function isGarbage(): bool {}
 
     /**
-     * (PECL pthreads &gt;= 2.0.0)<br/>
+     * (PECL pthreads >= 2.0.0)<br/>
      * Tell if the referenced object was terminated during execution; suffered
      * fatal errors, or threw uncaught exceptions
      * @link https://secure.php.net/manual/en/threaded.isterminated.php
@@ -253,7 +253,7 @@ class Threaded implements Collectable, Traversable, Countable, ArrayAccess
     public function isTerminated() {}
 
     /**
-     * (PECL pthreads &gt;= 2.0.0)<br/>
+     * (PECL pthreads >= 2.0.0)<br/>
      * Merges data into the current object
      * @link https://secure.php.net/manual/en/threaded.merge.php
      * @var mixed <p>The data to merge</p>
@@ -263,7 +263,7 @@ class Threaded implements Collectable, Traversable, Countable, ArrayAccess
     public function merge($from, $overwrite = true) {}
 
     /**
-     * (PECL pthreads &gt;= 2.0.0)<br/>
+     * (PECL pthreads >= 2.0.0)<br/>
      * Send notification to the referenced object
      * @link https://secure.php.net/manual/en/threaded.notify.php
      * @return bool <p>A boolean indication of success</p>
@@ -271,7 +271,7 @@ class Threaded implements Collectable, Traversable, Countable, ArrayAccess
     public function notify() {}
 
     /**
-     * (PECL pthreads &gt;= 3.0.0)<br/>
+     * (PECL pthreads >= 3.0.0)<br/>
      * Send notification to the referenced object. This unblocks at least one
      * of the blocked threads (as opposed to unblocking all of them, as seen with
      * Threaded::notify()).
@@ -281,7 +281,7 @@ class Threaded implements Collectable, Traversable, Countable, ArrayAccess
     public function notifyOne() {}
 
     /**
-     * (PECL pthreads &gt;= 2.0.0)<br/>
+     * (PECL pthreads >= 2.0.0)<br/>
      * Pops an item from the objects property table
      * @link https://secure.php.net/manual/en/threaded.pop.php
      * @return mixed <p>The last item from the objects property table</p>
@@ -289,7 +289,7 @@ class Threaded implements Collectable, Traversable, Countable, ArrayAccess
     public function pop() {}
 
     /**
-     * (PECL pthreads &gt;= 2.0.0)<br/>
+     * (PECL pthreads >= 2.0.0)<br/>
      * The programmer should always implement the run method for objects
      * that are intended for execution.
      * @link https://secure.php.net/manual/en/threaded.run.php
@@ -298,7 +298,7 @@ class Threaded implements Collectable, Traversable, Countable, ArrayAccess
     public function run() {}
 
     /**
-     * (PECL pthreads &gt;= 2.0.0)<br/>
+     * (PECL pthreads >= 2.0.0)<br/>
      * Shifts an item from the objects property table
      * @link https://secure.php.net/manual/en/threaded.shift.php
      * @return mixed <p>The first item from the objects property table</p>
@@ -306,7 +306,7 @@ class Threaded implements Collectable, Traversable, Countable, ArrayAccess
     public function shift() {}
 
     /**
-     * (PECL pthreads &gt;= 2.0.0)<br/>
+     * (PECL pthreads >= 2.0.0)<br/>
      * Executes the block while retaining the referenced objects
      * synchronization lock for the calling context
      * @link https://secure.php.net/manual/en/threaded.synchronized.php
@@ -318,7 +318,7 @@ class Threaded implements Collectable, Traversable, Countable, ArrayAccess
     public function synchronized(Closure $block, ...$_) {}
 
     /**
-     * (PECL pthreads &gt;= 2.0.0)<br/>
+     * (PECL pthreads >= 2.0.0)<br/>
      * Will cause the calling context to wait for notification from the
      * referenced object
      * @link https://secure.php.net/manual/en/threaded.wait.php
@@ -353,7 +353,7 @@ class Threaded implements Collectable, Traversable, Countable, ArrayAccess
 }
 
 /**
- * (PECL pthreads &gt;= 2.0.0)<br/>
+ * (PECL pthreads >= 2.0.0)<br/>
  * When the start method of a Thread is invoked, the run method code will be
  * executed in separate Thread, in parallel.<br/>
  * After the run method is executed the Thread will exit immediately, it will
@@ -364,7 +364,7 @@ class Threaded implements Collectable, Traversable, Countable, ArrayAccess
 class Thread extends Threaded implements Countable, Traversable, ArrayAccess
 {
     /**
-     * (PECL pthreads &gt;= 2.0.0)<br/>
+     * (PECL pthreads >= 2.0.0)<br/>
      * Will return the identity of the Thread that created the referenced Thread
      * @link https://secure.php.net/manual/en/thread.getcreatorid.php
      * @return int <p>A numeric identity</p>
@@ -372,7 +372,7 @@ class Thread extends Threaded implements Countable, Traversable, ArrayAccess
     public function getCreatorId() {}
 
     /**
-     * (PECL pthreads &gt;= 2.0.0)<br/>
+     * (PECL pthreads >= 2.0.0)<br/>
      * Return a reference to the currently executing Thread
      * @link https://secure.php.net/manual/en/thread.getcurrentthread.php
      * @return Thread <p>An object representing the currently executing Thread</p>
@@ -380,7 +380,7 @@ class Thread extends Threaded implements Countable, Traversable, ArrayAccess
     public static function getCurrentThread() {}
 
     /**
-     * (PECL pthreads &gt;= 2.0.0)<br/>
+     * (PECL pthreads >= 2.0.0)<br/>
      * Will return the identity of the currently executing Thread
      * @link https://secure.php.net/manual/en/thread.getcurrentthreadid.php
      * @return int <p>A numeric identity</p>
@@ -388,7 +388,7 @@ class Thread extends Threaded implements Countable, Traversable, ArrayAccess
     public static function getCurrentThreadId() {}
 
     /**
-     * (PECL pthreads &gt;= 2.0.0)<br/>
+     * (PECL pthreads >= 2.0.0)<br/>
      * Will return the identity of the referenced Thread
      * @link https://secure.php.net/manual/en/thread.getthreadid.php
      * @return int <p>A numeric identity</p>
@@ -396,7 +396,7 @@ class Thread extends Threaded implements Countable, Traversable, ArrayAccess
     public function getThreadId() {}
 
     /**
-     * (PECL pthreads &gt;= 2.0.0)<br/>
+     * (PECL pthreads >= 2.0.0)<br/>
      * Tell if the referenced Thread has been joined
      * @link https://secure.php.net/manual/en/thread.isjoined.php
      * @return bool <p>A boolean indication of state</p>
@@ -404,7 +404,7 @@ class Thread extends Threaded implements Countable, Traversable, ArrayAccess
     public function isJoined() {}
 
     /**
-     * (PECL pthreads &gt;= 2.0.0)<br/>
+     * (PECL pthreads >= 2.0.0)<br/>
      * Tell if the referenced Thread was started
      * @link https://secure.php.net/manual/en/thread.isstarted.php
      * @return bool <p>A boolean indication of state</p>
@@ -412,7 +412,7 @@ class Thread extends Threaded implements Countable, Traversable, ArrayAccess
     public function isStarted() {}
 
     /**
-     * (PECL pthreads &gt;= 2.0.0)<br/>
+     * (PECL pthreads >= 2.0.0)<br/>
      * Causes the calling context to wait for the referenced Thread to finish executing
      * @link https://secure.php.net/manual/en/thread.join.php
      * @return bool <p>A boolean indication of success</p>
@@ -420,7 +420,7 @@ class Thread extends Threaded implements Countable, Traversable, ArrayAccess
     public function join() {}
 
     /**
-     * (PECL pthreads &gt;= 2.0.0)<br/>
+     * (PECL pthreads >= 2.0.0)<br/>
      * Will start a new Thread to execute the implemented run method
      * @link https://secure.php.net/manual/en/thread.start.php
      * @param int $options [optional] <p>An optional mask of inheritance
@@ -431,7 +431,7 @@ class Thread extends Threaded implements Countable, Traversable, ArrayAccess
 }
 
 /**
- * (PECL pthreads &gt;= 2.0.0)<br/>
+ * (PECL pthreads >= 2.0.0)<br/>
  * Worker Threads have a persistent context, as such should be used over
  * Threads in most cases.<br/>
  * When a Worker is started, the run method will be executed, but the Thread will
@@ -447,7 +447,7 @@ class Thread extends Threaded implements Countable, Traversable, ArrayAccess
 class Worker extends Thread implements Traversable, Countable, ArrayAccess
 {
     /**
-     * (PECL pthreads &gt;= 3.0.0)<br/>
+     * (PECL pthreads >= 3.0.0)<br/>
      * Allows the worker to collect references determined to be garbage by the
      * optionally given collector
      * @link https://secure.php.net/manual/en/worker.collect.php
@@ -460,7 +460,7 @@ class Worker extends Thread implements Traversable, Countable, ArrayAccess
     public function collect(?callable $collector = null) {}
 
     /**
-     * (PECL pthreads &gt;= 2.0.0)<br/>
+     * (PECL pthreads >= 2.0.0)<br/>
      * Returns the number of tasks left on the stack
      * @link https://secure.php.net/manual/en/worker.getstacked.php
      * @return int <p>Returns the number of tasks currently waiting to be
@@ -469,7 +469,7 @@ class Worker extends Thread implements Traversable, Countable, ArrayAccess
     public function getStacked() {}
 
     /**
-     * (PECL pthreads &gt;= 2.0.0)<br/>
+     * (PECL pthreads >= 2.0.0)<br/>
      * Whether the worker has been shutdown or not
      * @link https://secure.php.net/manual/en/worker.isshutdown.php
      * @return bool <p>Returns whether the worker has been shutdown or not</p>
@@ -477,7 +477,7 @@ class Worker extends Thread implements Traversable, Countable, ArrayAccess
     public function isShutdown() {}
 
     /**
-     * (PECL pthreads &gt;= 2.0.0)<br/>
+     * (PECL pthreads >= 2.0.0)<br/>
      * Shuts down the Worker after executing all of the stacked tasks
      * @link https://secure.php.net/manual/en/worker.shutdown.php
      * @return bool <p>Whether the worker was successfully shutdown or not</p>
@@ -485,7 +485,7 @@ class Worker extends Thread implements Traversable, Countable, ArrayAccess
     public function shutdown() {}
 
     /**
-     * (PECL pthreads &gt;= 2.0.0)<br/>
+     * (PECL pthreads >= 2.0.0)<br/>
      * Appends the new work to the stack of the referenced worker
      * @link https://secure.php.net/manual/en/worker.stack.php
      * @param Threaded $work <p>A Threaded object to be executed by the Worker</p>
@@ -494,7 +494,7 @@ class Worker extends Thread implements Traversable, Countable, ArrayAccess
     public function stack(Threaded $work) {}
 
     /**
-     * (PECL pthreads &gt;= 2.0.0)<br/>
+     * (PECL pthreads >= 2.0.0)<br/>
      * Removes the first task (the oldest one) in the stack
      * @link https://secure.php.net/manual/en/worker.unstack.php
      * @return Threaded|null <p>The item removed from the stack</p>
@@ -503,14 +503,14 @@ class Worker extends Thread implements Traversable, Countable, ArrayAccess
 }
 
 /**
- * (PECL pthreads &gt;= 2.0.8)<br/>
+ * (PECL pthreads >= 2.0.8)<br/>
  * Represents a garbage-collectable object.
  * @link https://secure.php.net/manual/en/class.collectable.php
  */
 interface Collectable
 {
     /**
-     * (PECL pthreads &gt;= 2.0.8)<br/>
+     * (PECL pthreads >= 2.0.8)<br/>
      * Can be called in {@link Pool::collect()} to determine if this object is garbage
      * @link https://secure.php.net/manual/en/collectable.isgarbage.php
      * @return bool <p>Whether this object is garbage or not</p>
@@ -519,7 +519,7 @@ interface Collectable
 }
 
 /**
- * (PECL pthreads &gt;= 3.0.0)<br/>
+ * (PECL pthreads >= 3.0.0)<br/>
  * The Volatile class is new to pthreads v3. Its introduction is a consequence of
  * the new immutability semantics of Threaded members of Threaded classes. The
  * Volatile class enables for mutability of its Threaded members, and is also

@@ -7,7 +7,7 @@
  */
 
 /**
- * (PECL solr &gt;= 0.9.2)<br/>
+ * (PECL solr >= 0.9.2)<br/>
  * Class SolrClient<br/>
  * This class is used to send requests to a Solr server. Currently, cloning and serialization of SolrClient instances is
  * not supported.
@@ -52,7 +52,7 @@ final class SolrClient
     public const DEFAULT_SYSTEM_SERVLET = 'admin/system';
 
     /**
-     * (PECL solr &gt;= 0.9.2)<br/>
+     * (PECL solr >= 0.9.2)<br/>
      * Adds a document to the index
      * @link https://php.net/manual/en/solrclient.adddocument.php
      * @param SolrInputDocument $doc <p>
@@ -91,7 +91,7 @@ final class SolrClient
     public function addDocument(SolrInputDocument $doc, $overwrite = true, $commitWithin = 0) {}
 
     /**
-     * (PECL solr &gt;= 0.9.2)<br/>
+     * (PECL solr >= 0.9.2)<br/>
      * Adds a collection of SolrInputDocument instances to the index
      * @link https://php.net/manual/en/solrclient.adddocuments.php
      * @param array $docs <p>
@@ -130,7 +130,7 @@ final class SolrClient
     public function addDocuments(array $docs, $overwrite = true, $commitWithin = 0) {}
 
     /**
-     * (PECL solr &gt;= 0.9.2)<br/>
+     * (PECL solr >= 0.9.2)<br/>
      * Finalizes all add/deletes made to the index
      * @link https://php.net/manual/en/solrclient.commit.php
      * @param bool $softCommit [optional] <p>
@@ -162,7 +162,7 @@ final class SolrClient
     public function commit($softCommit = false, $waitSearcher = true, $expungeDeletes = false) {}
 
     /**
-     * (PECL solr &gt;= 0.9.2)<br/>
+     * (PECL solr >= 0.9.2)<br/>
      * SolrClient constructor.
      * @link https://php.net/manual/en/solrclient.construct.php
      * @param array $clientOptions <p>
@@ -201,7 +201,7 @@ final class SolrClient
     public function __construct(array $clientOptions) {}
 
     /**
-     * (PECL solr &gt;= 0.9.2)<br/>
+     * (PECL solr >= 0.9.2)<br/>
      * Delete by Id
      * @link https://php.net/manual/en/solrclient.deletebyid.php
      * @param string $id <p>
@@ -220,7 +220,7 @@ final class SolrClient
     public function deleteById($id) {}
 
     /**
-     * (PECL solr &gt;= 0.9.2)<br/>
+     * (PECL solr >= 0.9.2)<br/>
      * Deletes by Ids
      * @link https://php.net/manual/en/solrclient.deletebyids.php
      * @param array $ids <p>
@@ -240,7 +240,7 @@ final class SolrClient
     public function deleteByIds(array $ids) {}
 
     /**
-     * (PECL solr &gt;= 0.9.2)<br/>
+     * (PECL solr >= 0.9.2)<br/>
      * Removes all documents matching any of the queries
      * @link https://php.net/manual/en/solrclient.deletebyqueries.php
      * @param array $queries <p>
@@ -259,7 +259,7 @@ final class SolrClient
     public function deleteByQueries(array $queries) {}
 
     /**
-     * (PECL solr &gt;= 0.9.2)<br/>
+     * (PECL solr >= 0.9.2)<br/>
      * Deletes all documents matching the given query
      * @link https://php.net/manual/en/solrclient.deletebyquery.php
      * @param string $query <p>
@@ -278,14 +278,14 @@ final class SolrClient
     public function deleteByQuery($query) {}
 
     /**
-     * (PECL solr &gt;= 0.9.2)<br/>
+     * (PECL solr >= 0.9.2)<br/>
      * Destructor for SolrClient
      * @link https://php.net/manual/en/solrclient.destruct.php
      */
     public function __destruct() {}
 
     /**
-     * (PECL solr &gt;= 2.2.0)<br/>
+     * (PECL solr >= 2.2.0)<br/>
      * Get Document By Id. Utilizes Solr Realtime Get (RTG).
      * @link https://php.net/manual/en/solrclient.getbyid.php
      * @param string $id <p>
@@ -296,7 +296,7 @@ final class SolrClient
     public function getById($id) {}
 
     /**
-     * (PECL solr &gt;= 2.2.0)<br/>
+     * (PECL solr >= 2.2.0)<br/>
      * Get Documents by their Ids. Utilizes Solr Realtime Get (RTG).
      * @link https://php.net/manual/en/solrclient.getbyids.php
      * @param array $ids <p>
@@ -307,7 +307,7 @@ final class SolrClient
     public function getByIds(array $ids) {}
 
     /**
-     * (PECL solr &gt;= 0.9.7)<br/>
+     * (PECL solr >= 0.9.7)<br/>
      * Returns the debug data for the last connection attempt
      * @link https://php.net/manual/en/solrclient.getdebug.php
      * @return string <p>
@@ -317,7 +317,7 @@ final class SolrClient
     public function getDebug() {}
 
     /**
-     * (PECL solr &gt;= 0.9.6)<br/>
+     * (PECL solr >= 0.9.6)<br/>
      * Returns the client options set internally
      * @link https://php.net/manual/en/solrclient.getoptions.php
      * @return array <p>
@@ -327,7 +327,7 @@ final class SolrClient
     public function getOptions() {}
 
     /**
-     * (PECL solr &gt;= 0.9.2)<br/>
+     * (PECL solr >= 0.9.2)<br/>
      * Defragments the index
      * @link https://php.net/manual/en/solrclient.optimize.php
      * @param int $maxSegments <p>
@@ -353,7 +353,7 @@ final class SolrClient
     public function optimize($maxSegments = 1, $softCommit = true, $waitSearcher = true) {}
 
     /**
-     * (PECL solr &gt;= 0.9.2)<br/>
+     * (PECL solr >= 0.9.2)<br/>
      * Checks if Solr server is still up
      * @link https://php.net/manual/en/solrclient.ping.php
      * @return SolrPingResponse <p>
@@ -369,7 +369,7 @@ final class SolrClient
     public function ping() {}
 
     /**
-     * (PECL solr &gt;= 0.9.2)<br/>
+     * (PECL solr >= 0.9.2)<br/>
      * Sends a query to the server
      * @link https://php.net/manual/en/solrclient.query.php
      * @param SolrParams $query <p>
@@ -388,7 +388,7 @@ final class SolrClient
     public function query(SolrParams $query) {}
 
     /**
-     * (PECL solr &gt;= 0.9.2)<br/>
+     * (PECL solr >= 0.9.2)<br/>
      * Sends a raw update request
      * @link https://php.net/manual/en/solrclient.request.php
      * @param string $raw_request <p>
@@ -410,7 +410,7 @@ final class SolrClient
     public function request($raw_request) {}
 
     /**
-     * (PECL solr &gt;= 0.9.2)<br/>
+     * (PECL solr >= 0.9.2)<br/>
      * Rollbacks all add/deletes made to the index since the last commit
      * @link https://php.net/manual/en/solrclient.rollback.php
      * @return SolrUpdateResponse <p>
@@ -426,7 +426,7 @@ final class SolrClient
     public function rollback() {}
 
     /**
-     * (PECL solr &gt;= 0.9.11)<br/>
+     * (PECL solr >= 0.9.11)<br/>
      * Sets the response writer used to prepare the response from Solr
      * @link https://php.net/manual/en/solrclient.setresponsewriter.php
      * @param string $responseWriter <p>
@@ -441,7 +441,7 @@ final class SolrClient
     public function setResponseWriter($responseWriter) {}
 
     /**
-     * (PECL solr &gt;= 0.9.2)<br/>
+     * (PECL solr >= 0.9.2)<br/>
      * Changes the specified servlet type to a new value
      * @link https://php.net/manual/en/solrclient.setservlet.php
      * @param int $type <p>
@@ -464,7 +464,7 @@ final class SolrClient
     public function setServlet($type, $value) {}
 
     /**
-     * (PECL solr &gt;= 2.0.0)<br/>
+     * (PECL solr >= 2.0.0)<br/>
      * Retrieve Solr Server information
      * @link https://php.net/manual/en/solrclient.system.php
      * @return SolrGenericResponse <p>
@@ -480,7 +480,7 @@ final class SolrClient
     public function system() {}
 
     /**
-     * (PECL solr &gt;= 0.9.2)<br/>
+     * (PECL solr >= 0.9.2)<br/>
      * Checks the threads status
      * @link https://php.net/manual/en/solrclient.threads.php
      * @return SolrGenericResponse <p>

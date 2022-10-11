@@ -9,12 +9,13 @@
 class COM
 {
     /**
-     * (PHP 4 &gt;= 4.1.0, PHP 5, PHP 7)<br/>
+     * (PHP 4 >= 4.1.0, PHP 5, PHP 7)<br/>
      * COM class constructor.
      * @param string $module_name
      * @param string $server_name [optional]
      * @param int $codepage [optional]
      * @param string $typelib [optional]
+     * @since 4.1.0
      */
     public function __construct($module_name, $server_name = null, $codepage = CP_ACP, $typelib = null) {}
 
@@ -32,11 +33,12 @@ class COM
 class DOTNET
 {
     /**
-     * (PHP 4 &gt;= 4.1.0, PHP 5, PHP 7)<br/>
+     * (PHP 4 >= 4.1.0, PHP 5, PHP 7)<br/>
      * COM class constructor.
      * @param string $assembly_name
      * @param string $class_name
      * @param int $codepage [optional]
+     * @since 4.1.0
      */
     public function __construct($assembly_name, string $class_name, $codepage = CP_ACP) {}
 
@@ -54,11 +56,12 @@ class DOTNET
 class VARIANT
 {
     /**
-     * (PHP 4 &gt;= 4.1.0, PHP 5, PHP 7)<br/>
+     * (PHP 4 >= 4.1.0, PHP 5, PHP 7)<br/>
      * COM class constructor.
      * @param mixed $value [optional]
      * @param int $type [optional]
      * @param int $codepage [optional]
+     * @since 4.1.0
      */
     public function __construct($value = null, int $type = VT_EMPTY, $codepage = CP_ACP) {}
 
@@ -80,17 +83,19 @@ class com_exception extends \Exception {}
  * Generate a globally unique identifier (GUID)
  * @link https://php.net/manual/en/function.com-create-guid.php
  * @return string
+ * @since 5.0
  */
 function com_create_guid() {}
 
 /**
- * (PHP 4 &gt;= 4.2.0, PHP 5, PHP 7)<br/>
+ * (PHP 4 >= 4.2.0, PHP 5, PHP 7)<br/>
  * Connect events from a COM object to a PHP object
  * @link https://php.net/manual/en/function.com-event-sink.php
  * @param \VARIANT $comobject
  * @param object $sinkobject
  * @param string $sinkinterface [optional]
  * @return bool
+ * @since 4.2.0
  */
 function com_event_sink($comobject, $sinkobject, $sinkinterface = null) {}
 
@@ -101,36 +106,40 @@ function com_event_sink($comobject, $sinkobject, $sinkinterface = null) {}
  * @param string $progid
  * @param int $code_page [optional]
  * @return \VARIANT
+ * @since 5.0
  */
 function com_get_active_object($progid, $code_page = CP_ACP) {}
 
 /**
- * (PHP 4 &gt;= 4.1.0, PHP 5, PHP 7)<br/>
+ * (PHP 4 >= 4.1.0, PHP 5, PHP 7)<br/>
  * Loads a Typelib
  * @link https://php.net/manual/en/function.com-get-active-object.php
  * @param string $typelib_name
  * @param bool $case_insensitive [optional]
  * @return bool
+ * @since 4.1.0
  */
 function com_load_typelib($typelib_name, $case_insensitive = true) {}
 
 /**
- * (PHP 4 &gt;= 4.2.0, PHP 5, PHP 7)<br/>
+ * (PHP 4 >= 4.2.0, PHP 5, PHP 7)<br/>
  * Process COM messages, sleeping for up to timeoutms milliseconds
  * @link https://php.net/manual/en/function.com-message-pump.php
  * @param int $timeoutms [optional]
  * @return bool
+ * @since 4.2.0
  */
 function com_message_pump($timeoutms = 0) {}
 
 /**
- * (PHP 4 &gt;= 4.2.0, PHP 5, PHP 7)<br/>
+ * (PHP 4 >= 4.2.0, PHP 5, PHP 7)<br/>
  * Print out a PHP class definition for a dispatchable interface
  * @link https://php.net/manual/en/function.com-print-typeinfo.php
  * @param object $comobject
  * @param string $dispinterface [optional]
  * @param bool $wantsink [optional]
  * @return bool
+ * @since 4.2.0
  */
 function com_print_typeinfo($comobject, $dispinterface = null, $wantsink = false) {}
 
@@ -140,6 +149,7 @@ function com_print_typeinfo($comobject, $dispinterface = null, $wantsink = false
  * @link https://php.net/manual/en/function.variant-abs.php
  * @param mixed $val
  * @return mixed
+ * @since 5.0
  */
 function variant_abs($val) {}
 
@@ -150,6 +160,7 @@ function variant_abs($val) {}
  * @param mixed $left
  * @param mixed $right
  * @return mixed
+ * @since 5.0
  */
 function variant_add($left, $right) {}
 
@@ -160,6 +171,7 @@ function variant_add($left, $right) {}
  * @param mixed $left
  * @param mixed $right
  * @return mixed
+ * @since 5.0
  */
 function variant_and($left, $right) {}
 
@@ -170,6 +182,7 @@ function variant_and($left, $right) {}
  * @param \VARIANT $variant
  * @param int $type
  * @return \VARIANT
+ * @since 5.0
  */
 function variant_cast($variant, $type) {}
 
@@ -180,6 +193,7 @@ function variant_cast($variant, $type) {}
  * @param mixed $left
  * @param mixed $right
  * @return mixed
+ * @since 5.0
  */
 function variant_cat($left, $right) {}
 
@@ -192,6 +206,7 @@ function variant_cat($left, $right) {}
  * @param int $lcid [optional]
  * @param int $flags [optional]
  * @return int
+ * @since 5.0
  */
 function variant_cmp($left, $right, $lcid = null, $flags = null) {}
 
@@ -201,6 +216,7 @@ function variant_cmp($left, $right, $lcid = null, $flags = null) {}
  * @link https://php.net/manual/en/function.variant-date-from-timestamp.php
  * @param int $timestamp
  * @return \VARIANT
+ * @since 5.0
  */
 function variant_date_from_timestamp($timestamp) {}
 
@@ -210,6 +226,7 @@ function variant_date_from_timestamp($timestamp) {}
  * @link https://php.net/manual/en/function.variant-date-to-timestamp.php
  * @param \VARIANT $variant
  * @return int
+ * @since 5.0
  */
 function variant_date_to_timestamp($variant) {}
 
@@ -220,6 +237,7 @@ function variant_date_to_timestamp($variant) {}
  * @param mixed $left
  * @param mixed $right
  * @return mixed
+ * @since 5.0
  */
 function variant_div($left, $right) {}
 
@@ -230,6 +248,7 @@ function variant_div($left, $right) {}
  * @param mixed $left
  * @param mixed $right
  * @return mixed
+ * @since 5.0
  */
 function variant_eqv($left, $right) {}
 
@@ -239,6 +258,7 @@ function variant_eqv($left, $right) {}
  * @link https://php.net/manual/en/function.variant-fix.php
  * @param mixed $variant
  * @return mixed
+ * @since 5.0
  */
 function variant_fix($variant) {}
 
@@ -248,6 +268,7 @@ function variant_fix($variant) {}
  * @link https://php.net/manual/en/function.variant-get-type.php
  * @param VARIANT $variant
  * @return int
+ * @since 5.0
  */
 function variant_get_type($variant) {}
 
@@ -258,6 +279,7 @@ function variant_get_type($variant) {}
  * @param mixed $left
  * @param mixed $right
  * @return mixed
+ * @since 5.0
  */
 function variant_idiv($left, $right) {}
 
@@ -268,6 +290,7 @@ function variant_idiv($left, $right) {}
  * @param mixed $left
  * @param mixed $right
  * @return mixed
+ * @since 5.0
  */
 function variant_imp($left, $right) {}
 
@@ -277,6 +300,7 @@ function variant_imp($left, $right) {}
  * @link https://php.net/manual/en/function.variant-int.php
  * @param mixed $variant
  * @return mixed
+ * @since 5.0
  */
 function variant_int($variant) {}
 
@@ -287,6 +311,7 @@ function variant_int($variant) {}
  * @param mixed $left
  * @param mixed $right
  * @return mixed
+ * @since 5.0
  */
 function variant_mod($left, $right) {}
 
@@ -297,6 +322,7 @@ function variant_mod($left, $right) {}
  * @param mixed $left
  * @param mixed $right
  * @return mixed
+ * @since 5.0
  */
 function variant_mul($left, $right) {}
 
@@ -306,6 +332,7 @@ function variant_mul($left, $right) {}
  * @link https://php.net/manual/en/function.variant-neg.php
  * @param mixed $variant
  * @return mixed
+ * @since 5.0
  */
 function variant_neg($variant) {}
 
@@ -315,6 +342,7 @@ function variant_neg($variant) {}
  * @link https://php.net/manual/en/function.variant-not.php
  * @param mixed $variant
  * @return mixed
+ * @since 5.0
  */
 function variant_not($variant) {}
 
@@ -325,6 +353,7 @@ function variant_not($variant) {}
  * @param mixed $left
  * @param mixed $right
  * @return mixed
+ * @since 5.0
  */
 function variant_or($left, $right) {}
 
@@ -335,6 +364,7 @@ function variant_or($left, $right) {}
  * @param mixed $left
  * @param mixed $right
  * @return mixed
+ * @since 5.0
  */
 function variant_pow($left, $right) {}
 
@@ -345,6 +375,7 @@ function variant_pow($left, $right) {}
  * @param mixed $variant
  * @param int $decimals
  * @return mixed
+ * @since 5.0
  */
 function variant_round($variant, $decimals) {}
 
@@ -355,6 +386,7 @@ function variant_round($variant, $decimals) {}
  * @param VARIANT $variant
  * @param int $type
  * @return void
+ * @since 5.0
  */
 function variant_set_type($variant, $type) {}
 
@@ -365,6 +397,7 @@ function variant_set_type($variant, $type) {}
  * @param VARIANT $variant
  * @param mixed $value
  * @return void
+ * @since 5.0
  */
 function variant_set($variant, $value) {}
 
@@ -375,6 +408,7 @@ function variant_set($variant, $value) {}
  * @param mixed $left
  * @param mixed $right
  * @return mixed
+ * @since 5.0
  */
 function variant_sub($left, $right) {}
 
@@ -385,6 +419,7 @@ function variant_sub($left, $right) {}
  * @param mixed $left
  * @param mixed $right
  * @return mixed
+ * @since 5.0
  */
 function variant_xor($left, $right) {}
 

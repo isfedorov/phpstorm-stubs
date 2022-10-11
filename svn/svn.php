@@ -139,7 +139,7 @@ class SvnNode
 }
 
 /**
- * (PECL svn &gt;= 0.1.0)<br/>
+ * (PECL svn >= 0.1.0)<br/>
  * Checks out a working copy from the repository
  * @link https://php.net/manual/en/function.svn-checkout.php
  * @param string $repos <p>
@@ -162,7 +162,7 @@ class SvnNode
 function svn_checkout($repos, $targetpath, $revision = SVN_REVISION_HEAD, $flags = 0) {}
 
 /**
- * (PECL svn &gt;= 0.1.0)<br/>
+ * (PECL svn >= 0.1.0)<br/>
  * Returns the contents of a file in a repository
  * @link https://php.net/manual/en/function.svn-cat.php
  * @param string $repos_url <p>
@@ -178,7 +178,7 @@ function svn_checkout($repos, $targetpath, $revision = SVN_REVISION_HEAD, $flags
 function svn_cat($repos_url, $revision_no = SVN_REVISION_HEAD) {}
 
 /**
- * (PECL svn &gt;= 0.1.0)<br/>
+ * (PECL svn >= 0.1.0)<br/>
  * Returns list of directory contents in repository URL, optionally at revision number
  * @link https://php.net/manual/en/function.svn-ls.php
  * @param string $repos_url
@@ -207,7 +207,7 @@ function svn_cat($repos_url, $revision_no = SVN_REVISION_HEAD) {}
 function svn_ls($repos_url, $revision_no = SVN_REVISION_HEAD, $recurse = false, $peg = false) {}
 
 /**
- * (PECL svn &gt;= 0.1.0)<br/>
+ * (PECL svn >= 0.1.0)<br/>
  * Returns the commit log messages of a repository URL
  * @link https://php.net/manual/en/function.svn-log.php
  * @param string $repos_url <p>
@@ -291,7 +291,7 @@ function svn_ls($repos_url, $revision_no = SVN_REVISION_HEAD, $recurse = false, 
 function svn_log($repos_url, $start_revision = null, $end_revision = null, $limit = 0, $flags = SVN_DISCOVER_CHANGED_PATHS|SVN_STOP_ON_COPY) {}
 
 /**
- * (PECL svn &gt;= 0.1.0)<br/>
+ * (PECL svn >= 0.1.0)<br/>
  * Sets an authentication parameter
  * @link https://php.net/manual/en/function.svn-auth-set-parameter.php
  * @param string $key <p>
@@ -307,7 +307,7 @@ function svn_log($repos_url, $start_revision = null, $end_revision = null, $limi
 function svn_auth_set_parameter($key, $value) {}
 
 /**
- * (PECL svn &gt;= 0.1.0)<br/>
+ * (PECL svn >= 0.1.0)<br/>
  * Retrieves authentication parameter
  * @link https://php.net/manual/en/function.svn-auth-get-parameter.php
  * @param string $key <p>
@@ -320,7 +320,7 @@ function svn_auth_set_parameter($key, $value) {}
 function svn_auth_get_parameter($key) {}
 
 /**
- * (PECL svn &gt;= 0.1.0)<br/>
+ * (PECL svn >= 0.1.0)<br/>
  * Returns the version of the SVN client libraries
  * @link https://php.net/manual/en/function.svn-client-version.php
  * @return string String version number, usually in form of x.y.z.
@@ -330,7 +330,7 @@ function svn_client_version() {}
 function svn_config_ensure() {}
 
 /**
- * (PECL svn &gt;= 0.1.0)<br/>
+ * (PECL svn >= 0.1.0)<br/>
  * Recursively diffs two paths
  * @link https://php.net/manual/en/function.svn-diff.php
  * @param string $path1 <p>
@@ -368,7 +368,7 @@ function svn_config_ensure() {}
 function svn_diff($path1, $rev1, $path2, $rev2) {}
 
 /**
- * (PECL svn &gt;= 0.1.0)<br/>
+ * (PECL svn >= 0.1.0)<br/>
  * Recursively cleanup a working copy directory, finishing incomplete operations and removing locks
  * @link https://php.net/manual/en/function.svn-cleanup.php
  * @param string $workingdir <p>
@@ -380,7 +380,7 @@ function svn_diff($path1, $rev1, $path2, $rev2) {}
 function svn_cleanup($workingdir) {}
 
 /**
- * (PECL svn &gt;= 0.3.0)<br/>
+ * (PECL svn >= 0.3.0)<br/>
  * Revert changes to the working copy
  * @link https://php.net/manual/en/function.svn-revert.php
  * @param string $path <p>
@@ -396,7 +396,7 @@ function svn_revert($path, $recursive = false) {}
 function svn_resolved() {}
 
 /**
- * (PECL svn &gt;= 0.1.0)<br/>
+ * (PECL svn >= 0.1.0)<br/>
  * Sends changes from the local working copy to the repository
  * @link https://php.net/manual/en/function.svn-commit.php
  * @param string $log <p>
@@ -432,7 +432,7 @@ function svn_lock() {}
 function svn_unlock() {}
 
 /**
- * (PECL svn &gt;= 0.1.0)<br/>
+ * (PECL svn >= 0.1.0)<br/>
  * Schedules the addition of an item in a working directory
  * @link https://php.net/manual/en/function.svn-add.php
  * @param string $path <p>
@@ -453,7 +453,7 @@ function svn_unlock() {}
 function svn_add($path, $recursive = true, $force = false) {}
 
 /**
- * (PECL svn &gt;= 0.1.0)<br/>
+ * (PECL svn >= 0.1.0)<br/>
  * Returns the status of working copy files and directories
  * @link https://php.net/manual/en/function.svn-status.php
  * @param string $path <p>
@@ -549,7 +549,7 @@ function svn_add($path, $recursive = true, $force = false) {}
 function svn_status($path, $flags = 0) {}
 
 /**
- * (PECL svn &gt;= 0.1.0)<br/>
+ * (PECL svn >= 0.1.0)<br/>
  * Update working copy
  * @link https://php.net/manual/en/function.svn-update.php
  * @param string $path <p>
@@ -567,7 +567,7 @@ function svn_status($path, $flags = 0) {}
 function svn_update($path, $revno = SVN_REVISION_HEAD, $recurse = true) {}
 
 /**
- * (PECL svn &gt;= 0.2.0)<br/>
+ * (PECL svn >= 0.2.0)<br/>
  * Imports an unversioned path into a repository
  * @link https://php.net/manual/en/function.svn-import.php
  * @param string $path <p>
@@ -587,7 +587,7 @@ function svn_import($path, $url, $nonrecursive) {}
 function svn_info() {}
 
 /**
- * (PECL svn &gt;= 0.3.0)<br/>
+ * (PECL svn >= 0.3.0)<br/>
  * Export the contents of a SVN directory
  * @link https://php.net/manual/en/function.svn-export.php
  * @param string $frompath <p>
@@ -609,7 +609,7 @@ function svn_copy() {}
 function svn_switch() {}
 
 /**
- * (PECL svn &gt;= 0.3.0)<br/>
+ * (PECL svn >= 0.3.0)<br/>
  * Get the SVN blame for a file
  * @link https://php.net/manual/en/function.svn-blame.php
  * @param string $repository_url <p>
@@ -625,7 +625,7 @@ function svn_switch() {}
 function svn_blame($repository_url, $revision_no = SVN_REVISION_HEAD) {}
 
 /**
- * (PECL svn &gt;= 0.4.0)<br/>
+ * (PECL svn >= 0.4.0)<br/>
  * Delete items from a working copy or repository.
  * @link https://php.net/manual/en/function.svn-delete.php
  * @param string $path <p>
@@ -642,7 +642,7 @@ function svn_blame($repository_url, $revision_no = SVN_REVISION_HEAD) {}
 function svn_delete($path, $force = false) {}
 
 /**
- * (PECL svn &gt;= 0.4.0)<br/>
+ * (PECL svn >= 0.4.0)<br/>
  * Creates a directory in a working copy or repository
  * @link https://php.net/manual/en/function.svn-mkdir.php
  * @param string $path <p>
@@ -681,7 +681,7 @@ function svn_proplist($path, $recurse = false, $revision) {}
 function svn_propget($path, $property_name, $recurse = false, $revision) {}
 
 /**
- * (PECL svn &gt;= 0.1.0)<br/>
+ * (PECL svn >= 0.1.0)<br/>
  * Create a new subversion repository at path
  * @link https://php.net/manual/en/function.svn-repos-create.php
  * @param string $path <p>
@@ -698,7 +698,7 @@ function svn_propget($path, $property_name, $recurse = false, $revision) {}
 function svn_repos_create($path, ?array $config = null, ?array $fsconfig = null) {}
 
 /**
- * (PECL svn &gt;= 0.1.0)<br/>
+ * (PECL svn >= 0.1.0)<br/>
  * Run recovery procedures on the repository located at path.
  * @link https://php.net/manual/en/function.svn-repos-recover.php
  * @param string $path <p>
@@ -709,7 +709,7 @@ function svn_repos_create($path, ?array $config = null, ?array $fsconfig = null)
 function svn_repos_recover($path) {}
 
 /**
- * (PECL svn &gt;= 0.1.0)<br/>
+ * (PECL svn >= 0.1.0)<br/>
  * Make a hot-copy of the repos at repospath; copy it to destpath
  * @link https://php.net/manual/en/function.svn-repos-hotcopy.php
  * @param string $repospath <p>
@@ -726,7 +726,7 @@ function svn_repos_recover($path) {}
 function svn_repos_hotcopy($repospath, $destpath, $cleanlogs) {}
 
 /**
- * (PECL svn &gt;= 0.1.0)<br/>
+ * (PECL svn >= 0.1.0)<br/>
  * Open a shared lock on a repository.
  * @link https://php.net/manual/en/function.svn-repos-open.php
  * @param string $path <p>
@@ -737,7 +737,7 @@ function svn_repos_hotcopy($repospath, $destpath, $cleanlogs) {}
 function svn_repos_open($path) {}
 
 /**
- * (PECL svn &gt;= 0.1.0)<br/>
+ * (PECL svn >= 0.1.0)<br/>
  * Gets a handle on the filesystem for a repository
  * @link https://php.net/manual/en/function.svn-repos-fs.php
  * @param resource $repos <p>
@@ -748,7 +748,7 @@ function svn_repos_open($path) {}
 function svn_repos_fs($repos) {}
 
 /**
- * (PECL svn &gt;= 0.2.0)<br/>
+ * (PECL svn >= 0.2.0)<br/>
  * Create a new transaction
  * @link https://php.net/manual/en/function.svn-repos-fs-begin-txn-for-commit.php
  * @param resource $repos <p>
@@ -768,7 +768,7 @@ function svn_repos_fs($repos) {}
 function svn_repos_fs_begin_txn_for_commit($repos, $rev, $author, $log_msg) {}
 
 /**
- * (PECL svn &gt;= 0.2.0)<br/>
+ * (PECL svn >= 0.2.0)<br/>
  * Commits a transaction and returns the new revision
  * @link https://php.net/manual/en/function.svn-repos-fs-commit-txn.php
  * @param resource $txn <p>
@@ -779,7 +779,7 @@ function svn_repos_fs_begin_txn_for_commit($repos, $rev, $author, $log_msg) {}
 function svn_repos_fs_commit_txn($txn) {}
 
 /**
- * (PECL svn &gt;= 0.1.0)<br/>
+ * (PECL svn >= 0.1.0)<br/>
  * Get a handle on a specific version of the repository root
  * @link https://php.net/manual/en/function.svn-fs-revision-root.php
  * @param resource $fs <p>
@@ -793,7 +793,7 @@ function svn_repos_fs_commit_txn($txn) {}
 function svn_fs_revision_root($fs, $revnum) {}
 
 /**
- * (PECL svn &gt;= 0.1.0)<br/>
+ * (PECL svn >= 0.1.0)<br/>
  * Determines what kind of item lives at path in a given repository fsroot
  * @link https://php.net/manual/en/function.svn-fs-check-path.php
  * @param resource $fsroot <p>
@@ -807,7 +807,7 @@ function svn_fs_revision_root($fs, $revnum) {}
 function svn_fs_check_path($fsroot, $path) {}
 
 /**
- * (PECL svn &gt;= 0.1.0)<br/>
+ * (PECL svn >= 0.1.0)<br/>
  * Fetches the value of a named property
  * @link https://php.net/manual/en/function.svn-fs-revision-prop.php
  * @param resource $fs <p>
@@ -824,7 +824,7 @@ function svn_fs_check_path($fsroot, $path) {}
 function svn_fs_revision_prop($fs, $revnum, $propname) {}
 
 /**
- * (PECL svn &gt;= 0.1.0)<br/>
+ * (PECL svn >= 0.1.0)<br/>
  * Enumerates the directory entries under path; returns a hash of dir names to file type
  * @link https://php.net/manual/en/function.svn-fs-dir-entries.php
  * @param resource $fsroot <p>
@@ -838,7 +838,7 @@ function svn_fs_revision_prop($fs, $revnum, $propname) {}
 function svn_fs_dir_entries($fsroot, $path) {}
 
 /**
- * (PECL svn &gt;= 0.1.0)<br/>
+ * (PECL svn >= 0.1.0)<br/>
  * Returns the revision in which path under fsroot was created
  * @link https://php.net/manual/en/function.svn-fs-node-created-rev.php
  * @param resource $fsroot <p>
@@ -852,7 +852,7 @@ function svn_fs_dir_entries($fsroot, $path) {}
 function svn_fs_node_created_rev($fsroot, $path) {}
 
 /**
- * (PECL svn &gt;= 0.1.0)<br/>
+ * (PECL svn >= 0.1.0)<br/>
  * Returns the number of the youngest revision in the filesystem
  * @link https://php.net/manual/en/function.svn-fs-youngest-rev.php
  * @param resource $fs <p>
@@ -863,7 +863,7 @@ function svn_fs_node_created_rev($fsroot, $path) {}
 function svn_fs_youngest_rev($fs) {}
 
 /**
- * (PECL svn &gt;= 0.1.0)<br/>
+ * (PECL svn >= 0.1.0)<br/>
  * Returns a stream to access the contents of a file from a given version of the fs
  * @link https://php.net/manual/en/function.svn-fs-file-contents.php
  * @param resource $fsroot <p>
@@ -877,7 +877,7 @@ function svn_fs_youngest_rev($fs) {}
 function svn_fs_file_contents($fsroot, $path) {}
 
 /**
- * (PECL svn &gt;= 0.1.0)<br/>
+ * (PECL svn >= 0.1.0)<br/>
  * Returns the length of a file from a given version of the fs
  * @link https://php.net/manual/en/function.svn-fs-file-length.php
  * @param resource $fsroot <p>
@@ -891,7 +891,7 @@ function svn_fs_file_contents($fsroot, $path) {}
 function svn_fs_file_length($fsroot, $path) {}
 
 /**
- * (PECL svn &gt;= 0.2.0)<br/>
+ * (PECL svn >= 0.2.0)<br/>
  * Creates and returns a transaction root
  * @link https://php.net/manual/en/function.svn-fs-txn-root.php
  * @param resource $txn <p>
@@ -902,7 +902,7 @@ function svn_fs_file_length($fsroot, $path) {}
 function svn_fs_txn_root($txn) {}
 
 /**
- * (PECL svn &gt;= 0.2.0)<br/>
+ * (PECL svn >= 0.2.0)<br/>
  * Creates a new empty file, returns true if all is ok, false otherwise
  * @link https://php.net/manual/en/function.svn-fs-make-file.php
  * @param resource $root <p>
@@ -916,7 +916,7 @@ function svn_fs_txn_root($txn) {}
 function svn_fs_make_file($root, $path) {}
 
 /**
- * (PECL svn &gt;= 0.2.0)<br/>
+ * (PECL svn >= 0.2.0)<br/>
  * Creates a new empty directory, returns true if all is ok, false otherwise
  * @link https://php.net/manual/en/function.svn-fs-make-dir.php
  * @param resource $root <p>
@@ -930,7 +930,7 @@ function svn_fs_make_file($root, $path) {}
 function svn_fs_make_dir($root, $path) {}
 
 /**
- * (PECL svn &gt;= 0.2.0)<br/>
+ * (PECL svn >= 0.2.0)<br/>
  * Creates and returns a stream that will be used to replace
  * @link https://php.net/manual/en/function.svn-fs-apply-text.php
  * @param resource $root <p>
@@ -944,7 +944,7 @@ function svn_fs_make_dir($root, $path) {}
 function svn_fs_apply_text($root, $path) {}
 
 /**
- * (PECL svn &gt;= 0.2.0)<br/>
+ * (PECL svn >= 0.2.0)<br/>
  * Copies a file or a directory, returns true if all is ok, false otherwise
  * @link https://php.net/manual/en/function.svn-fs-copy.php
  * @param resource $from_root <p>
@@ -964,7 +964,7 @@ function svn_fs_apply_text($root, $path) {}
 function svn_fs_copy($from_root, $from_path, $to_root, $to_path) {}
 
 /**
- * (PECL svn &gt;= 0.2.0)<br/>
+ * (PECL svn >= 0.2.0)<br/>
  * Deletes a file or a directory, return true if all is ok, false otherwise
  * @link https://php.net/manual/en/function.svn-fs-delete.php
  * @param resource $root <p>
@@ -978,7 +978,7 @@ function svn_fs_copy($from_root, $from_path, $to_root, $to_path) {}
 function svn_fs_delete($root, $path) {}
 
 /**
- * (PECL svn &gt;= 0.2.0)<br/>
+ * (PECL svn >= 0.2.0)<br/>
  * Create a new transaction
  * @link https://php.net/manual/en/function.svn-fs-begin-txn2.php
  * @param resource $repos <p>
@@ -992,7 +992,7 @@ function svn_fs_delete($root, $path) {}
 function svn_fs_begin_txn2($repos, $rev) {}
 
 /**
- * (PECL svn &gt;= 0.2.0)<br/>
+ * (PECL svn >= 0.2.0)<br/>
  * Return true if the path points to a directory, false otherwise
  * @link https://php.net/manual/en/function.svn-fs-is-dir.php
  * @param resource $root <p>
@@ -1006,7 +1006,7 @@ function svn_fs_begin_txn2($repos, $rev) {}
 function svn_fs_is_dir($root, $path) {}
 
 /**
- * (PECL svn &gt;= 0.2.0)<br/>
+ * (PECL svn >= 0.2.0)<br/>
  * Return true if the path points to a file, false otherwise
  * @link https://php.net/manual/en/function.svn-fs-is-file.php
  * @param resource $root <p>
@@ -1020,7 +1020,7 @@ function svn_fs_is_dir($root, $path) {}
 function svn_fs_is_file($root, $path) {}
 
 /**
- * (PECL svn &gt;= 0.1.0)<br/>
+ * (PECL svn >= 0.1.0)<br/>
  * Returns the value of a property for a node
  * @link https://php.net/manual/en/function.svn-fs-node-prop.php
  * @param resource $fsroot <p>
@@ -1037,7 +1037,7 @@ function svn_fs_is_file($root, $path) {}
 function svn_fs_node_prop($fsroot, $path, $propname) {}
 
 /**
- * (PECL svn &gt;= 0.2.0)<br/>
+ * (PECL svn >= 0.2.0)<br/>
  * Return true if everything is ok, false otherwise
  * @link https://php.net/manual/en/function.svn-fs-change-node-prop.php
  * @param resource $root <p>
@@ -1057,7 +1057,7 @@ function svn_fs_node_prop($fsroot, $path, $propname) {}
 function svn_fs_change_node_prop($root, $path, $name, $value) {}
 
 /**
- * (PECL svn &gt;= 0.2.0)<br/>
+ * (PECL svn >= 0.2.0)<br/>
  * Return true if content is different, false otherwise
  * @link https://php.net/manual/en/function.svn-fs-contents-changed.php
  * @param resource $root1 <p>
@@ -1077,7 +1077,7 @@ function svn_fs_change_node_prop($root, $path, $name, $value) {}
 function svn_fs_contents_changed($root1, $path1, $root2, $path2) {}
 
 /**
- * (PECL svn &gt;= 0.2.0)<br/>
+ * (PECL svn >= 0.2.0)<br/>
  * Return true if props are different, false otherwise
  * @link https://php.net/manual/en/function.svn-fs-props-changed.php
  * @param resource $root1 <p>
@@ -1097,7 +1097,7 @@ function svn_fs_contents_changed($root1, $path1, $root2, $path2) {}
 function svn_fs_props_changed($root1, $path1, $root2, $path2) {}
 
 /**
- * (PECL svn &gt;= 0.2.0)<br/>
+ * (PECL svn >= 0.2.0)<br/>
  * Abort a transaction, returns true if everything is okay, false otherwise
  * @link https://php.net/manual/en/function.svn-fs-abort-txn.php
  * @param resource $txn <p>

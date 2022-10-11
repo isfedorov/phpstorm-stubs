@@ -692,7 +692,7 @@ class Memcached
     public const GET_ERROR_RETURN_VALUE = false;
 
     /**
-     * (PECL memcached &gt;= 0.1.0)<br/>
+     * (PECL memcached >= 0.1.0)<br/>
      * Create a Memcached instance
      * @link https://php.net/manual/en/memcached.construct.php, https://github.com/php-memcached-dev/php-memcached/blob/v3.1.5/php_memcached.c
      * @param string $persistent_id [optional]
@@ -702,7 +702,7 @@ class Memcached
     public function __construct($persistent_id = '', $on_new_object_cb = null, $connection_str = '') {}
 
     /**
-     * (PECL memcached &gt;= 0.1.0)<br/>
+     * (PECL memcached >= 0.1.0)<br/>
      * Return the result code of the last operation
      * @link https://php.net/manual/en/memcached.getresultcode.php
      * @return int Result code of the last Memcached operation.
@@ -710,7 +710,7 @@ class Memcached
     public function getResultCode() {}
 
     /**
-     * (PECL memcached &gt;= 1.0.0)<br/>
+     * (PECL memcached >= 1.0.0)<br/>
      * Return the message describing the result of the last operation
      * @link https://php.net/manual/en/memcached.getresultmessage.php
      * @return string Message describing the result of the last Memcached operation.
@@ -718,7 +718,7 @@ class Memcached
     public function getResultMessage() {}
 
     /**
-     * (PECL memcached &gt;= 0.1.0)<br/>
+     * (PECL memcached >= 0.1.0)<br/>
      * Retrieve an item
      * @link https://php.net/manual/en/memcached.get.php
      * @param string $key <p>
@@ -737,7 +737,7 @@ class Memcached
     public function get($key, callable $cache_cb = null, $flags = 0) {}
 
     /**
-     * (PECL memcached &gt;= 0.1.0)<br/>
+     * (PECL memcached >= 0.1.0)<br/>
      * Retrieve an item from a specific server
      * @link https://php.net/manual/en/memcached.getbykey.php
      * @param string $server_key <p>
@@ -759,7 +759,7 @@ class Memcached
     public function getByKey($server_key, $key, callable $cache_cb = null, $flags = 0) {}
 
     /**
-     * (PECL memcached &gt;= 0.1.0)<br/>
+     * (PECL memcached >= 0.1.0)<br/>
      * Retrieve multiple items
      * @link https://php.net/manual/en/memcached.getmulti.php
      * @param array $keys <p>
@@ -774,7 +774,7 @@ class Memcached
     public function getMulti(array $keys, $flags = 0) {}
 
     /**
-     * (PECL memcached &gt;= 0.1.0)<br/>
+     * (PECL memcached >= 0.1.0)<br/>
      * Retrieve multiple items from a specific server
      * @link https://php.net/manual/en/memcached.getmultibykey.php
      * @param string $server_key <p>
@@ -792,7 +792,7 @@ class Memcached
     public function getMultiByKey($server_key, array $keys, $flags = 0) {}
 
     /**
-     * (PECL memcached &gt;= 0.1.0)<br/>
+     * (PECL memcached >= 0.1.0)<br/>
      * Request multiple items
      * @link https://php.net/manual/en/memcached.getdelayed.php
      * @param array $keys <p>
@@ -810,7 +810,7 @@ class Memcached
     public function getDelayed(array $keys, $with_cas = null, callable $value_cb = null) {}
 
     /**
-     * (PECL memcached &gt;= 0.1.0)<br/>
+     * (PECL memcached >= 0.1.0)<br/>
      * Request multiple items from a specific server
      * @link https://php.net/manual/en/memcached.getdelayedbykey.php
      * @param string $server_key <p>
@@ -831,7 +831,7 @@ class Memcached
     public function getDelayedByKey($server_key, array $keys, $with_cas = null, callable $value_cb = null) {}
 
     /**
-     * (PECL memcached &gt;= 0.1.0)<br/>
+     * (PECL memcached >= 0.1.0)<br/>
      * Fetch the next result
      * @link https://php.net/manual/en/memcached.fetch.php
      * @return array|false the next result or <b>FALSE</b> otherwise.
@@ -841,7 +841,7 @@ class Memcached
     public function fetch() {}
 
     /**
-     * (PECL memcached &gt;= 0.1.0)<br/>
+     * (PECL memcached >= 0.1.0)<br/>
      * Fetch all the remaining results
      * @link https://php.net/manual/en/memcached.fetchall.php
      * @return array|false the results or <b>FALSE</b> on failure.
@@ -850,7 +850,7 @@ class Memcached
     public function fetchAll() {}
 
     /**
-     * (PECL memcached &gt;= 0.1.0)<br/>
+     * (PECL memcached >= 0.1.0)<br/>
      * Store an item
      * @link https://php.net/manual/en/memcached.set.php
      * @param string $key <p>
@@ -869,7 +869,7 @@ class Memcached
     public function set($key, $value, $expiration = 0, $udf_flags = 0) {}
 
     /**
-     * (PECL memcached &gt;= 0.1.0)<br/>
+     * (PECL memcached >= 0.1.0)<br/>
      * Store an item on a specific server
      * @link https://php.net/manual/en/memcached.setbykey.php
      * @param string $server_key <p>
@@ -891,7 +891,7 @@ class Memcached
     public function setByKey($server_key, $key, $value, $expiration = 0, $udf_flags = 0) {}
 
     /**
-     * (PECL memcached &gt;= 2.0.0)<br/>
+     * (PECL memcached >= 2.0.0)<br/>
      * Set a new expiration on an item
      * @link https://php.net/manual/en/memcached.touch.php
      * @param string $key <p>
@@ -906,7 +906,7 @@ class Memcached
     public function touch($key, $expiration = 0) {}
 
     /**
-     * (PECL memcached &gt;= 2.0.0)<br/>
+     * (PECL memcached >= 2.0.0)<br/>
      * Set a new expiration on an item on a specific server
      * @link https://php.net/manual/en/memcached.touchbykey.php
      * @param string $server_key <p>
@@ -924,7 +924,7 @@ class Memcached
     public function touchByKey($server_key, $key, $expiration) {}
 
     /**
-     * (PECL memcached &gt;= 0.1.0)<br/>
+     * (PECL memcached >= 0.1.0)<br/>
      * Store multiple items
      * @link https://php.net/manual/en/memcached.setmulti.php
      * @param array $items <p>
@@ -940,7 +940,7 @@ class Memcached
     public function setMulti(array $items, $expiration = 0, $udf_flags = 0) {}
 
     /**
-     * (PECL memcached &gt;= 0.1.0)<br/>
+     * (PECL memcached >= 0.1.0)<br/>
      * Store multiple items on a specific server
      * @link https://php.net/manual/en/memcached.setmultibykey.php
      * @param string $server_key <p>
@@ -959,7 +959,7 @@ class Memcached
     public function setMultiByKey($server_key, array $items, $expiration = 0, $udf_flags = 0) {}
 
     /**
-     * (PECL memcached &gt;= 0.1.0)<br/>
+     * (PECL memcached >= 0.1.0)<br/>
      * Compare and swap an item
      * @link https://php.net/manual/en/memcached.cas.php
      * @param float $cas_token <p>
@@ -983,7 +983,7 @@ class Memcached
     public function cas($cas_token, $key, $value, $expiration = 0, $udf_flags = 0) {}
 
     /**
-     * (PECL memcached &gt;= 0.1.0)<br/>
+     * (PECL memcached >= 0.1.0)<br/>
      * Compare and swap an item on a specific server
      * @link https://php.net/manual/en/memcached.casbykey.php
      * @param float $cas_token <p>
@@ -1010,7 +1010,7 @@ class Memcached
     public function casByKey($cas_token, $server_key, $key, $value, $expiration = 0, $udf_flags = 0) {}
 
     /**
-     * (PECL memcached &gt;= 0.1.0)<br/>
+     * (PECL memcached >= 0.1.0)<br/>
      * Add an item under a new key
      * @link https://php.net/manual/en/memcached.add.php
      * @param string $key <p>
@@ -1030,7 +1030,7 @@ class Memcached
     public function add($key, $value, $expiration = 0, $udf_flags = 0) {}
 
     /**
-     * (PECL memcached &gt;= 0.1.0)<br/>
+     * (PECL memcached >= 0.1.0)<br/>
      * Add an item under a new key on a specific server
      * @link https://php.net/manual/en/memcached.addbykey.php
      * @param string $server_key <p>
@@ -1053,7 +1053,7 @@ class Memcached
     public function addByKey($server_key, $key, $value, $expiration = 0, $udf_flags = 0) {}
 
     /**
-     * (PECL memcached &gt;= 0.1.0)<br/>
+     * (PECL memcached >= 0.1.0)<br/>
      * Append data to an existing item
      * @link https://php.net/manual/en/memcached.append.php
      * @param string $key <p>
@@ -1069,7 +1069,7 @@ class Memcached
     public function append($key, $value) {}
 
     /**
-     * (PECL memcached &gt;= 0.1.0)<br/>
+     * (PECL memcached >= 0.1.0)<br/>
      * Append data to an existing item on a specific server
      * @link https://php.net/manual/en/memcached.appendbykey.php
      * @param string $server_key <p>
@@ -1088,7 +1088,7 @@ class Memcached
     public function appendByKey($server_key, $key, $value) {}
 
     /**
-     * (PECL memcached &gt;= 0.1.0)<br/>
+     * (PECL memcached >= 0.1.0)<br/>
      * Prepend data to an existing item
      * @link https://php.net/manual/en/memcached.prepend.php
      * @param string $key <p>
@@ -1104,7 +1104,7 @@ class Memcached
     public function prepend($key, $value) {}
 
     /**
-     * (PECL memcached &gt;= 0.1.0)<br/>
+     * (PECL memcached >= 0.1.0)<br/>
      * Prepend data to an existing item on a specific server
      * @link https://php.net/manual/en/memcached.prependbykey.php
      * @param string $server_key <p>
@@ -1123,7 +1123,7 @@ class Memcached
     public function prependByKey($server_key, $key, $value) {}
 
     /**
-     * (PECL memcached &gt;= 0.1.0)<br/>
+     * (PECL memcached >= 0.1.0)<br/>
      * Replace the item under an existing key
      * @link https://php.net/manual/en/memcached.replace.php
      * @param string $key <p>
@@ -1143,7 +1143,7 @@ class Memcached
     public function replace($key, $value, $expiration = null, $udf_flags = 0) {}
 
     /**
-     * (PECL memcached &gt;= 0.1.0)<br/>
+     * (PECL memcached >= 0.1.0)<br/>
      * Replace the item under an existing key on a specific server
      * @link https://php.net/manual/en/memcached.replacebykey.php
      * @param string $server_key <p>
@@ -1166,7 +1166,7 @@ class Memcached
     public function replaceByKey($server_key, $key, $value, $expiration = null, $udf_flags = 0) {}
 
     /**
-     * (PECL memcached &gt;= 0.1.0)<br/>
+     * (PECL memcached >= 0.1.0)<br/>
      * Delete an item
      * @link https://php.net/manual/en/memcached.delete.php
      * @param string $key <p>
@@ -1182,7 +1182,7 @@ class Memcached
     public function delete($key, $time = 0) {}
 
     /**
-     * (PECL memcached &gt;= 2.0.0)<br/>
+     * (PECL memcached >= 2.0.0)<br/>
      * Delete multiple items
      * @link https://php.net/manual/en/memcached.deletemulti.php
      * @param array $keys <p>
@@ -1198,7 +1198,7 @@ class Memcached
     public function deleteMulti(array $keys, $time = 0) {}
 
     /**
-     * (PECL memcached &gt;= 0.1.0)<br/>
+     * (PECL memcached >= 0.1.0)<br/>
      * Delete an item from a specific server
      * @link https://php.net/manual/en/memcached.deletebykey.php
      * @param string $server_key <p>
@@ -1217,7 +1217,7 @@ class Memcached
     public function deleteByKey($server_key, $key, $time = 0) {}
 
     /**
-     * (PECL memcached &gt;= 2.0.0)<br/>
+     * (PECL memcached >= 2.0.0)<br/>
      * Delete multiple items from a specific server
      * @link https://php.net/manual/en/memcached.deletemultibykey.php
      * @param string $server_key <p>
@@ -1236,7 +1236,7 @@ class Memcached
     public function deleteMultiByKey($server_key, array $keys, $time = 0) {}
 
     /**
-     * (PECL memcached &gt;= 0.1.0)<br/>
+     * (PECL memcached >= 0.1.0)<br/>
      * Increment numeric item's value
      * @link https://php.net/manual/en/memcached.increment.php
      * @param string $key <p>
@@ -1256,7 +1256,7 @@ class Memcached
     public function increment($key, $offset = 1, $initial_value = 0, $expiry = 0) {}
 
     /**
-     * (PECL memcached &gt;= 0.1.0)<br/>
+     * (PECL memcached >= 0.1.0)<br/>
      * Decrement numeric item's value
      * @link https://php.net/manual/en/memcached.decrement.php
      * @param string $key <p>
@@ -1276,7 +1276,7 @@ class Memcached
     public function decrement($key, $offset = 1, $initial_value = 0, $expiry = 0) {}
 
     /**
-     * (PECL memcached &gt;= 2.0.0)<br/>
+     * (PECL memcached >= 2.0.0)<br/>
      * Increment numeric item's value, stored on a specific server
      * @link https://php.net/manual/en/memcached.incrementbykey.php
      * @param string $server_key <p>
@@ -1299,7 +1299,7 @@ class Memcached
     public function incrementByKey($server_key, $key, $offset = 1, $initial_value = 0, $expiry = 0) {}
 
     /**
-     * (PECL memcached &gt;= 2.0.0)<br/>
+     * (PECL memcached >= 2.0.0)<br/>
      * Decrement numeric item's value, stored on a specific server
      * @link https://php.net/manual/en/memcached.decrementbykey.php
      * @param string $server_key <p>
@@ -1322,7 +1322,7 @@ class Memcached
     public function decrementByKey($server_key, $key, $offset = 1, $initial_value = 0, $expiry = 0) {}
 
     /**
-     * (PECL memcached &gt;= 0.1.0)<br/>
+     * (PECL memcached >= 0.1.0)<br/>
      * Add a server to the server pool
      * @link https://php.net/manual/en/memcached.addserver.php
      * @param string $host <p>
@@ -1346,7 +1346,7 @@ class Memcached
     public function addServer($host, $port, $weight = 0) {}
 
     /**
-     * (PECL memcached &gt;= 0.1.1)<br/>
+     * (PECL memcached >= 0.1.1)<br/>
      * Add multiple servers to the server pool
      * @link https://php.net/manual/en/memcached.addservers.php
      * @param array $servers
@@ -1355,7 +1355,7 @@ class Memcached
     public function addServers(array $servers) {}
 
     /**
-     * (PECL memcached &gt;= 0.1.0)<br/>
+     * (PECL memcached >= 0.1.0)<br/>
      * Get the list of the servers in the pool
      * @link https://php.net/manual/en/memcached.getserverlist.php
      * @return array The list of all servers in the server pool.
@@ -1363,7 +1363,7 @@ class Memcached
     public function getServerList() {}
 
     /**
-     * (PECL memcached &gt;= 0.1.0)<br/>
+     * (PECL memcached >= 0.1.0)<br/>
      * Map a key to a server
      * @link https://php.net/manual/en/memcached.getserverbykey.php
      * @param string $server_key <p>
@@ -1377,7 +1377,7 @@ class Memcached
     public function getServerByKey($server_key) {}
 
     /**
-     * (PECL memcached &gt;= 2.0.0)<br/>
+     * (PECL memcached >= 2.0.0)<br/>
      * Clears all servers from the server list
      * @link https://php.net/manual/en/memcached.resetserverlist.php
      * @return bool <b>TRUE</b> on success or <b>FALSE</b> on failure.
@@ -1385,7 +1385,7 @@ class Memcached
     public function resetServerList() {}
 
     /**
-     * (PECL memcached &gt;= 2.0.0)<br/>
+     * (PECL memcached >= 2.0.0)<br/>
      * Close any open connections
      * @link https://php.net/manual/en/memcached.quit.php
      * @return bool <b>TRUE</b> on success or <b>FALSE</b> on failure.
@@ -1393,7 +1393,7 @@ class Memcached
     public function quit() {}
 
     /**
-     * (PECL memcached &gt;= 0.1.0)<br/>
+     * (PECL memcached >= 0.1.0)<br/>
      * Get server pool statistics
      * @link https://php.net/manual/en/memcached.getstats.php
      * @param string $type <p>items, slabs, sizes ...</p>
@@ -1402,7 +1402,7 @@ class Memcached
     public function getStats($type = null) {}
 
     /**
-     * (PECL memcached &gt;= 0.1.5)<br/>
+     * (PECL memcached >= 0.1.5)<br/>
      * Get server pool version info
      * @link https://php.net/manual/en/memcached.getversion.php
      * @return array Array of server versions, one entry per server.
@@ -1410,7 +1410,7 @@ class Memcached
     public function getVersion() {}
 
     /**
-     * (PECL memcached &gt;= 2.0.0)<br/>
+     * (PECL memcached >= 2.0.0)<br/>
      * Gets the keys stored on all the servers
      * @link https://php.net/manual/en/memcached.getallkeys.php
      * @return array|false the keys stored on all the servers on success or <b>FALSE</b> on failure.
@@ -1418,7 +1418,7 @@ class Memcached
     public function getAllKeys() {}
 
     /**
-     * (PECL memcached &gt;= 0.1.0)<br/>
+     * (PECL memcached >= 0.1.0)<br/>
      * Invalidate all items in the cache
      * @link https://php.net/manual/en/memcached.flush.php
      * @param int $delay [optional] <p>
@@ -1430,7 +1430,7 @@ class Memcached
     public function flush($delay = 0) {}
 
     /**
-     * (PECL memcached &gt;= 0.1.0)<br/>
+     * (PECL memcached >= 0.1.0)<br/>
      * Retrieve a Memcached option value
      * @link https://php.net/manual/en/memcached.getoption.php
      * @param int $option <p>
@@ -1442,7 +1442,7 @@ class Memcached
     public function getOption($option) {}
 
     /**
-     * (PECL memcached &gt;= 0.1.0)<br/>
+     * (PECL memcached >= 0.1.0)<br/>
      * Set a Memcached option
      * @link https://php.net/manual/en/memcached.setoption.php
      * @param int $option
@@ -1452,7 +1452,7 @@ class Memcached
     public function setOption($option, $value) {}
 
     /**
-     * (PECL memcached &gt;= 2.0.0)<br/>
+     * (PECL memcached >= 2.0.0)<br/>
      * Set Memcached options
      * @link https://php.net/manual/en/memcached.setoptions.php
      * @param array $options <p>
@@ -1464,7 +1464,7 @@ class Memcached
     public function setOptions(array $options) {}
 
     /**
-     * (PECL memcached &gt;= 2.0.0)<br/>
+     * (PECL memcached >= 2.0.0)<br/>
      * Set the credentials to use for authentication
      * @link https://secure.php.net/manual/en/memcached.setsaslauthdata.php
      * @param string $username <p>
@@ -1478,7 +1478,7 @@ class Memcached
     public function setSaslAuthData(string $username, string $password) {}
 
     /**
-     * (PECL memcached &gt;= 2.0.0)<br/>
+     * (PECL memcached >= 2.0.0)<br/>
      * Check if a persitent connection to memcache is being used
      * @link https://php.net/manual/en/memcached.ispersistent.php
      * @return bool true if Memcache instance uses a persistent connection, false otherwise.
@@ -1486,7 +1486,7 @@ class Memcached
     public function isPersistent() {}
 
     /**
-     * (PECL memcached &gt;= 2.0.0)<br/>
+     * (PECL memcached >= 2.0.0)<br/>
      * Check if the instance was recently created
      * @link https://php.net/manual/en/memcached.ispristine.php
      * @return bool the true if instance is recently created, false otherwise.

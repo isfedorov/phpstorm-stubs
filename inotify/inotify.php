@@ -3,7 +3,7 @@
 // Start of inotify v.0.1.6
 
 /**
- * (PHP &gt;= 5.2.0, PECL inotify &gt;= 0.1.2)<br/>
+ * (PHP >= 5.2.0, PECL inotify >= 0.1.2)<br/>
  * Add a watch to an initialized inotify instance
  *
  * @link https://php.net/manual/en/function.inotify-add-watch.php
@@ -17,7 +17,7 @@
 function inotify_add_watch($inotify_instance, $pathname, $mask) {}
 
 /**
- * (PHP &gt;= 5.2.0, PECL inotify &gt;= 0.1.2)<br/>
+ * (PHP >= 5.2.0, PECL inotify >= 0.1.2)<br/>
  * Initialize an inotify instance for use with {@see inotify_add_watch}
  *
  * @link https://php.net/manual/en/function.inotify-init.php
@@ -26,7 +26,7 @@ function inotify_add_watch($inotify_instance, $pathname, $mask) {}
 function inotify_init() {}
 
 /**
- * (PHP &gt;= 5.2.0, PECL inotify &gt;= 0.1.2)<br/>
+ * (PHP >= 5.2.0, PECL inotify >= 0.1.2)<br/>
  * This function allows to know if {@see inotify_read} will block or not.
  * If a number upper than zero is returned, there are pending events
  * and {@see inotify_read} will not block.
@@ -40,7 +40,7 @@ function inotify_init() {}
 function inotify_queue_len($inotify_instance) {}
 
 /**
- * (PHP &gt;= 5.2.0, PECL inotify &gt;= 0.1.2)<br/>
+ * (PHP >= 5.2.0, PECL inotify >= 0.1.2)<br/>
  * Read inotify events from an inotify instance.
  *
  * @link https://php.net/manual/en/function.inotify-read.php
@@ -61,7 +61,7 @@ function inotify_queue_len($inotify_instance) {}
 function inotify_read($inotify_instance) {}
 
 /**
- * (PHP &gt;= 5.2.0, PECL inotify &gt;= 0.1.2)<br/>
+ * (PHP >= 5.2.0, PECL inotify >= 0.1.2)<br/>
  * Removes the watch <i>$watch_descriptor</i> from the inotify instance <i>$inotify_instance</i>.
  *
  * @link     https://secure.php.net/manual/en/function.inotify-rm-watch.php

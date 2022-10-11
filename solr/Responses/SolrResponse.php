@@ -7,7 +7,7 @@
  */
 
 /**
- * (PECL solr &gt;= 0.9.2)<br/>
+ * (PECL solr >= 0.9.2)<br/>
  * Class SolrResponse<br/>
  * This class represents a response from the Solr server.
  * @link https://php.net/manual/en/class.solrresponse.php
@@ -51,7 +51,7 @@ abstract class SolrResponse
     protected $http_digested_response;
 
     /**
-     * (PECL solr &gt;= 0.9.2)<br/>
+     * (PECL solr >= 0.9.2)<br/>
      * Returns the XML response as serialized PHP data
      * @link https://php.net/manual/en/solrresponse.getdigestedresponse.php
      * @return string <p>
@@ -61,7 +61,7 @@ abstract class SolrResponse
     public function getDigestedResponse() {}
 
     /**
-     * (PECL solr &gt;= 0.9.2)<br/>
+     * (PECL solr >= 0.9.2)<br/>
      * Returns the HTTP status of the response
      * @link https://php.net/manual/en/solrresponse.gethttpstatus.php
      * @return int <p>
@@ -71,7 +71,7 @@ abstract class SolrResponse
     public function getHttpStatus() {}
 
     /**
-     * (PECL solr &gt;= 0.9.2)<br/>
+     * (PECL solr >= 0.9.2)<br/>
      * Returns more details on the HTTP status
      * @link https://php.net/manual/en/solrresponse.gethttpstatusmessage.php
      * @return string <p>
@@ -81,7 +81,7 @@ abstract class SolrResponse
     public function getHttpStatusMessage() {}
 
     /**
-     * (PECL solr &gt;= 0.9.2)<br/>
+     * (PECL solr >= 0.9.2)<br/>
      * Returns the raw request sent to the Solr server
      * @link https://php.net/manual/en/solrresponse.getrawrequest.php
      * @return string <p>
@@ -91,7 +91,7 @@ abstract class SolrResponse
     public function getRawRequest() {}
 
     /**
-     * (PECL solr &gt;= 0.9.2)<br/>
+     * (PECL solr >= 0.9.2)<br/>
      * Returns the raw request headers sent to the Solr server
      * @link https://php.net/manual/en/solrresponse.getrawrequestheaders.php
      * @return string <p>
@@ -101,7 +101,7 @@ abstract class SolrResponse
     public function getRawRequestHeaders() {}
 
     /**
-     * (PECL solr &gt;= 0.9.2)<br/>
+     * (PECL solr >= 0.9.2)<br/>
      * Returns the raw response from the server
      * @link https://php.net/manual/en/solrresponse.getrawresponse.php
      * @return string <p>
@@ -111,7 +111,7 @@ abstract class SolrResponse
     public function getRawResponse() {}
 
     /**
-     * (PECL solr &gt;= 0.9.2)<br/>
+     * (PECL solr >= 0.9.2)<br/>
      * Returns the raw response headers from the server
      * @link https://php.net/manual/en/solrresponse.getrawresponseheaders.php
      * @return string <p>
@@ -121,7 +121,7 @@ abstract class SolrResponse
     public function getRawResponseHeaders() {}
 
     /**
-     * (PECL solr &gt;= 0.9.2)<br/>
+     * (PECL solr >= 0.9.2)<br/>
      * Returns the full URL the request was sent to
      * @link https://php.net/manual/en/solrresponse.getrequesturl.php
      * @return string <p>
@@ -131,7 +131,7 @@ abstract class SolrResponse
     public function getRequestUrl() {}
 
     /**
-     * (PECL solr &gt;= 0.9.2)<br/>
+     * (PECL solr >= 0.9.2)<br/>
      * Returns a SolrObject representing the XML response from the server
      * @link https://php.net/manual/en/solrresponse.getresponse.php
      * @return SolrObject <p>
@@ -141,7 +141,7 @@ abstract class SolrResponse
     public function getResponse() {}
 
     /**
-     * (PECL solr &gt;= 0.9.2)<br/>
+     * (PECL solr >= 0.9.2)<br/>
      * Sets the parse mode
      * @link https://php.net/manual/en/solrresponse.setparsemode.php
      * @param int $parser_mode <ul>
@@ -155,7 +155,7 @@ abstract class SolrResponse
     public function setParseMode($parser_mode = 0) {}
 
     /**
-     * (PECL solr &gt;= 0.9.2)<br/>
+     * (PECL solr >= 0.9.2)<br/>
      * Was the request a success
      * @link https://php.net/manual/en/solrresponse.success.php
      * @return bool <p>

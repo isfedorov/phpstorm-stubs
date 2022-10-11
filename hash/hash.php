@@ -7,7 +7,7 @@ use JetBrains\PhpStorm\Internal\PhpStormStubsElementAvailable;
 use JetBrains\PhpStorm\Pure;
 
 /**
- * (PHP 5 &gt;= 5.1.2, PECL hash &gt;= 1.1)<br/>
+ * (PHP 5 >= 5.1.2, PECL hash >= 1.1)<br/>
  * Generate a hash value (message digest)
  * @link https://php.net/manual/en/function.hash.php
  * @param string $algo <p>
@@ -39,7 +39,7 @@ function hash(string $algo, string $data, bool $binary = false, #[PhpStormStubsE
 function hash_equals(string $known_string, string $user_string): bool {}
 
 /**
- * (PHP 5 &gt;= 5.1.2, PECL hash &gt;= 1.1)<br/>
+ * (PHP 5 >= 5.1.2, PECL hash >= 1.1)<br/>
  * Generate a hash value using the contents of a given file
  * @link https://php.net/manual/en/function.hash-file.php
  * @param string $algo <p>
@@ -60,7 +60,7 @@ function hash_equals(string $known_string, string $user_string): bool {}
 function hash_file(string $algo, string $filename, bool $binary = false, #[PhpStormStubsElementAvailable('8.1')] array $options = []): string|false {}
 
 /**
- * (PHP 5 &gt;= 5.1.2, PECL hash &gt;= 1.1)<br/>
+ * (PHP 5 >= 5.1.2, PECL hash >= 1.1)<br/>
  * Generate a keyed hash value using the HMAC method
  * @link https://php.net/manual/en/function.hash-hmac.php
  * @param string $algo <p>
@@ -85,7 +85,7 @@ function hash_file(string $algo, string $filename, bool $binary = false, #[PhpSt
 function hash_hmac(string $algo, string $data, string $key, bool $binary = false): string {}
 
 /**
- * (PHP 5 &gt;= 5.1.2, PECL hash &gt;= 1.1)<br/>
+ * (PHP 5 >= 5.1.2, PECL hash >= 1.1)<br/>
  * Generate a keyed hash value using the HMAC method and the contents of a given file
  * @link https://php.net/manual/en/function.hash-hmac-file.php
  * @param string $algo <p>
@@ -110,7 +110,7 @@ function hash_hmac(string $algo, string $data, string $key, bool $binary = false
 function hash_hmac_file(string $algo, string $filename, string $key, bool $binary = false): string|false {}
 
 /**
- * (PHP 5 &gt;= 5.1.2, PECL hash &gt;= 1.1)<br/>
+ * (PHP 5 >= 5.1.2, PECL hash >= 1.1)<br/>
  * Initialize an incremental hashing context
  * @link https://php.net/manual/en/function.hash-init.php
  * @param string $algo <p>
@@ -136,7 +136,7 @@ function hash_hmac_file(string $algo, string $filename, string $key, bool $binar
 function hash_init(string $algo, int $flags = 0, string $key = "", #[PhpStormStubsElementAvailable('8.1')] array $options = []) {}
 
 /**
- * (PHP 5 &gt;= 5.1.2, PECL hash &gt;= 1.1)<br/>
+ * (PHP 5 >= 5.1.2, PECL hash >= 1.1)<br/>
  * Pump data into an active hashing context
  * @link https://php.net/manual/en/function.hash-update.php
  * @param HashContext|resource $context <p>
@@ -150,7 +150,7 @@ function hash_init(string $algo, int $flags = 0, string $key = "", #[PhpStormStu
 function hash_update(#[LanguageLevelTypeAware(["7.2" => "HashContext"], default: "resource")] $context, string $data): bool {}
 
 /**
- * (PHP 5 &gt;= 5.1.2, PECL hash &gt;= 1.1)<br/>
+ * (PHP 5 >= 5.1.2, PECL hash >= 1.1)<br/>
  * Pump data into an active hashing context from an open stream
  * @link https://php.net/manual/en/function.hash-update-stream.php
  * @param HashContext|resource $context <p>
@@ -168,7 +168,7 @@ function hash_update(#[LanguageLevelTypeAware(["7.2" => "HashContext"], default:
 function hash_update_stream(#[LanguageLevelTypeAware(["7.2" => "HashContext"], default: "resource")] $context, $stream, int $length = -1): int {}
 
 /**
- * (PHP 5 &gt;= 5.1.2, PECL hash &gt;= 1.1)<br/>
+ * (PHP 5 >= 5.1.2, PECL hash >= 1.1)<br/>
  * Pump data into an active hashing context from a file
  * @link https://php.net/manual/en/function.hash-update-file.php
  * @param HashContext|resource $context <p>
@@ -185,7 +185,7 @@ function hash_update_stream(#[LanguageLevelTypeAware(["7.2" => "HashContext"], d
 function hash_update_file(#[LanguageLevelTypeAware(["7.2" => "HashContext"], default: "resource")] $context, string $filename, $stream_context): bool {}
 
 /**
- * (PHP 5 &gt;= 5.1.2, PECL hash &gt;= 1.1)<br/>
+ * (PHP 5 >= 5.1.2, PECL hash >= 1.1)<br/>
  * Finalize an incremental hash and return resulting digest
  * @link https://php.net/manual/en/function.hash-final.php
  * @param HashContext|resource $context <p>
@@ -214,7 +214,7 @@ function hash_final(#[LanguageLevelTypeAware(["7.2" => "HashContext"], default: 
 function hash_copy(#[LanguageLevelTypeAware(["7.2" => "HashContext"], default: "resource")] $context) {}
 
 /**
- * (PHP 5 &gt;= 5.1.2, PECL hash &gt;= 1.1)<br/>
+ * (PHP 5 >= 5.1.2, PECL hash >= 1.1)<br/>
  * Return a list of registered hashing algorithms
  * @link https://php.net/manual/en/function.hash-algos.php
  * @return array a numerically indexed array containing the list of supported

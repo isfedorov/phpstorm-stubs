@@ -164,7 +164,7 @@ define('PASSWORD_ARGON2_PROVIDER', 'standard');
 function password_get_info(string $hash) {}
 
 /**
- * (PHP 5 &gt;= 5.5.0, PHP 5)<br/>
+ * (PHP 5 >= 5.5.0, PHP 5)<br/>
  *
  * Creates a password hash.
  * @link https://secure.php.net/manual/en/function.password-hash.php

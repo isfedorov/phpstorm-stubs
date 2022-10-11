@@ -105,7 +105,7 @@ class MongoClient
     public function __construct($server = "mongodb://localhost:27017", array $options = ["connect" => true], $driver_options) {}
 
     /**
-     * (PECL mongo &gt;= 1.3.0)<br/>
+     * (PECL mongo >= 1.3.0)<br/>
      * Closes this database connection
      * This method does not need to be called, except in unusual circumstances.
      * The driver will cleanly close the database connection when the Mongo object goes out of scope.
@@ -140,7 +140,7 @@ class MongoClient
     public function dropDB($db) {}
 
     /**
-     * (PECL mongo &gt;= 1.3.0)<br/>
+     * (PECL mongo >= 1.3.0)<br/>
      * Gets a database
      * @link https://php.net/manual/en/mongoclient.get.php
      * @param string $dbname The database name.
@@ -172,7 +172,7 @@ class MongoClient
     public function getReadPreference() {}
 
     /**
-     * (PECL mongo &gt;= 1.5.0)<br/>
+     * (PECL mongo >= 1.5.0)<br/>
      * Get the write concern for this connection
      * @return array <p>This function returns an array describing the write concern.
      * The array contains the values w for an integer acknowledgement level or string mode,
@@ -198,7 +198,7 @@ class MongoClient
     public function killCursor($server_hash, $id) {}
 
     /**
-     * (PECL mongo &gt;= 1.3.0)<br/>
+     * (PECL mongo >= 1.3.0)<br/>
      * Lists all of the databases available
      * @link https://php.net/manual/en/mongoclient.listdbs.php
      * @return array Returns an associative array containing three fields. The first field is databases, which in turn contains an array. Each element of the array is an associative array corresponding to a database, giving the database's name, size, and if it's empty. The other two fields are totalSize (in bytes) and ok, which is 1 if this method ran successfully.
@@ -206,7 +206,7 @@ class MongoClient
     public function listDBs() {}
 
     /**
-     * (PECL mongo &gt;= 1.3.0)<br/>
+     * (PECL mongo >= 1.3.0)<br/>
      * Gets a database collection
      * @link https://secure.php.net/manual/en/mongoclient.selectcollection.php
      * @param string $db The database name.
@@ -217,7 +217,7 @@ class MongoClient
     public function selectCollection($db, $collection) {}
 
     /**
-     * (PECL mongo &gt;= 1.3.0)<br/>
+     * (PECL mongo >= 1.3.0)<br/>
      * Gets a database
      * @link https://secure.php.net/manual/en/mongo.selectdb.php
      * @param string $name The database name.
@@ -227,7 +227,7 @@ class MongoClient
     public function selectDB($name) {}
 
     /**
-     * (PECL mongo &gt;= 1.3.0)<br/>
+     * (PECL mongo >= 1.3.0)<br/>
      * Set read preference
      * @param string $readPreference
      * @param array $tags
@@ -236,7 +236,7 @@ class MongoClient
     public function setReadPreference($readPreference, $tags = null) {}
 
     /**
-     * (PECL mongo &gt;= 1.1.0)<br/>
+     * (PECL mongo >= 1.1.0)<br/>
      * Choose a new secondary for slaveOkay reads
      * @link https://secure.php.net/manual/en/mongo.switchslave.php
      * @return string The address of the secondary this connection is using for reads. This may be the same as the previous address as addresses are randomly chosen. It may return only one address if only one secondary (or only the primary) is available.
@@ -264,7 +264,7 @@ class MongoClient
 class Mongo extends MongoClient
 {
     /**
-     * (PECL mongo &gt;= 1.2.0)<br/>
+     * (PECL mongo >= 1.2.0)<br/>
      * Get pool size for connection pools
      * @link https://php.net/manual/en/mongo.getpoolsize.php
      * @return int Returns the current pool size.
@@ -274,7 +274,7 @@ class Mongo extends MongoClient
     public function getPoolSize() {}
 
     /**
-     * (PECL mongo &gt;= 1.1.0)<br/>
+     * (PECL mongo >= 1.1.0)<br/>
      * Returns the address being used by this for slaveOkay reads
      * @link https://php.net/manual/en/mongo.getslave.php
      * @return bool <p>The address of the secondary this connection is using for reads.
@@ -287,7 +287,7 @@ class Mongo extends MongoClient
     public function getSlave() {}
 
     /**
-     * (PECL mongo &gt;= 1.1.0)<br/>
+     * (PECL mongo >= 1.1.0)<br/>
      * Get slaveOkay setting for this connection
      * @link https://php.net/manual/en/mongo.getslaveokay.php
      * @return bool Returns the value of slaveOkay for this instance.
@@ -304,7 +304,7 @@ class Mongo extends MongoClient
     public function pairConnect() {}
 
     /**
-     * (PECL mongo &gt;= 1.2.0)<br/>
+     * (PECL mongo >= 1.2.0)<br/>
      * Returns information about all connection pools.
      * @link https://php.net/manual/en/mongo.pooldebug.php
      * @return array  Each connection pool has an identifier, which starts with the host. For each pool, this function shows the following fields:
@@ -328,7 +328,7 @@ class Mongo extends MongoClient
     public function poolDebug() {}
 
     /**
-     * (PECL mongo &gt;= 1.1.0)<br/>
+     * (PECL mongo >= 1.1.0)<br/>
      * Change slaveOkay setting for this connection
      * @link https://php.net/manual/en/mongo.setslaveokay.php
      * @param bool $ok [optional] <p class="para">
@@ -340,7 +340,7 @@ class Mongo extends MongoClient
     public function setSlaveOkay($ok) {}
 
     /**
-     *(PECL mongo &gt;= 1.2.0)<br/>
+     *(PECL mongo >= 1.2.0)<br/>
      * Set the size for future connection pools.
      * @link https://php.net/manual/en/mongo.setpoolsize.php
      * @param int $size <p>The max number of connections future pools will be able to create. Negative numbers mean that the pool will spawn an infinite number of connections.</p>
@@ -495,7 +495,7 @@ class MongoDB
     public $wtimeout = 10000;
 
     /**
-     * (PECL mongo &gt;= 0.9.0)<br/>
+     * (PECL mongo >= 0.9.0)<br/>
      * Creates a new database
      * This method is not meant to be called directly. The preferred way to create an instance of MongoDB is through {@see Mongo::__get()} or {@see Mongo::selectDB()}.
      * @link https://secure.php.net/manual/en/mongodb.construct.php
@@ -513,7 +513,7 @@ class MongoDB
     public function __toString() {}
 
     /**
-     * (PECL mongo &gt;= 1.0.2)<br/>
+     * (PECL mongo >= 1.0.2)<br/>
      * Gets a collection
      * @link https://secure.php.net/manual/en/mongodb.get.php
      * @param string $name The name of the collection.
@@ -522,7 +522,7 @@ class MongoDB
     public function __get($name) {}
 
     /**
-     * (PECL mongo &gt;= 1.3.0)<br/>
+     * (PECL mongo >= 1.3.0)<br/>
      * @link https://secure.php.net/manual/en/mongodb.getcollectionnames.php
      * Get all collections from this database
      * @param bool $includeSystemCollections [optional] Include system collections.
@@ -532,7 +532,7 @@ class MongoDB
     public function getCollectionNames($includeSystemCollections = false) {}
 
     /**
-     * (PECL mongo &gt;= 0.9.0)<br/>
+     * (PECL mongo >= 0.9.0)<br/>
      * Fetches toolkit for dealing with files stored in this database
      * @link https://secure.php.net/manual/en/mongodb.getgridfs.php
      * @param string $prefix [optional] The prefix for the files and chunks collections.
@@ -541,7 +541,7 @@ class MongoDB
     public function getGridFS($prefix = "fs") {}
 
     /**
-     * (PECL mongo &gt;= 0.9.0)<br/>
+     * (PECL mongo >= 0.9.0)<br/>
      * Gets this database's profiling level
      * @link https://secure.php.net/manual/en/mongodb.getprofilinglevel.php
      * @return int Returns the profiling level.
@@ -549,7 +549,7 @@ class MongoDB
     public function getProfilingLevel() {}
 
     /**
-     * (PECL mongo &gt;= 1.1.0)<br/>
+     * (PECL mongo >= 1.1.0)<br/>
      * Get slaveOkay setting for this database
      * @link https://secure.php.net/manual/en/mongodb.getslaveokay.php
      * @return bool Returns the value of slaveOkay for this instance.
@@ -557,7 +557,7 @@ class MongoDB
     public function getSlaveOkay() {}
 
     /**
-     * (PECL mongo &gt;= 0.9.0)<br/>
+     * (PECL mongo >= 0.9.0)<br/>
      * Sets this database's profiling level
      * @link https://secure.php.net/manual/en/mongodb.setprofilinglevel.php
      * @param int $level Profiling level.
@@ -566,7 +566,7 @@ class MongoDB
     public function setProfilingLevel($level) {}
 
     /**
-     * (PECL mongo &gt;= 0.9.0)<br/>
+     * (PECL mongo >= 0.9.0)<br/>
      * Drops this database
      * @link https://secure.php.net/manual/en/mongodb.drop.php
      * @return array Returns the database response.
@@ -583,7 +583,7 @@ class MongoDB
     public function repair($preserve_cloned_files = false, $backup_original_files = false) {}
 
     /**
-     * (PECL mongo &gt;= 0.9.0)<br/>
+     * (PECL mongo >= 0.9.0)<br/>
      * Gets a collection
      * @link https://secure.php.net/manual/en/mongodb.selectcollection.php
      * @param string $name <b>The collection name.</b>
@@ -595,7 +595,7 @@ class MongoDB
     public function selectCollection($name) {}
 
     /**
-     * (PECL mongo &gt;= 1.1.0)<br/>
+     * (PECL mongo >= 1.1.0)<br/>
      * Change slaveOkay setting for this database
      * @link https://php.net/manual/en/mongodb.setslaveokay.php
      * @param bool $ok [optional] <p>
@@ -643,7 +643,7 @@ class MongoDB
     public function createCollection($name, $options) {}
 
     /**
-     * (PECL mongo &gt;= 0.9.0)<br/>
+     * (PECL mongo >= 0.9.0)<br/>
      * Drops a collection
      * @link https://secure.php.net/manual/en/mongodb.dropcollection.php
      * @param MongoCollection|string $coll MongoCollection or name of collection to drop.
@@ -654,7 +654,7 @@ class MongoDB
     public function dropCollection($coll) {}
 
     /**
-     * (PECL mongo &gt;= 0.9.0)<br/>
+     * (PECL mongo >= 0.9.0)<br/>
      * Get a list of collections in this database
      * @link https://secure.php.net/manual/en/mongodb.listcollections.php
      * @param bool $includeSystemCollections [optional] <p>Include system collections.</p>
@@ -663,7 +663,7 @@ class MongoDB
     public function listCollections($includeSystemCollections = false) {}
 
     /**
-     * (PECL mongo &gt;= 0.9.0)<br/>
+     * (PECL mongo >= 0.9.0)<br/>
      * Creates a database reference
      * @link https://secure.php.net/manual/en/mongodb.createdbref.php
      * @param string $collection The collection to which the database reference will point.
@@ -681,7 +681,7 @@ class MongoDB
     public function createDBRef($collection, $document_or_id) {}
 
     /**
-     * (PECL mongo &gt;= 0.9.0)<br/>
+     * (PECL mongo >= 0.9.0)<br/>
      * Fetches the document pointed to by a database reference
      * @link https://secure.php.net/manual/en/mongodb.getdbref.php
      * @param array $ref A database reference.
@@ -690,7 +690,7 @@ class MongoDB
     public function getDBRef(array $ref) {}
 
     /**
-     * (PECL mongo &gt;= 1.5.0)<br/>
+     * (PECL mongo >= 1.5.0)<br/>
      * Get the write concern for this database
      * @link https://php.net/manual/en/mongodb.getwriteconcern.php
      * @return array <p>This function returns an array describing the write concern.
@@ -700,7 +700,7 @@ class MongoDB
     public function getWriteConcern() {}
 
     /**
-     * (PECL mongo &gt;= 0.9.3)<br/>
+     * (PECL mongo >= 0.9.3)<br/>
      * Runs JavaScript code on the database server.
      * @link https://secure.php.net/manual/en/mongodb.execute.php
      * @param MongoCode|string $code Code to execute.
@@ -729,7 +729,7 @@ class MongoDB
     public function command(array $data, $options) {}
 
     /**
-     * (PECL mongo &gt;= 0.9.5)<br/>
+     * (PECL mongo >= 0.9.5)<br/>
      * Check if there was an error on the most recent db operation performed
      * @link https://secure.php.net/manual/en/mongodb.lasterror.php
      * @return array Returns the error, if there was one.
@@ -737,7 +737,7 @@ class MongoDB
     public function lastError() {}
 
     /**
-     * (PECL mongo &gt;= 0.9.5)<br/>
+     * (PECL mongo >= 0.9.5)<br/>
      * Checks for the last error thrown during a database operation
      * @link https://secure.php.net/manual/en/mongodb.preverror.php
      * @return array Returns the error and the number of operations ago it occurred.
@@ -745,7 +745,7 @@ class MongoDB
     public function prevError() {}
 
     /**
-     * (PECL mongo &gt;= 0.9.5)<br/>
+     * (PECL mongo >= 0.9.5)<br/>
      * Clears any flagged errors on the database
      * @link https://secure.php.net/manual/en/mongodb.reseterror.php
      * @return array Returns the database response.
@@ -753,7 +753,7 @@ class MongoDB
     public function resetError() {}
 
     /**
-     * (PECL mongo &gt;= 0.9.5)<br/>
+     * (PECL mongo >= 0.9.5)<br/>
      * Creates a database error
      * @link https://secure.php.net/manual/en/mongodb.forceerror.php
      * @return bool Returns the database response.
@@ -761,7 +761,7 @@ class MongoDB
     public function forceError() {}
 
     /**
-     * (PECL mongo &gt;= 1.0.1)<br/>
+     * (PECL mongo >= 1.0.1)<br/>
      * Log in to this database
      *
      * @link https://secure.php.net/manual/en/mongodb.authenticate.php
@@ -799,7 +799,7 @@ class MongoDB
     public function authenticate($username, $password) {}
 
     /**
-     * (PECL mongo &gt;= 1.3.0)<br/>
+     * (PECL mongo >= 1.3.0)<br/>
      * Get the read preference for this database
      * @link https://secure.php.net/manual/en/mongodb.getreadpreference.php
      * @return array This function returns an array describing the read preference. The array contains the values type for the string read preference mode (corresponding to the MongoClient constants), and tagsets containing a list of all tag set criteria. If no tag sets were specified, tagsets will not be present in the array.
@@ -807,7 +807,7 @@ class MongoDB
     public function getReadPreference() {}
 
     /**
-     * (PECL mongo &gt;= 1.3.0)<br/>
+     * (PECL mongo >= 1.3.0)<br/>
      * Set the read preference for this database
      * @link https://secure.php.net/manual/en/mongodb.setreadpreference.php
      * @param string $read_preference <p>The read preference mode: <b>MongoClient::RP_PRIMARY</b>, <b>MongoClient::RP_PRIMARY_PREFERRED</b>, <b>MongoClient::RP_SECONDARY</b>, <b>MongoClient::RP_SECONDARY_PREFERRED</b>, or <b>MongoClient::RP_NEAREST</b>.</p>
@@ -817,7 +817,7 @@ class MongoDB
     public function setReadPreference($read_preference, array $tags) {}
 
     /**
-     * (PECL mongo &gt;= 1.5.0)<br/>
+     * (PECL mongo >= 1.5.0)<br/>
      * @link https://php.net/manual/en/mongodb.setwriteconcern.php
      * Set the write concern for this database
      * @param mixed $w <p>The write concern. This may be an integer denoting the number of servers required to acknowledge the write, or a string mode (e.g. "majority").</p>
@@ -893,7 +893,7 @@ class MongoCollection
     public function __get($name) {}
 
     /**
-     * (PECL mongo &gt;= 1.3.0)<br/>
+     * (PECL mongo >= 1.3.0)<br/>
      * <p>
      * The MongoDB
      * {@link https://docs.mongodb.org/manual/applications/aggregation/ aggregation framework}
@@ -915,7 +915,7 @@ class MongoCollection
     public function aggregate(array $pipeline, array $op, array $pipelineOperators) {}
 
     /**
-     * (PECL mongo &gt;= 1.5.0)<br/>
+     * (PECL mongo >= 1.5.0)<br/>
      *
      * <p>
      * With this method you can execute Aggregation Framework pipelines and retrieve the results
@@ -944,7 +944,7 @@ class MongoCollection
     public function getName() {}
 
     /**
-     * (PECL mongo &gt;= 1.1.0)<br/>
+     * (PECL mongo >= 1.1.0)<br/>
      * <p>
      * See {@link https://secure.php.net/manual/en/mongo.queries.php the query section} of this manual for
      * information on distributing reads to secondaries.
@@ -955,7 +955,7 @@ class MongoCollection
     public function getSlaveOkay() {}
 
     /**
-     * (PECL mongo &gt;= 1.1.0)<br/>
+     * (PECL mongo >= 1.1.0)<br/>
      * <p>
      * See {@link https://secure.php.net/manual/en/mongo.queries.php the query section} of this manual for
      * information on distributing reads to secondaries.
@@ -971,7 +971,7 @@ class MongoCollection
     public function setSlaveOkay($ok = true) {}
 
     /**
-     * (PECL mongo &gt;= 1.3.0)<br/>
+     * (PECL mongo >= 1.3.0)<br/>
      * @link https://secure.php.net/manual/en/mongocollection.getreadpreference.php
      * @return array This function returns an array describing the read preference. The array contains the values <em>type</em> for the string read preference mode
      * (corresponding to the {@link https://secure.php.net/manual/en/class.mongoclient.php MongoClient} constants), and <em>tagsets</em> containing a list of all tag set criteria. If no tag sets were specified, <em>tagsets</em> will not be present in the array.
@@ -979,7 +979,7 @@ class MongoCollection
     public function getReadPreference() {}
 
     /**
-     * (PECL mongo &gt;= 1.3.0)<br/>
+     * (PECL mongo >= 1.3.0)<br/>
      * @param string $read_preference <p>The read preference mode: <b>MongoClient::RP_PRIMARY</b>, <b>MongoClient::RP_PRIMARY_PREFERRED</b>, <b>MongoClient::RP_SECONDARY</b>, <b>MongoClient::RP_SECONDARY_PREFERRED</b>, or <b>MongoClient::RP_NEAREST</b>.</p>
      * @param array $tags [optional] <p>An array of zero or more tag sets, where each tag set is itself an array of criteria used to match tags on replica set members.<p>
      * @return bool Returns <b>TRUE</b> on success, or <b>FALSE</b> otherwise.
@@ -1091,7 +1091,7 @@ class MongoCollection
     public function update(array $criteria, array $newobj, array $options = []) {}
 
     /**
-     * (PECL mongo &gt;= 0.9.0)<br/>
+     * (PECL mongo >= 0.9.0)<br/>
      * Remove records from this collection
      * @link https://secure.php.net/manual/en/mongocollection.remove.php
      * @param array $criteria [optional] <p>Query criteria for the documents to delete.</p>
@@ -1316,7 +1316,7 @@ class MongoCursor implements Iterator
     public function __construct($connection, $ns, array $query = [], array $fields = []) {}
 
     /**
-     * (PECL mongo &gt;= 1.2.11)<br/>
+     * (PECL mongo >= 1.2.11)<br/>
      * Sets whether this cursor will wait for a while for a tailable cursor to return more data
      * @param bool $wait [optional] <p>If the cursor should wait for more data to become available.</p>
      * @return MongoCursor Returns this cursor.
@@ -1342,7 +1342,7 @@ class MongoCursor implements Iterator
     public function getNext() {}
 
     /**
-     * (PECL mongo &gt;= 1.3.3)<br/>
+     * (PECL mongo >= 1.3.3)<br/>
      * @link https://secure.php.net/manual/en/mongocursor.getreadpreference.php
      * @return array This function returns an array describing the read preference. The array contains the values <em>type</em> for the string
      * read preference mode (corresponding to the {@link https://secure.php.net/manual/en/class.mongoclient.php MongoClient} constants), and <em>tagsets</em> containing a list of all tag set criteria. If no tag sets were specified, <em>tagsets</em> will not be present in the array.
@@ -1359,7 +1359,7 @@ class MongoCursor implements Iterator
     public function limit($num) {}
 
     /**
-     * (PECL mongo &gt;= 1.2.0)<br/>
+     * (PECL mongo >= 1.2.0)<br/>
      * @link https://secure.php.net/manual/en/mongocursor.partial.php
      * @param bool $okay [optional] <p>If receiving partial results is okay.</p>
      * @return MongoCursor Returns this cursor.
@@ -1367,7 +1367,7 @@ class MongoCursor implements Iterator
     public function partial($okay = true) {}
 
     /**
-     * (PECL mongo &gt;= 1.2.1)<br/>
+     * (PECL mongo >= 1.2.1)<br/>
      * @link https://secure.php.net/manual/en/mongocursor.setflag.php
      * @param int $flag <p>
      * Which flag to set. You can not set flag 6 (EXHAUST) as the driver does
@@ -1381,7 +1381,7 @@ class MongoCursor implements Iterator
     public function setFlag($flag, $set = true) {}
 
     /**
-     * (PECL mongo &gt;= 1.3.3)<br/>
+     * (PECL mongo >= 1.3.3)<br/>
      * @link https://secure.php.net/manual/en/mongocursor.setreadpreference.php
      * @param string $read_preference <p>The read preference mode: MongoClient::RP_PRIMARY, MongoClient::RP_PRIMARY_PREFERRED, MongoClient::RP_SECONDARY, MongoClient::RP_SECONDARY_PREFERRED, or MongoClient::RP_NEAREST.</p>
      * @param array $tags [optional] <p>The read preference mode: MongoClient::RP_PRIMARY, MongoClient::RP_PRIMARY_PREFERRED, MongoClient::RP_SECONDARY, MongoClient::RP_SECONDARY_PREFERRED, or MongoClient::RP_NEAREST.</p>
@@ -1927,7 +1927,7 @@ class MongoId
      public $id = null;
 
     /**
-     * (PECL mongo &gt;= 0.8.0)
+     * (PECL mongo >= 0.8.0)
      * Creates a new id
      * @link https://secure.php.net/manual/en/mongoid.construct.php
      * @param MongoId|string $id [optional] A string to use as the id. Must be 24 hexadecimal characters. If an invalid string is passed to this constructor, the constructor will ignore it and create a new id value.
@@ -1935,7 +1935,7 @@ class MongoId
     public function __construct($id = null) {}
 
     /**
-     * (PECL mongo &gt;= 0.8.0)
+     * (PECL mongo >= 0.8.0)
      * Check if a value is a valid ObjectId
      * @link https://php.net/manual/en/mongoid.isvalid.php
      * @param mixed $value The value to check for validity.
@@ -1948,7 +1948,7 @@ class MongoId
     public static function isValid($value) {}
 
     /**
-     * (PECL mongo &gt;= 0.8.0)
+     * (PECL mongo >= 0.8.0)
      * Returns a hexadecimal representation of this id
      * @link https://secure.php.net/manual/en/mongoid.tostring.php
      * @return string This id.
@@ -1956,7 +1956,7 @@ class MongoId
     public function __toString() {}
 
     /**
-     * (PECL mongo &gt;= 1.0.11)
+     * (PECL mongo >= 1.0.11)
      * Gets the incremented value to create this id
      * @link https://php.net/manual/en/mongoid.getinc.php
      * @return int Returns the incremented value used to create this MongoId.
@@ -1964,7 +1964,7 @@ class MongoId
     public function getInc() {}
 
     /**
-     * (PECL mongo &gt;= 1.0.11)
+     * (PECL mongo >= 1.0.11)
      * Gets the process ID
      * @link https://php.net/manual/en/mongoid.getpid.php
      * @return int Returns the PID of the MongoId.
@@ -1972,7 +1972,7 @@ class MongoId
     public function getPID() {}
 
     /**
-     * (PECL mongo &gt;= 1.0.1)
+     * (PECL mongo >= 1.0.1)
      * Gets the number of seconds since the epoch that this id was created
      * @link https://secure.php.net/manual/en/mongoid.gettimestamp.php
      * @return int
@@ -1980,7 +1980,7 @@ class MongoId
     public function getTimestamp() {}
 
     /**
-     * (PECL mongo &gt;= 1.0.8)
+     * (PECL mongo >= 1.0.8)
      * Gets the hostname being used for this machine's ids
      * @link https://secure.php.net/manual/en/mongoid.gethostname.php
      * @return string Returns the hostname.
@@ -1988,7 +1988,7 @@ class MongoId
     public static function getHostname() {}
 
     /**
-     * (PECL mongo &gt;= 1.0.8)
+     * (PECL mongo >= 1.0.8)
      * Create a dummy MongoId
      * @link https://php.net/manual/en/mongoid.set-state.php
      * @param array $props <p>Theoretically, an array of properties used to create the new id. However, as MongoId instances have no properties, this is not used.</p>
@@ -2213,7 +2213,7 @@ class MongoWriteBatch
     public const COMMAND_DELETE = 3;
 
     /**
-     * <p>(PECL mongo &gt;= 1.5.0)</p>
+     * <p>(PECL mongo >= 1.5.0)</p>
      * MongoWriteBatch constructor.
      * @link https://php.net/manual/en/mongowritebatch.construct.php
      * @param MongoCollection $collection The {@see MongoCollection} to execute the batch on.
@@ -2241,7 +2241,7 @@ class MongoWriteBatch
     protected function __construct($collection, $batch_type, $write_options) {}
 
     /**
-     * <p>(PECL mongo &gt;= 1.5.0)</p>
+     * <p>(PECL mongo >= 1.5.0)</p>
      * Adds a write operation to a batch
      * @link https://php.net/manual/en/mongowritebatch.add.php
      * @param array $item <p>
@@ -2291,7 +2291,7 @@ class MongoWriteBatch
     public function add(array $item) {}
 
     /**
-     * <p>(PECL mongo &gt;= 1.5.0)</p>
+     * <p>(PECL mongo >= 1.5.0)</p>
      * Executes a batch of write operations
      * @link https://php.net/manual/en/mongowritebatch.execute.php
      * @param array $write_options See {@see MongoWriteBatch::__construct}
@@ -2305,7 +2305,7 @@ class MongoWriteBatch
 class MongoUpdateBatch extends MongoWriteBatch
 {
     /**
-     * <p>(PECL mongo &gt;= 1.5.0)</p>
+     * <p>(PECL mongo >= 1.5.0)</p>
      * MongoUpdateBatch constructor.
      * @link https://php.net/manual/en/mongoupdatebatch.construct.php
      * @param MongoCollection $collection <p>The MongoCollection to execute the batch on.
@@ -2334,7 +2334,7 @@ class MongoConnectionException extends MongoException {}
 class MongoGridFSException extends MongoException {}
 
 /**
- * <p>(PECL mongo &gt;= 1.5.0)</p>
+ * <p>(PECL mongo >= 1.5.0)</p>
  * @link https://php.net/manual/en/class.mongowriteconcernexception.php#class.mongowriteconcernexception
  */
 class MongoWriteConcernException extends MongoCursorException
@@ -2348,30 +2348,30 @@ class MongoWriteConcernException extends MongoCursorException
 }
 
 /**
- * <p>(PECL mongo &gt;= 1.5.0)</p>
+ * <p>(PECL mongo >= 1.5.0)</p>
  * @link https://php.net/manual/en/class.mongoexecutiontimeoutexception.php
  */
 class MongoExecutionTimeoutException extends MongoException {}
 
 /**
- * <p>(PECL mongo &gt;= 1.5.0)</p>
+ * <p>(PECL mongo >= 1.5.0)</p>
  */
 class MongoProtocolException extends MongoException {}
 
 /**
- * <p>(PECL mongo &gt;= 1.5.0)</p>
+ * <p>(PECL mongo >= 1.5.0)</p>
  * @link https://php.net/manual/en/class.mongoduplicatekeyexception.php
  */
 class MongoDuplicateKeyException extends MongoWriteConcernException {}
 
 /**
- * <p>(PECL mongo &gt;= 1.3.0)</p>
+ * <p>(PECL mongo >= 1.3.0)</p>
  * @link https://php.net/manual/en/class.mongoresultexception.php#mongoresultexception.props.document
  */
 class MongoResultException extends MongoException
 {
     /**
-     * <p>(PECL mongo &gt;= 1.3.0)</p>
+     * <p>(PECL mongo >= 1.3.0)</p>
      * Retrieve the full result document
      * https://secure.php.net/manual/en/mongoresultexception.getdocument.php
      * @return array <p>The full result document as an array, including partial data if available and additional keys.</p>
@@ -2510,7 +2510,7 @@ class MongoLog
     public const CON = 2;
 
     /**
-     * (PECL mongo &gt;= 1.3.0)<br/>
+     * (PECL mongo >= 1.3.0)<br/>
      * <p>
      * This function will set a callback function to be called for {@link https://secure.php.net/manual/en/class.mongolog.php MongoLog} events
      * instead of triggering warnings.

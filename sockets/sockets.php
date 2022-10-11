@@ -5,7 +5,7 @@ use JetBrains\PhpStorm\ArrayShape;
 use JetBrains\PhpStorm\Internal\PhpStormStubsElementAvailable;
 
 /**
- * (PHP 7 &gt;= 7.2.0)<br/>
+ * (PHP 7 >= 7.2.0)<br/>
  * Get array with contents of getaddrinfo about the given hostname.
  * @link https://www.php.net/manual/en/function.socket-addrinfo-lookup.php
  * @param string $host <p>
@@ -35,7 +35,7 @@ function socket_addrinfo_lookup(string $host, ?string $service, array $hints = [
 function socket_addrinfo_connect(AddressInfo $address): Socket|false {}
 
 /**
- * (PHP 7 &gt;= 7.2.0)<br/>
+ * (PHP 7 >= 7.2.0)<br/>
  * Create a Socket resource, and bind it to the provided AddrInfo resource.<br/>
  * The return value of this function may be used with {@see socket_listen()}.
  * @link https://www.php.net/manual/en/function.socket-addrinfo-bind.php
@@ -48,7 +48,7 @@ function socket_addrinfo_connect(AddressInfo $address): Socket|false {}
 function socket_addrinfo_bind(AddressInfo $address): Socket|false {}
 
 /**
- * (PHP 7 &gt;= 7.2.0)<br/>
+ * (PHP 7 >= 7.2.0)<br/>
  * Get information about addrinfo
  * @link https://www.php.net/manual/en/function.socket-addrinfo-explain.php
  * @param resource|AddressInfo $address <p>
@@ -707,7 +707,7 @@ function socket_recv(Socket $socket, &$data, int $length, int $flags): int|false
 function socket_send(Socket $socket, string $data, int $length, int $flags): int|false {}
 
 /**
- * (PHP 5 &gt;=5.5.0)<br/>
+ * (PHP 5 >=5.5.0)<br/>
  * Send a message
  * @link https://secure.php.net/manual/en/function.socket-sendmsg.php
  * @param resource|Socket $socket

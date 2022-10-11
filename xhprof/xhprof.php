@@ -3,7 +3,7 @@
 // Start of xhprof v.0.9.4
 
 /**
- * (PHP &gt;= 5.2.0, PECL xhprof &gt;= 0.9.0)<br/>
+ * (PHP >= 5.2.0, PECL xhprof >= 0.9.0)<br/>
  * Start xhprof profiler.
  *
  * @link https://php.net/manual/en/function.xhprof-enable.php
@@ -20,7 +20,7 @@
 function xhprof_enable($flags = 0, array $options = []) {}
 
 /**
- * (PHP &gt;= 5.2.0, PECL xhprof &gt;= 0.9.0)<br/>
+ * (PHP >= 5.2.0, PECL xhprof >= 0.9.0)<br/>
  * Stops the profiler, and returns xhprof data from the run.
  *
  * @link https://php.net/manual/en/function.xhprof-disable.php
@@ -29,7 +29,7 @@ function xhprof_enable($flags = 0, array $options = []) {}
 function xhprof_disable() {}
 
 /**
- * (PHP &gt;= 5.2.0, PECL xhprof &gt;= 0.9.0)<br/>
+ * (PHP >= 5.2.0, PECL xhprof >= 0.9.0)<br/>
  * Starts profiling in sample mode, which is a lighter weight version of {@see xhprof_enable()}. The sampling interval
  * is 0.1 seconds, and samples record the full function call stack. The main use case is when lower overhead is
  * required when doing performance monitoring and diagnostics.
@@ -40,7 +40,7 @@ function xhprof_disable() {}
 function xhprof_sample_enable() {}
 
 /**
- * (PHP &gt;= 5.2.0, PECL xhprof &gt;= 0.9.0)<br/>
+ * (PHP >= 5.2.0, PECL xhprof >= 0.9.0)<br/>
  * Stops the sample mode xhprof profiler, and returns xhprof data from the run.
  *
  * @link https://php.net/manual/en/function.xhprof-sample-disable.php

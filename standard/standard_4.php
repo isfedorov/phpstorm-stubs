@@ -1163,7 +1163,7 @@ function getmxrr(string $hostname, &$hosts, &$weights): bool {}
  * </td>
  * </tr>
  * <tr valign="top">
- * <td>A6(PHP &gt;= 5.1.0)</td>
+ * <td>A6(PHP >= 5.1.0)</td>
  * <td>
  * masklen: Length (in bits) to inherit from the target
  * specified by chain.

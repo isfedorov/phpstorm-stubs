@@ -12,21 +12,23 @@ namespace {
 namespace pcov
 {
     /**
-     * (PHP &gt;= 7.0, PECL pcov &gt;= 1.0.0)<br/>
+     * (PHP >= 7.0, PECL pcov >= 1.0.0)<br/>
      * Shall start recording coverage information
      * @return void
+     * @since 7.0
      */
     function start() {}
 
     /**
-     * (PHP &gt;= 7.0, PECL pcov &gt;= 1.0.0)<br/>
+     * (PHP >= 7.0, PECL pcov >= 1.0.0)<br/>
      * Shall stop recording coverage information
      * @return void
+     * @since 7.0
      */
     function stop() {}
 
     /**
-     * (PHP &gt;= 7.0, PECL pcov &gt;= 1.0.0)<br/>
+     * (PHP >= 7.0, PECL pcov >= 1.0.0)<br/>
      * Shall collect coverage information
      * @param int $type [optional] <p>
      * pcov\all shall collect coverage information for all files
@@ -37,31 +39,35 @@ namespace pcov
      * path of files (realpath) that should be filtered
      * </p>
      * @return array
+     * @since 7.0
      */
     function collect(int $type = all, array $filter = []) {}
 
     /**
-     * (PHP &gt;= 7.0, PECL pcov &gt;= 1.0.0)<br/>
+     * (PHP >= 7.0, PECL pcov >= 1.0.0)<br/>
      * Shall clear stored information
      * @param bool $files [optional] <p>
      * set true to clear file tables
      * Note: clearing the file tables may have surprising consequences
      * </p>
      * @return void
+     * @since 7.0
      */
     function clear(bool $files = false) {}
 
     /**
-     * (PHP &gt;= 7.0, PECL pcov &gt;= 1.0.0)<br/>
+     * (PHP >= 7.0, PECL pcov >= 1.0.0)<br/>
      * Shall return list of files waiting to be collected
      * @return array
+     * @since 7.0
      */
     function waiting() {}
 
     /**
-     * (PHP &gt;= 7.0, PECL pcov &gt;= 1.0.0)<br/>
+     * (PHP >= 7.0, PECL pcov >= 1.0.0)<br/>
      * Shall return the current size of the trace and cfg arena
      * @return int
+     * @since 7.0
      */
     function memory() {}
 }

@@ -967,7 +967,7 @@ function assert_options(int $option, mixed $value): mixed {}
  * possible operators are: &lt;,
  * lt, &lt;=,
  * le, &gt;,
- * gt, &gt;=,
+ * gt, >=,
  * ge, ==,
  * =, eq,
  * !=, &lt;&gt;,
