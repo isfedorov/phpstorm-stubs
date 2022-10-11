@@ -24,7 +24,7 @@ use JetBrains\PhpStorm\Pure;
 #[Deprecated(reason: 'Depr', replacement: 'AnotherOne', since: '7.1')]
 #[PhpStormStubsElementAvailable(from: '5.3', to: '8.1')]
 #[ExpectedValues([CONSTANT_TO_MIGRATE, 2, 3])]
-#[LanguageLevelTypeAware(['7.4' => 'int|string', '8.1' => 'bool|stdClass'], default: 'mixed')]
+#[LanguageLevelTypeAware(['7.4' => 'int|string', '8.1' => 'bool|stdClass'], default: 'resource')]
 function testFoo(
     stdClass $stdClass,
     #[LanguageLevelTypeAware(['7.4' => 'int', '8.1' => 'bool'], default: 'mixed')]
