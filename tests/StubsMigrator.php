@@ -117,9 +117,12 @@ class StubsMigrator
         $returnType = implode('|', $element->returnTypesFromSignature);;
         $typesFromAttribute = $element->returnTypesFromAttribute;
         if (!empty($typesFromAttribute)) {
-            if (array_key_exists(number_format($version, 1), $typesFromAttribute)) {
+            if (
+                array_key_exists(number_format($version, 1), $typesFromAttribute) &&
+                !in_array('resource', $typesFromAttribute[number_format($version, 1)])
+            ) {
                 $typesFromAttributes = implode('|', $typesFromAttribute[number_format($version, 1)]);
-            } else {
+            } elseif(!in_array('resource', $typesFromAttribute['default'])) {
                 $typesFromAttributes = implode('|', $typesFromAttribute['default']);
             }
             if (!empty($typesFromAttributes)) {
@@ -196,7 +199,7 @@ EOF;
         if (!empty($parentClass)) {
             $extendsBlock = " extends $parentClass";
         }
-        $parentInterfaces = implode(",", array_map(fn (PHPInterface $interface) => $interface->name, $element->interfaces));
+        $parentInterfaces = implode(",", array_map(fn(PHPInterface $interface) => $interface->name, $element->interfaces));
         if (!empty($parentInterfaces)) {
             $implementsBlock = " implements $parentInterfaces";
         }
@@ -224,7 +227,7 @@ EOF;
             if (in_array(null, $interface->parentInterfaces)) {
                 var_dump($interface->parentInterfaces);
             }
-            return implode(',', array_map(fn (PHPInterface $in) => $in->name, $interface->parentInterfaces));
+            return implode(',', array_map(fn(PHPInterface $in) => $in->name, $interface->parentInterfaces));
         }
         return "";
     }
@@ -252,9 +255,12 @@ EOF;
             $resultType = implode('|', $property->typesFromSignature);
             $typesFromAttributes = $property->typesFromAttribute;
             if (!empty($typesFromAttributes)) {
-                if (array_key_exists(number_format($version, 1), $typesFromAttributes)) {
+                if (
+                     array_key_exists(number_format($version, 1), $typesFromAttributes) &&
+                     !in_array('resource', $typesFromAttributes[number_format($version, 1)])
+                ) {
                     $typesFromAttributes = implode('|', $typesFromAttributes[number_format($version, 1)]);
-                } else {
+                } elseif(!in_array('resource', $typesFromAttributes['default'])) {
                     $typesFromAttributes = implode('|', $typesFromAttributes['default']);
                 }
                 if (!empty($typesFromAttributes)) {
@@ -318,9 +324,12 @@ EOF;
             $returnType = implode('|', $method->returnTypesFromSignature);;
             $typesFromAttribute = $method->returnTypesFromAttribute;
             if (!empty($typesFromAttribute)) {
-                if (array_key_exists(number_format($version, 1), $typesFromAttribute)) {
+                if (
+                    array_key_exists(number_format($version, 1), $typesFromAttribute) &&
+                    !in_array('resource', $typesFromAttribute[number_format($version, 1)])
+                ) {
                     $typesFromAttributes = implode('|', $typesFromAttribute[number_format($version, 1)]);
-                } else {
+                } elseif(!in_array('resource', $typesFromAttribute['default'])) {
                     $typesFromAttributes = implode('|', $typesFromAttribute['default']);
                 }
                 if (!empty($typesFromAttributes)) {
@@ -352,9 +361,12 @@ EOF;
             $resultType = implode("|", $parameter->typesFromSignature);
             $typesFromAttributes = $parameter->typesFromAttribute;
             if (!empty($typesFromAttributes)) {
-                if (array_key_exists(number_format($version, 1), $typesFromAttributes)) {
+                if (
+                    array_key_exists(number_format($version, 1), $typesFromAttributes) &&
+                    !in_array('resource', $typesFromAttributes[number_format($version, 1)])
+                ) {
                     $typesFromAttributes = implode('|', $typesFromAttributes[number_format($version, 1)]);
-                } else {
+                } elseif (!in_array('resource', $typesFromAttributes['default'])) {
                     $typesFromAttributes = implode('|', $typesFromAttributes['default']);
                 }
                 if (!empty($typesFromAttributes)) {
@@ -373,7 +385,7 @@ EOF;
             if (!empty($parameter->defaultValue)) {
                 if ($parameter->defaultValue instanceof ConstFetch) {
                     $default = (string)$parameter->defaultValue->name;
-                } elseif($parameter->defaultValue instanceof ClassConstFetch) {
+                } elseif ($parameter->defaultValue instanceof ClassConstFetch) {
                     $default = $parameter->defaultValue->class . "::" . $parameter->defaultValue->name;
                 } else {
                     $default = PHPFunction::getStringRepresentationOfDefaultParameterValue(
@@ -493,9 +505,9 @@ EOF;
             foreach ($args[0]->value->items as $item) {
                 if ($item->value instanceof UnaryMinus) {
                     $value = "-" . $item->value->expr->value;
-                } elseif($item->value instanceof String_) {
+                } elseif ($item->value instanceof String_) {
                     $value = "\"{$item->value->value}\"";
-                } elseif($item->value instanceof ClassConstFetch) {
+                } elseif ($item->value instanceof ClassConstFetch) {
                     $value = "\\{$item->value->class}::{$item->value->name}";
                 } else {
                     $value = $item->value->name ?? strval($item->value->value);
