@@ -37,7 +37,6 @@ use function json_encode;
 use function preg_match;
 use function property_exists;
 use function sizeof;
-use function str_starts_with;
 use function strval;
 
 class PHPFunction extends BasePHPElement
@@ -64,7 +63,7 @@ class PHPFunction extends BasePHPElement
      * @throws RuntimeException
      * @throws \PHPUnit\Framework\Exception
      */
-    public static function getStringRepresentationOfDefaultParameterValue(
+    public function getStringRepresentationOfDefaultParameterValue(
         $defaultValue,
         $contextClass = null,
         $preserveConstantNamesInsteadOfValues = false
@@ -88,12 +87,12 @@ class PHPFunction extends BasePHPElement
             $value = $defaultValue->value;
         } elseif ($defaultValue instanceof BitwiseOr) {
             $constants = [];
-            self::combineUnionDefaultValues($defaultValue, $constants, $contextClass, $preserveConstantNamesInsteadOfValues);
+            $this->combineUnionDefaultValues($defaultValue, $constants, $contextClass, $preserveConstantNamesInsteadOfValues);
             $value = implode('|', $constants);
         } elseif ($defaultValue instanceof UnaryMinus && property_exists($defaultValue->expr, 'value')) {
             $value = '-' . $defaultValue->expr->value;
         } elseif ($defaultValue instanceof ClassConstFetch) {
-            $value = self::getClassConstantDefaultValue($defaultValue, $contextClass, $preserveConstantNamesInsteadOfValues);
+            $value = $this->getClassConstantDefaultValue($defaultValue, $contextClass, $preserveConstantNamesInsteadOfValues);
         } elseif ($defaultValue === null) {
             $value = "null";
         } elseif (is_array($defaultValue) || $defaultValue instanceof Array_) {
@@ -110,7 +109,7 @@ class PHPFunction extends BasePHPElement
      * @param $defaultValue
      * @param array $constants
      */
-    public static function combineUnionDefaultValues(
+    public function combineUnionDefaultValues(
         $defaultValue,
         array &$result,
         $contextClass,
@@ -118,7 +117,7 @@ class PHPFunction extends BasePHPElement
     )
     {
         if ($defaultValue->left instanceof BitwiseOr) {
-            self::combineUnionDefaultValues(
+            $this->combineUnionDefaultValues(
                 $defaultValue->left,
                 $result,
                 $contextClass,
@@ -148,14 +147,14 @@ class PHPFunction extends BasePHPElement
             array_push($result, $preserveConstantNamesInsteadOfValues ? $constant->name : $constant->value);
         }
         if ($defaultValue->left instanceof ClassConstFetch) {
-            array_push($result, self::getClassConstantDefaultValue(
+            array_push($result, $this->getClassConstantDefaultValue(
                 $defaultValue->left,
                 $contextClass,
                 $preserveConstantNamesInsteadOfValues
             ));
         }
         if ($defaultValue->right instanceof ClassConstFetch) {
-            array_push($result, self::getClassConstantDefaultValue(
+            array_push($result, $this->getClassConstantDefaultValue(
                 $defaultValue->right,
                 $contextClass,
                 $preserveConstantNamesInsteadOfValues
@@ -170,7 +169,7 @@ class PHPFunction extends BasePHPElement
      * @throws RuntimeException
      * @throws \PHPUnit\Framework\Exception
      */
-    public static function getClassConstantDefaultValue(
+    public function getClassConstantDefaultValue(
         ClassConstFetch $defaultValue,
         PHPInterface|PHPClass|null $contextClass,
         $preserveConstantNamesInsteadOfValues = false
@@ -180,10 +179,10 @@ class PHPFunction extends BasePHPElement
         if ($class === 'self' && $contextClass !== null) {
             $class = $contextClass->name;
         }
-        if (PhpStormStubsSingleton::getPhpStormStubs()->getClass($class) !== null) {
-            $parentClass = PhpStormStubsSingleton::getPhpStormStubs()->getClass($class);
+        if (PhpStormStubsSingleton::getPhpStormStubs()->getClass($class, shouldSuitCurrentPhpVersion: $this->shouldSuitCurrentPhpVersion) !== null) {
+            $parentClass = PhpStormStubsSingleton::getPhpStormStubs()->getClass($class, shouldSuitCurrentPhpVersion: $this->shouldSuitCurrentPhpVersion);
         } else {
-            $parentClass = PhpStormStubsSingleton::getPhpStormStubs()->getInterface($class);
+            $parentClass = PhpStormStubsSingleton::getPhpStormStubs()->getInterface($class, shouldSuitCurrentPhpVersion: $this->shouldSuitCurrentPhpVersion);
         }
         if ($parentClass === null) {
             throw new \PHPUnit\Framework\Exception("Class $class not found in stubs");

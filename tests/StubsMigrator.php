@@ -124,6 +124,8 @@ class StubsMigrator
                 $typesFromAttributes = implode('|', $typesFromAttribute[number_format($version, 1)]);
             } elseif(!in_array('resource', $typesFromAttribute['default'])) {
                 $typesFromAttributes = implode('|', $typesFromAttribute['default']);
+            } else {
+                $typesFromAttributes = [];
             }
             if (!empty($typesFromAttributes)) {
                 $returnType = "$typesFromAttributes";
@@ -262,6 +264,8 @@ EOF;
                     $typesFromAttributes = implode('|', $typesFromAttributes[number_format($version, 1)]);
                 } elseif(!in_array('resource', $typesFromAttributes['default'])) {
                     $typesFromAttributes = implode('|', $typesFromAttributes['default']);
+                } else {
+                    $typesFromAttributes = [];
                 }
                 if (!empty($typesFromAttributes)) {
                     if (empty($resultType)) {
@@ -331,6 +335,8 @@ EOF;
                     $typesFromAttributes = implode('|', $typesFromAttribute[number_format($version, 1)]);
                 } elseif(!in_array('resource', $typesFromAttribute['default'])) {
                     $typesFromAttributes = implode('|', $typesFromAttribute['default']);
+                } else {
+                    $typesFromAttributes = [];
                 }
                 if (!empty($typesFromAttributes)) {
                     $returnType = "$typesFromAttributes";
@@ -368,6 +374,8 @@ EOF;
                     $typesFromAttributes = implode('|', $typesFromAttributes[number_format($version, 1)]);
                 } elseif (!in_array('resource', $typesFromAttributes['default'])) {
                     $typesFromAttributes = implode('|', $typesFromAttributes['default']);
+                } else {
+                    $typesFromAttributes = [];
                 }
                 if (!empty($typesFromAttributes)) {
                     if (empty($resultType)) {
@@ -388,7 +396,7 @@ EOF;
                 } elseif ($parameter->defaultValue instanceof ClassConstFetch) {
                     $default = $parameter->defaultValue->class . "::" . $parameter->defaultValue->name;
                 } else {
-                    $default = PHPFunction::getStringRepresentationOfDefaultParameterValue(
+                    $default = $element->getStringRepresentationOfDefaultParameterValue(
                         $parameter->defaultValue,
                         $parentClass,
                         preserveConstantNamesInsteadOfValues: true
