@@ -495,6 +495,8 @@ EOF;
                     $value = "-" . $item->value->expr->value;
                 } elseif($item->value instanceof String_) {
                     $value = "\"{$item->value->value}\"";
+                } elseif($item->value instanceof ClassConstFetch) {
+                    $value = "\\{$args[0]->value->class}::{$args[0]->value->name}";
                 } else {
                     $value = $item->value->name ?? strval($item->value->value);
                 }
