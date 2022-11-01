@@ -13,6 +13,7 @@ use JetBrains\PhpStorm\Internal\TentativeType;
 use JetBrains\PhpStorm\Language;
 use JetBrains\PhpStorm\NoReturn;
 use JetBrains\PhpStorm\Pure;
+use PhpParser\Node\Expr\Array_;
 use PhpParser\Node\Expr\ClassConstFetch;
 use PhpParser\Node\Expr\ConstFetch;
 use PhpParser\Node\Expr\UnaryMinus;
@@ -435,7 +436,7 @@ EOF;
                 }
                 if ($attr->name->toString() === ArrayShape::class) {
                     $result = '#[\JetBrains\PhpStorm\ArrayShape([';
-                    $arrayShape = self::getArrayShape($attr->args);
+                    $arrayShape = self::getArrayShape($attr->args[0]->value);
                     $result .= "$arrayShape])]";
                     $attributesOfNode[ArrayShape::class] = $result;
                 }
@@ -533,13 +534,17 @@ EOF;
         return trim($parameters, ', ');
     }
 
-    private static function getArrayShape($args): string
+    private static function getArrayShape($array): string
     {
         $parameters = '';
-        foreach ($args[0]->value->items as $item) {
+        foreach ($array->items as $item) {
             $parameters .= $item->key instanceof String_ ?
-                sprintf("\"%s\" => \"%s\", ", $item->key->value, $item->value->value) :
-                sprintf("%d => \"%s\", ", $item->key->value, $item->value->value);
+                ($item->value instanceof Array_ ?
+                    sprintf("\"%s\" => [%s], ", $item->key->value, self::getArrayShape($item->value)) :
+                    sprintf("\"%s\" => \"%s\", ", $item->key->value, $item->value->value)) :
+                ($item->value instanceof Array_ ?
+                    sprintf("%d => [%s], ", $item->key->value, self::getArrayShape($item->value)) :
+                    sprintf("%d => \"%s\", ", $item->key->value, $item->value->value));
         }
         return trim($parameters, ', ');
     }
