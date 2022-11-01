@@ -152,6 +152,8 @@ EOF;
         $attributes = implode("\n", self::getAttributesAsStrings($element->attributes, $version));
         if (is_string($element->value)) {
             $value = "\"$element->value\"";
+        } elseif(is_null($value)) {
+            $value = json_encode($value);
         }
         $template = <<<EOF
 
