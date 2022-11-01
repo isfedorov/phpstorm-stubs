@@ -84,7 +84,11 @@ trait PHPDocElement
     protected function collectTags(Node $node)
     {
         if ($node->getDocComment() !== null) {
-            $text = $node->getDocComment()?->getText();
+            $text = $node->getDocComment()->getText();
+        } elseif ($node instanceof Node\Const_ && $node->getAttribute('parent') !== null && $node->getAttribute('parent')->getDocComment() != null) {
+            $text = $node->getAttribute('parent')->getDocComment()->getText();
+        } else {
+            $text = "";
         }
         if (!empty($text)) {
             try {
