@@ -122,7 +122,7 @@ class StubsMigrator
                 !in_array('resource', $typesFromAttribute[number_format($version, 1)])
             ) {
                 $typesFromAttributes = implode('|', $typesFromAttribute[number_format($version, 1)]);
-            } elseif(!in_array('resource', $typesFromAttribute['default'])) {
+            } elseif (!in_array('resource', $typesFromAttribute['default'])) {
                 $typesFromAttributes = implode('|', $typesFromAttribute['default']);
             } else {
                 $typesFromAttributes = [];
@@ -191,6 +191,10 @@ EOF;
         $implementsBlock = '';
         $isFinal = "";
         $isReadonly = '';
+        $isAbstract = '';
+        if ($element->isAbstract) {
+            $isAbstract = 'abstract';
+        }
         if ($element->isFinal) {
             $isFinal = 'final';
         }
@@ -212,7 +216,7 @@ EOF;
         $template = <<<EOF
 {$element->phpdoc}
 {$attributes}
-{$isFinal} {$isReadonly} class {$element->name}{$extendsBlock}{$implementsBlock}{
+{$isAbstract} {$isFinal} {$isReadonly} class {$element->name}{$extendsBlock}{$implementsBlock}{
 $constants
 $properties
 $methods
@@ -258,11 +262,11 @@ EOF;
             $typesFromAttributes = $property->typesFromAttribute;
             if (!empty($typesFromAttributes)) {
                 if (
-                     array_key_exists(number_format($version, 1), $typesFromAttributes) &&
-                     !in_array('resource', $typesFromAttributes[number_format($version, 1)])
+                    array_key_exists(number_format($version, 1), $typesFromAttributes) &&
+                    !in_array('resource', $typesFromAttributes[number_format($version, 1)])
                 ) {
                     $typesFromAttributes = implode('|', $typesFromAttributes[number_format($version, 1)]);
-                } elseif(!in_array('resource', $typesFromAttributes['default'])) {
+                } elseif (!in_array('resource', $typesFromAttributes['default'])) {
                     $typesFromAttributes = implode('|', $typesFromAttributes['default']);
                 } else {
                     $typesFromAttributes = [];
@@ -306,17 +310,17 @@ EOF;
     private static function getAllMethodsOfClassAsString(BasePHPClass $classLike, $version): string
     {
         $methods = "";
-        if ($classLike instanceof PHPInterface) {
-            $end = ";";
-        } else {
-            $end = "{}";
-        }
         $availableMethods = array_filter($classLike->methods, function (PHPMethod $method) use ($version) {
             return in_array($version, ParserUtils::getAvailableInVersions($method));
         });
         foreach ($availableMethods as $method) {
+            $isAbstract = '';
             $isFinal = "";
             $isStatic = "";
+            $end = $classLike instanceof PHPInterface || $method->isAbstract ? ";" : "{}";
+            if ($method->isAbstract) {
+                $isAbstract = 'abstract';
+            }
             if ($method->isFinal) {
                 $isFinal = "final";
             }
@@ -333,7 +337,7 @@ EOF;
                     !in_array('resource', $typesFromAttribute[number_format($version, 1)])
                 ) {
                     $typesFromAttributes = implode('|', $typesFromAttribute[number_format($version, 1)]);
-                } elseif(!in_array('resource', $typesFromAttribute['default'])) {
+                } elseif (!in_array('resource', $typesFromAttribute['default'])) {
                     $typesFromAttributes = implode('|', $typesFromAttribute['default']);
                 } else {
                     $typesFromAttributes = [];
@@ -347,7 +351,7 @@ EOF;
             }
             $template = <<<EOF
 {$method->phpdoc}{$attributes}
-{$method->access} {$isStatic} {$isFinal} function {$method->name}($parameters)$returnType{$end}
+{$isAbstract} {$method->access} {$isStatic} {$isFinal} function {$method->name}($parameters)$returnType{$end}
 
 EOF;
             $methods .= $template . "\n";
@@ -533,9 +537,9 @@ EOF;
     {
         $parameters = '';
         foreach ($args[0]->value->items as $item) {
-            $key = $item->key->value;
-            $value = $item->value->value;
-            $parameters .= "\"$key\" => \"$value\"" . ', ';
+            $parameters .= $item->key instanceof String_ ?
+                sprintf("\"%s\" => \"%s\", ", $item->key->value, $item->value->value) :
+                sprintf("%d => \"%s\", ", $item->key->value, $item->value->value);
         }
         return trim($parameters, ', ');
     }
