@@ -78,7 +78,12 @@ class PHPFunction extends BasePHPElement
                 $value = $defaultValueName;
             }
         } elseif ($defaultValue instanceof String_ || $defaultValue instanceof DNumber) {
-            if (preg_match( '/\R/', $defaultValue->value) === 1 || preg_match( '/\\\\/', $defaultValue->value) === 1) {
+            if (
+                preg_match( '/\R/', $defaultValue->value) === 1 ||
+                preg_match( '/\t/', $defaultValue->value) === 1 ||
+                preg_match( '/\\\\/', $defaultValue->value) === 1
+            )
+            {
                 $value = json_encode($defaultValue->value);
             } else {
                 $value = "'" . $defaultValue->value . "'";
