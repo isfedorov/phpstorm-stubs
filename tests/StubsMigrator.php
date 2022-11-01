@@ -204,11 +204,16 @@ EOF;
         if ($element->isReadonly) {
             $isReadonly = 'readonly';
         }
-        $parentClass = $element->parentClass;
-        if (!empty($parentClass)) {
-            $extendsBlock = " extends $parentClass";
+        if (!empty($element->parentClass)) {
+            $parentClass = PhpStormStubsSingleton::getPhpStormStubs(false)->getClass($element->parentClass, shouldSuitCurrentPhpVersion: false);
+            if (!empty($parentClass) && in_array($version, ParserUtils::getAvailableInVersions($parentClass))) {
+                $extendsBlock = " extends $parentClass->name";
+            }
         }
-        $parentInterfaces = implode(",", array_map(fn(PHPInterface $interface) => $interface->name, $element->interfaces));
+        $interfaces = array_filter($element->interfaces, function (PHPInterface $interface) use ($version) {
+            return in_array($version, ParserUtils::getAvailableInVersions($interface));
+        });
+        $parentInterfaces = implode(",", array_map(fn(PHPInterface $interface) => $interface->name, $interfaces));
         if (!empty($parentInterfaces)) {
             $implementsBlock = " implements $parentInterfaces";
         }
