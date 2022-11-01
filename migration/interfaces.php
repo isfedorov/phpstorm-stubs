@@ -49,6 +49,7 @@ interface SomeInterface extends SomeParentInterface1
         $third = 3,
         #[ArrayShape(['first' => 'int', 'second' => 'string'])]
         $array = [],
+        string $separator = "\t",
         #[TypeContract(true: 'int', false: 'int')]
         $affectingReturn = true
     );

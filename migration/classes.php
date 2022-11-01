@@ -14,10 +14,18 @@ use JetBrains\PhpStorm\Pure;
 
 class SomeParentClass {}
 
+/**
+ * Error is the base class for all internal PHP error exceptions.
+ * @link https://php.net/manual/en/class.error.php
+ *
+ */
 #[Immutable]
 #[Deprecated]
-class SomeClass extends SomeParentClass implements \SomeInterface
+abstract class SomeClass extends SomeParentClass implements \SomeInterface
 {
+    /**
+     * CONSTANT 1
+     */
     public const CONSTANT1 = 1;
     public const CONSTANT2 = 2;
     public const CONSTANT3 = 3;
@@ -32,16 +40,17 @@ class SomeClass extends SomeParentClass implements \SomeInterface
      * Some description
      * @param \stdClass $stdClass
      * @param bool $second
-     * @param int $int
+     * @param int<0, max> $int
      * @param $array
      * @param $affectingReturn
-     * @return void
+     * @return string[]
      */
     #[Pure]
     #[Deprecated(reason: 'Depr', replacement: 'AnotherOne', since: '7.1')]
     #[PhpStormStubsElementAvailable(from: '5.3', to: '8.1')]
     #[ExpectedValues([CONSTANT_TO_MIGRATE, 2, 3])]
     #[TentativeType]
+    #[ArrayShape([0 => "string", 1 => "int", 2 => "string"])]
     public function testFoo(
         stdClass $stdClass,
         #[LanguageLevelTypeAware(['7.4' => 'int', '8.1' => 'bool'], default: 'mixed')]
@@ -52,11 +61,20 @@ class SomeClass extends SomeParentClass implements \SomeInterface
         $third = 3,
         #[ArrayShape(['first' => 'int', 'second' => 'string'])]
         $array = [],
+        string $separator = "\t",
         #[ReturnTypeContract(true: 'int', false: 'int')]
         $affectingReturn = true,
         $constants = SomeClass::CONSTANT1|SomeClass::CONSTANT2|SomeClass::CONSTANT3
     ) {}
 
+    abstract public function abstractFoo();
+
     #[NoReturn]
     public static function noReturnFoo(#[Language('PHP')] $phpScript) {}
+
+    #[TentativeType]
+    public function __wakeup(): void
+    {
+        // TODO: Implement __wakeup() method.
+    }
 }
