@@ -25,6 +25,8 @@ class PHPClass extends BasePHPClass
     public $properties = [];
     public $isReadonly = false;
 
+    public $isAbstract = false;
+
     /**
      * @param ReflectionClass $reflectionObject
      * @return static
@@ -37,6 +39,7 @@ class PHPClass extends BasePHPClass
             $this->parentClass = $parent->getName();
         }
         $this->interfaces = $reflectionObject->getInterfaceNames();
+        $this->isAbstract = $reflectionObject->isAbstract();
         $this->isFinal = $reflectionObject->isFinal();
         if (method_exists($reflectionObject, 'isReadOnly')) {
             $this->isReadonly = $reflectionObject->isReadOnly();
@@ -76,6 +79,7 @@ class PHPClass extends BasePHPClass
     public function readObjectFromStubNode($node)
     {
         $this->name = self::getFQN($node);
+        $this->isAbstract = $node->isAbstract();
         $this->isFinal = $node->isFinal();
         $this->attributes = $node->attrGroups;
         $this->availableVersionsRangeFromAttribute = self::findAvailableVersionsRangeFromAttribute($node->attrGroups);
@@ -98,7 +102,7 @@ class PHPClass extends BasePHPClass
             foreach ($properties as $property) {
                 $propertyName = $property->getVariableName();
                 assert($propertyName !== '', "@property name is empty in class $this->name");
-                $newProperty = new PHPProperty($this->name);
+                $newProperty = new PHPProperty(true, $this->name);
                 $newProperty->isStatic = false;
                 $newProperty->access = 'public';
                 $newProperty->name = $propertyName;

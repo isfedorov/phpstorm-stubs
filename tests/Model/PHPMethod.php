@@ -21,6 +21,10 @@ class PHPMethod extends PHPFunction
     /**
      * @var bool
      */
+    public $isAbstract;
+    /**
+     * @var bool
+     */
     public $isStatic;
 
     /**
@@ -45,6 +49,7 @@ class PHPMethod extends PHPFunction
     public function readObjectFromReflection($reflectionObject)
     {
         parent::readObjectFromReflection($reflectionObject);
+        $this->isAbstract = $reflectionObject->isAbstract();
         $this->isStatic = $reflectionObject->isStatic();
         $this->isFinal = $reflectionObject->isFinal();
         $this->parentName = $reflectionObject->class;
@@ -107,6 +112,7 @@ class PHPMethod extends PHPFunction
             }
         }
 
+        $this->isAbstract = $node->isAbstract();
         $this->isFinal = $node->isFinal();
         $this->isStatic = $node->isStatic();
         if ($node->isPrivate()) {
