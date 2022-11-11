@@ -33,7 +33,8 @@ abstract class SomeClass extends SomeParentClass implements \SomeInterface
 
     #[Immutable(allowedWriteScope: Immutable::CONSTRUCTOR_WRITE_SCOPE)]
     #[ExpectedValues([CONSTANT_TO_MIGRATE, 2, 3])]
-    public $property = CONSTANT_TO_MIGRATE;
+    #[LanguageLevelTypeAware(['8.1' => 'string'], default: '')]
+    public $myProperty = CONSTANT_TO_MIGRATE;
     public int $prop2 = 1;
 
     /**
