@@ -304,7 +304,13 @@ EOF;
         });
         $resulString = implode("\n", array_map(function (PHPConst $const) use ($version) {
             $attributes = implode("\n", self::getAttributesAsStrings($const->attributes, $version));
-            $value = is_string($const->value) ? "'$const->value'" : $const->value;
+            if (is_string($const->value)) {
+                $value = "'$const->value'";
+            } elseif(is_null($const->value)) {
+                $value = json_encode($const->value);
+            } else {
+                $value = $const->value;
+            }
             $result = <<<EOF
 {$const->phpdoc}
 {$attributes}
