@@ -174,7 +174,7 @@ abstract class BasePHPElement
     {
         foreach ($attrGroups as $attrGroup) {
             foreach ($attrGroup->attrs as $attr) {
-                if ($attr->name->toString() === LanguageLevelTypeAware::class) {
+                if ($attr->name->toString() === "LanguageLevelTypeAware" || $attr->name->toString() === LanguageLevelTypeAware::class) {
                     $types = [];
                     $versionTypesMap = $attr->args[0]->value->items;
                     usort($versionTypesMap, function ($item1, $item2) {
