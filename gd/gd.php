@@ -1027,8 +1027,8 @@ function imagepng(GdImage $image, $file = null, int $quality = -1, int $filters 
 /**
  * Output a WebP image to browser or file
  * @link https://php.net/manual/en/function.imagewebp.php
- * @param resource|GdImage $image
- * @param string $to [optional] <p>
+ * @param GdImage $image
+ * @param string $file [optional] <p>
  * The path to save the file to. If not set or null, the raw image stream
  * will be outputted directly.
  * </p>
@@ -1038,7 +1038,7 @@ function imagepng(GdImage $image, $file = null, int $quality = -1, int $filters 
  * @return bool true on success or false on failure.
  * @since 5.4
  */
-function imagewebp($image, $to = null, $quality = 80): bool {}
+function imagewebp(GdImage $image, $file = null, int $quality = -1): bool {}
 
 /**
  * Output image to browser or file

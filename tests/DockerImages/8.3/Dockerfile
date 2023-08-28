@@ -6,8 +6,8 @@ RUN set -eux; \
     libmcrypt-dev imap-dev php-imap enchant2 php-enchant bzip2-dev gettext-dev libxml2-dev php82-dev php-gd icu-dev \
     php-zip php-tidy php-intl libffi-dev openssl-dev php82-pear rabbitmq-c rabbitmq-c-dev librrd \
     libzip-dev rrdtool-dev gmp-dev yaml yaml-dev fann fann-dev openldap-dev librdkafka librdkafka-dev libcurl curl-dev \
-    libpng-dev gpgme gpgme-dev libpq-dev aspell-dev
-
+    libpng-dev gpgme gpgme-dev libpq-dev aspell-dev libwebp-dev
+RUN docker-php-ext-configure gd --with-webp;
 RUN docker-php-ext-install imap gmp sockets intl gd ldap bz2 mysqli bcmath calendar dba exif gettext opcache pcntl \
     pdo_mysql shmop sysvmsg sysvsem sysvshm xml soap pgsql pspell
 
