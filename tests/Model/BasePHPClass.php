@@ -6,7 +6,7 @@ use RuntimeException;
 use function array_key_exists;
 use function count;
 
-abstract class BasePHPClass extends BasePHPElement
+abstract class BasePHPClass extends PHPNamespacedElement
 {
     /**
      * @var PHPMethod[]

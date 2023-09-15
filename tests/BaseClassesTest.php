@@ -48,15 +48,8 @@ class BaseClassesTest extends AbstractBaseStubsTestCase
      */
     public function testClassesMethodsExist(PHPClass|PHPInterface|PHPEnum $class, PHPMethod $method)
     {
-        $className = $class->name;
-        if ($class instanceof PHPEnum) {
-            $stubClass = PhpStormStubsSingleton::getPhpStormStubs()->getEnum($className);
-        } elseif ($class instanceof PHPClass) {
-            $stubClass = PhpStormStubsSingleton::getPhpStormStubs()->getClass($className);
-        } else {
-            $stubClass = PhpStormStubsSingleton::getPhpStormStubs()->getInterface($className);
-        }
-        static::assertNotEmpty($stubClass->getMethod($method->name), "Missing method $className::$method->name");
+        $stubClass = $this->getClassLikeFromStubs($class);
+        static::assertNotEmpty($stubClass->getMethod($method->name), "Missing method $class->name::$method->name");
     }
 
     /**
@@ -65,18 +58,11 @@ class BaseClassesTest extends AbstractBaseStubsTestCase
      */
     public function testClassesFinalMethods(PHPClass|PHPInterface $class, PHPMethod $method)
     {
-        $className = $class->name;
-        if ($class instanceof PHPEnum) {
-            $stubMethod = PhpStormStubsSingleton::getPhpStormStubs()->getEnum($className)->getMethod($method->name);
-        } elseif ($class instanceof PHPClass) {
-            $stubMethod = PhpStormStubsSingleton::getPhpStormStubs()->getClass($className)->getMethod($method->name);
-        } else {
-            $stubMethod = PhpStormStubsSingleton::getPhpStormStubs()->getInterface($className)->getMethod($method->name);
-        }
+        $stubMethod = $this->getClassLikeFromStubs($class)->getMethod($method->name);
         static::assertEquals(
             $method->isFinal,
             $stubMethod->isFinal,
-            "Method $className::$method->name final modifier is incorrect"
+            "Method $class->name::$method->name final modifier is incorrect"
         );
     }
 
@@ -86,18 +72,11 @@ class BaseClassesTest extends AbstractBaseStubsTestCase
      */
     public function testClassesStaticMethods(PHPClass|PHPInterface $class, PHPMethod $method)
     {
-        $className = $class->name;
-        if ($class instanceof PHPEnum) {
-            $stubMethod = PhpStormStubsSingleton::getPhpStormStubs()->getEnum($className)->getMethod($method->name);
-        } elseif ($class instanceof PHPClass) {
-            $stubMethod = PhpStormStubsSingleton::getPhpStormStubs()->getClass($className)->getMethod($method->name);
-        } else {
-            $stubMethod = PhpStormStubsSingleton::getPhpStormStubs()->getInterface($className)->getMethod($method->name);
-        }
+        $stubMethod = $this->getClassLikeFromStubs($class)->getMethod($method->name);
         static::assertEquals(
             $method->isStatic,
             $stubMethod->isStatic,
-            "Method $className::$method->name static modifier is incorrect"
+            "Method $class->name::$method->name static modifier is incorrect"
         );
     }
 
@@ -107,18 +86,11 @@ class BaseClassesTest extends AbstractBaseStubsTestCase
      */
     public function testClassesMethodsVisibility(PHPClass|PHPInterface $class, PHPMethod $method)
     {
-        $className = $class->name;
-        if ($class instanceof PHPEnum) {
-            $stubMethod = PhpStormStubsSingleton::getPhpStormStubs()->getEnum($className)->getMethod($method->name);
-        } elseif ($class instanceof PHPClass) {
-            $stubMethod = PhpStormStubsSingleton::getPhpStormStubs()->getClass($className)->getMethod($method->name);
-        } else {
-            $stubMethod = PhpStormStubsSingleton::getPhpStormStubs()->getInterface($className)->getMethod($method->name);
-        }
+        $stubMethod = $this->getClassLikeFromStubs($class)->getMethod($method->name);
         static::assertEquals(
             $method->access,
             $stubMethod->access,
-            "Method $className::$method->name access modifier is incorrect"
+            "Method $class->name::$method->name access modifier is incorrect"
         );
     }
 
@@ -128,14 +100,7 @@ class BaseClassesTest extends AbstractBaseStubsTestCase
      */
     public function testClassMethodsParametersCount(PHPClass|PHPInterface $class, PHPMethod $method)
     {
-        $className = $class->name;
-        if ($class instanceof PHPEnum) {
-            $stubMethod = PhpStormStubsSingleton::getPhpStormStubs()->getEnum($className)->getMethod($method->name);
-        } elseif ($class instanceof PHPClass) {
-            $stubMethod = PhpStormStubsSingleton::getPhpStormStubs()->getClass($className)->getMethod($method->name);
-        } else {
-            $stubMethod = PhpStormStubsSingleton::getPhpStormStubs()->getInterface($className)->getMethod($method->name);
-        }
+        $stubMethod = $this->getClassLikeFromStubs($class)->getMethod($method->name);
         $filteredStubParameters = array_filter(
             $stubMethod->parameters,
             function ($parameter) {
@@ -150,7 +115,7 @@ class BaseClassesTest extends AbstractBaseStubsTestCase
         static::assertSameSize(
             $method->parameters,
             $filteredStubParameters,
-            "Parameter number mismatch for method $className::$method->name.
+            "Parameter number mismatch for method $class->name::$method->name.
                          Expected: " . self::getParameterRepresentation($method)
         );
     }
@@ -161,13 +126,12 @@ class BaseClassesTest extends AbstractBaseStubsTestCase
      */
     public function testClassInterfaces(PHPClass $class)
     {
-        $className = $class->name;
-        $stubClass = PhpStormStubsSingleton::getPhpStormStubs()->getClass($class->name, shouldSuitCurrentPhpVersion: false);
+        $stubClass = self::getClassLikeFromStubs($class, false);
         foreach ($class->interfaces as $interface) {
             static::assertContains(
                 $interface,
                 $stubClass->interfaces,
-                "Class $className doesn't implement interface $interface"
+                "Class $class->name doesn't implement interface $interface"
             );
         }
     }
@@ -257,13 +221,8 @@ class BaseClassesTest extends AbstractBaseStubsTestCase
      */
     public function testClassesExist(PHPClass|PHPInterface $class): void
     {
-        $className = $class->name;
-        if ($class instanceof PHPClass) {
-            $stubClass = PhpStormStubsSingleton::getPhpStormStubs()->getClass($className);
-        } else {
-            $stubClass = PhpStormStubsSingleton::getPhpStormStubs()->getInterface($className);
-        }
-        static::assertNotEmpty($stubClass, "Missing class $className: class $className {}");
+        $class = self::getClassLikeFromStubs($class);
+        static::assertNotEmpty($class, "Missing class $class->name: class $class->name {}");
     }
 
     /**
@@ -272,13 +231,8 @@ class BaseClassesTest extends AbstractBaseStubsTestCase
      */
     public function testClassesFinal(PHPClass|PHPInterface $class): void
     {
-        $className = $class->name;
-        if ($class instanceof PHPClass) {
-            $stubClass = PhpStormStubsSingleton::getPhpStormStubs()->getClass($className);
-        } else {
-            $stubClass = PhpStormStubsSingleton::getPhpStormStubs()->getInterface($className);
-        }
-        static::assertEquals($class->isFinal, $stubClass->isFinal, "Final modifier of class $className is incorrect");
+        $stubClass = self::getClassLikeFromStubs($class);
+        static::assertEquals($class->isFinal, $stubClass->isFinal, "Final modifier of class $class->name is incorrect");
     }
 
     /**
@@ -293,6 +247,20 @@ class BaseClassesTest extends AbstractBaseStubsTestCase
             $class->isReadonly,
             $stubClass->isReadonly,
             "Readonly modifier for class $className is incorrect"
+        );
+    }
+
+    /**
+     * @dataProvider \StubTests\TestData\Providers\Reflection\ReflectionClassesTestDataProviders::classWithNamespaceProvider
+     * @throws RuntimeException
+     */
+    public function testClassesNamespace(PHPClass|PHPInterface|PHPEnum $class): void
+    {
+        $stubClass = $this->getClassLikeFromStubs($class);
+        static::assertEquals(
+            $class->namespace,
+            $stubClass->namespace,
+            "Namespace for class $stubClass->name is incorrect"
         );
     }
 }

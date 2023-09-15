@@ -22,6 +22,7 @@ use StubTests\Model\PHPInterface;
 use StubTests\Parsers\ParserUtils;
 use StubTests\TestData\Providers\PhpStormStubsSingleton;
 use StubTests\TestData\Providers\ReflectionStubsSingleton;
+use UnitEnum;
 use function array_filter;
 use function array_pop;
 use function property_exists;
@@ -98,14 +99,14 @@ abstract class AbstractBaseStubsTestCase extends TestCase
             } elseif ((string)$defaultValue->name === 'class') {
                 $value = (string)$defaultValue->class;
             } else {
-                $constant = $parentClass->getConstant((string)$defaultValue->name);;
+                $constant = $parentClass->getConstant((string)$defaultValue->name);
                 $value = $constant->value;
             }
         } elseif ($defaultValue === null) {
             $value = "null";
         } elseif (is_array($defaultValue) || $defaultValue instanceof Array_) {
             $value = '[]';
-        } elseif ($defaultValue instanceof \UnitEnum){
+        } elseif ($defaultValue instanceof UnitEnum){
             $value = get_class($defaultValue) . "::" . $defaultValue->name;
         } else {
             $value = strval($defaultValue);
@@ -224,5 +225,18 @@ abstract class AbstractBaseStubsTestCase extends TestCase
                 $resultArray[] = $type;
             }
         });
+    }
+
+    public function getClassLikeFromStubs(PHPInterface|PHPEnum|PHPClass $class, bool $shouldSuiteCurrentPHPVersion = true): PHPInterface|PHPEnum|PHPClass|null
+    {
+        $className = $class->name;
+        if ($class instanceof PHPEnum) {
+            $stubClass = PhpStormStubsSingleton::getPhpStormStubs()->getEnum($className, $shouldSuiteCurrentPHPVersion);
+        } elseif ($class instanceof PHPClass) {
+            $stubClass = PhpStormStubsSingleton::getPhpStormStubs()->getClass($className, $shouldSuiteCurrentPHPVersion);
+        } else {
+            $stubClass = PhpStormStubsSingleton::getPhpStormStubs()->getInterface($className, $shouldSuiteCurrentPHPVersion);
+        }
+        return $stubClass;
     }
 }

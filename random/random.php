@@ -250,7 +250,7 @@ namespace Random
     /**
      * @since 8.3
      */
-    enum IntervalBoundary
+    enum IntervalBoundary implements \UnitEnum
     {
         public string $name;
 

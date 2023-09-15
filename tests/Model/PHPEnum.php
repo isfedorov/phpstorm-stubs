@@ -18,6 +18,9 @@ class PHPEnum extends PHPClass
         $this->name = $reflectionObject->getName();
         $this->interfaces = $reflectionObject->getInterfaceNames();
         $this->isFinal = $reflectionObject->isFinal();
+        if ($reflectionObject->getNamespaceName() !== null) {
+            $this->namespace = $reflectionObject->getNamespaceName();
+        }
         if (method_exists($reflectionObject, 'isReadOnly')) {
             $this->isReadonly = $reflectionObject->isReadOnly();
         }
@@ -61,6 +64,7 @@ class PHPEnum extends PHPClass
      */
     public function readObjectFromStubNode($node)
     {
+        $this->namespace = trim(str_replace((string)$node->name, "", (string)$node->namespacedName), '\\');
         $this->name = self::getFQN($node);
         $this->availableVersionsRangeFromAttribute = self::findAvailableVersionsRangeFromAttribute($node->attrGroups);
         $this->collectTags($node);

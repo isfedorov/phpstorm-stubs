@@ -19,7 +19,7 @@ use RuntimeException;
 use stdClass;
 use StubTests\Parsers\DocFactoryProvider;
 
-class PHPFunction extends BasePHPElement
+class PHPFunction extends PHPNamespacedElement
 {
     /**
      * @var bool
@@ -47,8 +47,11 @@ class PHPFunction extends BasePHPElement
      */
     public function readObjectFromReflection($reflectionObject)
     {
-        $this->name = $reflectionObject->name;
+        $this->name = $reflectionObject->getName();
         $this->isDeprecated = $reflectionObject->isDeprecated();
+        if ($reflectionObject->getNamespaceName() !== null) {
+            $this->namespace = $reflectionObject->getNamespaceName();
+        }
         foreach ($reflectionObject->getParameters() as $parameter) {
             $this->parameters[] = (new PHPParameter())->readObjectFromReflection($parameter);
         }
@@ -68,8 +71,8 @@ class PHPFunction extends BasePHPElement
      */
     public function readObjectFromStubNode($node)
     {
-        $functionName = self::getFQN($node);
-        $this->name = $functionName;
+        $this->namespace = trim(str_replace((string)$node->name, "", (string)$node->namespacedName), '\\');
+        $this->name = self::getFQN($node);
         $typesFromAttribute = self::findTypesFromAttribute($node->attrGroups);
         $this->availableVersionsRangeFromAttribute = self::findAvailableVersionsRangeFromAttribute($node->attrGroups);
         $this->returnTypesFromAttribute = $typesFromAttribute;

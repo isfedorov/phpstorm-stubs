@@ -32,6 +32,9 @@ class PHPClass extends BasePHPClass
     public function readObjectFromReflection($reflectionObject)
     {
         $this->name = $reflectionObject->getName();
+        if ($reflectionObject->getNamespaceName() !== null) {
+            $this->namespace = $reflectionObject->getNamespaceName();
+        }
         $parent = $reflectionObject->getParentClass();
         if ($parent !== false) {
             $this->parentClass = $parent->getName();
@@ -75,6 +78,7 @@ class PHPClass extends BasePHPClass
      */
     public function readObjectFromStubNode($node)
     {
+        $this->namespace = trim(str_replace((string)$node->name, "", (string)$node->namespacedName), '\\');
         $this->name = self::getFQN($node);
         $this->isFinal = $node->isFinal();
         $this->availableVersionsRangeFromAttribute = self::findAvailableVersionsRangeFromAttribute($node->attrGroups);

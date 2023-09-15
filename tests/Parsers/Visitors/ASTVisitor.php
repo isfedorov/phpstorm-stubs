@@ -8,8 +8,8 @@ use PhpParser\Node;
 use PhpParser\Node\Const_;
 use PhpParser\Node\Expr\FuncCall;
 use PhpParser\Node\Stmt\Class_;
-use PhpParser\Node\Stmt\Enum_;
 use PhpParser\Node\Stmt\ClassMethod;
+use PhpParser\Node\Stmt\Enum_;
 use PhpParser\Node\Stmt\Function_;
 use PhpParser\Node\Stmt\Interface_;
 use PhpParser\NodeVisitorAbstract;
@@ -87,8 +87,7 @@ class ASTVisitor extends NodeVisitorAbstract
             }
             if ($this->stubs->getEnum($method->parentName, $this->sourceFilePath, false) !== null) {
                 $this->stubs->getEnum($method->parentName, $this->sourceFilePath, false)->addMethod($method);
-            }
-            elseif ($this->stubs->getClass($method->parentName, $this->sourceFilePath, false) !== null) {
+            } elseif ($this->stubs->getClass($method->parentName, $this->sourceFilePath, false) !== null) {
                 $this->stubs->getClass($method->parentName, $this->sourceFilePath, false)->addMethod($method);
             } elseif ($this->stubs->getInterface($method->parentName, $this->sourceFilePath, false) !== null) {
                 $this->stubs->getInterface($method->parentName, $this->sourceFilePath, false)->addMethod($method);
