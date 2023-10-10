@@ -31,13 +31,14 @@ class PHPClass extends BasePHPClass
      */
     public function readObjectFromReflection($reflectionObject)
     {
-        $this->name = $reflectionObject->getName();
-        if ($reflectionObject->getNamespaceName() !== null) {
+        $this->name = $reflectionObject->getShortName();
+        if (!empty($reflectionObject->getNamespaceName())) {
             $this->namespace = $reflectionObject->getNamespaceName();
         }
+        $this->id = "$this->namespace\\$this->name";
         $parent = $reflectionObject->getParentClass();
         if ($parent !== false) {
-            $this->parentClass = $parent->getName();
+            $this->parentClass = $parent->getShortName();
         }
         $this->interfaces = $reflectionObject->getInterfaceNames();
         $this->isFinal = $reflectionObject->isFinal();
@@ -79,16 +80,13 @@ class PHPClass extends BasePHPClass
     public function readObjectFromStubNode($node)
     {
         $this->namespace = trim(str_replace((string)$node->name, "", (string)$node->namespacedName), '\\');
-        $this->name = self::getFQN($node);
+        $this->name = self::getShortName($node);
+        $this->id = ltrim("$this->namespace\\$this->name", '\\');
         $this->isFinal = $node->isFinal();
         $this->availableVersionsRangeFromAttribute = self::findAvailableVersionsRangeFromAttribute($node->attrGroups);
         $this->collectTags($node);
         if (!empty($node->extends)) {
-            $this->parentClass = '';
-            foreach ($node->extends->parts as $part) {
-                $this->parentClass .= "\\$part";
-            }
-            $this->parentClass = ltrim($this->parentClass, "\\");
+            $this->parentClass = self::getShortName($node->extends);
         }
         if (!empty($node->implements)) {
             foreach ($node->implements as $interfaceObject) {

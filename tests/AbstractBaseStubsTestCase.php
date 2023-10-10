@@ -231,11 +231,14 @@ abstract class AbstractBaseStubsTestCase extends TestCase
     {
         $className = $class->name;
         if ($class instanceof PHPEnum) {
-            $stubClass = PhpStormStubsSingleton::getPhpStormStubs()->getEnum($className, $shouldSuiteCurrentPHPVersion);
+            $stubClass = PhpStormStubsSingleton::getPhpStormStubs()->getEnum(
+                "$class->namespace\\$className",
+                $shouldSuiteCurrentPHPVersion
+            );
         } elseif ($class instanceof PHPClass) {
-            $stubClass = PhpStormStubsSingleton::getPhpStormStubs()->getClass($className, $shouldSuiteCurrentPHPVersion);
+            $stubClass = PhpStormStubsSingleton::getPhpStormStubs()->getClass("$class->namespace\\$className", $shouldSuiteCurrentPHPVersion);
         } else {
-            $stubClass = PhpStormStubsSingleton::getPhpStormStubs()->getInterface($className, $shouldSuiteCurrentPHPVersion);
+            $stubClass = PhpStormStubsSingleton::getPhpStormStubs()->getInterface("$class->namespace\\$className", $shouldSuiteCurrentPHPVersion);
         }
         return $stubClass;
     }

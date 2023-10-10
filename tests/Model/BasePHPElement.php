@@ -32,6 +32,7 @@ abstract class BasePHPElement
 
     /** @var string|null */
     public $name;
+    public $id;
     public $stubBelongsToCore = false;
 
     /** @var Exception|null */
@@ -84,6 +85,34 @@ abstract class BasePHPElement
             }
         }
         return rtrim($fqn, "\\");
+    }
+
+    /**
+     * @param Node $node
+     * @return string
+     */
+    public static function getShortName(Node $node)
+    {
+        $shortName = '';
+        if (!property_exists($node, 'namespacedName') || $node->namespacedName === null) {
+            if (property_exists($node, 'name')) {
+                $shortName = $node->name->parts[0];
+            } else {
+                foreach ($node->parts as $part) {
+                    $shortName .= "$part\\";
+                }
+            }
+        } else {
+            /** @var string $part */
+            foreach ($node->namespacedName->parts as $part) {
+                $shortName .= "$part\\";
+            }
+        }
+        $fqn = array_filter(explode("\\", $shortName), function ($element) {
+            return !empty($element);
+        });
+        $shortName = array_pop($fqn);
+        return rtrim($shortName, "\\");
     }
 
     /**

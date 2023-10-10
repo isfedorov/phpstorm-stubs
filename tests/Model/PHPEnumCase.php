@@ -37,7 +37,7 @@ class PHPEnumCase extends PHPConst
         if (property_exists($parentNode, 'attrGroups')) {
             $this->availableVersionsRangeFromAttribute = self::findAvailableVersionsRangeFromAttribute($parentNode->attrGroups);
         }
-        $this->parentName = self::getFQN($parentNode->namespacedName);
+        $this->parentName = self::getShortName($parentNode->namespacedName);
         return $this;
     }
 

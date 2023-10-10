@@ -15,12 +15,13 @@ class PHPEnum extends PHPClass
      */
     public function readObjectFromReflection($reflectionObject)
     {
-        $this->name = $reflectionObject->getName();
+        $this->name = $reflectionObject->getShortName();
         $this->interfaces = $reflectionObject->getInterfaceNames();
         $this->isFinal = $reflectionObject->isFinal();
-        if ($reflectionObject->getNamespaceName() !== null) {
+        if (!empty($reflectionObject->getNamespaceName())) {
             $this->namespace = $reflectionObject->getNamespaceName();
         }
+        $this->id = "$this->namespace\\$this->name";
         if (method_exists($reflectionObject, 'isReadOnly')) {
             $this->isReadonly = $reflectionObject->isReadOnly();
         }
@@ -65,15 +66,12 @@ class PHPEnum extends PHPClass
     public function readObjectFromStubNode($node)
     {
         $this->namespace = trim(str_replace((string)$node->name, "", (string)$node->namespacedName), '\\');
-        $this->name = self::getFQN($node);
+        $this->name = self::getShortName($node);
+        $this->id = "$this->namespace\\$this->name";
         $this->availableVersionsRangeFromAttribute = self::findAvailableVersionsRangeFromAttribute($node->attrGroups);
         $this->collectTags($node);
         if (!empty($node->extends)) {
-            $this->parentClass = '';
-            foreach ($node->extends->parts as $part) {
-                $this->parentClass .= "\\$part";
-            }
-            $this->parentClass = ltrim($this->parentClass, "\\");
+            $this->parentClass = self::getShortName($node->extends);
         }
         if (!empty($node->implements)) {
             foreach ($node->implements as $interfaceObject) {

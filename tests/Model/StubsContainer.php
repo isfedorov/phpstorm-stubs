@@ -137,18 +137,18 @@ class StubsContainer
 
     public function addFunction(PHPFunction $function)
     {
-        if (isset($function->name)) {
-            if (array_key_exists($function->name, $this->functions)) {
+        if (isset($function->id)) {
+            if (array_key_exists($function->id, $this->functions)) {
                 $amount = count(array_filter(
                     $this->functions,
                     function (PHPFunction $nextFunction) use ($function) {
-                        return $nextFunction->name === $function->name;
+                        return $nextFunction->id === $function->id;
                     }
                 ));
                 $function->duplicateOtherElement = true;
-                $this->functions[$function->name . '_duplicated_' . $amount] = $function;
+                $this->functions[$function->id . '_duplicated_' . $amount] = $function;
             } else {
-                $this->functions[$function->name] = $function;
+                $this->functions[$function->id] = $function;
             }
         }
     }
@@ -165,13 +165,16 @@ class StubsContainer
      * @param string $name
      * @param string|null $sourceFilePath
      * @param bool $shouldSuitCurrentPhpVersion
+     * @param true $useFQNAsName
      * @return PHPClass|null
      * @throws RuntimeException
      */
-    public function getClass($name, $sourceFilePath = null, $shouldSuitCurrentPhpVersion = true)
+    public function getClass($name, $sourceFilePath = null, $shouldSuitCurrentPhpVersion = true, $useFQNAsName = true)
     {
-        $classes = array_filter($this->classes, function (PHPClass $class) use ($shouldSuitCurrentPhpVersion, $name) {
-            return $class->name === $name &&
+        $classes = array_filter($this->classes, function (PHPClass $class) use ($useFQNAsName, $shouldSuitCurrentPhpVersion, $name) {
+            return $useFQNAsName ? $class->id === $name &&
+                (!$shouldSuitCurrentPhpVersion || BasePHPElement::entitySuitsCurrentPhpVersion($class)) :
+                $class->name === $name &&
                 (!$shouldSuitCurrentPhpVersion || BasePHPElement::entitySuitsCurrentPhpVersion($class));
         });
         if (count($classes) === 1) {
@@ -197,13 +200,16 @@ class StubsContainer
      * @param string $name
      * @param string|null $sourceFilePath
      * @param bool $shouldSuitCurrentPhpVersion
+     * @param true $useFQNAsName
      * @return PHPEnum|null
      * @throws RuntimeException
      */
-    public function getEnum($name, $sourceFilePath = null, $shouldSuitCurrentPhpVersion = true)
+    public function getEnum($name, $sourceFilePath = null, $shouldSuitCurrentPhpVersion = true, $useFQNAsName = true)
     {
-        $enums = array_filter($this->enums, function (PHPEnum $enum) use ($shouldSuitCurrentPhpVersion, $name) {
-            return $enum->name === $name &&
+        $enums = array_filter($this->enums, function (PHPEnum $enum) use ($shouldSuitCurrentPhpVersion, $name, $useFQNAsName) {
+            return $useFQNAsName ? $enum->id === $name &&
+                (!$shouldSuitCurrentPhpVersion || BasePHPElement::entitySuitsCurrentPhpVersion($enum)) :
+                $enum->name === $name &&
                 (!$shouldSuitCurrentPhpVersion || BasePHPElement::entitySuitsCurrentPhpVersion($enum));
         });
         if (count($enums) === 1) {
@@ -237,17 +243,17 @@ class StubsContainer
 
     public function addClass(PHPClass $class)
     {
-        if (isset($class->name)) {
-            if (array_key_exists($class->name, $this->classes)) {
+        if (isset($class->id)) {
+            if (array_key_exists($class->id, $this->classes)) {
                 $amount = count(array_filter(
                     $this->classes,
                     function (PHPClass $nextClass) use ($class) {
-                        return $nextClass->name === $class->name;
+                        return $nextClass->id === $class->id;
                     }
                 ));
-                $this->classes[$class->name . '_duplicated_' . $amount] = $class;
+                $this->classes[$class->id . '_duplicated_' . $amount] = $class;
             } else {
-                $this->classes[$class->name] = $class;
+                $this->classes[$class->id] = $class;
             }
         }
     }
@@ -256,13 +262,16 @@ class StubsContainer
      * @param string $name
      * @param string|null $sourceFilePath
      * @param bool $shouldSuitCurrentPhpVersion
+     * @param true $useFQNAsName
      * @return PHPInterface|null
      * @throws RuntimeException
      */
-    public function getInterface($name, $sourceFilePath = null, $shouldSuitCurrentPhpVersion = true)
+    public function getInterface($name, $sourceFilePath = null, $shouldSuitCurrentPhpVersion = true, $useFQNAsName = true)
     {
-        $interfaces = array_filter($this->interfaces, function (PHPInterface $interface) use ($shouldSuitCurrentPhpVersion, $name) {
-            return $interface->name === $name &&
+        $interfaces = array_filter($this->interfaces, function (PHPInterface $interface) use ($useFQNAsName, $shouldSuitCurrentPhpVersion, $name) {
+            return $useFQNAsName ? $interface->id === $name &&
+                (!$shouldSuitCurrentPhpVersion || BasePHPElement::entitySuitsCurrentPhpVersion($interface)) :
+                $interface->name === $name &&
                 (!$shouldSuitCurrentPhpVersion || BasePHPElement::entitySuitsCurrentPhpVersion($interface));
         });
         if (count($interfaces) === 1) {
@@ -312,34 +321,34 @@ class StubsContainer
 
     public function addInterface(PHPInterface $interface)
     {
-        if (isset($interface->name)) {
-            if (array_key_exists($interface->name, $this->interfaces)) {
+        if (isset($interface->id)) {
+            if (array_key_exists($interface->id, $this->interfaces)) {
                 $amount = count(array_filter(
                     $this->interfaces,
                     function (PHPInterface $nextInterface) use ($interface) {
-                        return $nextInterface->name === $interface->name;
+                        return $nextInterface->id === $interface->id;
                     }
                 ));
-                $this->interfaces[$interface->name . '_duplicated_' . $amount] = $interface;
+                $this->interfaces[$interface->id . '_duplicated_' . $amount] = $interface;
             } else {
-                $this->interfaces[$interface->name] = $interface;
+                $this->interfaces[$interface->id] = $interface;
             }
         }
     }
 
     public function addEnum(PHPEnum $enum)
     {
-        if (isset($enum->name)) {
-            if (array_key_exists($enum->name, $this->enums)) {
+        if (isset($enum->id)) {
+            if (array_key_exists($enum->id, $this->enums)) {
                 $amount = count(array_filter(
                     $this->enums,
                     function (PHPEnum $nextEnum) use ($enum) {
-                        return $nextEnum->name === $enum->name;
+                        return $nextEnum->id === $enum->id;
                     }
                 ));
-                $this->enums[$enum->name . '_duplicated_' . $amount] = $enum;
+                $this->enums[$enum->id . '_duplicated_' . $amount] = $enum;
             } else {
-                $this->enums[$enum->name] = $enum;
+                $this->enums[$enum->id] = $enum;
             }
         }
     }
