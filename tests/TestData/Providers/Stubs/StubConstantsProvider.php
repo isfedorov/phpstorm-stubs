@@ -11,10 +11,11 @@ class StubConstantsProvider
     public static function classConstantProvider(): ?Generator
     {
         $classesAndInterfaces = PhpStormStubsSingleton::getPhpStormStubs()->getClasses() +
-            PhpStormStubsSingleton::getPhpStormStubs()->getInterfaces();
+            PhpStormStubsSingleton::getPhpStormStubs()->getInterfaces() +
+            PhpStormStubsSingleton::getPhpStormStubs()->getEnums();
         foreach ($classesAndInterfaces as $class) {
             foreach ($class->constants as $constant) {
-                yield "constant $class->sourceFilePath/$class->name::$constant->name" => [$class, $constant];
+                yield "constant $class->sourceFilePath/$class->id::$constant->name" => [$class, $constant];
             }
         }
     }

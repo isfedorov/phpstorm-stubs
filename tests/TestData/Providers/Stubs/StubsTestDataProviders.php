@@ -23,9 +23,10 @@ class StubsTestDataProviders
     public static function allClassesProvider(): ?Generator
     {
         $allClassesAndInterfaces = PhpStormStubsSingleton::getPhpStormStubs()->getClasses() +
-            PhpStormStubsSingleton::getPhpStormStubs()->getInterfaces();
+            PhpStormStubsSingleton::getPhpStormStubs()->getInterfaces() +
+            PhpStormStubsSingleton::getPhpStormStubs()->getEnums();
         foreach ($allClassesAndInterfaces as $class) {
-            yield "class $class->sourceFilePath/$class->name" => [$class];
+            yield "class $class->sourceFilePath/$class->id" => [$class];
         }
     }
 
