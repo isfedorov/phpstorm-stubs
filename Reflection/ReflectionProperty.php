@@ -405,4 +405,14 @@ class ReflectionProperty implements Reflector
      * @since 8.4
      */
     public function isProtectedSet(): bool {}
+
+    /**
+     * @since 8.4
+     */
+    public function setRawValueWithoutLazyInitialization(object $object, mixed $value): void {}
+
+    /**
+     * @since 8.4
+     */
+    public function skipLazyInitialization(object $object): void {}
 }

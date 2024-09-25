@@ -4363,3 +4363,8 @@ define('CURL_PREREQFUNC_ABORT', 1);
  * @since 8.4
  */
 define('CURLOPT_TCP_KEEPCNT', 326);
+
+/**
+ * @since 8.4
+ */
+define('CURLOPT_SERVER_RESPONSE_TIMEOUT', 112);
