@@ -1,0 +1,3 @@
+[submodule "phpstorm-attributes"]
+	path = meta/attributes/public
+	url = git@github.com:JetBrains/phpstorm-attributes.git
