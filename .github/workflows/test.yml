@@ -1,0 +1,16 @@
+name: Say Hello
+
+on: [push, pull_request, workflow_dispatch]
+
+jobs:
+  greet:
+    runs-on: ubuntu-latest
+    name: Say Hello
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Greet
+        uses: ./.github/actions  # This assumes that action.yml is in the root directory of the repository
+        with:
+          who-to-greet: 'Your Name'  # You can change 'Your Name' to any name you want to greet
