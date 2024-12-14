@@ -21,3 +21,6 @@ vendor
 .phpunit.result.cache
 
 ReflectionData.json
+/.idea/dictionaries/project.xml
+/.idea/laravel-idea.xml
+/.output.txt

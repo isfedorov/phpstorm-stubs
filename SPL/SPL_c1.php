@@ -347,6 +347,37 @@ class DirectoryIterator extends SplFileInfo implements SeekableIterator
     public function __construct(#[LanguageLevelTypeAware(['8.0' => 'string'], default: '')] $directory) {}
 
     /**
+     * Gets the filename
+     * @link https://www.php.net/manual/en/directoryiterator.getfilename.php
+     * @return string The filename.
+     * @since 5.1.2
+     */
+    #[TentativeType]
+    public function getFilename(): string {}
+
+    /**
+     * Gets the file extension
+     * @link https://www.php.net/manual/en/directoryiterator.getextension.php
+     * @return string a string containing the file extension, or an
+     * empty string if the file has no extension.
+     * @since 5.3.6
+     */
+    #[TentativeType]
+    public function getExtension(): string {}
+
+    /**
+     * Gets the base name of the file
+     * @link https://www.php.net/manual/en/directoryiterator.getbasename.php
+     * @param string $suffix [optional] <p>
+     * Optional suffix to omit from the base name returned.
+     * </p>
+     * @return string the base name without path information.
+     * @since 5.2.2
+     */
+    #[TentativeType]
+    public function getBasename(#[LanguageLevelTypeAware(['8.0' => 'string'], default: '')] $suffix = ''): string {}
+
+    /**
      * Determine if current DirectoryIterator item is '.' or '..'
      * @link https://php.net/manual/en/directoryiterator.isdot.php
      * @return bool true if the entry is . or ..,
@@ -405,6 +436,15 @@ class DirectoryIterator extends SplFileInfo implements SeekableIterator
      */
     #[TentativeType]
     public function seek(#[LanguageLevelTypeAware(['8.0' => 'int'], default: '')] $offset): void {}
+
+    /**
+     * Returns the path to the file as a string
+     * @link https://www.php.net/manual/en/directoryiterator.tostring.php
+     * @return string the path to the file.
+     * @since 5.1.2
+     */
+    #[LanguageLevelTypeAware(['8.0' => 'string'], default: '')]
+    public function __toString() {}
 }
 
 /**

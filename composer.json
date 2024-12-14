@@ -14,17 +14,20 @@
     "inspection"
   ],
   "require-dev": {
-    "nikic/php-parser": "v5.3.1",
-    "phpdocumentor/reflection-docblock": "5.6.0",
-    "phpunit/phpunit": "11.4.3",
-    "friendsofphp/php-cs-fixer": "v3.64.0"
+    "nikic/php-parser": "^v5.3.1",
+    "phpdocumentor/reflection-docblock": "^5.6.0",
+    "phpunit/phpunit": "^11.4.3",
+    "friendsofphp/php-cs-fixer": "^v3.64.0",
+    "laravel/pint": "v1.25.1"
   },
   "autoload": {
     "files": ["PhpStormStubsMap.php"]
   },
   "autoload-dev": {
     "psr-4": {
-      "StubTests\\": "tests/"
+      "StubTests\\": "tests",
+      "StubTests\\Sources\\": "tests/testSrc",
+      "StubTests\\Unit\\": "tests/Unit"
     }
   },
   "scripts": {

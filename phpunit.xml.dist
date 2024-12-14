@@ -1,5 +1,25 @@
-<phpunit bootstrap="vendor/autoload.php" failOnWarning="false">
+<phpunit bootstrap="vendor/autoload.php" failOnWarning="true">
+    <coverage includeUncoveredFiles="true" pathCoverage="true" ignoreDeprecatedCodeUnits="true"
+              disableCodeCoverageIgnore="true">
+        <report>
+            <clover outputFile="coverage/clover.xml"/>
+            <cobertura outputFile="coverage/cobertura.xml"/>
+            <crap4j outputFile="coverage/crap4j.xml" threshold="50"/>
+            <html outputDirectory="coverage" lowUpperBound="50" highLowerBound="90"/>
+            <php outputFile="coverage/coverage.php"/>
+            <text outputFile="coverage/coverage.txt" showUncoveredFiles="false" showOnlySummary="true"/>
+            <xml outputDirectory="coverage"/>
+        </report>
+    </coverage>
+    <source>
+        <include>
+            <directory suffix=".php">tests/testSrc</directory>
+        </include>
+    </source>
     <testsuites>
+        <testsuite name="unit">
+            <directory>tests/Unit</directory>
+        </testsuite>
         <testsuite name="PHP_5.6">
             <file>tests/BaseClassesTest.php</file>
             <file>tests/BaseInterfacesTest.php</file>

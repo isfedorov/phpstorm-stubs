@@ -1342,6 +1342,12 @@ class RecursiveRegexIterator extends RegexIterator implements RecursiveIterator
     ) {}
 
     /**
+     * @inheritDoc
+     */
+    #[TentativeType]
+    public function accept(): bool {}
+
+    /**
      * Returns whether an iterator can be obtained for the current entry.
      * @link https://php.net/manual/en/recursiveregexiterator.haschildren.php
      * @return bool true if an iterator can be obtained for the current entry, otherwise returns false.
