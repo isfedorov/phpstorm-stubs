@@ -26,29 +26,15 @@ final class BracesOneLineFixer implements FixerInterface
 
     public function fix(SplFileInfo $file, Tokens $tokens): void
     {
-        /**
-         * @var Token $token
-         */
         foreach ($tokens as $index => $token) {
             if (!$token->equals('{')) {
                 continue;
             }
-            $braceStartIndex = $index;
-            $braceEndIndex = $tokens->getNextMeaningfulToken($index);
+            $openBraceIndex = $index;
+            $potentialClosingBraceIndex = $tokens->getNextMeaningfulToken($index);
 
-            $token = $tokens[$braceEndIndex];
-            if ($token->equals('}')) {
-                $beforeBraceIndex = $tokens->getPrevNonWhitespace($braceStartIndex);
-                for ($i = $beforeBraceIndex + 1; $i <= $braceEndIndex; $i++) {
-                    $tokens->clearAt($i);
-                }
-                if ($braceEndIndex - $beforeBraceIndex > 2) {
-                    $tokens[$beforeBraceIndex + 1] = new Token(' ');
-                } else {
-                    $tokens->insertAt($beforeBraceIndex + 1, new Token(' '));
-                }
-                $tokens[$beforeBraceIndex + 2] = new Token('{');
-                $tokens[$beforeBraceIndex + 3] = new Token('}');
+            if ($potentialClosingBraceIndex !== null && $tokens[$potentialClosingBraceIndex]->equals('}')) {
+                $this->convertBracesToOneLine($tokens, $openBraceIndex, $potentialClosingBraceIndex);
             }
         }
     }
@@ -83,5 +69,23 @@ PHP
                 ),
             ]
         );
+    }
+
+    private function convertBracesToOneLine(Tokens $tokens, int $openBraceIndex, int $closingBraceIndex): void
+    {
+        $beforeBraceSymbolIndex = $tokens->getPrevNonWhitespace($openBraceIndex);
+        if ($beforeBraceSymbolIndex !== null) {
+            $this->removeEmptyBlockWithBraces($beforeBraceSymbolIndex, $closingBraceIndex, $tokens);
+        }
+        $tokens->insertAt($beforeBraceSymbolIndex + 1, new Token(' '));
+        $tokens->insertAt($beforeBraceSymbolIndex + 2, new Token('{'));
+        $tokens->insertAt($beforeBraceSymbolIndex + 3, new Token('}'));
+    }
+
+    private function removeEmptyBlockWithBraces(int $beforeBraceIndex, int $closingBraceIndex, Tokens $tokens): void
+    {
+        for ($i = $beforeBraceIndex + 1; $i <= $closingBraceIndex; $i++) {
+            $tokens->clearAt($i);
+        }
     }
 }
