@@ -2,41 +2,29 @@
 
 namespace StubTests\Model\Tags;
 
-use phpDocumentor\Reflection\DocBlock\Description;
 use phpDocumentor\Reflection\DocBlock\DescriptionFactory;
 use phpDocumentor\Reflection\DocBlock\Tags\BaseTag;
 use phpDocumentor\Reflection\Types\Context;
 
 class RemovedTag extends BaseTag
 {
-    const string REGEX_VECTOR = '(?:\d\S*|[^\s\:]+\:\s*\$[^\$]+\$)';
     private ?string $version;
 
-    public function __construct(?string $version = null, ?Description $description = null)
+    public function __construct(RemovedTagAttributes $attributes)
     {
-        $this->version = $version;
-        $this->name = 'removed';
-        $this->description = $description;
+        $this->version = $attributes->version;
+        $this->name = $attributes->name;
+        $this->description = $attributes->description;
     }
 
     public static function create(?string $body, ?DescriptionFactory $descriptionFactory = null, ?Context $context = null): RemovedTag
     {
-        if (empty($body)) {
-            return new self();
+        if ($descriptionFactory !== null && !empty($tagBody)) {
+            $removedTagParser = new RemovedTagParser();
+            $removedTagParser->parse($tagBody);
+            return self::createTagWithNotEmptyBody($removedTagParser, $tagBody, $descriptionFactory, $context);
         }
-
-        $matches = [];
-        if ($descriptionFactory !== null) {
-            if (!preg_match('/^(' . self::REGEX_VECTOR . ')\s*(.+)?$/sux', $body, $matches)) {
-                return new self(null, $descriptionFactory->create($body, $context));
-            }
-
-            return new self(
-                $matches[1],
-                $descriptionFactory->create($matches[2] ?? '', $context)
-            );
-        }
-        return new self();
+        return new self(new RemovedTagAttributes());
     }
 
     public function getVersion(): ?string
@@ -47,5 +35,16 @@ class RemovedTag extends BaseTag
     public function __toString(): string
     {
         return "PhpStorm internal '@removed' tag";
+    }
+
+    private static function createTagWithNotEmptyBody(RemovedTagParser $removedTagParser, string $body, DescriptionFactory $descriptionFactory, ?Context $context): RemovedTag
+    {
+        if ($removedTagParser->tagDoesNotContainVersion()) {
+            $tagAttributes = new RemovedTagAttributes(description: $descriptionFactory->create($body, $context));
+
+        } else {
+            $tagAttributes = new RemovedTagAttributes($removedTagParser->version, $descriptionFactory->create($removedTagParser->description, $context));
+        }
+        return new self($tagAttributes);
     }
 }
