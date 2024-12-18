@@ -10,7 +10,9 @@ use phpDocumentor\Reflection\DocBlock\Tags\See;
 use phpDocumentor\Reflection\DocBlock\Tags\Since;
 use PHPUnit\Framework\Attributes\DataProviderExternal;
 use StubTests\Model\BasePHPElement;
-use StubTests\Model\PHPDocElement;
+use StubTests\Model\PHPDocumentable;
+use StubTests\Model\Predicats\ConstantsFilterPredicateProvider;
+use StubTests\Model\Predicats\MethodsFilterPredicateProvider;
 use StubTests\Model\Tags\RemovedTag;
 use StubTests\Parsers\ParserUtils;
 use StubTests\TestData\Providers\PhpStormStubsSingleton;
@@ -34,7 +36,7 @@ class StubsPhpDocTest extends AbstractBaseStubsTestCase
             self::markTestSkipped($this->emptyDataSetMessage);
         }
         $class = PhpStormStubsSingleton::getPhpStormStubs()->getClassByHash($classHash);
-        $constant = $class->getConstant($constantName, false);
+        $constant = $class->getConstant($constantName, ConstantsFilterPredicateProvider::getConstantsIndependingOnPHPVersion($constantName));
         self::assertNull($constant->phpDocParsingError, $constant->phpDocParsingError ?: '');
         self::checkPHPDocCorrectness($constant, "constant $class->fqnBasedId::$constant->name");
     }
@@ -46,7 +48,7 @@ class StubsPhpDocTest extends AbstractBaseStubsTestCase
             self::markTestSkipped($this->emptyDataSetMessage);
         }
         $class = PhpStormStubsSingleton::getPhpStormStubs()->getInterface($classId, shouldSuitCurrentPhpVersion: false);
-        $constant = $class->getConstant($constantName, false);
+        $constant = $class->getConstant($constantName, ConstantsFilterPredicateProvider::getConstantsIndependingOnPHPVersion($constantName));
         self::assertNull($constant->phpDocParsingError, $constant->phpDocParsingError ?: '');
         self::checkPHPDocCorrectness($constant, "constant $classId::$constant->name");
     }
@@ -58,7 +60,7 @@ class StubsPhpDocTest extends AbstractBaseStubsTestCase
             self::markTestSkipped($this->emptyDataSetMessage);
         }
         $class = PhpStormStubsSingleton::getPhpStormStubs()->getEnum($classId, shouldSuitCurrentPhpVersion: false);
-        $constant = $class->getConstant($constantName, false);
+        $constant = $class->getConstant($constantName, ConstantsFilterPredicateProvider::getConstantsIndependingOnPHPVersion($constantName));
         self::assertNull($constant->phpDocParsingError, $constant->phpDocParsingError ?: '');
         self::checkPHPDocCorrectness($constant, "constant $classId::$constant->name");
     }
@@ -107,7 +109,7 @@ class StubsPhpDocTest extends AbstractBaseStubsTestCase
     public static function testClassMethodsPHPDocs(string $classHash, string $methodName): void
     {
         $class = PhpStormStubsSingleton::getPhpStormStubs()->getClassByHash($classHash);
-        $method = $class->getMethod($methodName, shouldSuitCurrentPhpVersion: false);
+        $method = $class->getMethod($methodName, MethodsFilterPredicateProvider::getMethodsIndependingOnPHPVersion($methodName));
         if ($method->name === '__construct') {
             self::assertEmpty($method->returnTypesFromPhpDoc, '@return tag for __construct should be omitted');
         }
@@ -119,7 +121,7 @@ class StubsPhpDocTest extends AbstractBaseStubsTestCase
     public static function testInterfaceMethodsPHPDocs(string $classId, string $methodName): void
     {
         $class = PhpStormStubsSingleton::getPhpStormStubs()->getInterface($classId, shouldSuitCurrentPhpVersion: false);
-        $method = $class->getMethod($methodName, shouldSuitCurrentPhpVersion: false);
+        $method = $class->getMethod($methodName, MethodsFilterPredicateProvider::getMethodsIndependingOnPHPVersion($methodName));
         if ($method->name === '__construct') {
             self::assertEmpty($method->returnTypesFromPhpDoc, '@return tag for __construct should be omitted');
         }
@@ -131,7 +133,7 @@ class StubsPhpDocTest extends AbstractBaseStubsTestCase
     public static function testEnumMethodsPHPDocs(string $classId, string $methodName): void
     {
         $class = PhpStormStubsSingleton::getPhpStormStubs()->getEnum($classId, shouldSuitCurrentPhpVersion: false);
-        $method = $class->getMethod($methodName, shouldSuitCurrentPhpVersion: false);
+        $method = $class->getMethod($methodName, MethodsFilterPredicateProvider::getMethodsIndependingOnPHPVersion($methodName));
         if ($method->name === '__construct') {
             self::assertEmpty($method->returnTypesFromPhpDoc, '@return tag for __construct should be omitted');
         }

@@ -9,7 +9,7 @@ require_once __DIR__ . '/../../vendor/autoload.php';
 $coreStubs = unserialize(file_get_contents(__DIR__ . '/../../ReflectionData.json'), ['allowed_classes' => true]);
 /** @var StubsContainer $peclAndCoreStubs */
 $peclAndCoreStubs = unserialize(file_get_contents(__DIR__ . '/../../ReflectionDataPecl.json'), ['allowed_classes' => true]);
-$onlyPeclStubs = new StubsContainer();
+$onlyPeclStubs = new StubsContainer(true);
 foreach ($peclAndCoreStubs->getConstants() as $peclConstant) {
     if (empty(array_filter($coreStubs->getConstants(), fn ($constant) => $constant->name === $peclConstant->name))) {
         $onlyPeclStubs->addConstant($peclConstant);

@@ -5,6 +5,7 @@ namespace StubTests;
 
 use PHPUnit\Framework\Attributes\DataProviderExternal;
 use StubTests\Model\PhpVersions;
+use StubTests\Model\Predicats\MethodsFilterPredicateProvider;
 use StubTests\TestData\Providers\PhpStormStubsSingleton;
 use StubTests\TestData\Providers\Reflection\ReflectionClassesTestDataProviders;
 use StubTests\TestData\Providers\Reflection\ReflectionMethodsProvider;
@@ -26,7 +27,7 @@ class BaseClassesTest extends AbstractBaseStubsTestCase
         if (!$classId) {
             self::markTestSkipped($this->emptyDataSetMessage);
         }
-        $reflectionClass = ReflectionStubsSingleton::getReflectionStubs()->getClass($classId, fromReflection: true);
+        $reflectionClass = ReflectionStubsSingleton::getReflectionStubs()->getClass($classId, sourceFilePath: true);
         $stubClass = PhpStormStubsSingleton::getPhpStormStubs()->getClass($classId);
         static::assertEquals(
             $reflectionClass->parentClass,
@@ -52,7 +53,8 @@ class BaseClassesTest extends AbstractBaseStubsTestCase
         if (!$classId && !$methodName) {
             self::markTestSkipped($this->emptyDataSetMessage);
         }
-        $reflectionMethod = ReflectionStubsSingleton::getReflectionStubs()->getClass($classId, fromReflection: true)->getMethod($methodName, fromReflection: true);
+        $reflectionClass = ReflectionStubsSingleton::getReflectionStubs()->getClass($classId, sourceFilePath: true);
+        $reflectionMethod = $reflectionClass->getMethod($methodName, MethodsFilterPredicateProvider::getMethodsFromReflection($methodName));
         $stubMethod = PhpStormStubsSingleton::getPhpStormStubs()->getClass($classId)->getMethod($methodName);
         static::assertEquals(
             $reflectionMethod->isFinal,
@@ -67,7 +69,8 @@ class BaseClassesTest extends AbstractBaseStubsTestCase
         if (!$classId && !$methodName) {
             self::markTestSkipped($this->emptyDataSetMessage);
         }
-        $reflectionMethod = ReflectionStubsSingleton::getReflectionStubs()->getClass($classId, fromReflection: true)->getMethod($methodName, fromReflection: true);
+        $reflectionClass = ReflectionStubsSingleton::getReflectionStubs()->getClass($classId, sourceFilePath: true);
+        $reflectionMethod = $reflectionClass->getMethod($methodName, MethodsFilterPredicateProvider::getMethodsFromReflection($methodName));
         $stubMethod = PhpStormStubsSingleton::getPhpStormStubs()->getClass($classId)->getMethod($methodName);
         static::assertEquals(
             $reflectionMethod->isStatic,
@@ -82,7 +85,8 @@ class BaseClassesTest extends AbstractBaseStubsTestCase
         if (!$classId && !$methodName) {
             self::markTestSkipped($this->emptyDataSetMessage);
         }
-        $reflectionMethod = ReflectionStubsSingleton::getReflectionStubs()->getClass($classId, fromReflection: true)->getMethod($methodName, fromReflection: true);
+        $reflectionClass = ReflectionStubsSingleton::getReflectionStubs()->getClass($classId, sourceFilePath: true);
+        $reflectionMethod = $reflectionClass->getMethod($methodName, MethodsFilterPredicateProvider::getMethodsFromReflection($methodName));
         $stubMethod = PhpStormStubsSingleton::getPhpStormStubs()->getClass($classId)->getMethod($methodName);
         static::assertEquals(
             $reflectionMethod->access,
@@ -97,7 +101,8 @@ class BaseClassesTest extends AbstractBaseStubsTestCase
         if (!$classId && !$methodName) {
             self::markTestSkipped($this->emptyDataSetMessage);
         }
-        $reflectionMethod = ReflectionStubsSingleton::getReflectionStubs()->getClass($classId, fromReflection: true)->getMethod($methodName, fromReflection: true);
+        $reflectionClass = ReflectionStubsSingleton::getReflectionStubs()->getClass($classId, sourceFilePath: true);
+        $reflectionMethod = $reflectionClass->getMethod($methodName, MethodsFilterPredicateProvider::getMethodsFromReflection($methodName));
         $stubMethod = PhpStormStubsSingleton::getPhpStormStubs()->getClass($classId)->getMethod($methodName);
         $filteredStubParameters = array_filter(
             $stubMethod->parameters,
@@ -124,7 +129,7 @@ class BaseClassesTest extends AbstractBaseStubsTestCase
         if (!$classId) {
             self::markTestSkipped($this->emptyDataSetMessage);
         }
-        $reflectionClass = ReflectionStubsSingleton::getReflectionStubs()->getClass($classId, fromReflection: true);
+        $reflectionClass = ReflectionStubsSingleton::getReflectionStubs()->getClass($classId, sourceFilePath: true);
         $stubClass = PhpStormStubsSingleton::getPhpStormStubs()->getClass($classId);
         foreach ($reflectionClass->interfaces as $interface) {
             static::assertContains(
@@ -141,7 +146,7 @@ class BaseClassesTest extends AbstractBaseStubsTestCase
         if (!$classId && !$propertyName) {
             self::markTestSkipped($this->emptyDataSetMessage);
         }
-        $reflectionClass = ReflectionStubsSingleton::getReflectionStubs()->getClass($classId, fromReflection: true);
+        $reflectionClass = ReflectionStubsSingleton::getReflectionStubs()->getClass($classId, sourceFilePath: true);
         $reflectionProperty = $reflectionClass->getProperty($propertyName, fromReflection: true);
         $stubClass = PhpStormStubsSingleton::getPhpStormStubs()->getClass($classId);
         static::assertNotEmpty($stubClass->getProperty($propertyName), "Missing property $reflectionProperty->access "
@@ -155,7 +160,7 @@ class BaseClassesTest extends AbstractBaseStubsTestCase
         if (!$classId && !$propertyName) {
             self::markTestSkipped($this->emptyDataSetMessage);
         }
-        $reflectionClass = ReflectionStubsSingleton::getReflectionStubs()->getClass($classId, fromReflection: true);
+        $reflectionClass = ReflectionStubsSingleton::getReflectionStubs()->getClass($classId, sourceFilePath: true);
         $reflectionProperty = $reflectionClass->getProperty($propertyName, fromReflection: true);
         $stubProperty = PhpStormStubsSingleton::getPhpStormStubs()->getClass($classId)->getProperty($propertyName);
         static::assertEquals(
@@ -171,7 +176,7 @@ class BaseClassesTest extends AbstractBaseStubsTestCase
         if (!$classId && !$propertyName) {
             self::markTestSkipped($this->emptyDataSetMessage);
         }
-        $reflectionClass = ReflectionStubsSingleton::getReflectionStubs()->getClass($classId, fromReflection: true);
+        $reflectionClass = ReflectionStubsSingleton::getReflectionStubs()->getClass($classId, sourceFilePath: true);
         $reflectionProperty = $reflectionClass->getProperty($propertyName, fromReflection: true);
         $stubProperty = PhpStormStubsSingleton::getPhpStormStubs()->getClass($classId)->getProperty($propertyName);
         static::assertEquals(
@@ -187,7 +192,7 @@ class BaseClassesTest extends AbstractBaseStubsTestCase
         if (!$classId && !$propertyName) {
             self::markTestSkipped($this->emptyDataSetMessage);
         }
-        $reflectionClass = ReflectionStubsSingleton::getReflectionStubs()->getClass($classId, fromReflection: true);
+        $reflectionClass = ReflectionStubsSingleton::getReflectionStubs()->getClass($classId, sourceFilePath: true);
         $reflectionProperty = $reflectionClass->getProperty($propertyName, fromReflection: true);
         $stubProperty = PhpStormStubsSingleton::getPhpStormStubs()->getClass($classId)->getProperty($propertyName);
         $unifiedStubsPropertyTypes = [];
@@ -233,7 +238,7 @@ class BaseClassesTest extends AbstractBaseStubsTestCase
         if (!$classId) {
             self::markTestSkipped($this->emptyDataSetMessage);
         }
-        $reflectionClass = ReflectionStubsSingleton::getReflectionStubs()->getClass($classId, fromReflection: true);
+        $reflectionClass = ReflectionStubsSingleton::getReflectionStubs()->getClass($classId, sourceFilePath: true);
         $stubClass = PhpStormStubsSingleton::getPhpStormStubs()->getClass($classId);
         static::assertEquals($reflectionClass->isFinal, $stubClass->isFinal, "Final modifier of class $classId is incorrect");
     }
@@ -244,7 +249,7 @@ class BaseClassesTest extends AbstractBaseStubsTestCase
         if (!$classId) {
             self::markTestSkipped($this->emptyDataSetMessage);
         }
-        $reflectionClass = ReflectionStubsSingleton::getReflectionStubs()->getClass($classId, fromReflection: true);
+        $reflectionClass = ReflectionStubsSingleton::getReflectionStubs()->getClass($classId, sourceFilePath: true);
         $stubClass = PhpStormStubsSingleton::getPhpStormStubs()->getClass($classId);
         static::assertEquals(
             $reflectionClass->isReadonly,
@@ -259,7 +264,7 @@ class BaseClassesTest extends AbstractBaseStubsTestCase
         if (!$classId) {
             self::markTestSkipped($this->emptyDataSetMessage);
         }
-        $reflectionClass = ReflectionStubsSingleton::getReflectionStubs()->getClass($classId, fromReflection: true);
+        $reflectionClass = ReflectionStubsSingleton::getReflectionStubs()->getClass($classId, sourceFilePath: true);
         $stubClass = PhpStormStubsSingleton::getPhpStormStubs()->getClass($classId);
         static::assertEquals(
             $reflectionClass->namespace,

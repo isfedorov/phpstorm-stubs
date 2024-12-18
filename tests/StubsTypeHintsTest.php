@@ -8,6 +8,7 @@ use PHPUnit\Framework\Attributes\DataProviderExternal;
 use stdClass;
 use StubTests\Model\CommonUtils;
 use StubTests\Model\PHPParameter;
+use StubTests\Model\Predicats\MethodsFilterPredicateProvider;
 use StubTests\Model\StubProblemType;
 use StubTests\TestData\Providers\PhpStormStubsSingleton;
 use StubTests\TestData\Providers\Reflection\ReflectionFunctionsProvider;
@@ -95,7 +96,8 @@ class StubsTypeHintsTest extends AbstractBaseStubsTestCase
         if (!$classId && !$methodName) {
             self::markTestSkipped($this->emptyDataSetMessage);
         }
-        $reflectionMethod = ReflectionStubsSingleton::getReflectionStubs()->getClass($classId, fromReflection: true)->getMethod($methodName, fromReflection: true);
+        $reflectionClass = ReflectionStubsSingleton::getReflectionStubs()->getClass($classId, sourceFilePath: true);
+        $reflectionMethod = $reflectionClass->getMethod($methodName, MethodsFilterPredicateProvider::getMethodsFromReflection($methodName));
         $class = PhpStormStubsSingleton::getPhpStormStubs()->getClass($classId);
         $stubMethod = $class->getMethod($methodName);
         $unifiedStubsReturnTypes = [];
@@ -134,7 +136,8 @@ class StubsTypeHintsTest extends AbstractBaseStubsTestCase
         if (!$classId && !$methodName) {
             self::markTestSkipped($this->emptyDataSetMessage);
         }
-        $reflectionMethod = ReflectionStubsSingleton::getReflectionStubs()->getInterface($classId, fromReflection: true)->getMethod($methodName, fromReflection: true);
+        $reflectionInterface = ReflectionStubsSingleton::getReflectionStubs()->getInterface($classId, fromReflection: true);
+        $reflectionMethod = $reflectionInterface->getMethod($methodName, MethodsFilterPredicateProvider::getMethodsFromReflection($methodName));
         $class = PhpStormStubsSingleton::getPhpStormStubs()->getInterface($classId);
         $stubMethod = $class->getMethod($methodName);
         $unifiedStubsReturnTypes = [];
@@ -173,7 +176,8 @@ class StubsTypeHintsTest extends AbstractBaseStubsTestCase
         if (!$classId && !$methodName) {
             self::markTestSkipped($this->emptyDataSetMessage);
         }
-        $reflectionMethod = ReflectionStubsSingleton::getReflectionStubs()->getEnum($classId, fromReflection: true)->getMethod($methodName, fromReflection: true);
+        $reflectionEnum = ReflectionStubsSingleton::getReflectionStubs()->getEnum($classId, fromReflection: true);
+        $reflectionMethod = $reflectionEnum->getMethod($methodName, MethodsFilterPredicateProvider::getMethodsFromReflection($methodName));
         $class = PhpStormStubsSingleton::getPhpStormStubs()->getEnum($classId);
         $stubMethod = $class->getMethod($methodName);
         $unifiedStubsReturnTypes = [];
@@ -212,7 +216,9 @@ class StubsTypeHintsTest extends AbstractBaseStubsTestCase
         if (!$classId && !$methodName && !$parameterName) {
             self::markTestSkipped($this->emptyDataSetMessage);
         }
-        $reflectionParameter = ReflectionStubsSingleton::getReflectionStubs()->getClass($classId, fromReflection: true)->getMethod($methodName, fromReflection: true)->getParameter($parameterName);
+        $reflectionClass = ReflectionStubsSingleton::getReflectionStubs()->getClass($classId, sourceFilePath: true);
+        $reflectionMethod = $reflectionClass->getMethod($methodName, MethodsFilterPredicateProvider::getMethodsFromReflection($methodName));
+        $reflectionParameter = $reflectionMethod->getParameter($parameterName);
         $stubMethod = PhpStormStubsSingleton::getPhpStormStubs()->getClass($classId)->getMethod($methodName);
         /** @var PHPParameter $stubParameter */
         $stubParameter = current(array_filter(
@@ -244,7 +250,9 @@ class StubsTypeHintsTest extends AbstractBaseStubsTestCase
         if (!$classId && !$methodName && !$parameterName) {
             self::markTestSkipped($this->emptyDataSetMessage);
         }
-        $reflectionParameter = ReflectionStubsSingleton::getReflectionStubs()->getInterface($classId, fromReflection: true)->getMethod($methodName, fromReflection: true)->getParameter($parameterName);
+        $reflectionInterface = ReflectionStubsSingleton::getReflectionStubs()->getInterface($classId, fromReflection: true);
+        $reflectionMethod = $reflectionInterface->getMethod($methodName, MethodsFilterPredicateProvider::getMethodsFromReflection($methodName));
+        $reflectionParameter = $reflectionMethod->getParameter($parameterName);
         $stubMethod = PhpStormStubsSingleton::getPhpStormStubs()->getInterface($classId)->getMethod($methodName);
         /** @var PHPParameter $stubParameter */
         $stubParameter = current(array_filter(
@@ -276,7 +284,9 @@ class StubsTypeHintsTest extends AbstractBaseStubsTestCase
         if (!$classId && !$methodName && !$parameterName) {
             self::markTestSkipped($this->emptyDataSetMessage);
         }
-        $reflectionParameter = ReflectionStubsSingleton::getReflectionStubs()->getEnum($classId, fromReflection: true)->getMethod($methodName, fromReflection: true)->getParameter($parameterName);
+        $reflectionEnum = ReflectionStubsSingleton::getReflectionStubs()->getEnum($classId, fromReflection: true);
+        $reflectionMethod = $reflectionEnum->getMethod($methodName, MethodsFilterPredicateProvider::getMethodsFromReflection($methodName));
+        $reflectionParameter = $reflectionMethod->getParameter($parameterName);
         $stubMethod = PhpStormStubsSingleton::getPhpStormStubs()->getEnum($classId)->getMethod($methodName);
         /** @var PHPParameter $stubParameter */
         $stubParameter = current(array_filter(
@@ -309,9 +319,10 @@ class StubsTypeHintsTest extends AbstractBaseStubsTestCase
             self::markTestSkipped($this->emptyDataSetMessage);
         }
         $stubsClass = PhpStormStubsSingleton::getPhpStormStubs()->getClassByHash($classHash);
-        $stubsMethod = $stubsClass->getMethodByHash($methodHash);
+        $stubsMethod = $stubsClass->getMethod($methodHash, MethodsFilterPredicateProvider::getMethodsByHash($methodHash));
         $stubParameter = $stubsMethod->getParameter($parameterName);
-        $reflectionMethod = ReflectionStubsSingleton::getReflectionStubs()->getClass($stubsClass->id, fromReflection: true)->getMethod($stubsMethod->name, fromReflection: true);
+        $reflectionClass = ReflectionStubsSingleton::getReflectionStubs()->getClass($stubsClass->fqnBasedId, sourceFilePath: true);
+        $reflectionMethod = $reflectionClass->getMethod($stubsMethod->name, MethodsFilterPredicateProvider::getMethodsFromReflection($stubsMethod->name));
         $reflectionParameters = array_filter($reflectionMethod->parameters, fn (PHPParameter $parameter) => $parameter->name === $stubParameter->name);
         $reflectionParameter = array_pop($reflectionParameters);
         if (!$reflectionParameter) {
@@ -329,9 +340,10 @@ class StubsTypeHintsTest extends AbstractBaseStubsTestCase
             self::markTestSkipped($this->emptyDataSetMessage);
         }
         $stubsInterface = PhpStormStubsSingleton::getPhpStormStubs()->getInterfaceByHash($classHash);
-        $stubsMethod = $stubsInterface->getMethodByHash($methodHash);
+        $stubsMethod = $stubsInterface->getMethod($methodHash, MethodsFilterPredicateProvider::getMethodsByHash($methodHash));
         $stubParameter = $stubsMethod->getParameter($parameterName);
-        $reflectionMethod = ReflectionStubsSingleton::getReflectionStubs()->getInterface($stubsInterface->id, fromReflection: true)->getMethod($stubsMethod->name, fromReflection: true);
+        $reflectionInterface = ReflectionStubsSingleton::getReflectionStubs()->getInterface($stubsInterface->fqnBasedId, fromReflection: true);
+        $reflectionMethod = $reflectionInterface->getMethod($stubsMethod->name, MethodsFilterPredicateProvider::getMethodsFromReflection($stubsMethod->name));
         $reflectionParameters = array_filter($reflectionMethod->parameters, fn (PHPParameter $parameter) => $parameter->name === $stubParameter->name);
         $reflectionParameter = array_pop($reflectionParameters);
         $testCondition = self::typeHintsMatchReflection($reflectionParameter, $stubParameter, $stubsMethod->name);
@@ -345,9 +357,10 @@ class StubsTypeHintsTest extends AbstractBaseStubsTestCase
             self::markTestSkipped($this->emptyDataSetMessage);
         }
         $stubsEnum = PhpStormStubsSingleton::getPhpStormStubs()->getEnumByHash($classHash);
-        $stubsMethod = $stubsEnum->getMethodByHash($methodHash);
+        $stubsMethod = $stubsEnum->getMethod($methodHash, MethodsFilterPredicateProvider::getMethodsByHash($methodHash));
         $stubParameter = $stubsMethod->getParameter($parameterName);
-        $reflectionMethod = ReflectionStubsSingleton::getReflectionStubs()->getEnum($stubsEnum->id, fromReflection: true)->getMethod($stubsMethod->name, fromReflection: true);
+        $reflectionEnum = ReflectionStubsSingleton::getReflectionStubs()->getEnum($stubsEnum->fqnBasedId, fromReflection: true);
+        $reflectionMethod = $reflectionEnum->getMethod($stubsMethod->name, MethodsFilterPredicateProvider::getMethodsFromReflection($stubsMethod->name));
         $reflectionParameters = array_filter($reflectionMethod->parameters, fn (PHPParameter $parameter) => $parameter->name === $stubParameter->name);
         $reflectionParameter = array_pop($reflectionParameters);
         $testCondition = self::typeHintsMatchReflection($reflectionParameter, $stubParameter, $stubsMethod->name);
@@ -361,9 +374,9 @@ class StubsTypeHintsTest extends AbstractBaseStubsTestCase
             self::markTestSkipped($this->emptyDataSetMessage);
         }
         $stubsClass = PhpStormStubsSingleton::getPhpStormStubs()->getClassByHash($classHash);
-        $stubsMethod = $stubsClass->getMethodByHash($methodHash);
+        $stubsMethod = $stubsClass->getMethod($methodHash, MethodsFilterPredicateProvider::getMethodsByHash($methodHash));
         $stubParameter = $stubsMethod->getParameter($parameterName);
-        $reflectionClass = ReflectionStubsSingleton::getReflectionStubs()->getClass($stubsClass->id, fromReflection: true);
+        $reflectionClass = ReflectionStubsSingleton::getReflectionStubs()->getClass($stubsClass->fqnBasedId, sourceFilePath: true);
         $reflectionMethod = $reflectionClass->getMethod($stubsMethod->name);
         $reflectionParameters = array_filter($reflectionMethod->parameters, fn (PHPParameter $parameter) => $parameter->name === $stubParameter->name);
         $reflectionParameter = array_pop($reflectionParameters);
@@ -378,9 +391,10 @@ class StubsTypeHintsTest extends AbstractBaseStubsTestCase
             self::markTestSkipped($this->emptyDataSetMessage);
         }
         $stubsInterface = PhpStormStubsSingleton::getPhpStormStubs()->getInterfaceByHash($classHash);
-        $stubsMethod = $stubsInterface->getMethodByHash($methodHash);
+        $stubsMethod = $stubsInterface->getMethod($methodHash, MethodsFilterPredicateProvider::getMethodsByHash($methodHash));
         $stubParameter = $stubsMethod->getParameter($parameterName);
-        $reflectionMethod = ReflectionStubsSingleton::getReflectionStubs()->getInterface($stubsInterface->id, fromReflection: true)->getMethod($stubsMethod->name, fromReflection: true);
+        $reflectionInterface = ReflectionStubsSingleton::getReflectionStubs()->getInterface($stubsInterface->fqnBasedId, fromReflection: true);
+        $reflectionMethod = $reflectionInterface->getMethod($stubsMethod->name, MethodsFilterPredicateProvider::getMethodsFromReflection($stubsMethod->name));
         $reflectionParameters = array_filter($reflectionMethod->parameters, fn (PHPParameter $parameter) => $parameter->name === $stubParameter->name);
         $reflectionParameter = array_pop($reflectionParameters);
         $testCondition = self::typeHintsMatchReflection($reflectionParameter, $stubParameter, $stubsMethod->name);
@@ -394,9 +408,10 @@ class StubsTypeHintsTest extends AbstractBaseStubsTestCase
             self::markTestSkipped($this->emptyDataSetMessage);
         }
         $stubsEnum = PhpStormStubsSingleton::getPhpStormStubs()->getEnumByHash($classHash);
-        $stubsMethod = $stubsEnum->getMethodByHash($methodHash);
+        $stubsMethod = $stubsEnum->getMethod($methodHash, MethodsFilterPredicateProvider::getMethodsByHash($methodHash));
         $stubParameter = $stubsMethod->getParameter($parameterName);
-        $reflectionMethod = ReflectionStubsSingleton::getReflectionStubs()->getEnum($stubsEnum->id, fromReflection: true)->getMethod($stubsMethod->name, fromReflection: true);
+        $reflectionEnum = ReflectionStubsSingleton::getReflectionStubs()->getEnum($stubsEnum->fqnBasedId, fromReflection: true);
+        $reflectionMethod = $reflectionEnum->getMethod($stubsMethod->name, MethodsFilterPredicateProvider::getMethodsFromReflection($stubsMethod->name));
         $reflectionParameters = array_filter($reflectionMethod->parameters, fn (PHPParameter $parameter) => $parameter->name === $stubParameter->name);
         $reflectionParameter = array_pop($reflectionParameters);
         $testCondition = self::typeHintsMatchReflection($reflectionParameter, $stubParameter, $stubsMethod->name);
@@ -410,9 +425,10 @@ class StubsTypeHintsTest extends AbstractBaseStubsTestCase
             self::markTestSkipped($this->emptyDataSetMessage);
         }
         $stubsClass = PhpStormStubsSingleton::getPhpStormStubs()->getClassByHash($classHash);
-        $stubsMethod = $stubsClass->getMethodByHash($methodHash);
+        $stubsMethod = $stubsClass->getMethod($methodHash, MethodsFilterPredicateProvider::getMethodsByHash($methodHash));
         $stubParameter = $stubsMethod->getParameter($parameterName);
-        $reflectionMethod = ReflectionStubsSingleton::getReflectionStubs()->getClass($stubsClass->id, fromReflection: true)->getMethod($stubsMethod->name, fromReflection: true);
+        $reflectionClass = ReflectionStubsSingleton::getReflectionStubs()->getClass($stubsClass->fqnBasedId, sourceFilePath: true);
+        $reflectionMethod = $reflectionClass->getMethod($stubsMethod->name, MethodsFilterPredicateProvider::getMethodsFromReflection($stubsMethod->name));
         $reflectionParameters = array_filter($reflectionMethod->parameters, fn (PHPParameter $parameter) => $parameter->name === $stubParameter->name);
         $reflectionParameter = array_pop($reflectionParameters);
         $testCondition = self::typeHintsMatchReflection($reflectionParameter, $stubParameter, $stubsMethod->name);
@@ -426,9 +442,10 @@ class StubsTypeHintsTest extends AbstractBaseStubsTestCase
             self::markTestSkipped($this->emptyDataSetMessage);
         }
         $stubsInterface = PhpStormStubsSingleton::getPhpStormStubs()->getInterfaceByHash($classHash);
-        $stubsMethod = $stubsInterface->getMethodByHash($methodHash);
+        $stubsMethod = $stubsInterface->getMethod($methodHash, MethodsFilterPredicateProvider::getMethodsByHash($methodHash));
         $stubParameter = $stubsMethod->getParameter($parameterName);
-        $reflectionMethod = ReflectionStubsSingleton::getReflectionStubs()->getInterface($stubsInterface->id, fromReflection: true)->getMethod($stubsMethod->name, fromReflection: true);
+        $reflectionInterface = ReflectionStubsSingleton::getReflectionStubs()->getInterface($stubsInterface->fqnBasedId, fromReflection: true);
+        $reflectionMethod = $reflectionInterface->getMethod($stubsMethod->name, MethodsFilterPredicateProvider::getMethodsFromReflection($stubsMethod->name));
         $reflectionParameters = array_filter($reflectionMethod->parameters, fn (PHPParameter $parameter) => $parameter->name === $stubParameter->name);
         $reflectionParameter = array_pop($reflectionParameters);
         $testCondition = self::typeHintsMatchReflection($reflectionParameter, $stubParameter, $stubsMethod->name);
@@ -442,9 +459,10 @@ class StubsTypeHintsTest extends AbstractBaseStubsTestCase
             self::markTestSkipped($this->emptyDataSetMessage);
         }
         $stubsEnum = PhpStormStubsSingleton::getPhpStormStubs()->getEnumByHash($classHash);
-        $stubsMethod = $stubsEnum->getMethodByHash($methodHash);
+        $stubsMethod = $stubsEnum->getMethod($methodHash, MethodsFilterPredicateProvider::getMethodsByHash($methodHash));
         $stubParameter = $stubsMethod->getParameter($parameterName);
-        $reflectionMethod = ReflectionStubsSingleton::getReflectionStubs()->getEnum($stubsEnum->id, fromReflection: true)->getMethod($stubsMethod->name, fromReflection: true);
+        $reflectionEnum = ReflectionStubsSingleton::getReflectionStubs()->getEnum($stubsEnum->fqnBasedId, fromReflection: true);
+        $reflectionMethod = $reflectionEnum->getMethod($stubsMethod->name, MethodsFilterPredicateProvider::getMethodsFromReflection($stubsMethod->name));
         $reflectionParameters = array_filter($reflectionMethod->parameters, fn (PHPParameter $parameter) => $parameter->name === $stubParameter->name);
         $reflectionParameter = array_pop($reflectionParameters);
         $testCondition = self::typeHintsMatchReflection($reflectionParameter, $stubParameter, $stubsMethod->name);
@@ -484,9 +502,9 @@ class StubsTypeHintsTest extends AbstractBaseStubsTestCase
     #[DataProviderExternal(StubMethodsProvider::class, 'allClassesMethodsWithReturnTypeHintsProvider')]
     public static function testClassesMethodsSignatureTypeHintsConformPhpDocInMethods(string $classId, string $functionId)
     {
-        $stubsClass = PhpStormStubsSingleton::getPhpStormStubs()->getClass($classId, shouldSuitCurrentPhpVersion: false);
-        $classTemplateTypes = $stubsClass->templateTypes;
-        $function = $stubsClass->getMethod($functionId, false);
+        $stubsClass = PhpStormStubsSingleton::getPhpStormStubs()->getClass($classId, sourceFilePath: false, shouldSuitCurrentPhpVersion: false);
+        $classTemplateTypes = $stubsClass->getPhpdocProperties()->templateTypes;
+        $function = $stubsClass->getMethod($functionId, MethodsFilterPredicateProvider::getMethodsIndependingOnPHPVersion($functionId));
         $unifiedPhpDocTypes = array_map(
             fn (string $type) => ltrim($type, '\\'),
             CommonUtils::array_flat_map(
@@ -522,7 +540,8 @@ class StubsTypeHintsTest extends AbstractBaseStubsTestCase
     #[DataProviderExternal(StubMethodsProvider::class, 'allInterfacesMethodsWithReturnTypeHintsProvider')]
     public static function testInterfacesMethodsSignatureTypeHintsConformPhpDocInMethods(string $classId, string $functionId)
     {
-        $function = PhpStormStubsSingleton::getPhpStormStubs()->getInterface($classId, shouldSuitCurrentPhpVersion: false)->getMethod($functionId, false);
+        $stubInterface = PhpStormStubsSingleton::getPhpStormStubs()->getInterface($classId, shouldSuitCurrentPhpVersion: false);
+        $function = $stubInterface->getMethod($functionId, MethodsFilterPredicateProvider::getMethodsIndependingOnPHPVersion($functionId));
         $unifiedPhpDocTypes = CommonUtils::array_flat_map(
             array_map(
                 self::getTypePossibleNamespace(...),
@@ -555,7 +574,8 @@ class StubsTypeHintsTest extends AbstractBaseStubsTestCase
         if (!$classId && !$functionId) {
             self::markTestSkipped($this->emptyDataSetMessage);
         }
-        $function = PhpStormStubsSingleton::getPhpStormStubs()->getEnum($classId)->getMethod($functionId);
+        $stubEnum = PhpStormStubsSingleton::getPhpStormStubs()->getEnum($classId);
+        $function = $stubEnum->getMethod($functionId);
         $unifiedPhpDocTypes = CommonUtils::array_flat_map(
             array_map(
                 self::getTypePossibleNamespace(...),

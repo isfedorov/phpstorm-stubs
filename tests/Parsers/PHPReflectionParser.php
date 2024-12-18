@@ -25,7 +25,7 @@ class PHPReflectionParser
         if (file_exists(__DIR__ . '/../../ReflectionData.json')) {
             $stubs = unserialize(file_get_contents(__DIR__ . '/../../ReflectionData.json'));
         } else {
-            $stubs = new StubsContainer();
+            $stubs = new StubsContainer(true);
 
             $jsonData = json_decode(file_get_contents(__DIR__ . '/../TestData/mutedProblems.json'));
             $const_groups = get_defined_constants(true);

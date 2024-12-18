@@ -41,7 +41,7 @@ class StubParser
      */
     public static function getPhpStormStubs(): StubsContainer
     {
-        self::$stubs = new StubsContainer();
+        self::$stubs = new StubsContainer(false);
         $childEntitiesToAdd = ['enumCases' => [], 'classConstants' => [], 'methods' => [], 'properties' => []];
         $visitor = new ASTVisitor(self::$stubs, $childEntitiesToAdd);
         $coreStubVisitor = new CoreStubASTVisitor(self::$stubs, $childEntitiesToAdd);
@@ -96,11 +96,11 @@ class StubParser
         }
         foreach (self::$stubs->getInterfaces() as $interface) {
             $interface->readMutedProblems($jsonData->interfaces);
-            $interface->parentInterfaces = $visitor->combineParentInterfaces($interface);
+            $interface->parentInterfaces = $visitor->convertParentInterfacesFromStringsToObjects($interface);
         }
         foreach (self::$stubs->getClasses() as $class) {
             $class->readMutedProblems($jsonData->classes);
-            $class->interfaces = CommonUtils::flattenArray($visitor->combineImplementedInterfaces($class), false);
+            $class->interfaces = CommonUtils::flattenArray($visitor->convertImplementedInterfacesFromStringsToObjects($class), false);
             foreach ($class->methods as $method) {
                 $method->getPhpdocProperties()->templateTypes += $class->getPhpdocProperties()->templateTypes;
             }

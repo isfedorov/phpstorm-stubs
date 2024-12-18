@@ -2,107 +2,116 @@
 
 namespace StubTests\Model;
 
-use StubTests\Parsers\ParserUtils;
+use RuntimeException;
+use StubTests\Model\Predicats\ConstantsFilterPredicateProvider;
+use StubTests\Model\Predicats\MethodsFilterPredicateProvider;
 use function array_key_exists;
 use function count;
 
 abstract class BasePHPClass extends PHPNamespacedElement
 {
-    /**
-     * @var PHPMethod[]
-     */
+    /** @var PHPMethod[] */
     public $methods = [];
 
-    /**
-     * @var PHPClassConstant[]
-     */
+    /** @var PHPClassConstant[] */
     public $constants = [];
+
+    /** @var bool */
     public $isFinal = false;
 
     public function addConstant(PHPClassConstant $parsedConstant)
     {
-        if (isset($parsedConstant->name)) {
-            if (array_key_exists($parsedConstant->name, $this->constants)) {
-                $amount = count(array_filter(
-                    $this->constants,
-                    function (PHPClassConstant $nextConstant) use ($parsedConstant) {
-                        return $nextConstant->name === $parsedConstant->name;
-                    }
-                ));
-                $this->constants[$parsedConstant->name . '_duplicated_' . $amount] = $parsedConstant;
-            } else {
-                $this->constants[$parsedConstant->name] = $parsedConstant;
-            }
+        if (!isset($parsedConstant->name)) {
+            throw new RuntimeException("Constant name is not set");
+        }
+        if ($this->constantExists($parsedConstant)) {
+            $this->addDuplicateConstant($parsedConstant);
+        } else {
+            $this->constants[$parsedConstant->name] = $parsedConstant;
         }
     }
 
-    /**
-     * @param string $constantName
-     * @param true $shouldSuitCurrentPhpVersion
-     * @param false $fromReflection
-     * @return PHPClassConstant|null
-     */
-    public function getConstant($constantName, $shouldSuitCurrentPhpVersion = true, $fromReflection = false)
+    public function getConstant($constantName, $filterCallback = null)
     {
-        if ($fromReflection) {
-            $constants = array_filter($this->constants, function (PHPClassConstant $constant) use ($constantName) {
-               return $constant->name === $constantName && $constant->stubObjectHash == null;
-            });
-        } else {
-            $constants = array_filter($this->constants, function (PHPClassConstant $constant) use ($constantName, $shouldSuitCurrentPhpVersion) {
-                return $constant->name === $constantName && $constant->duplicateOtherElement === false
-                    && (!$shouldSuitCurrentPhpVersion || ParserUtils::entitySuitsCurrentPhpVersion($constant));
-            });
+        if ($filterCallback === null) {
+            $filterCallback = ConstantsFilterPredicateProvider::getDefaultSuitableConstants($constantName);
         }
+        $constants = array_filter($this->constants, $filterCallback);
         return array_pop($constants);
     }
 
     public function addMethod(PHPMethod $parsedMethod)
     {
-        if (isset($parsedMethod->name)) {
-            if (array_key_exists($parsedMethod->name, $this->methods)) {
-                $amount = count(array_filter(
-                    $this->methods,
-                    function (PHPMethod $nextMethod) use ($parsedMethod) {
-                        return $nextMethod->name === $parsedMethod->name;
-                    }
-                ));
-                $this->methods[$parsedMethod->name . '_duplicated_' . $amount] = $parsedMethod;
-            } else {
-                $this->methods[$parsedMethod->name] = $parsedMethod;
-            }
+        if (!isset($parsedMethod->name)) {
+            throw new RuntimeException("Constant name is not set");
         }
-    }
-
-    /**
-     * @param bool $fromReflection
-     * @param string $name
-     * @return PHPMethod|null
-     */
-    public function getMethod($name, $shouldSuitCurrentPhpVersion = true, $fromReflection = false)
-    {
-        if ($fromReflection) {
-            $methods = array_filter($this->methods, function (PHPMethod $method) use ($name) {
-                return $method->name === $name && $method->stubObjectHash == null;
-            });
+        if ($this->methodExists($parsedMethod)) {
+            $this->addDuplicateMethod($parsedMethod);
         } else {
-            $methods = array_filter($this->methods, function (PHPMethod $method) use ($name, $shouldSuitCurrentPhpVersion) {
-                return $method->name === $name && $method->duplicateOtherElement === false
-                    && (!$shouldSuitCurrentPhpVersion || ParserUtils::entitySuitsCurrentPhpVersion($method));
-            });
+            $this->methods[$parsedMethod->name] = $parsedMethod;
         }
+    }
+
+    public function getMethod($searchCriteria, $filterCallback = null)
+    {
+        if ($filterCallback === null) {
+            $filterCallback = MethodsFilterPredicateProvider::getDefaultSuitableMethods($searchCriteria);
+        }
+        $methods = array_filter($this->methods, $filterCallback);
         return array_pop($methods);
     }
 
     /**
-     * @param string $methodHash
-     * @return PHPMethod|null
+     * @return bool
      */
-    public function getMethodByHash($methodHash)
+    private function constantExists(PHPClassConstant $parsedConstant)
     {
-        $methods = array_filter($this->methods, function (PHPMethod $method) use ($methodHash) {
-            return $method->stubObjectHash === $methodHash;
-        });
-        return array_pop($methods);
+        return array_key_exists($parsedConstant->name, $this->constants);
     }
+
+    private function addDuplicateConstant(PHPClassConstant $parsedConstant)
+    {
+        $duplicateCount = $this->getDuplicateCount($parsedConstant->name);
+        $duplicateConstantName = $parsedConstant->name . '_duplicated_' . $duplicateCount;
+        $this->constants[$duplicateConstantName] = $parsedConstant;
+    }
+
+    /**
+     * @param string $constantName
+     * @return int
+     */
+    private function getDuplicateCount($constantName)
+    {
+        return count(array_filter($this->constants, function (PHPClassConstant $existingConstant) use ($constantName) {
+            return $existingConstant->name === $constantName;
+        }));
+    }
+
+    /**
+     * @return bool
+     */
+    private function methodExists(PHPMethod $method)
+    {
+        return array_key_exists($method->name, $this->methods);
+    }
+
+    private function addDuplicateMethod(PHPMethod $method)
+    {
+        $duplicateCount = $this->countDuplicateMethods($method->name);
+        $duplicateName = $method->name . "_duplicated_" . $duplicateCount;
+
+        $this->methods[$duplicateName] = $method;
+    }
+
+    /**
+     * @param string $methodName
+     * @return int
+     */
+    private function countDuplicateMethods($methodName)
+    {
+        return count(array_filter($this->methods, function (PHPMethod $existing) use ($methodName) {
+            return $existing->name === $methodName;
+        }));
+    }
+
 }

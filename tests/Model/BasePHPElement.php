@@ -33,7 +33,9 @@ abstract class BasePHPElement implements PHPDocumentable
     private $phpdocProperties = null;
 
     /** @var string|null */
-    public $name;
+    public $name = null;
+
+    /** @var bool */
     public $stubBelongsToCore = false;
 
     /** @var Exception|null */
@@ -46,10 +48,12 @@ abstract class BasePHPElement implements PHPDocumentable
     public $availableVersionsRangeFromAttribute = null;
 
     /** @var string|null */
-    public $sourceFilePath;
+    public $sourceFilePath = null;
 
     /** @var bool */
     public $duplicateOtherElement = false;
+
+    /** @var string|null */
     public $stubObjectHash = null;
 
     /** @var string|null */
@@ -316,7 +320,7 @@ abstract class BasePHPElement implements PHPDocumentable
      */
     public function hasMutedProblem($stubProblemType)
     {
-        if (array_key_exists($stubProblemType, $this->mutedProblems)) {
+        if (!empty($this->mutedProblems) && array_key_exists($stubProblemType, $this->mutedProblems)) {
             if (in_array('ALL', $this->mutedProblems[$stubProblemType], true) ||
                 in_array((float)getenv('PHP_VERSION'), $this->mutedProblems[$stubProblemType], true)) {
                 return true;
@@ -354,7 +358,6 @@ abstract class BasePHPElement implements PHPDocumentable
     }
 
     /**
-     * @param  $node
      * @return bool
      */
     private static function hasDeprecatedAttribute($node)

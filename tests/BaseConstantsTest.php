@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace StubTests;
 
 use PHPUnit\Framework\Attributes\DataProviderExternal;
+use StubTests\Model\Predicats\ConstantsFilterPredicateProvider;
 use StubTests\TestData\Providers\PhpStormStubsSingleton;
 use StubTests\TestData\Providers\Reflection\ReflectionConstantsProvider;
 use StubTests\TestData\Providers\ReflectionStubsSingleton;
@@ -38,7 +39,8 @@ class BaseConstantsTest extends AbstractBaseStubsTestCase
         if (!$classId && !$constantName) {
             self::markTestSkipped($this->emptyDataSetMessage);
         }
-        $reflectionConstant = ReflectionStubsSingleton::getReflectionStubs()->getClass($classId, fromReflection: true)->getConstant($constantName, fromReflection: true);
+        $reflectionClass = ReflectionStubsSingleton::getReflectionStubs()->getClass($classId);
+        $reflectionConstant = $reflectionClass->getConstant($constantName, ConstantsFilterPredicateProvider::getConstantsFromReflection($constantName));
         $constantValue = $reflectionConstant->value;
         $stubConstant = PhpStormStubsSingleton::getPhpStormStubs()->getClass($classId)->getConstant($constantName);
         static::assertNotEmpty(
@@ -53,7 +55,8 @@ class BaseConstantsTest extends AbstractBaseStubsTestCase
         if (!$classId && !$constantName) {
             self::markTestSkipped($this->emptyDataSetMessage);
         }
-        $reflectionConstant = ReflectionStubsSingleton::getReflectionStubs()->getInterface($classId, fromReflection: true)->getConstant($constantName, fromReflection: true);
+        $reflectedInterface = ReflectionStubsSingleton::getReflectionStubs()->getInterface($classId, fromReflection: true);
+        $reflectionConstant = $reflectedInterface->getConstant($constantName, ConstantsFilterPredicateProvider::getConstantsFromReflection($constantName));
         $constantValue = $reflectionConstant->value;
         $stubConstant = PhpStormStubsSingleton::getPhpStormStubs()->getInterface($classId)->getConstant($constantName);
         static::assertNotEmpty(
@@ -68,7 +71,8 @@ class BaseConstantsTest extends AbstractBaseStubsTestCase
         if (!$classId && !$constantName) {
             self::markTestSkipped($this->emptyDataSetMessage);
         }
-        $reflectionConstant = ReflectionStubsSingleton::getReflectionStubs()->getClass($classId, fromReflection: true)->getConstant($constantName, fromReflection: true);
+        $reflectionClass = ReflectionStubsSingleton::getReflectionStubs()->getClass($classId, sourceFilePath: true);
+        $reflectionConstant = $reflectionClass->getConstant($constantName, ConstantsFilterPredicateProvider::getConstantsFromReflection($constantName));
         $constantVisibility = $reflectionConstant->visibility;
         $stubConstant = PhpStormStubsSingleton::getPhpStormStubs()->getClass($classId)->getConstant($constantName);
         static::assertEquals(
@@ -85,7 +89,8 @@ class BaseConstantsTest extends AbstractBaseStubsTestCase
         if (!$classId && !$constantName) {
             self::markTestSkipped($this->emptyDataSetMessage);
         }
-        $reflectionConstant = ReflectionStubsSingleton::getReflectionStubs()->getInterface($classId, fromReflection: true)->getConstant($constantName, fromReflection: true);
+        $reflectionInterface = ReflectionStubsSingleton::getReflectionStubs()->getInterface($classId, fromReflection: true);
+        $reflectionConstant = $reflectionInterface->getConstant($constantName, ConstantsFilterPredicateProvider::getConstantsFromReflection($constantName));
         $constantVisibility = $reflectionConstant->visibility;
         $stubConstant = PhpStormStubsSingleton::getPhpStormStubs()->getInterface($classId)->getConstant($constantName);
         static::assertEquals(
@@ -102,7 +107,8 @@ class BaseConstantsTest extends AbstractBaseStubsTestCase
         if (!$classId && !$constantName) {
             self::markTestSkipped($this->emptyDataSetMessage);
         }
-        $reflectionConstant = ReflectionStubsSingleton::getReflectionStubs()->getEnum($classId, fromReflection: true)->getConstant($constantName, fromReflection: true);
+        $reflectionEnum = ReflectionStubsSingleton::getReflectionStubs()->getEnum($classId, fromReflection: true);
+        $reflectionConstant = $reflectionEnum->getConstant($constantName, ConstantsFilterPredicateProvider::getConstantsFromReflection($constantName));
         $constantVisibility = $reflectionConstant->visibility;
         $stubConstant = PhpStormStubsSingleton::getPhpStormStubs()->getEnum($classId)->getConstant($constantName);
         static::assertEquals(

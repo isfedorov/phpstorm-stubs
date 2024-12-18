@@ -9,6 +9,9 @@ use function count;
 
 class StubsContainer
 {
+
+    private $containsReflectionStubs;
+
     /**
      * @var PHPConstant[]
      */
@@ -33,6 +36,11 @@ class StubsContainer
      * @var PHPEnum[]
      */
     private $enums = [];
+
+    public function __construct($forReflectionStubs)
+    {
+        $this->containsReflectionStubs = $forReflectionStubs;
+    }
 
     /**
      * @return PHPConstant[]
@@ -81,6 +89,10 @@ class StubsContainer
         return null;
     }
 
+    /**
+     * @param PHPConstant $constant
+     * @return void
+     */
     public function addConstant($constant)
     {
         if (isset($constant->name)) {
@@ -178,14 +190,13 @@ class StubsContainer
      * @param string $id
      * @param string|null $sourceFilePath
      * @param bool $shouldSuitCurrentPhpVersion
-     * @param false $fromReflection
      *
      * @return PHPClass|null
      * @throws RuntimeException
      */
-    public function getClass($id, $sourceFilePath = null, $shouldSuitCurrentPhpVersion = true, $fromReflection = false)
+    public function getClass($id, $sourceFilePath = null, $shouldSuitCurrentPhpVersion = true)
     {
-        if ($fromReflection) {
+        if ($this->containsReflectionStubs) {
             $classes = array_filter($this->classes, function (PHPClass $class) use ($id) {
                 return $class->fqnBasedId === $id && $class->stubObjectHash == null;
             });

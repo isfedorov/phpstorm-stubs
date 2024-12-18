@@ -27,7 +27,7 @@ class ASTVisitor extends NodeVisitorAbstract
 {
     public function __construct(
         protected StubsContainer $stubs,
-        public array &$childEntitiesToAdd,
+        public array &$childEntitiesToAddLater,
         protected bool $isStubCore = false,
         public ?string $sourceFilePath = null
     ) {}
@@ -47,7 +47,7 @@ class ASTVisitor extends NodeVisitorAbstract
             if ($this->isStubCore) {
                 $constant->stubBelongsToCore = true;
             }
-            $this->childEntitiesToAdd['enumCases'][] = $constant;
+            $this->childEntitiesToAddLater['enumCases'][] = $constant;
         } elseif ($node instanceof Node\Stmt\ClassConst) {
             $constantDeclaration = new PHPConstantDeclaration()->readObjectFromStubNode($node);
             foreach ($constantDeclaration->constants as $constant) {
@@ -55,7 +55,7 @@ class ASTVisitor extends NodeVisitorAbstract
                 if ($this->isStubCore) {
                     $constant->stubBelongsToCore = true;
                 }
-                $this->childEntitiesToAdd['classConstants'][] = $constant;
+                $this->childEntitiesToAddLater['classConstants'][] = $constant;
             }
         } elseif ($node instanceof Node\Stmt\Const_) {
             $constantDeclaration = new PHPConstantDeclaration()->readObjectFromStubNode($node);
@@ -81,7 +81,7 @@ class ASTVisitor extends NodeVisitorAbstract
             if ($this->isStubCore) {
                 $method->stubBelongsToCore = true;
             }
-            $this->childEntitiesToAdd['methods'][] = $method;
+            $this->childEntitiesToAddLater['methods'][] = $method;
         } elseif ($node instanceof Interface_) {
             $interface = new PHPInterface()->readObjectFromStubNode($node);
             $interface->sourceFilePath = $this->sourceFilePath;
@@ -109,11 +109,11 @@ class ASTVisitor extends NodeVisitorAbstract
             if ($this->isStubCore) {
                 $property->stubBelongsToCore = true;
             }
-            $this->childEntitiesToAdd['properties'][] = $property;
+            $this->childEntitiesToAddLater['properties'][] = $property;
         }
     }
 
-    public function combineParentInterfaces(PHPInterface $interface): array
+    public function convertParentInterfacesFromStringsToObjects(PHPInterface $interface): array
     {
         $parents = [];
         if (empty($interface->parentInterfaces)) {
@@ -122,18 +122,13 @@ class ASTVisitor extends NodeVisitorAbstract
         /** @var string $parentInterface */
         foreach ($interface->parentInterfaces as $parentInterface) {
             $parents[] = $parentInterface;
-            if ($this->stubs->getInterface(
+            $alreadyParsedInterface = $this->stubs->getInterface(
                 $parentInterface,
                 $interface->stubBelongsToCore ? null : $interface->sourceFilePath,
                 false
-            ) !== null) {
-                foreach ($this->combineParentInterfaces(
-                    $this->stubs->getInterface(
-                        $parentInterface,
-                        $interface->stubBelongsToCore ? null : $interface->sourceFilePath,
-                        false
-                    )
-                ) as $value) {
+            );
+            if ($alreadyParsedInterface !== null) {
+                foreach ($this->convertParentInterfacesFromStringsToObjects($alreadyParsedInterface) as $value) {
                     $parents[] = $value;
                 }
             }
@@ -141,37 +136,31 @@ class ASTVisitor extends NodeVisitorAbstract
         return $parents;
     }
 
-    public function combineImplementedInterfaces(PHPClass $class): array
+    public function convertImplementedInterfacesFromStringsToObjects(PHPClass $class): array
     {
         $interfaces = [];
         /** @var string $interface */
         foreach ($class->interfaces as $interface) {
             $interfaces[] = $interface;
-            if ($this->stubs->getInterface(
+            $alreadyParsedInterface = $this->stubs->getInterface(
                 $interface,
                 $class->stubBelongsToCore ? null : $class->sourceFilePath,
                 false
-            ) !== null) {
-                $interfaces[] = $this->stubs->getInterface(
-                    $interface,
-                    $class->stubBelongsToCore ? null : $class->sourceFilePath,
-                    false
-                )->parentInterfaces;
+            );
+            if ($alreadyParsedInterface !== null) {
+                $interfaces[] = $alreadyParsedInterface->parentInterfaces;
             }
         }
         if ($class->parentClass === null) {
             return $interfaces;
         }
-        if ($this->stubs->getClass(
+        $alreadyParsedClass = $this->stubs->getClass(
             $class->parentClass,
             $class->stubBelongsToCore ? null : $class->sourceFilePath,
             false
-        ) !== null) {
-            $inherited = $this->combineImplementedInterfaces($this->stubs->getClass(
-                $class->parentClass,
-                $class->stubBelongsToCore ? null : $class->sourceFilePath,
-                false
-            ));
+        );
+        if ($alreadyParsedClass !== null) {
+            $inherited = $this->convertImplementedInterfacesFromStringsToObjects($alreadyParsedClass);
             $interfaces[] = CommonUtils::flattenArray($inherited, false);
         }
         return $interfaces;

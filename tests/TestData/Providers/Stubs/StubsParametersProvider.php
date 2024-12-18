@@ -5,6 +5,7 @@ namespace StubTests\TestData\Providers\Stubs;
 
 use Exception;
 use Generator;
+use StubTests\Model\BasePHPClass;
 use StubTests\Model\PHPClass;
 use StubTests\Model\PHPEnum;
 use StubTests\Model\PHPInterface;
@@ -159,6 +160,7 @@ class StubsParametersProvider
         if (empty($toYield)) {
             yield [null, null, null];
         }else {
+            /** @var PHPClass|PHPEnum|PHPInterface $class */
             foreach ($filtered as $class) {
                 foreach (EntitiesFilter::getFilteredStubsMethods($class) as $method) {
                     foreach (EntitiesFilter::getFilteredParameters($method, null, ...$problemTypes) as $parameter) {

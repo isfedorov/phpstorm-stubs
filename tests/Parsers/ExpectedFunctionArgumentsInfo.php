@@ -9,10 +9,7 @@ use PhpParser\Node\Expr;
 class ExpectedFunctionArgumentsInfo
 {
     /**
-     * ExpectedFunctionArgumentsInfo constructor.
-     * @param Expr|null $functionReference
      * @param Expr[] $expectedArguments
-     * @param int $index
      */
     public function __construct(private ?Expr $functionReference, private array $expectedArguments, private readonly int $index) {}
 
