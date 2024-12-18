@@ -6,7 +6,8 @@ use PhpParser\Node\Expr\Cast;
 use PhpParser\Node\Expr\ConstFetch;
 use PhpParser\Node\Expr\UnaryMinus;
 use PhpParser\Node\Stmt\ClassLike;
-use PhpParser\Node\Stmt\Namespace_;
+use StubTests\Parsers\Helpers\AttributesHelper;
+use StubTests\Parsers\Helpers\IdentifierHelper;
 
 class PHPConstantDeclaration extends BasePHPElement
 {
@@ -27,19 +28,19 @@ class PHPConstantDeclaration extends BasePHPElement
                 } else {
                     $constant->visibility = 'public';
                 }
-                $constant->parentId = self::getFQN($parentNode);
+                $constant->parentId = IdentifierHelper::getFQN($parentNode);
             } else {
                 $constant = new PHPConstant();
-                $constant->fqnBasedId = self::getFQN($const);
+                $constant->fqnBasedId = IdentifierHelper::getFQN($const);
                 $constant->namespace = rtrim(str_replace((string)$const->name, "", "\\" . $const->namespacedName), '\\');
             }
             $constant->name = $const->name->name;
             $constant->value = $this->getConstValue($const);
             if (property_exists($node, 'attrGroups')) {
-                $constant->getOrCreateStubSpecificProperties()->availableVersionsRangeFromAttribute = self::findAvailableVersionsRangeFromAttribute($node->attrGroups);
+                $constant->getOrCreateStubSpecificProperties()->availableVersionsRangeFromAttribute = AttributesHelper::findAvailableVersionsRangeFromAttribute($node->attrGroups);
             }
             $constant->collectTags($node);
-            $constant->checkDeprecationTag($node);
+            $constant->checkDeprecation($node);
             $constant->getOrCreateStubSpecificProperties()->stubObjectHash = spl_object_hash($constant);
             array_push($this->constants, $constant);
         }

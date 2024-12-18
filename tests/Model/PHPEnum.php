@@ -5,6 +5,9 @@ namespace StubTests\Model;
 use phpDocumentor\Reflection\DocBlock\Tags\PropertyRead;
 use phpDocumentor\Reflection\DocBlockFactory;
 use PhpParser\Node\Stmt\Enum_;
+use StubTests\Parsers\Helpers\AttributesHelper;
+use StubTests\Parsers\Helpers\IdentifierHelper;
+use StubTests\Parsers\Helpers\TypeHelper;
 use StubTests\Parsers\ParserUtils;
 
 class PHPEnum extends PHPClass
@@ -64,14 +67,14 @@ class PHPEnum extends PHPClass
      */
     public function readObjectFromStubNode($node)
     {
-        $this->fqnBasedId = self::getFQN($node);
-        $this->name = self::getShortName($node);
+        $this->fqnBasedId = IdentifierHelper::getFQN($node);
+        $this->name = IdentifierHelper::getShortName($node);
         $this->namespace = rtrim(str_replace((string)$node->name, "", "\\" . $node->namespacedName), '\\');
-        $this->getOrCreateStubSpecificProperties()->availableVersionsRangeFromAttribute = self::findAvailableVersionsRangeFromAttribute($node->attrGroups);
+        $this->getOrCreateStubSpecificProperties()->availableVersionsRangeFromAttribute = AttributesHelper::findAvailableVersionsRangeFromAttribute($node->attrGroups);
         $this->collectTags($node);
-        $this->checkDeprecationTag($node);
+        $this->checkDeprecation($node);
         if (!empty($node->extends)) {
-            $this->parentClass = self::getShortName($node->extends);
+            $this->parentClass = IdentifierHelper::getShortName($node->extends);
         }
         if (!empty($node->implements)) {
             foreach ($node->implements as $interfaceObject) {
@@ -97,7 +100,7 @@ class PHPEnum extends PHPClass
                 $newProperty->access = 'public';
                 $newProperty->name = $propertyName;
                 $newProperty->parentId = $this->name;
-                $newProperty->typesFromSignature = self::convertParsedTypeToArray($property->getType());
+                $newProperty->typesFromSignature = TypeHelper::convertParsedTypeToArray($property->getType());
                 assert(
                     !array_key_exists($propertyName, $this->properties),
                     "Property '$propertyName' is already declared in class '$this->name'"

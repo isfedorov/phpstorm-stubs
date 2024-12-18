@@ -19,6 +19,8 @@ use ReflectionFunctionAbstract;
 use RuntimeException;
 use stdClass;
 use StubTests\Parsers\DocFactoryProvider;
+use StubTests\Parsers\Helpers\AttributesHelper;
+use StubTests\Parsers\Helpers\TypeHelper;
 use StubTests\Parsers\ParserUtils;
 
 class PHPFunction extends PHPNamespacedElement
@@ -53,7 +55,7 @@ class PHPFunction extends PHPNamespacedElement
             $this->parameters[] = (new PHPParameter())->readObjectFromReflection($parameter);
         }
         if (method_exists($reflectionObject, 'getReturnType')) {
-            $returnTypes = self::getReflectionTypeAsArray($reflectionObject->getReturnType());
+            $returnTypes = TypeHelper::getReflectionTypeAsArray($reflectionObject->getReturnType());
         }
         if (!empty($returnTypes)) {
             array_push($this->returnTypesFromSignature, ...$returnTypes);
@@ -72,10 +74,10 @@ class PHPFunction extends PHPNamespacedElement
         $this->fqnBasedId = "\\" . implode("\\", $NamespaceParts);
         $this->name = array_pop($NamespaceParts);
         $this->namespace = trim(implode("\\", $NamespaceParts), '\\');
-        $typesFromAttribute = self::findTypesFromAttribute($node->attrGroups);
-        $this->getOrCreateStubSpecificProperties()->availableVersionsRangeFromAttribute = self::findAvailableVersionsRangeFromAttribute($node->attrGroups);
+        $typesFromAttribute = TypeHelper::findTypesFromAttribute($node->attrGroups);
+        $this->getOrCreateStubSpecificProperties()->availableVersionsRangeFromAttribute = AttributesHelper::findAvailableVersionsRangeFromAttribute($node->attrGroups);
         $this->returnTypesFromAttribute = $typesFromAttribute;
-        array_push($this->returnTypesFromSignature, ...self::convertParsedTypeToArray($node->getReturnType()));
+        array_push($this->returnTypesFromSignature, ...TypeHelper::convertParsedTypeToArray($node->getReturnType()));
         $index = 0;
         foreach ($node->getParams() as $parameter) {
             $parsedParameter = (new PHPParameter())->readObjectFromStubNode($parameter);
@@ -110,7 +112,7 @@ class PHPFunction extends PHPNamespacedElement
         }
 
         $this->checkIfReturnTypeIsTentative($node);
-        $this->checkDeprecationTag($node);
+        $this->checkDeprecation($node);
         $this->checkReturnTag();
         $this->getOrCreateStubSpecificProperties()->stubObjectHash = spl_object_hash($this);
         return $this;

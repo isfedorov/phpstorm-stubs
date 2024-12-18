@@ -5,6 +5,8 @@ namespace StubTests\Model;
 use PhpParser\Node\Expr\ClassConstFetch;
 use PhpParser\Node\Scalar\String_;
 use PhpParser\Node\Stmt\EnumCase;
+use StubTests\Parsers\Helpers\AttributesHelper;
+use StubTests\Parsers\Helpers\IdentifierHelper;
 
 class PHPEnumCase extends PHPClassConstant
 {
@@ -38,9 +40,9 @@ class PHPEnumCase extends PHPClassConstant
         //$this->collectTags($node);
         $parentNode = $node->getAttribute('parent');
         if (property_exists($parentNode, 'attrGroups')) {
-            $this->getOrCreateStubSpecificProperties()->availableVersionsRangeFromAttribute = self::findAvailableVersionsRangeFromAttribute($parentNode->attrGroups);
+            $this->getOrCreateStubSpecificProperties()->availableVersionsRangeFromAttribute = AttributesHelper::findAvailableVersionsRangeFromAttribute($parentNode->attrGroups);
         }
-        $this->parentId = self::getFQN($parentNode);
+        $this->parentId = IdentifierHelper::getFQN($parentNode);
         $this->getOrCreateStubSpecificProperties()->stubObjectHash = spl_object_hash($this);
         return $this;
     }

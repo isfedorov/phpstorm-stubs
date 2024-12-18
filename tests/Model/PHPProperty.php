@@ -6,6 +6,8 @@ use Exception;
 use PhpParser\Node\Stmt\Property;
 use ReflectionProperty;
 use stdClass;
+use StubTests\Parsers\Helpers\IdentifierHelper;
+use StubTests\Parsers\Helpers\TypeHelper;
 
 class PHPProperty extends BasePHPElement
 {
@@ -48,7 +50,7 @@ class PHPProperty extends BasePHPElement
         $this->access = $access;
         $this->is_static = $reflectionObject->isStatic();
         if (method_exists($reflectionObject, 'getType')) {
-            $this->typesFromSignature = self::getReflectionTypeAsArray($reflectionObject->getType());
+            $this->typesFromSignature = TypeHelper::getReflectionTypeAsArray($reflectionObject->getType());
         }
         if (method_exists($reflectionObject, 'isReadonly')) {
             $this->isReadonly = $reflectionObject->isReadOnly();
@@ -74,17 +76,17 @@ class PHPProperty extends BasePHPElement
         }
         $this->access = $access;
         $this->isReadonly = $node->isReadonly();
-        $this->typesFromSignature = self::convertParsedTypeToArray($node->type);
-        $this->typesFromAttribute = self::findTypesFromAttribute($node->attrGroups);
+        $this->typesFromSignature = TypeHelper::convertParsedTypeToArray($node->type);
+        $this->typesFromAttribute = TypeHelper::findTypesFromAttribute($node->attrGroups);
         foreach ($this->getPhpdocProperties()->varTags as $varTag) {
             $this->typesFromPhpDoc = explode('|', (string)$varTag->getType());
         }
 
         $parentNode = $node->getAttribute('parent');
         if ($parentNode !== null) {
-            $this->parentId = self::getFQN($parentNode);
+            $this->parentId = IdentifierHelper::getFQN($parentNode);
         }
-        $this->checkDeprecationTag($node);
+        $this->checkDeprecation($node);
         $this->getOrCreateStubSpecificProperties()->stubObjectHash = spl_object_hash($this);
         return $this;
     }

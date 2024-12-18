@@ -6,6 +6,8 @@ use Exception;
 use PhpParser\Node\Param;
 use ReflectionParameter;
 use stdClass;
+use StubTests\Parsers\Helpers\AttributesHelper;
+use StubTests\Parsers\Helpers\TypeHelper;
 use function in_array;
 
 class PHPParameter extends BasePHPElement
@@ -35,7 +37,7 @@ class PHPParameter extends BasePHPElement
     {
         $this->name = $reflectionObject->name;
         if (method_exists($reflectionObject, 'getType')){
-            $this->typesFromSignature = self::getReflectionTypeAsArray($reflectionObject->getType());
+            $this->typesFromSignature = TypeHelper::getReflectionTypeAsArray($reflectionObject->getType());
         }
         $this->is_vararg = $reflectionObject->isVariadic();
         $this->is_passed_by_ref = $reflectionObject->isPassedByReference() && !$reflectionObject->canBePassedByValue();
@@ -59,14 +61,14 @@ class PHPParameter extends BasePHPElement
     {
         $this->name = $node->var->name;
 
-        $this->typesFromAttribute = self::findTypesFromAttribute($node->attrGroups);
-        $this->typesFromSignature = self::convertParsedTypeToArray($node->type);
-        $this->getOrCreateStubSpecificProperties()->availableVersionsRangeFromAttribute = self::findAvailableVersionsRangeFromAttribute($node->attrGroups);
+        $this->typesFromAttribute = TypeHelper::findTypesFromAttribute($node->attrGroups);
+        $this->typesFromSignature = TypeHelper::convertParsedTypeToArray($node->type);
+        $this->getOrCreateStubSpecificProperties()->availableVersionsRangeFromAttribute = AttributesHelper::findAvailableVersionsRangeFromAttribute($node->attrGroups);
         $this->is_vararg = $node->variadic;
         $this->is_passed_by_ref = $node->byRef;
         $this->defaultValue = $node->default;
         $this->isOptional = !empty($this->defaultValue) || $this->is_vararg;
-        $this->checkDeprecationTag($node);
+        $this->checkDeprecation($node);
         $this->getOrCreateStubSpecificProperties()->stubObjectHash = spl_object_hash($this);
         return $this;
     }

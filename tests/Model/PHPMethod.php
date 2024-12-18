@@ -8,6 +8,9 @@ use PhpParser\Node\Stmt\ClassMethod;
 use ReflectionMethod;
 use RuntimeException;
 use stdClass;
+use StubTests\Parsers\Helpers\AttributesHelper;
+use StubTests\Parsers\Helpers\IdentifierHelper;
+use StubTests\Parsers\Helpers\TypeHelper;
 use StubTests\Parsers\ParserUtils;
 use function strlen;
 
@@ -53,7 +56,7 @@ class PHPMethod extends PHPFunction
             $this->parameters[] = (new PHPParameter())->readObjectFromReflection($parameter);
         }
         if (method_exists($reflectionObject, 'getReturnType')) {
-            $returnTypes = self::getReflectionTypeAsArray($reflectionObject->getReturnType());
+            $returnTypes = TypeHelper::getReflectionTypeAsArray($reflectionObject->getReturnType());
         }
         if (!empty($returnTypes)) {
             array_push($this->returnTypesFromSignature, ...$returnTypes);
@@ -71,7 +74,7 @@ class PHPMethod extends PHPFunction
         if (method_exists($reflectionObject, 'hasTentativeReturnType')) {
             $this->isReturnTypeTentative = $reflectionObject->hasTentativeReturnType();
             if ($this->isReturnTypeTentative) {
-                $returnTypes = self::getReflectionTypeAsArray($reflectionObject->getTentativeReturnType());
+                $returnTypes = TypeHelper::getReflectionTypeAsArray($reflectionObject->getTentativeReturnType());
                 if (!empty($returnTypes)) {
                     array_push($this->returnTypesFromSignature, ...$returnTypes);
                 }
@@ -89,16 +92,16 @@ class PHPMethod extends PHPFunction
      */
     public function readObjectFromStubNode($node)
     {
-        $this->parentId = self::getFQN($node->getAttribute('parent'));
+        $this->parentId = IdentifierHelper::getFQN($node->getAttribute('parent'));
         $this->name = $node->name->name;
-        $typesFromAttribute = self::findTypesFromAttribute($node->attrGroups);
-        $this->isReturnTypeTentative = self::hasTentativeTypeAttribute($node->attrGroups);
-        $this->getOrCreateStubSpecificProperties()->availableVersionsRangeFromAttribute = self::findAvailableVersionsRangeFromAttribute($node->attrGroups);
+        $typesFromAttribute = TypeHelper::findTypesFromAttribute($node->attrGroups);
+        $this->isReturnTypeTentative = AttributesHelper::hasTentativeTypeAttribute($node->attrGroups);
+        $this->getOrCreateStubSpecificProperties()->availableVersionsRangeFromAttribute = AttributesHelper::findAvailableVersionsRangeFromAttribute($node->attrGroups);
         $this->returnTypesFromAttribute = $typesFromAttribute;
-        array_push($this->returnTypesFromSignature, ...self::convertParsedTypeToArray($node->getReturnType()));
+        array_push($this->returnTypesFromSignature, ...TypeHelper::convertParsedTypeToArray($node->getReturnType()));
         $this->collectTags($node);
         $this->checkIfReturnTypeIsTentative($node);
-        $this->checkDeprecationTag($node);
+        $this->checkDeprecation($node);
         $this->checkReturnTag();
 
         if (strncmp($this->name, 'PS_UNRESERVE_PREFIX_', 20) === 0) {

@@ -6,6 +6,8 @@ use Exception;
 use PhpParser\Node\Stmt\Interface_;
 use ReflectionClass;
 use stdClass;
+use StubTests\Parsers\Helpers\AttributesHelper;
+use StubTests\Parsers\Helpers\IdentifierHelper;
 
 class PHPInterface extends BasePHPClass
 {
@@ -48,12 +50,12 @@ class PHPInterface extends BasePHPClass
      */
     public function readObjectFromStubNode($node)
     {
-        $this->fqnBasedId = self::getFQN($node);
-        $this->name = self::getShortName($node);
+        $this->fqnBasedId = IdentifierHelper::getFQN($node);
+        $this->name = IdentifierHelper::getShortName($node);
         $this->namespace = rtrim(str_replace((string)$node->name, "", "\\" . $node->namespacedName), '\\');
         $this->collectTags($node);
-        $this->checkDeprecationTag($node);
-        $this->getOrCreateStubSpecificProperties()->availableVersionsRangeFromAttribute = self::findAvailableVersionsRangeFromAttribute($node->attrGroups);
+        $this->checkDeprecation($node);
+        $this->getOrCreateStubSpecificProperties()->availableVersionsRangeFromAttribute = AttributesHelper::findAvailableVersionsRangeFromAttribute($node->attrGroups);
         if (!empty($node->extends)) {
             foreach ($node->extends as $extend) {
                 $this->parentInterfaces[] = $extend->toCodeString();

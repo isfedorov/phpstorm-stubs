@@ -9,6 +9,9 @@ use PhpParser\Node\Stmt\Class_;
 use ReflectionClass;
 use RuntimeException;
 use stdClass;
+use StubTests\Parsers\Helpers\AttributesHelper;
+use StubTests\Parsers\Helpers\IdentifierHelper;
+use StubTests\Parsers\Helpers\TypeHelper;
 use StubTests\Parsers\ParserUtils;
 use function array_key_exists;
 use function assert;
@@ -87,14 +90,14 @@ class PHPClass extends BasePHPClass
      */
     public function readObjectFromStubNode($node)
     {
-        $this->fqnBasedId = $this::getFQN($node);
-        $this->name = self::getShortName($node);
+        $this->fqnBasedId = IdentifierHelper::getFQN($node);
+        $this->name = IdentifierHelper::getShortName($node);
         $this->namespace = rtrim(str_replace((string)$node->name, "", "\\" . $node->namespacedName), '\\');
         $this->isFinal = $node->isFinal();
         $this->isReadonly = $node->isReadonly();
-        $this->getOrCreateStubSpecificProperties()->availableVersionsRangeFromAttribute = self::findAvailableVersionsRangeFromAttribute($node->attrGroups);
+        $this->getOrCreateStubSpecificProperties()->availableVersionsRangeFromAttribute = AttributesHelper::findAvailableVersionsRangeFromAttribute($node->attrGroups);
         $this->collectTags($node);
-        $this->checkDeprecationTag($node);
+        $this->checkDeprecation($node);
         if (!empty($node->extends)) {
             $this->parentClass = $node->extends->toCodeString();
         }
@@ -118,7 +121,7 @@ class PHPClass extends BasePHPClass
                 $newProperty->access = 'public';
                 $newProperty->name = $propertyName;
                 $newProperty->parentId = $this->fqnBasedId;
-                $newProperty->typesFromSignature = self::convertParsedTypeToArray($property->getType());
+                $newProperty->typesFromSignature = TypeHelper::convertParsedTypeToArray($property->getType());
                 assert(
                     !array_key_exists($propertyName, $this->properties),
                     "Property '$propertyName' is already declared in class '$this->name'"
