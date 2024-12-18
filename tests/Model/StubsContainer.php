@@ -54,11 +54,11 @@ class StubsContainer
     {
         if ($fromReflection) {
             $constants = array_filter($this->constants, function ($const) use ($constantId) {
-                return $const->id === $constantId && $const->stubObjectHash == null;
+                return $const->fqnBasedId === $constantId && $const->stubObjectHash == null;
             });
         } else {
             $constants = array_filter($this->constants, function ($const) use ($constantId, $shouldSuitCurrentPhpVersion) {
-                return $const->id === $constantId && $const->duplicateOtherElement === false
+                return $const->fqnBasedId === $constantId && $const->duplicateOtherElement === false
                     && (!$shouldSuitCurrentPhpVersion || ParserUtils::entitySuitsCurrentPhpVersion($const));
             });
         }
@@ -84,17 +84,17 @@ class StubsContainer
     public function addConstant($constant)
     {
         if (isset($constant->name)) {
-            if (array_key_exists($constant->id, $this->constants)) {
+            if (array_key_exists($constant->fqnBasedId, $this->constants)) {
                 $amount = count(array_filter(
                     $this->constants,
                     function ($nextConstant) use ($constant) {
-                        return $nextConstant->id === $constant->id;
+                        return $nextConstant->fqnBasedId === $constant->fqnBasedId;
                     }
                 ));
                 $constant->duplicateOtherElement = true;
-                $this->constants[$constant->id . '_duplicated_' . $amount] = $constant;
+                $this->constants[$constant->fqnBasedId . '_duplicated_' . $amount] = $constant;
             } else {
-                $this->constants[$constant->id] = $constant;
+                $this->constants[$constant->fqnBasedId] = $constant;
             }
         }
     }
@@ -120,11 +120,11 @@ class StubsContainer
     {
         if ($fromReflection) {
             $functions = array_filter($this->functions, function (PHPFunction $function) use ($id) {
-                return $function->id === $id && $function->stubObjectHash == null;
+                return $function->fqnBasedId === $id && $function->stubObjectHash == null;
             });
         } else {
             $functions = array_filter($this->functions, function (PHPFunction $function) use ($shouldSuitCurrentPhpVersion, $id) {
-                return $function->id === $id && (!$shouldSuitCurrentPhpVersion || ParserUtils::entitySuitsCurrentPhpVersion($function));
+                return $function->fqnBasedId === $id && (!$shouldSuitCurrentPhpVersion || ParserUtils::entitySuitsCurrentPhpVersion($function));
             });
         }
         if (count($functions) > 1) {
@@ -150,18 +150,18 @@ class StubsContainer
 
     public function addFunction(PHPFunction $function)
     {
-        if (isset($function->id)) {
-            if (array_key_exists($function->id, $this->functions)) {
+        if (isset($function->fqnBasedId)) {
+            if (array_key_exists($function->fqnBasedId, $this->functions)) {
                 $amount = count(array_filter(
                     $this->functions,
                     function (PHPFunction $nextFunction) use ($function) {
-                        return $nextFunction->id === $function->id;
+                        return $nextFunction->fqnBasedId === $function->fqnBasedId;
                     }
                 ));
                 $function->duplicateOtherElement = true;
-                $this->functions[$function->id . '_duplicated_' . $amount] = $function;
+                $this->functions[$function->fqnBasedId . '_duplicated_' . $amount] = $function;
             } else {
-                $this->functions[$function->id] = $function;
+                $this->functions[$function->fqnBasedId] = $function;
             }
         }
     }
@@ -187,11 +187,11 @@ class StubsContainer
     {
         if ($fromReflection) {
             $classes = array_filter($this->classes, function (PHPClass $class) use ($id) {
-                return $class->id === $id && $class->stubObjectHash == null;
+                return $class->fqnBasedId === $id && $class->stubObjectHash == null;
             });
         } else {
             $classes = array_filter($this->classes, function (PHPClass $class) use ($shouldSuitCurrentPhpVersion, $id) {
-                return $class->id === $id && (!$shouldSuitCurrentPhpVersion || ParserUtils::entitySuitsCurrentPhpVersion($class));
+                return $class->fqnBasedId === $id && (!$shouldSuitCurrentPhpVersion || ParserUtils::entitySuitsCurrentPhpVersion($class));
             });
         }
         if (count($classes) === 1) {
@@ -237,7 +237,7 @@ class StubsContainer
     public function getEnum($id, $sourceFilePath = null, $shouldSuitCurrentPhpVersion = true, $fromReflection = false)
     {
         $enums = array_filter($this->enums, function (PHPEnum $enum) use ($shouldSuitCurrentPhpVersion, $id) {
-            return $enum->id === $id && (!$shouldSuitCurrentPhpVersion || ParserUtils::entitySuitsCurrentPhpVersion($enum));
+            return $enum->fqnBasedId === $id && (!$shouldSuitCurrentPhpVersion || ParserUtils::entitySuitsCurrentPhpVersion($enum));
         });
         if (count($enums) === 1) {
             return array_pop($enums);
@@ -282,17 +282,17 @@ class StubsContainer
 
     public function addClass(PHPClass $class)
     {
-        if (isset($class->id)) {
-            if (array_key_exists($class->id, $this->classes)) {
+        if (isset($class->fqnBasedId)) {
+            if (array_key_exists($class->fqnBasedId, $this->classes)) {
                 $amount = count(array_filter(
                     $this->classes,
                     function (PHPClass $nextClass) use ($class) {
-                        return $nextClass->id === $class->id;
+                        return $nextClass->fqnBasedId === $class->fqnBasedId;
                     }
                 ));
-                $this->classes[$class->id . '_duplicated_' . $amount] = $class;
+                $this->classes[$class->fqnBasedId . '_duplicated_' . $amount] = $class;
             } else {
-                $this->classes[$class->id] = $class;
+                $this->classes[$class->fqnBasedId] = $class;
             }
         }
     }
@@ -310,11 +310,11 @@ class StubsContainer
     {
         if ($fromReflection) {
             $interfaces = array_filter($this->interfaces, function (PHPInterface $interface) use ($id) {
-                return $interface->id === $id && $interface->stubObjectHash == null;
+                return $interface->fqnBasedId === $id && $interface->stubObjectHash == null;
             });
         } else {
             $interfaces = array_filter($this->interfaces, function (PHPInterface $interface) use ($shouldSuitCurrentPhpVersion, $id) {
-                return $interface->id === $id && (!$shouldSuitCurrentPhpVersion || ParserUtils::entitySuitsCurrentPhpVersion($interface));
+                return $interface->fqnBasedId === $id && (!$shouldSuitCurrentPhpVersion || ParserUtils::entitySuitsCurrentPhpVersion($interface));
             });
         }
         if (count($interfaces) === 1) {
@@ -382,34 +382,34 @@ class StubsContainer
 
     public function addInterface(PHPInterface $interface)
     {
-        if (isset($interface->id)) {
-            if (array_key_exists($interface->id, $this->interfaces)) {
+        if (isset($interface->fqnBasedId)) {
+            if (array_key_exists($interface->fqnBasedId, $this->interfaces)) {
                 $amount = count(array_filter(
                     $this->interfaces,
                     function (PHPInterface $nextInterface) use ($interface) {
-                        return $nextInterface->id === $interface->id;
+                        return $nextInterface->fqnBasedId === $interface->fqnBasedId;
                     }
                 ));
-                $this->interfaces[$interface->id . '_duplicated_' . $amount] = $interface;
+                $this->interfaces[$interface->fqnBasedId . '_duplicated_' . $amount] = $interface;
             } else {
-                $this->interfaces[$interface->id] = $interface;
+                $this->interfaces[$interface->fqnBasedId] = $interface;
             }
         }
     }
 
     public function addEnum(PHPEnum $enum)
     {
-        if (isset($enum->id)) {
-            if (array_key_exists($enum->id, $this->enums)) {
+        if (isset($enum->fqnBasedId)) {
+            if (array_key_exists($enum->fqnBasedId, $this->enums)) {
                 $amount = count(array_filter(
                     $this->enums,
                     function (PHPEnum $nextEnum) use ($enum) {
-                        return $nextEnum->id === $enum->id;
+                        return $nextEnum->fqnBasedId === $enum->fqnBasedId;
                     }
                 ));
-                $this->enums[$enum->id . '_duplicated_' . $amount] = $enum;
+                $this->enums[$enum->fqnBasedId . '_duplicated_' . $amount] = $enum;
             } else {
-                $this->enums[$enum->id] = $enum;
+                $this->enums[$enum->fqnBasedId] = $enum;
             }
         }
     }

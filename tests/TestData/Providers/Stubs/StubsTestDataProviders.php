@@ -16,7 +16,7 @@ class StubsTestDataProviders
     public static function allFunctionsProvider(): ?Generator
     {
         foreach (PhpStormStubsSingleton::getPhpStormStubs()->getFunctions() as $functionName => $function) {
-            yield "function $functionName" => [$function->id];
+            yield "function $functionName" => [$function->fqnBasedId];
         }
     }
 
@@ -24,7 +24,7 @@ class StubsTestDataProviders
     {
         $classes = PhpStormStubsSingleton::getPhpStormStubs()->getClasses();
         foreach ($classes as $class) {
-            yield "class $class->sourceFilePath/$class->id" => [$class->id, $class->sourceFilePath];
+            yield "class $class->sourceFilePath/$class->fqnBasedId" => [$class->fqnBasedId, $class->sourceFilePath];
         }
     }
 
@@ -32,7 +32,7 @@ class StubsTestDataProviders
     {
         $interfaces = PhpStormStubsSingleton::getPhpStormStubs()->getInterfaces();
         foreach ($interfaces as $class) {
-            yield "class $class->sourceFilePath/$class->id" => [$class->id, $class->sourceFilePath];
+            yield "class $class->sourceFilePath/$class->fqnBasedId" => [$class->fqnBasedId, $class->sourceFilePath];
         }
     }
 
@@ -40,7 +40,7 @@ class StubsTestDataProviders
     {
         $enums = PhpStormStubsSingleton::getPhpStormStubs()->getEnums();
         foreach ($enums as $class) {
-            yield "class $class->sourceFilePath/$class->id" => [$class->id, $class->sourceFilePath];
+            yield "class $class->sourceFilePath/$class->fqnBasedId" => [$class->fqnBasedId, $class->sourceFilePath];
         }
     }
 

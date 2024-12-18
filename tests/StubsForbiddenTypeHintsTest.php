@@ -82,7 +82,7 @@ class StubsForbiddenTypeHintsTest extends AbstractBaseStubsTestCase
         self::assertLessThan(
             2,
             count($stubParameter->typesFromSignature),
-            "Method '$stubsClass->id::$stubsMethod->name' with @since '$sinceVersion'  
+            "Method '$stubsClass->fqnBasedId::$stubsMethod->name' with @since '$sinceVersion'  
                 has parameter '$parameterName' with union typehint '" . implode('|', $stubParameter->typesFromSignature) . "' 
                 but union typehints available only since php 8.0"
         );
@@ -101,7 +101,7 @@ class StubsForbiddenTypeHintsTest extends AbstractBaseStubsTestCase
         self::assertLessThan(
             2,
             count($stubParameter->typesFromSignature),
-            "Method '$stubsInterface->id::$stubsMethod->name' with @since '$sinceVersion'  
+            "Method '$stubsInterface->fqnBasedId::$stubsMethod->name' with @since '$sinceVersion'  
                 has parameter '$parameterName' with union typehint '" . implode('|', $stubParameter->typesFromSignature) . "' 
                 but union typehints available only since php 8.0"
         );
@@ -120,7 +120,7 @@ class StubsForbiddenTypeHintsTest extends AbstractBaseStubsTestCase
         self::assertLessThan(
             2,
             count($stubParameter->typesFromSignature),
-            "Method '$stubsEnum->id::$stubsMethod->name' with @since '$sinceVersion'  
+            "Method '$stubsEnum->fqnBasedId::$stubsMethod->name' with @since '$sinceVersion'  
                 has parameter '$parameterName' with union typehint '" . implode('|', $stubParameter->typesFromSignature) . "' 
                 but union typehints available only since php 8.0"
         );
@@ -138,7 +138,7 @@ class StubsForbiddenTypeHintsTest extends AbstractBaseStubsTestCase
         $sinceVersion = ParserUtils::getDeclaredSinceVersion($stubsMethod);
         self::assertEmpty(
             array_filter($stubParameter->typesFromSignature, fn (string $type) => str_contains($type, '?')),
-            "Method '$stubsClass->id::$stubsMethod->name' with @since '$sinceVersion'  
+            "Method '$stubsClass->fqnBasedId::$stubsMethod->name' with @since '$sinceVersion'  
                 has nullable parameter '$parameterName' with typehint '" . implode('|', $stubParameter->typesFromSignature) . "' 
                 but nullable typehints available only since php 7.1"
         );
@@ -156,7 +156,7 @@ class StubsForbiddenTypeHintsTest extends AbstractBaseStubsTestCase
         $sinceVersion = ParserUtils::getDeclaredSinceVersion($stubsMethod);
         self::assertEmpty(
             array_filter($stubParameter->typesFromSignature, fn (string $type) => str_contains($type, '?')),
-            "Method '$stubsInteface->id::$stubsMethod->name' with @since '$sinceVersion'  
+            "Method '$stubsInterface->fqnBasedId::$stubsMethod->name' with @since '$sinceVersion'  
                 has nullable parameter '$parameterName' with typehint '" . implode('|', $stubParameter->typesFromSignature) . "' 
                 but nullable typehints available only since php 7.1"
         );
@@ -174,7 +174,7 @@ class StubsForbiddenTypeHintsTest extends AbstractBaseStubsTestCase
         $sinceVersion = ParserUtils::getDeclaredSinceVersion($stubsMethod);
         self::assertEmpty(
             array_filter($stubParameter->typesFromSignature, fn (string $type) => str_contains($type, '?')),
-            "Method '$stubsEnum->id::$stubsMethod->name' with @since '$sinceVersion'  
+            "Method '$stubsEnum->fqnBasedId::$stubsMethod->name' with @since '$sinceVersion'  
                 has nullable parameter '$parameterName' with typehint '" . implode('|', $stubParameter->typesFromSignature) . "' 
                 but nullable typehints available only since php 7.1"
         );
@@ -243,7 +243,7 @@ class StubsForbiddenTypeHintsTest extends AbstractBaseStubsTestCase
         $sinceVersion = ParserUtils::getDeclaredSinceVersion($stubsMethod);
         self::assertEmpty(
             array_intersect(['int', 'float', 'string', 'bool', 'mixed', 'object'], $stubsParameter->typesFromSignature),
-            "Method '$class->id::$stubsMethod->name' with @since '$sinceVersion'  
+            "Method '$class->fqnBasedId::$stubsMethod->name' with @since '$sinceVersion'  
                 has parameter '$parameterName' with typehint '" . implode('|', $stubsParameter->typesFromSignature) .
             "' but typehints available only since php 7"
         );
@@ -261,7 +261,7 @@ class StubsForbiddenTypeHintsTest extends AbstractBaseStubsTestCase
         $sinceVersion = ParserUtils::getDeclaredSinceVersion($stubsMethod);
         self::assertEmpty(
             array_intersect(['int', 'float', 'string', 'bool', 'mixed', 'object'], $stubsParameter->typesFromSignature),
-            "Method '$stubsIntefrace->id::$stubsMethod->name' with @since '$sinceVersion'  
+            "Method '$stubsIntefrace->fqnBasedId::$stubsMethod->name' with @since '$sinceVersion'  
                 has parameter '$parameterName' with typehint '" . implode('|', $stubsParameter->typesFromSignature) .
             "' but typehints available only since php 7"
         );
@@ -279,7 +279,7 @@ class StubsForbiddenTypeHintsTest extends AbstractBaseStubsTestCase
         $sinceVersion = ParserUtils::getDeclaredSinceVersion($stubsMethod);
         self::assertEmpty(
             array_intersect(['int', 'float', 'string', 'bool', 'mixed', 'object'], $stubsParameter->typesFromSignature),
-            "Method '$stubsEnum->id::$stubsMethod->name' with @since '$sinceVersion'  
+            "Method '$stubsEnum->fqnBasedId::$stubsMethod->name' with @since '$sinceVersion'  
                 has parameter '$parameterName' with typehint '" . implode('|', $stubsParameter->typesFromSignature) .
             "' but typehints available only since php 7"
         );

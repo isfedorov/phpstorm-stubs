@@ -23,7 +23,7 @@ class PHPConstant extends PHPNamespacedElement
         if (!empty($reflectionObject->getNamespaceName())) {
             $this->namespace = "\\" . $reflectionObject->getNamespaceName();
         }
-        $this->id = "$this->namespace\\$this->name";
+        $this->fqnBasedId = "$this->namespace\\$this->name";
         $this->value = $reflectionObject->getValue();
         $this->isDeprecated = $reflectionObject->isDeprecated();
         return $this;

@@ -44,7 +44,11 @@ abstract class BasePHPElement
     /** @var bool */
     public $duplicateOtherElement = false;
     public $stubObjectHash = null;
-    public $id;
+
+    /** @var string|null */
+    public $fqnBasedId = null;
+
+    /** @var bool */
     public $isDeprecated = false;
 
     /**

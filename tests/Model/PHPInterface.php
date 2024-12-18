@@ -21,7 +21,7 @@ class PHPInterface extends BasePHPClass
         if (!empty($reflectionObject->getNamespaceName())) {
             $this->namespace = "\\" . $reflectionObject->getNamespaceName();
         }
-        $this->id = "$this->namespace\\$this->name";
+        $this->fqnBasedId = "$this->namespace\\$this->name";
         foreach ($reflectionObject->getMethods() as $method) {
             if ($method->getDeclaringClass()->getShortName() !== $this->name) {
                 continue;
@@ -48,7 +48,7 @@ class PHPInterface extends BasePHPClass
      */
     public function readObjectFromStubNode($node)
     {
-        $this->id = self::getFQN($node);
+        $this->fqnBasedId = self::getFQN($node);
         $this->name = self::getShortName($node);
         $this->namespace = rtrim(str_replace((string)$node->name, "", "\\" . $node->namespacedName), '\\');
         $this->collectTags($node);

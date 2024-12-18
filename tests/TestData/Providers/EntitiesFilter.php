@@ -135,7 +135,7 @@ class EntitiesFilter
     {
         return match ($classType) {
             PHPClass::class => function (PHPClass $stubClass, PHPMethod $stubMethod, ?float $firstSinceVersion) use ($languageVersion) {
-                $reflectionClass = ReflectionStubsSingleton::getReflectionStubs()->getClass($stubClass->id, fromReflection: true);
+                $reflectionClass = ReflectionStubsSingleton::getReflectionStubs()->getClass($stubClass->fqnBasedId, sourceFilePath: true);
                 $reflectionMethod = null;
                 if ($reflectionClass !== null) {
                     $reflectionMethods = array_filter(
@@ -148,7 +148,7 @@ class EntitiesFilter
                         $firstSinceVersion > $languageVersion);
             },
             PHPInterface::class => function (PHPInterface $stubClass, PHPMethod $stubMethod, ?float $firstSinceVersion) use ($languageVersion) {
-                $reflectionClass = ReflectionStubsSingleton::getReflectionStubs()->getInterface($stubClass->id, fromReflection: true);
+                $reflectionClass = ReflectionStubsSingleton::getReflectionStubs()->getInterface($stubClass->fqnBasedId, fromReflection: true);
                 $reflectionMethod = null;
                 if ($reflectionClass !== null) {
                     $reflectionMethods = array_filter(
@@ -161,7 +161,7 @@ class EntitiesFilter
                         $firstSinceVersion > $languageVersion);
             },
             PHPEnum::class => function (PHPEnum $stubClass, PHPMethod $stubMethod, ?float $firstSinceVersion) use ($languageVersion) {
-                $reflectionClass = ReflectionStubsSingleton::getReflectionStubs()->getEnum($stubClass->id, fromReflection: true);
+                $reflectionClass = ReflectionStubsSingleton::getReflectionStubs()->getEnum($stubClass->fqnBasedId, fromReflection: true);
                 $reflectionMethod = null;
                 if ($reflectionClass !== null) {
                     $reflectionMethods = array_filter(

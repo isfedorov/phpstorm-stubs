@@ -41,7 +41,7 @@ class PHPDefineConstant extends BasePHPElement
         } else {
             $this->value = null;
         }
-        $this->id = "\\$this->name";
+        $this->fqnBasedId = "\\$this->name";
         return $this;
     }
 
@@ -56,7 +56,7 @@ class PHPDefineConstant extends BasePHPElement
             $constName = strtoupper($constName);
         }
         $this->name = $constName;
-        $this->id = "\\$this->name";
+        $this->fqnBasedId = "\\$this->name";
         $this->value = $this->getConstValue($node->args[1]);
         $this->collectTags($node);
         $this->checkDeprecationTag($node);

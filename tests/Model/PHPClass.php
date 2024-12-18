@@ -36,7 +36,7 @@ class PHPClass extends BasePHPClass
         if (!empty($reflectionObject->getNamespaceName())) {
             $this->namespace = "\\" . $reflectionObject->getNamespaceName();
         }
-        $this->id = "$this->namespace\\$this->name";
+        $this->fqnBasedId = "$this->namespace\\$this->name";
         $parent = $reflectionObject->getParentClass();
         if ($parent !== false) {
             if (!empty($parent->getNamespaceName())) {
@@ -87,7 +87,7 @@ class PHPClass extends BasePHPClass
      */
     public function readObjectFromStubNode($node)
     {
-        $this->id = $this::getFQN($node);
+        $this->fqnBasedId = $this::getFQN($node);
         $this->name = self::getShortName($node);
         $this->namespace = rtrim(str_replace((string)$node->name, "", "\\" . $node->namespacedName), '\\');
         $this->isFinal = $node->isFinal();
@@ -113,11 +113,11 @@ class PHPClass extends BasePHPClass
             foreach ($properties as $property) {
                 $propertyName = $property->getVariableName();
                 assert($propertyName !== '', "@property name is empty in class $this->name");
-                $newProperty = new PHPProperty($this->id);
+                $newProperty = new PHPProperty($this->fqnBasedId);
                 $newProperty->is_static = false;
                 $newProperty->access = 'public';
                 $newProperty->name = $propertyName;
-                $newProperty->parentId = $this->id;
+                $newProperty->parentId = $this->fqnBasedId;
                 $newProperty->typesFromSignature = self::convertParsedTypeToArray($property->getType());
                 assert(
                     !array_key_exists($propertyName, $this->properties),

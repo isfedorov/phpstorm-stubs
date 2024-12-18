@@ -45,7 +45,7 @@ class PHPFunction extends PHPNamespacedElement
     public function readObjectFromReflection($reflectionObject)
     {
         $NamespaceParts = explode("\\", $reflectionObject->getName());
-        $this->id = "\\" . implode("\\", $NamespaceParts);
+        $this->fqnBasedId = "\\" . implode("\\", $NamespaceParts);
         $this->name = array_pop($NamespaceParts);
         $this->isDeprecated = $reflectionObject->isDeprecated();
         $this->namespace = $reflectionObject->getNamespaceName();
@@ -69,7 +69,7 @@ class PHPFunction extends PHPNamespacedElement
     public function readObjectFromStubNode($node)
     {
         $NamespaceParts = explode("\\", $node->namespacedName);
-        $this->id = "\\" . implode("\\", $NamespaceParts);
+        $this->fqnBasedId = "\\" . implode("\\", $NamespaceParts);
         $this->name = array_pop($NamespaceParts);
         $this->namespace = trim(implode("\\", $NamespaceParts), '\\');
         $typesFromAttribute = self::findTypesFromAttribute($node->attrGroups);

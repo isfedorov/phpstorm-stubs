@@ -23,7 +23,7 @@ class ReflectionClassesTestDataProviders
             foreach ($filtered as $class) {
                 //exclude classes from PHPReflectionParser
                 if (strncmp($class->name, 'PHP', 3) !== 0) {
-                    yield "class $class->id" => [$class->id];
+                    yield "class $class->fqnBasedId" => [$class->fqnBasedId];
                 }
             }
         }
@@ -37,7 +37,7 @@ class ReflectionClassesTestDataProviders
             yield [null];
         } else {
             foreach ($filtered as $interface) {
-                yield "interface $interface->id" => [$interface->id];
+                yield "interface $interface->fqnBasedId" => [$interface->fqnBasedId];
             }
         }
     }
@@ -50,7 +50,7 @@ class ReflectionClassesTestDataProviders
             yield [null];
         }else {
             foreach ($filtered as $enum) {
-                yield "enum $enum->id" => [$enum->id];
+                yield "enum $enum->fqnBasedId" => [$enum->fqnBasedId];
             }
         }
     }
@@ -68,7 +68,7 @@ class ReflectionClassesTestDataProviders
             foreach ($filtered as $class) {
                 //exclude classes from PHPReflectionParser
                 if (strncmp($class->name, 'PHP', 3) !== 0) {
-                    yield "class $class->id" => [$class->id];
+                    yield "class $class->fqnBasedId" => [$class->fqnBasedId];
                 }
             }
         }
@@ -85,7 +85,7 @@ class ReflectionClassesTestDataProviders
             yield [null];
         }else {
             foreach ($filtered as $enum) {
-                yield "enum $enum->id" => [$enum->id];
+                yield "enum $enum->fqnBasedId" => [$enum->fqnBasedId];
             }
         }
     }
@@ -102,7 +102,7 @@ class ReflectionClassesTestDataProviders
             yield [null];
         } else {
             foreach ($filtered as $class) {
-                yield "class $class->id" => [$class->id];
+                yield "class $class->fqnBasedId" => [$class->fqnBasedId];
             }
         }
     }
@@ -119,7 +119,7 @@ class ReflectionClassesTestDataProviders
             yield [null];
         } else {
             foreach ($filtered as $interface) {
-                yield "interface $interface->id" => [$interface->id];
+                yield "interface $interface->fqnBasedId" => [$interface->fqnBasedId];
             }
         }
     }
@@ -132,7 +132,7 @@ class ReflectionClassesTestDataProviders
             yield [null];
         } else {
             foreach ($filtered as $enum) {
-                yield "enum $enum->id" => [$enum->id];
+                yield "enum $enum->fqnBasedId" => [$enum->fqnBasedId];
             }
         }
     }
@@ -149,7 +149,7 @@ class ReflectionClassesTestDataProviders
             yield [null];
         }else {
             foreach ($filtered as $class) {
-                yield "class $class->id" => [$class->id];
+                yield "class $class->fqnBasedId" => [$class->fqnBasedId];
             }
         }
     }
@@ -162,7 +162,7 @@ class ReflectionClassesTestDataProviders
             yield [null];
         } else {
             foreach ($filtered as $class) {
-                yield "interface $class->id" => [$class->id];
+                yield "interface $class->fqnBasedId" => [$class->fqnBasedId];
             }
         }
     }
@@ -175,7 +175,7 @@ class ReflectionClassesTestDataProviders
             yield [null];
         } else {
             foreach ($filtered as $class) {
-                yield "enum $class->id" => [$class->id];
+                yield "enum $class->fqnBasedId" => [$class->fqnBasedId];
             }
         }
     }
@@ -188,7 +188,7 @@ class ReflectionClassesTestDataProviders
             yield [null];
         } else {
             foreach ($filtered as $class) {
-                yield "class $class->id" => [$class->id];
+                yield "class $class->fqnBasedId" => [$class->fqnBasedId];
             }
         }
     }
@@ -201,7 +201,7 @@ class ReflectionClassesTestDataProviders
             yield [null];
         }else {
             foreach ($filtered as $class) {
-                yield "class $class->id" => [$class->id];
+                yield "class $class->fqnBasedId" => [$class->fqnBasedId];
             }
         }
     }
@@ -214,7 +214,7 @@ class ReflectionClassesTestDataProviders
             yield [null];
         }else {
             foreach ($filtered as $class) {
-                yield "interface $class->id" => [$class->id];
+                yield "interface $class->fqnBasedId" => [$class->fqnBasedId];
             }
         }
     }
@@ -227,7 +227,7 @@ class ReflectionClassesTestDataProviders
             yield [null];
         }else {
             foreach ($filtered as $class) {
-                yield "enum $class->id" => [$class->id];
+                yield "enum $class->fqnBasedId" => [$class->fqnBasedId];
             }
         }
     }

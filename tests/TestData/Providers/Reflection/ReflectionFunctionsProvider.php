@@ -17,7 +17,7 @@ class ReflectionFunctionsProvider
             yield [null];
         } else {
             foreach ($filtered as $function) {
-                yield "function $function->id" => [$function->id];
+                yield "function $function->fqnBasedId" => [$function->fqnBasedId];
             }
         }
     }
@@ -33,7 +33,7 @@ class ReflectionFunctionsProvider
             yield [null];
         } else {
             foreach ($filtered as $function) {
-                yield "function $function->id" => [$function->id];
+                yield "function $function->fqnBasedId" => [$function->fqnBasedId];
             }
         }
     }
@@ -49,7 +49,7 @@ class ReflectionFunctionsProvider
             yield [null];
         } else {
             foreach ($filtered as $function) {
-                yield "function $function->id" => [$function->id];
+                yield "function $function->fqnBasedId" => [$function->fqnBasedId];
             }
         }
     }
@@ -66,7 +66,7 @@ class ReflectionFunctionsProvider
             yield [null];
         } else {
             foreach ($filtered as $function) {
-                yield "function $function->id" => [$function->id];
+                yield "function $function->fqnBasedId" => [$function->fqnBasedId];
             }
         }
     }

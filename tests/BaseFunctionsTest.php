@@ -32,7 +32,7 @@ class BaseFunctionsTest extends AbstractBaseStubsTestCase
         $stubFunction = PhpStormStubsSingleton::getPhpStormStubs()->getFunction($functionId);
         $reflectionFunction = ReflectionStubsSingleton::getReflectionStubs()->getFunction($functionId, fromReflection: true);
         $params = AbstractBaseStubsTestCase::getParameterRepresentation($reflectionFunction);
-        static::assertNotEmpty($stubFunction, "Missing function: function $reflectionFunction->id($params){}");
+        static::assertNotEmpty($stubFunction, "Missing function: function $reflectionFunction->fqnBasedId($params){}");
     }
 
     #[DataProviderExternal(ReflectionFunctionsProvider::class, 'functionsForDeprecationTestsProvider')]
@@ -220,7 +220,7 @@ class BaseFunctionsTest extends AbstractBaseStubsTestCase
     {
         $implodeFunctions = array_filter(
             PhpStormStubsSingleton::getPhpStormStubs()->getFunctions(),
-            fn (PHPFunction $function) => $function->id === '\implode'
+            fn (PHPFunction $function) => $function->fqnBasedId === '\implode'
         );
         self::assertCount(1, $implodeFunctions);
         /** @var PHPFunction $implodeFunction */

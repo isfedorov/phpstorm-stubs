@@ -30,11 +30,11 @@ class PHPConstantDeclaration extends BasePHPElement
                 $constant->parentId = self::getFQN($parentNode);
             } elseif ($parentNode instanceof Namespace_){
                 $constant = new PHPConstant();
-                $constant->id = self::getFQN($const);
+                $constant->fqnBasedId = self::getFQN($const);
                 $constant->namespace = rtrim(str_replace((string)$const->name, "", "\\" . $const->namespacedName), '\\');
             } else {
                 $constant = new PHPConstant();
-                $constant->id = self::getFQN($const);
+                $constant->fqnBasedId = self::getFQN($const);
                 $constant->namespace = rtrim(str_replace((string)$const->name, "", "\\" . $const->namespacedName), '\\');
             }
             $constant->name = $const->name->name;

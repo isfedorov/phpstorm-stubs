@@ -26,7 +26,7 @@ class ReflectionParametersProvider
             foreach ($filteredFunctions as $function) {
                 $PHPParameters = EntitiesFilter::getFilteredParameters($function);
                 foreach ($PHPParameters as $parameter) {
-                    yield "$function->id($parameter->name)" => [$function->id, $parameter->name];
+                    yield "$function->fqnBasedId($parameter->name)" => [$function->fqnBasedId, $parameter->name];
                 }
             }
         }
@@ -51,7 +51,7 @@ class ReflectionParametersProvider
                     null,
                     StubProblemType::PARAMETER_TYPE_MISMATCH
                 ) as $parameter) {
-                    yield "$function->id($parameter->name)" => [$function->id, $parameter->name];
+                    yield "$function->fqnBasedId($parameter->name)" => [$function->fqnBasedId, $parameter->name];
                 }
             }
         }
@@ -81,7 +81,7 @@ class ReflectionParametersProvider
                     StubProblemType::PARAMETER_TYPE_MISMATCH,
                     StubProblemType::WRONG_OPTIONALLITY
                 ) as $parameter) {
-                    yield "$function->id($parameter->name)" => [$function->id, $parameter->name];
+                    yield "$function->fqnBasedId($parameter->name)" => [$function->fqnBasedId, $parameter->name];
                 }
             }
         }
@@ -106,7 +106,7 @@ class ReflectionParametersProvider
                     fn (PHPParameter $parameter) => !$parameter->isOptional,
                     StubProblemType::WRONG_PARAMETER_DEFAULT_VALUE
                 ) as $parameter) {
-                    yield "$function->id($parameter->name)" => [$function->id, $parameter->name];
+                    yield "$function->fqnBasedId($parameter->name)" => [$function->fqnBasedId, $parameter->name];
                 }
             }
         }
@@ -131,7 +131,7 @@ class ReflectionParametersProvider
                     fn (PHPParameter $parameter) => !$parameter->isOptional || $parameter->isDefaultValueAvailable || $parameter->is_vararg,
                     StubProblemType::WRONG_PARAMETER_DEFAULT_VALUE
                 ) as $parameter) {
-                    yield "$function->id($parameter->name)" => [$function->id, $parameter->name];
+                    yield "$function->fqnBasedId($parameter->name)" => [$function->fqnBasedId, $parameter->name];
                 }
             }
         }
@@ -154,7 +154,7 @@ class ReflectionParametersProvider
                 if (strncmp($class->name, 'PHP', 3) !== 0) {
                     foreach (EntitiesFilter::getFilteredReflectionMethods($class) as $method) {
                         foreach (EntitiesFilter::getFilteredParameters($method) as $parameter) {
-                            yield "$class->id::$method->name($parameter->name)" => [$class->id, $method->name, $parameter->name];
+                            yield "$class->fqnBasedId::$method->name($parameter->name)" => [$class->fqnBasedId, $method->name, $parameter->name];
                         }
                     }
                 }
@@ -177,7 +177,7 @@ class ReflectionParametersProvider
             foreach ($filtered as $class) {
                 foreach (EntitiesFilter::getFilteredReflectionMethods($class) as $method) {
                     foreach (EntitiesFilter::getFilteredParameters($method) as $parameter) {
-                        yield "$class->id::$method->name($parameter->name)" => [$class->id, $method->name, $parameter->name];
+                        yield "$class->fqnBasedId::$method->name($parameter->name)" => [$class->fqnBasedId, $method->name, $parameter->name];
                     }
                 }
             }
@@ -199,7 +199,7 @@ class ReflectionParametersProvider
             foreach ($filtered as $class) {
                 foreach (EntitiesFilter::getFilteredReflectionMethods($class) as $method) {
                     foreach (EntitiesFilter::getFilteredParameters($method) as $parameter) {
-                        yield "$class->id::$method->name($parameter->name)" => [$class->id, $method->name, $parameter->name];
+                        yield "$class->fqnBasedId::$method->name($parameter->name)" => [$class->fqnBasedId, $method->name, $parameter->name];
                     }
                 }
             }
@@ -231,7 +231,7 @@ class ReflectionParametersProvider
                             null,
                             StubProblemType::PARAMETER_TYPE_MISMATCH
                         ) as $parameter) {
-                            yield "$class->name::$method->name($parameter->name)" => [$class->id, $method->name, $parameter->name];
+                            yield "$class->name::$method->name($parameter->name)" => [$class->fqnBasedId, $method->name, $parameter->name];
                         }
                     }
                 }
@@ -262,7 +262,7 @@ class ReflectionParametersProvider
                         null,
                         StubProblemType::PARAMETER_TYPE_MISMATCH
                     ) as $parameter) {
-                        yield "$class->name::$method->name($parameter->name)" => [$class->id, $method->name, $parameter->name];
+                        yield "$class->name::$method->name($parameter->name)" => [$class->fqnBasedId, $method->name, $parameter->name];
                     }
                 }
             }
@@ -292,7 +292,7 @@ class ReflectionParametersProvider
                         null,
                         StubProblemType::PARAMETER_TYPE_MISMATCH
                     ) as $parameter) {
-                        yield "$class->name::$method->name($parameter->name)" => [$class->id, $method->name, $parameter->name];
+                        yield "$class->name::$method->name($parameter->name)" => [$class->fqnBasedId, $method->name, $parameter->name];
                     }
                 }
             }
@@ -324,7 +324,7 @@ class ReflectionParametersProvider
                             null,
                             StubProblemType::WRONG_OPTIONALLITY
                         ) as $parameter) {
-                            yield "$class->id::$method->name($parameter->name)" => [$class->id, $method->name, $parameter->name];
+                            yield "$class->fqnBasedId::$method->name($parameter->name)" => [$class->fqnBasedId, $method->name, $parameter->name];
                         }
                     }
                 }
@@ -355,7 +355,7 @@ class ReflectionParametersProvider
                         null,
                         StubProblemType::WRONG_OPTIONALLITY
                     ) as $parameter) {
-                        yield "$interface->id::$method->name($parameter->name)" => [$interface->id, $method->name, $parameter->name];
+                        yield "$interface->fqnBasedId::$method->name($parameter->name)" => [$interface->fqnBasedId, $method->name, $parameter->name];
                     }
                 }
             }
@@ -386,7 +386,7 @@ class ReflectionParametersProvider
                         null,
                         StubProblemType::WRONG_OPTIONALLITY
                     ) as $parameter) {
-                        yield "$enum->id::$method->name($parameter->name)" => [$enum->id, $method->name, $parameter->name];
+                        yield "$enum->fqnBasedId::$method->name($parameter->name)" => [$enum->fqnBasedId, $method->name, $parameter->name];
                     }
                 }
             }
@@ -419,7 +419,7 @@ class ReflectionParametersProvider
                             fn (PHPParameter $parameter) => !$parameter->isOptional || !$parameter->isDefaultValueAvailable,
                             StubProblemType::WRONG_PARAMETER_DEFAULT_VALUE
                         ) as $parameter) {
-                            yield "$class->id::$method->name($parameter->name)" => [$class->id, $method->name, $parameter->name];
+                            yield "$class->fqnBasedId::$method->name($parameter->name)" => [$class->fqnBasedId, $method->name, $parameter->name];
                         }
                     }
                 }
@@ -450,7 +450,7 @@ class ReflectionParametersProvider
                         fn (PHPParameter $parameter) => !$parameter->isOptional || !$parameter->isDefaultValueAvailable,
                         StubProblemType::WRONG_PARAMETER_DEFAULT_VALUE
                     ) as $parameter) {
-                        yield "$class->id::$method->name($parameter->name)" => [$class->id, $method->name, $parameter->name];
+                        yield "$class->fqnBasedId::$method->name($parameter->name)" => [$class->fqnBasedId, $method->name, $parameter->name];
                     }
                 }
             }
@@ -480,7 +480,7 @@ class ReflectionParametersProvider
                         fn (PHPParameter $parameter) => !$parameter->isOptional || !$parameter->isDefaultValueAvailable,
                         StubProblemType::WRONG_PARAMETER_DEFAULT_VALUE
                     ) as $parameter) {
-                        yield "$class->id::$method->name($parameter->name)" => [$class->id, $method->name, $parameter->name];
+                        yield "$class->fqnBasedId::$method->name($parameter->name)" => [$class->fqnBasedId, $method->name, $parameter->name];
                     }
                 }
             }
@@ -512,7 +512,7 @@ class ReflectionParametersProvider
                             fn (PHPParameter $parameter) => !$parameter->isOptional || $parameter->isDefaultValueAvailable || $parameter->is_vararg,
                             StubProblemType::WRONG_PARAMETER_DEFAULT_VALUE
                         ) as $parameter) {
-                            yield "$class->id::$method->name($parameter->name)" => [$class->id, $method->name, $parameter->name];
+                            yield "$class->fqnBasedId::$method->name($parameter->name)" => [$class->fqnBasedId, $method->name, $parameter->name];
                         }
                     }
                 }
@@ -543,7 +543,7 @@ class ReflectionParametersProvider
                         fn (PHPParameter $parameter) => !$parameter->isOptional || $parameter->isDefaultValueAvailable || $parameter->is_vararg,
                         StubProblemType::WRONG_PARAMETER_DEFAULT_VALUE
                     ) as $parameter) {
-                        yield "$class->id::$method->name($parameter->name)" => [$class->id, $method->name, $parameter->name];
+                        yield "$class->fqnBasedId::$method->name($parameter->name)" => [$class->fqnBasedId, $method->name, $parameter->name];
                     }
                 }
             }
@@ -573,7 +573,7 @@ class ReflectionParametersProvider
                         fn (PHPParameter $parameter) => !$parameter->isOptional || $parameter->isDefaultValueAvailable || $parameter->is_vararg,
                         StubProblemType::WRONG_PARAMETER_DEFAULT_VALUE
                     ) as $parameter) {
-                        yield "$class->id::$method->name($parameter->name)" => [$class->id, $method->name, $parameter->name];
+                        yield "$class->fqnBasedId::$method->name($parameter->name)" => [$class->fqnBasedId, $method->name, $parameter->name];
                     }
                 }
             }

@@ -76,7 +76,7 @@ abstract class AbstractBaseStubsTestCase extends TestCase
         } elseif ($defaultValue instanceof ClassConstFetch) {
             $class = $defaultValue->class->toCodeString();
             if ($class === 'self' && $contextClass !== null) {
-                $class = $contextClass->id;
+                $class = $contextClass->fqnBasedId;
             }
             $parentClass = PhpStormStubsSingleton::getPhpStormStubs()->getEnum($class) ??
                 PhpStormStubsSingleton::getPhpStormStubs()->getClass($class) ??
@@ -85,7 +85,7 @@ abstract class AbstractBaseStubsTestCase extends TestCase
                 throw new Exception("Class $class not found in stubs");
             }
             if ($parentClass instanceof PHPEnum) {
-                $value = $parentClass->id . "::" . $defaultValue->name;
+                $value = $parentClass->fqnBasedId . "::" . $defaultValue->name;
             } elseif ((string)$defaultValue->name === 'class') {
                 $value = (string)$defaultValue->class;
             } else {

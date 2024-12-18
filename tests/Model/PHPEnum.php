@@ -23,7 +23,7 @@ class PHPEnum extends PHPClass
         if (!empty($reflectionObject->getNamespaceName())) {
             $this->namespace = "\\" . $reflectionObject->getNamespaceName();
         }
-        $this->id = "$this->namespace\\$this->name";
+        $this->fqnBasedId = "$this->namespace\\$this->name";
         if (method_exists($reflectionObject, 'isReadOnly')) {
             $this->isReadonly = $reflectionObject->isReadOnly();
         }
@@ -64,7 +64,7 @@ class PHPEnum extends PHPClass
      */
     public function readObjectFromStubNode($node)
     {
-        $this->id = self::getFQN($node);
+        $this->fqnBasedId = self::getFQN($node);
         $this->name = self::getShortName($node);
         $this->namespace = rtrim(str_replace((string)$node->name, "", "\\" . $node->namespacedName), '\\');
         $this->availableVersionsRangeFromAttribute = self::findAvailableVersionsRangeFromAttribute($node->attrGroups);
@@ -92,7 +92,7 @@ class PHPEnum extends PHPClass
             foreach ($properties as $property) {
                 $propertyName = $property->getVariableName();
                 assert($propertyName !== '', "@property name is empty in class $this->name");
-                $newProperty = new PHPProperty($this->id);
+                $newProperty = new PHPProperty($this->fqnBasedId);
                 $newProperty->is_static = false;
                 $newProperty->access = 'public';
                 $newProperty->name = $propertyName;

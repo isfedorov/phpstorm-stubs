@@ -21,7 +21,7 @@ class ReflectionConstantsProvider
             yield [null];
         } else {
             foreach ($filteredConstants as $constant) {
-                yield "constant $constant->id" => [$constant->id];
+                yield "constant $constant->fqnBasedId" => [$constant->fqnBasedId];
             }
         }
     }

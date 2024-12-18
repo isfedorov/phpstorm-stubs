@@ -44,7 +44,7 @@ class PHPMethod extends PHPFunction
      */
     public function readObjectFromReflection($reflectionObject)
     {
-        $this->id = $reflectionObject->getName();
+        $this->fqnBasedId = $reflectionObject->getName();
         $this->name = $reflectionObject->getName();
         $this->parentId = "\\{$reflectionObject->class}";
         $this->isDeprecated = $reflectionObject->isDeprecated();

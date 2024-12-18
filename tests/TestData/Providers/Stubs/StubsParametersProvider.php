@@ -168,7 +168,7 @@ class StubsParametersProvider
                             $firstSinceVersion = ParserUtils::getDeclaredSinceVersion($method);
                         }
                         if ($filterFunction($class, $method, $firstSinceVersion) === true) {
-                            yield "method $class->id::$method->name($parameter->name)_[$method->stubObjectHash]" => [$class->stubObjectHash, $method->stubObjectHash, $parameter->name];
+                            yield "method $class->fqnBasedId::$method->name($parameter->name)_[$method->stubObjectHash]" => [$class->stubObjectHash, $method->stubObjectHash, $parameter->name];
                         }
                     }
                 }

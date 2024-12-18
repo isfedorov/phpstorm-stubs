@@ -17,7 +17,7 @@ class StubConstantsProvider
         }else {
             foreach ($classes as $class) {
                 foreach ($class->constants as $constant) {
-                    yield "constant $class->id::$constant->name [$class->stubObjectHash]" => [$class->stubObjectHash, $constant->name];
+                    yield "constant $class->fqnBasedId::$constant->name [$class->stubObjectHash]" => [$class->stubObjectHash, $constant->name];
                 }
             }
         }
@@ -31,7 +31,7 @@ class StubConstantsProvider
         }else {
             foreach ($interfaces as $class) {
                 foreach ($class->constants as $constant) {
-                    yield "constant $class->id::$constant->name" => [$class->id, $constant->name];
+                    yield "constant $class->fqnBasedId::$constant->name" => [$class->fqnBasedId, $constant->name];
                 }
             }
         }
@@ -46,7 +46,7 @@ class StubConstantsProvider
         }else {
             foreach ($enums as $class) {
                 foreach ($class->constants as $constant) {
-                    yield "constant $class->id::$constant->name" => [$class->id, $constant->name];
+                    yield "constant $class->fqnBasedId::$constant->name" => [$class->fqnBasedId, $constant->name];
                 }
             }
         }

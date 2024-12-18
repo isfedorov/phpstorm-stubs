@@ -34,7 +34,7 @@ class StubMethodsProvider
         $interfaces = PhpStormStubsSingleton::getPhpStormStubs()->getInterfaces();
         foreach ($interfaces as $className => $class) {
             foreach ($class->methods as $methodName => $method) {
-                yield "method $className::$methodName" => [$class->id, $method->name];
+                yield "method $className::$methodName" => [$class->fqnBasedId, $method->name];
             }
         }
     }
@@ -44,7 +44,7 @@ class StubMethodsProvider
         $enums = PhpStormStubsSingleton::getPhpStormStubs()->getEnums();
         foreach ($enums as $className => $class) {
             foreach ($class->methods as $methodName => $method) {
-                yield "method $className::$methodName" => [$class->id, $method->name];
+                yield "method $className::$methodName" => [$class->fqnBasedId, $method->name];
             }
         }
     }
@@ -59,7 +59,7 @@ class StubMethodsProvider
             StubProblemType::TYPE_IN_PHPDOC_DIFFERS_FROM_SIGNATURE
         );
         foreach ($filteredFunctions as $functionId => $function) {
-            yield "function $functionId" => [$function->id];
+            yield "function $functionId" => [$function->fqnBasedId];
         }
     }
 
@@ -75,7 +75,7 @@ class StubMethodsProvider
                 StubProblemType::TYPE_IN_PHPDOC_DIFFERS_FROM_SIGNATURE
             );
             foreach ($filteredMethods as $methodName => $method) {
-                yield "method $class->id::$methodName" => [$class->id, $method->name];
+                yield "method $class->fqnBasedId::$methodName" => [$class->fqnBasedId, $method->name];
             }
         }
     }
@@ -92,7 +92,7 @@ class StubMethodsProvider
                 StubProblemType::TYPE_IN_PHPDOC_DIFFERS_FROM_SIGNATURE
             );
             foreach ($filteredMethods as $methodName => $method) {
-                yield "method $class->id::$methodName" => [$class->id, $method->name];
+                yield "method $class->fqnBasedId::$methodName" => [$class->fqnBasedId, $method->name];
             }
         }
     }
