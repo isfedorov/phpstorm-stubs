@@ -24,7 +24,7 @@ class StubsTestDataProviders
     {
         $classes = PhpStormStubsSingleton::getPhpStormStubs()->getClasses();
         foreach ($classes as $class) {
-            yield "class $class->sourceFilePath/$class->fqnBasedId" => [$class->fqnBasedId, $class->sourceFilePath];
+            yield "class {$class->getOrCreateStubSpecificProperties()->sourceFilePath}/$class->fqnBasedId" => [$class->fqnBasedId, $class->getOrCreateStubSpecificProperties()->sourceFilePath];
         }
     }
 
@@ -32,7 +32,7 @@ class StubsTestDataProviders
     {
         $interfaces = PhpStormStubsSingleton::getPhpStormStubs()->getInterfaces();
         foreach ($interfaces as $class) {
-            yield "class $class->sourceFilePath/$class->fqnBasedId" => [$class->fqnBasedId, $class->sourceFilePath];
+            yield "class {$class->getOrCreateStubSpecificProperties()->sourceFilePath}/$class->fqnBasedId" => [$class->fqnBasedId, $class->getOrCreateStubSpecificProperties()->sourceFilePath];
         }
     }
 
@@ -40,14 +40,14 @@ class StubsTestDataProviders
     {
         $enums = PhpStormStubsSingleton::getPhpStormStubs()->getEnums();
         foreach ($enums as $class) {
-            yield "class $class->sourceFilePath/$class->fqnBasedId" => [$class->fqnBasedId, $class->sourceFilePath];
+            yield "class {$class->getOrCreateStubSpecificProperties()->sourceFilePath}/$class->fqnBasedId" => [$class->fqnBasedId, $class->getOrCreateStubSpecificProperties()->sourceFilePath];
         }
     }
 
     public static function coreFunctionsProvider(): ?Generator
     {
         $allFunctions = PhpStormStubsSingleton::getPhpStormStubs()->getFunctions();
-        $coreFunctions = array_filter($allFunctions, fn (PHPFunction $function): bool => $function->stubBelongsToCore === true);
+        $coreFunctions = array_filter($allFunctions, fn (PHPFunction $function): bool => $function->getOrCreateStubSpecificProperties()->stubBelongsToCore === true);
         foreach ($coreFunctions as $coreFunction) {
             yield "function $coreFunction->name" => [$coreFunction];
         }

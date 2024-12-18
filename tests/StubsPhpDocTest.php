@@ -222,7 +222,7 @@ class StubsPhpDocTest extends AbstractBaseStubsTestCase
                     "In $elementName @link doesn't start with https"
                 );
                 if (getenv('CHECK_LINKS') === 'true') {
-                    if ($element->stubBelongsToCore) {
+                    if ($element->getOrCreateStubSpecificProperties()->stubBelongsToCore) {
                         $request = curl_init($link->getLink());
                         curl_setopt($request, CURLOPT_RETURNTRANSFER, 1);
                         curl_exec($request);
@@ -295,7 +295,7 @@ class StubsPhpDocTest extends AbstractBaseStubsTestCase
         self::checkLinks($element, $elementName);
         //TODO: Fix tests and uncomment
         //self::checkHtmlTags($element, $elementName);
-        if ($element->stubBelongsToCore) {
+        if ($element->getOrCreateStubSpecificProperties()->stubBelongsToCore) {
             self::checkDeprecatedRemovedSinceVersionsMajor($element, $elementName);
         }
         self::checkContainsOnlyValidTags($element, $elementName);

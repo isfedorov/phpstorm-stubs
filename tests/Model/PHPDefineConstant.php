@@ -60,7 +60,7 @@ class PHPDefineConstant extends BasePHPElement
         $this->value = $this->getConstValue($node->args[1]);
         $this->collectTags($node);
         $this->checkDeprecationTag($node);
-        $this->stubObjectHash = spl_object_hash($this);
+        $this->getOrCreateStubSpecificProperties()->stubObjectHash = spl_object_hash($this);
         return $this;
     }
 

@@ -98,9 +98,9 @@ class BaseEnumsTest extends AbstractBaseStubsTestCase
         $filteredStubParameters = array_filter(
             $stubMethod->parameters,
             function ($parameter) {
-                if (!empty($parameter->availableVersionsRangeFromAttribute)) {
-                    return $parameter->availableVersionsRangeFromAttribute['from'] <= (doubleval(getenv('PHP_VERSION') ?? PhpVersions::getFirst()))
-                        && $parameter->availableVersionsRangeFromAttribute['to'] >= (doubleval(getenv('PHP_VERSION')) ?? PhpVersions::getLatest());
+                if (!empty($parameter->getOrCreateStubSpecificProperties()->availableVersionsRangeFromAttribute)) {
+                    return $parameter->getOrCreateStubSpecificProperties()->availableVersionsRangeFromAttribute['from'] <= (doubleval(getenv('PHP_VERSION') ?? PhpVersions::getFirst()))
+                        && $parameter->getOrCreateStubSpecificProperties()->availableVersionsRangeFromAttribute['to'] >= (doubleval(getenv('PHP_VERSION')) ?? PhpVersions::getLatest());
                 } else {
                     return true;
                 }

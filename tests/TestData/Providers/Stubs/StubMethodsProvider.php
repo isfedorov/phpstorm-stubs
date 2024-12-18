@@ -24,7 +24,7 @@ class StubMethodsProvider
         $classes = PhpStormStubsSingleton::getPhpStormStubs()->getClasses();
         foreach ($classes as $className => $class) {
             foreach ($class->methods as $methodName => $method) {
-                yield "method $className::$methodName [$class->stubObjectHash]" => [$class->stubObjectHash, $method->name];
+                yield "method $className::$methodName [{$class->getOrCreateStubSpecificProperties()->stubObjectHash}]" => [$class->getOrCreateStubSpecificProperties()->stubObjectHash, $method->name];
             }
         }
     }
@@ -266,8 +266,9 @@ class StubMethodsProvider
         } else {
             foreach ($array as $classId => $methods) {
                 $class = $classes[$classId];
+                /** @var PHPMethod $method */
                 foreach ($methods as $methodName => $method) {
-                    yield "method $classId::$methodName" => [$class->stubObjectHash, $method->stubObjectHash];
+                    yield "method $classId::$methodName" => [$class->getOrCreateStubSpecificProperties()->stubObjectHash, $method->getOrCreateStubSpecificProperties()->stubObjectHash];
                 }
             }
         }

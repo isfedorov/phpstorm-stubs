@@ -93,7 +93,7 @@ class PHPMethod extends PHPFunction
         $this->name = $node->name->name;
         $typesFromAttribute = self::findTypesFromAttribute($node->attrGroups);
         $this->isReturnTypeTentative = self::hasTentativeTypeAttribute($node->attrGroups);
-        $this->availableVersionsRangeFromAttribute = self::findAvailableVersionsRangeFromAttribute($node->attrGroups);
+        $this->getOrCreateStubSpecificProperties()->availableVersionsRangeFromAttribute = self::findAvailableVersionsRangeFromAttribute($node->attrGroups);
         $this->returnTypesFromAttribute = $typesFromAttribute;
         array_push($this->returnTypesFromSignature, ...self::convertParsedTypeToArray($node->getReturnType()));
         $this->collectTags($node);
@@ -145,7 +145,7 @@ class PHPMethod extends PHPFunction
         } else {
             $this->access = 'public';
         }
-        $this->stubObjectHash = spl_object_hash($this);
+        $this->getOrCreateStubSpecificProperties()->stubObjectHash = spl_object_hash($this);
         return $this;
     }
 

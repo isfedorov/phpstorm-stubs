@@ -62,11 +62,11 @@ class StubsContainer
     {
         if ($fromReflection) {
             $constants = array_filter($this->constants, function ($const) use ($constantId) {
-                return $const->fqnBasedId === $constantId && $const->stubObjectHash == null;
+                return $const->fqnBasedId === $constantId && $const->getOrCreateStubSpecificProperties()->stubObjectHash == null;
             });
         } else {
             $constants = array_filter($this->constants, function ($const) use ($constantId, $shouldSuitCurrentPhpVersion) {
-                return $const->fqnBasedId === $constantId && $const->duplicateOtherElement === false
+                return $const->fqnBasedId === $constantId && $const->getOrCreateStubSpecificProperties()->duplicateOtherElement === false
                     && (!$shouldSuitCurrentPhpVersion || ParserUtils::entitySuitsCurrentPhpVersion($const));
             });
         }
@@ -76,7 +76,7 @@ class StubsContainer
 
         if ($sourceFilePath !== null) {
             $constants = array_filter($constants, function ($constant) use ($sourceFilePath, $shouldSuitCurrentPhpVersion) {
-                return $constant->sourceFilePath === $sourceFilePath
+                return $constant->getOrCreateStubSpecificProperties()->sourceFilePath === $sourceFilePath
                     && (!$shouldSuitCurrentPhpVersion || ParserUtils::entitySuitsCurrentPhpVersion($constant));
             });
         }
@@ -103,7 +103,7 @@ class StubsContainer
                         return $nextConstant->fqnBasedId === $constant->fqnBasedId;
                     }
                 ));
-                $constant->duplicateOtherElement = true;
+                $constant->getOrCreateStubSpecificProperties()->duplicateOtherElement = true;
                 $this->constants[$constant->fqnBasedId . '_duplicated_' . $amount] = $constant;
             } else {
                 $this->constants[$constant->fqnBasedId] = $constant;
@@ -132,7 +132,7 @@ class StubsContainer
     {
         if ($fromReflection) {
             $functions = array_filter($this->functions, function (PHPFunction $function) use ($id) {
-                return $function->fqnBasedId === $id && $function->stubObjectHash == null;
+                return $function->fqnBasedId === $id && $function->getOrCreateStubSpecificProperties()->stubObjectHash == null;
             });
         } else {
             $functions = array_filter($this->functions, function (PHPFunction $function) use ($shouldSuitCurrentPhpVersion, $id) {
@@ -141,7 +141,7 @@ class StubsContainer
         }
         if (count($functions) > 1) {
             $functions = array_filter($functions, function (PHPFunction $function) {
-                return $function->duplicateOtherElement === false;
+                return $function->getOrCreateStubSpecificProperties()->duplicateOtherElement === false;
             });
         }
         if (count($functions) === 1) {
@@ -150,7 +150,7 @@ class StubsContainer
 
         if ($sourceFilePath !== null) {
             $functions = array_filter($functions, function (PHPFunction $function) use ($shouldSuitCurrentPhpVersion, $sourceFilePath) {
-                return $function->sourceFilePath === $sourceFilePath
+                return $function->getOrCreateStubSpecificProperties()->sourceFilePath === $sourceFilePath
                     && (!$shouldSuitCurrentPhpVersion || ParserUtils::entitySuitsCurrentPhpVersion($function));
             });
         }
@@ -170,7 +170,7 @@ class StubsContainer
                         return $nextFunction->fqnBasedId === $function->fqnBasedId;
                     }
                 ));
-                $function->duplicateOtherElement = true;
+                $function->getOrCreateStubSpecificProperties()->duplicateOtherElement = true;
                 $this->functions[$function->fqnBasedId . '_duplicated_' . $amount] = $function;
             } else {
                 $this->functions[$function->fqnBasedId] = $function;
@@ -198,7 +198,7 @@ class StubsContainer
     {
         if ($this->containsReflectionStubs) {
             $classes = array_filter($this->classes, function (PHPClass $class) use ($id) {
-                return $class->fqnBasedId === $id && $class->stubObjectHash == null;
+                return $class->fqnBasedId === $id && $class->getOrCreateStubSpecificProperties()->stubObjectHash == null;
             });
         } else {
             $classes = array_filter($this->classes, function (PHPClass $class) use ($shouldSuitCurrentPhpVersion, $id) {
@@ -211,7 +211,7 @@ class StubsContainer
 
         if ($sourceFilePath !== null) {
             $classes = array_filter($classes, function (PHPClass $class) use ($shouldSuitCurrentPhpVersion, $sourceFilePath) {
-                return $class->sourceFilePath === $sourceFilePath &&
+                return $class->getOrCreateStubSpecificProperties()->sourceFilePath === $sourceFilePath &&
                     (!$shouldSuitCurrentPhpVersion || ParserUtils::entitySuitsCurrentPhpVersion($class));
             });
         }
@@ -227,7 +227,7 @@ class StubsContainer
     public function getClassByHash(string $hash)
     {
         $classes = array_filter($this->classes, function (PHPClass $class) use ($hash) {
-            return $class->stubObjectHash === $hash;
+            return $class->getOrCreateStubSpecificProperties()->stubObjectHash === $hash;
         });
         if (count($classes) > 1) {
             throw new RuntimeException("Multiple classes with name $hash found");
@@ -256,7 +256,7 @@ class StubsContainer
 
         if ($sourceFilePath !== null) {
             $enums = array_filter($enums, function (PHPEnum $enum) use ($shouldSuitCurrentPhpVersion, $sourceFilePath) {
-                return $enum->sourceFilePath === $sourceFilePath &&
+                return $enum->getOrCreateStubSpecificProperties()->sourceFilePath === $sourceFilePath &&
                     (!$shouldSuitCurrentPhpVersion || ParserUtils::entitySuitsCurrentPhpVersion($enum));
             });
         }
@@ -272,7 +272,7 @@ class StubsContainer
     public function getEnumByHash(string $hash)
     {
         $enums = array_filter($this->enums, function (PHPEnum $class) use ($hash) {
-            return $class->stubObjectHash === $hash;
+            return $class->getOrCreateStubSpecificProperties()->stubObjectHash === $hash;
         });
         if (count($enums) > 1) {
             throw new RuntimeException("Multiple enums with name $hash found");
@@ -287,7 +287,7 @@ class StubsContainer
     public function getCoreClasses($shouldSuitCurrentPhpVersion = true)
     {
         return array_filter($this->classes, function (PHPClass $class) use ($shouldSuitCurrentPhpVersion) {
-            return $class->stubBelongsToCore === true && (!$shouldSuitCurrentPhpVersion || ParserUtils::entitySuitsCurrentPhpVersion($class));
+            return $class->getOrCreateStubSpecificProperties()->stubBelongsToCore === true && (!$shouldSuitCurrentPhpVersion || ParserUtils::entitySuitsCurrentPhpVersion($class));
         });
     }
 
@@ -321,7 +321,7 @@ class StubsContainer
     {
         if ($fromReflection) {
             $interfaces = array_filter($this->interfaces, function (PHPInterface $interface) use ($id) {
-                return $interface->fqnBasedId === $id && $interface->stubObjectHash == null;
+                return $interface->fqnBasedId === $id && $interface->getOrCreateStubSpecificProperties()->stubObjectHash == null;
             });
         } else {
             $interfaces = array_filter($this->interfaces, function (PHPInterface $interface) use ($shouldSuitCurrentPhpVersion, $id) {
@@ -334,7 +334,7 @@ class StubsContainer
 
         if ($sourceFilePath !== null) {
             $interfaces = array_filter($interfaces, function (PHPInterface $interface) use ($shouldSuitCurrentPhpVersion, $sourceFilePath) {
-                return $interface->sourceFilePath === $sourceFilePath &&
+                return $interface->getOrCreateStubSpecificProperties()->sourceFilePath === $sourceFilePath &&
                     (!$shouldSuitCurrentPhpVersion || ParserUtils::entitySuitsCurrentPhpVersion($interface));
             });
         }
@@ -350,7 +350,7 @@ class StubsContainer
     public function getInterfaceByHash(string $hash)
     {
         $interfaces = array_filter($this->interfaces, function (PHPInterface $class) use ($hash) {
-            return $class->stubObjectHash === $hash;
+            return $class->getOrCreateStubSpecificProperties()->stubObjectHash === $hash;
         });
         if (count($interfaces) > 1) {
             throw new RuntimeException("Multiple interfaces with hash $hash found");
@@ -380,14 +380,14 @@ class StubsContainer
     public function getCoreInterfaces($shouldSuitCurrentPhpVersion = true)
     {
         return array_filter($this->interfaces, function (PHPInterface $interface) use ($shouldSuitCurrentPhpVersion) {
-            return $interface->stubBelongsToCore === true && (!$shouldSuitCurrentPhpVersion || ParserUtils::entitySuitsCurrentPhpVersion($interface));
+            return $interface->getOrCreateStubSpecificProperties()->stubBelongsToCore === true && (!$shouldSuitCurrentPhpVersion || ParserUtils::entitySuitsCurrentPhpVersion($interface));
         });
     }
 
     public function getCoreEnums($shouldSuitCurrentPhpVersion = true)
     {
         return array_filter($this->enums, function (PHPEnum $enum) use ($shouldSuitCurrentPhpVersion) {
-            return $enum->stubBelongsToCore === true && (!$shouldSuitCurrentPhpVersion || ParserUtils::entitySuitsCurrentPhpVersion($enum));
+            return $enum->getOrCreateStubSpecificProperties()->stubBelongsToCore === true && (!$shouldSuitCurrentPhpVersion || ParserUtils::entitySuitsCurrentPhpVersion($enum));
         });
     }
 

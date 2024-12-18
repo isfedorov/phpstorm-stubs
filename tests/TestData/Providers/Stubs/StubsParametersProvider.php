@@ -141,8 +141,8 @@ class StubsParametersProvider
                         fn (PHPMethod $method) => array_filter(
                             EntitiesFilter::getFilteredParameters($method, null, ...$problemTypes),
                             function ($parameter) use ($filterFunction, $class, $method) {
-                            if (!empty($parameter->availableVersionsRangeFromAttribute)) {
-                                $firstSinceVersion = max(ParserUtils::getDeclaredSinceVersion($method), min($parameter->availableVersionsRangeFromAttribute));
+                            if (!empty($parameter->getOrCreateStubSpecificProperties()->availableVersionsRangeFromAttribute)) {
+                                $firstSinceVersion = max(ParserUtils::getDeclaredSinceVersion($method), min($parameter->getOrCreateStubSpecificProperties()->availableVersionsRangeFromAttribute));
                             } else {
                                 $firstSinceVersion = ParserUtils::getDeclaredSinceVersion($method);
                             }
@@ -164,13 +164,13 @@ class StubsParametersProvider
             foreach ($filtered as $class) {
                 foreach (EntitiesFilter::getFilteredStubsMethods($class) as $method) {
                     foreach (EntitiesFilter::getFilteredParameters($method, null, ...$problemTypes) as $parameter) {
-                        if (!empty($parameter->availableVersionsRangeFromAttribute)) {
-                            $firstSinceVersion = max(ParserUtils::getDeclaredSinceVersion($method), min($parameter->availableVersionsRangeFromAttribute));
+                        if (!empty($parameter->getOrCreateStubSpecificProperties()->availableVersionsRangeFromAttribute)) {
+                            $firstSinceVersion = max(ParserUtils::getDeclaredSinceVersion($method), min($parameter->getOrCreateStubSpecificProperties()->availableVersionsRangeFromAttribute));
                         } else {
                             $firstSinceVersion = ParserUtils::getDeclaredSinceVersion($method);
                         }
                         if ($filterFunction($class, $method, $firstSinceVersion) === true) {
-                            yield "method $class->fqnBasedId::$method->name($parameter->name)_[$method->stubObjectHash]" => [$class->stubObjectHash, $method->stubObjectHash, $parameter->name];
+                            yield "method $class->fqnBasedId::$method->name($parameter->name)_[{$method->getOrCreateStubSpecificProperties()->stubObjectHash}]" => [$class->getOrCreateStubSpecificProperties()->stubObjectHash, $method->getOrCreateStubSpecificProperties()->stubObjectHash, $parameter->name];
                         }
                     }
                 }

@@ -38,10 +38,10 @@ class PHPEnumCase extends PHPClassConstant
         //$this->collectTags($node);
         $parentNode = $node->getAttribute('parent');
         if (property_exists($parentNode, 'attrGroups')) {
-            $this->availableVersionsRangeFromAttribute = self::findAvailableVersionsRangeFromAttribute($parentNode->attrGroups);
+            $this->getOrCreateStubSpecificProperties()->availableVersionsRangeFromAttribute = self::findAvailableVersionsRangeFromAttribute($parentNode->attrGroups);
         }
         $this->parentId = self::getFQN($parentNode);
-        $this->stubObjectHash = spl_object_hash($this);
+        $this->getOrCreateStubSpecificProperties()->stubObjectHash = spl_object_hash($this);
         return $this;
     }
 

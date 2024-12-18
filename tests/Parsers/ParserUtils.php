@@ -83,7 +83,7 @@ class ParserUtils
     private static function getSinceVersionsFromPhpDoc(BasePHPElement $element): array
     {
         $allSinceVersions = [];
-        if (!empty($element->getPhpdocProperties()->sinceTags) && $element->stubBelongsToCore) {
+        if (!empty($element->getPhpdocProperties()->sinceTags) && $element->getOrCreateStubSpecificProperties()->stubBelongsToCore) {
             $allSinceVersions[] = array_map(fn (Since $tag) => (float)$tag->getVersion(), $element->getPhpdocProperties()->sinceTags);
         }
         return $allSinceVersions;
@@ -95,7 +95,7 @@ class ParserUtils
     private static function getLatestAvailableVersionFromPhpDoc(BasePHPElement $element): array
     {
         $latestAvailableVersion = [PhpVersions::getLatest()];
-        if (!empty($element->getPhpdocProperties()->removedTags) && $element->stubBelongsToCore) {
+        if (!empty($element->getPhpdocProperties()->removedTags) && $element->getOrCreateStubSpecificProperties()->stubBelongsToCore) {
             $allRemovedVersions = array_map(fn (RemovedTag $tag) => (float)$tag->getVersion(), $element->getPhpdocProperties()->removedTags);
             sort($allRemovedVersions, SORT_DESC);
             $removedVersion = array_pop($allRemovedVersions);
@@ -113,14 +113,14 @@ class ParserUtils
     {
         $parentClass = PhpStormStubsSingleton::getPhpStormStubs()->getEnum(
             $element->parentId,
-            sourceFilePath: $element->sourceFilePath,
+            sourceFilePath: $element->getOrCreateStubSpecificProperties()->sourceFilePath,
             shouldSuitCurrentPhpVersion: false
         );
         if ($parentClass === null) {
-            $parentClass = PhpStormStubsSingleton::getPhpStormStubs()->getClass($element->parentId, sourceFilePath: $element->sourceFilePath, shouldSuitCurrentPhpVersion: false);
+            $parentClass = PhpStormStubsSingleton::getPhpStormStubs()->getClass($element->parentId, sourceFilePath: $element->getOrCreateStubSpecificProperties()->sourceFilePath, shouldSuitCurrentPhpVersion: false);
         }
         if ($parentClass === null) {
-            $parentClass = PhpStormStubsSingleton::getPhpStormStubs()->getInterface($element->parentId, sourceFilePath: $element->sourceFilePath, shouldSuitCurrentPhpVersion: false);
+            $parentClass = PhpStormStubsSingleton::getPhpStormStubs()->getInterface($element->parentId, sourceFilePath: $element->getOrCreateStubSpecificProperties()->sourceFilePath, shouldSuitCurrentPhpVersion: false);
         }
         $allSinceVersions = [self::getSinceVersionsFromPhpDoc($parentClass)];
         $allSinceVersions[] = self::getSinceVersionsFromAttribute($parentClass);
@@ -134,14 +134,14 @@ class ParserUtils
     {
         $parentClass = PhpStormStubsSingleton::getPhpStormStubs()->getEnum(
             $element->parentId,
-            sourceFilePath: $element->sourceFilePath,
+            sourceFilePath: $element->getOrCreateStubSpecificProperties()->sourceFilePath,
             shouldSuitCurrentPhpVersion: false
         );
         if ($parentClass === null) {
-            $parentClass = PhpStormStubsSingleton::getPhpStormStubs()->getClass($element->parentId, sourceFilePath: $element->sourceFilePath, shouldSuitCurrentPhpVersion: false);
+            $parentClass = PhpStormStubsSingleton::getPhpStormStubs()->getClass($element->parentId, sourceFilePath: $element->getOrCreateStubSpecificProperties()->sourceFilePath, shouldSuitCurrentPhpVersion: false);
         }
         if ($parentClass === null) {
-            $parentClass = PhpStormStubsSingleton::getPhpStormStubs()->getInterface($element->parentId, sourceFilePath: $element->sourceFilePath, shouldSuitCurrentPhpVersion: false);
+            $parentClass = PhpStormStubsSingleton::getPhpStormStubs()->getInterface($element->parentId, sourceFilePath: $element->getOrCreateStubSpecificProperties()->sourceFilePath, shouldSuitCurrentPhpVersion: false);
         }
         $latestAvailableVersionFromPhpDoc = self::getLatestAvailableVersionFromPhpDoc($parentClass);
         $latestAvailableVersionFromAttribute = self::getLatestAvailableVersionsFromAttribute($parentClass);
@@ -154,8 +154,8 @@ class ParserUtils
     public static function getSinceVersionsFromAttribute(BasePHPElement $element): array
     {
         $allSinceVersions = [];
-        if (!empty($element->availableVersionsRangeFromAttribute)) {
-            $allSinceVersions[] = $element->availableVersionsRangeFromAttribute['from'];
+        if (!empty($element->getOrCreateStubSpecificProperties()->availableVersionsRangeFromAttribute)) {
+            $allSinceVersions[] = $element->getOrCreateStubSpecificProperties()->availableVersionsRangeFromAttribute['from'];
         }
         return $allSinceVersions;
     }
@@ -166,8 +166,8 @@ class ParserUtils
     public static function getLatestAvailableVersionsFromAttribute(BasePHPElement $element): array
     {
         $latestAvailableVersions = [];
-        if (!empty($element->availableVersionsRangeFromAttribute)) {
-            $latestAvailableVersions[] = $element->availableVersionsRangeFromAttribute['to'];
+        if (!empty($element->getOrCreateStubSpecificProperties()->availableVersionsRangeFromAttribute)) {
+            $latestAvailableVersions[] = $element->getOrCreateStubSpecificProperties()->availableVersionsRangeFromAttribute['to'];
         }
         return $latestAvailableVersions;
     }

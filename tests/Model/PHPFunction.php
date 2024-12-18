@@ -73,7 +73,7 @@ class PHPFunction extends PHPNamespacedElement
         $this->name = array_pop($NamespaceParts);
         $this->namespace = trim(implode("\\", $NamespaceParts), '\\');
         $typesFromAttribute = self::findTypesFromAttribute($node->attrGroups);
-        $this->availableVersionsRangeFromAttribute = self::findAvailableVersionsRangeFromAttribute($node->attrGroups);
+        $this->getOrCreateStubSpecificProperties()->availableVersionsRangeFromAttribute = self::findAvailableVersionsRangeFromAttribute($node->attrGroups);
         $this->returnTypesFromAttribute = $typesFromAttribute;
         array_push($this->returnTypesFromSignature, ...self::convertParsedTypeToArray($node->getReturnType()));
         $index = 0;
@@ -112,7 +112,7 @@ class PHPFunction extends PHPNamespacedElement
         $this->checkIfReturnTypeIsTentative($node);
         $this->checkDeprecationTag($node);
         $this->checkReturnTag();
-        $this->stubObjectHash = spl_object_hash($this);
+        $this->getOrCreateStubSpecificProperties()->stubObjectHash = spl_object_hash($this);
         return $this;
     }
 
@@ -230,7 +230,7 @@ class PHPFunction extends PHPNamespacedElement
     public function getParameter(string $parameterName)
     {
         $parameters = array_filter($this->parameters, function (PHPParameter $parameter) use ($parameterName) {
-            return $parameter->name === $parameterName && $parameter->duplicateOtherElement === false
+            return $parameter->name === $parameterName && $parameter->getOrCreateStubSpecificProperties()->duplicateOtherElement === false
                 && ParserUtils::entitySuitsCurrentPhpVersion($parameter);
         });
         if (empty($parameters)) {

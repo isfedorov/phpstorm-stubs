@@ -16,7 +16,7 @@ class ConstantsFilterPredicateProvider
     public static function getDefaultSuitableConstants($constantName)
     {
         return function (PHPClassConstant $constant) use ($constantName) {
-            return $constant->name === $constantName && ParserUtils::entitySuitsCurrentPhpVersion($constant) && $constant->duplicateOtherElement === false;
+            return $constant->name === $constantName && ParserUtils::entitySuitsCurrentPhpVersion($constant) && $constant->getOrCreateStubSpecificProperties()->duplicateOtherElement === false;
         };
     }
 
@@ -27,7 +27,7 @@ class ConstantsFilterPredicateProvider
     public static function getConstantsFromReflection($constantName)
     {
         return function (PHPClassConstant $constant) use ($constantName) {
-            return $constant->name == $constantName && $constant->stubObjectHash == null;
+            return $constant->name == $constantName && $constant->getOrCreateStubSpecificProperties()->stubObjectHash == null;
         };
     }
 

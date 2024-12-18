@@ -53,13 +53,13 @@ class PHPInterface extends BasePHPClass
         $this->namespace = rtrim(str_replace((string)$node->name, "", "\\" . $node->namespacedName), '\\');
         $this->collectTags($node);
         $this->checkDeprecationTag($node);
-        $this->availableVersionsRangeFromAttribute = self::findAvailableVersionsRangeFromAttribute($node->attrGroups);
+        $this->getOrCreateStubSpecificProperties()->availableVersionsRangeFromAttribute = self::findAvailableVersionsRangeFromAttribute($node->attrGroups);
         if (!empty($node->extends)) {
             foreach ($node->extends as $extend) {
                 $this->parentInterfaces[] = $extend->toCodeString();
             }
         }
-        $this->stubObjectHash = spl_object_hash($this);
+        $this->getOrCreateStubSpecificProperties()->stubObjectHash = spl_object_hash($this);
         return $this;
     }
 

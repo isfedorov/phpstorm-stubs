@@ -17,7 +17,7 @@ class StubConstantsProvider
         }else {
             foreach ($classes as $class) {
                 foreach ($class->constants as $constant) {
-                    yield "constant $class->fqnBasedId::$constant->name [$class->stubObjectHash]" => [$class->stubObjectHash, $constant->name];
+                    yield "constant $class->fqnBasedId::$constant->name [{$class->getOrCreateStubSpecificProperties()->stubObjectHash}]" => [$class->getOrCreateStubSpecificProperties()->stubObjectHash, $constant->name];
                 }
             }
         }

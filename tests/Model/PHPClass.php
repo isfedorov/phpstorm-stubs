@@ -92,7 +92,7 @@ class PHPClass extends BasePHPClass
         $this->namespace = rtrim(str_replace((string)$node->name, "", "\\" . $node->namespacedName), '\\');
         $this->isFinal = $node->isFinal();
         $this->isReadonly = $node->isReadonly();
-        $this->availableVersionsRangeFromAttribute = self::findAvailableVersionsRangeFromAttribute($node->attrGroups);
+        $this->getOrCreateStubSpecificProperties()->availableVersionsRangeFromAttribute = self::findAvailableVersionsRangeFromAttribute($node->attrGroups);
         $this->collectTags($node);
         $this->checkDeprecationTag($node);
         if (!empty($node->extends)) {
@@ -126,7 +126,7 @@ class PHPClass extends BasePHPClass
                 $this->properties[$propertyName] = $newProperty;
             }
         }
-        $this->stubObjectHash = spl_object_hash($this);
+        $this->getOrCreateStubSpecificProperties()->stubObjectHash = spl_object_hash($this);
         return $this;
     }
 
@@ -204,11 +204,11 @@ class PHPClass extends BasePHPClass
     {
         if ($fromReflection) {
             $properties = array_filter($this->properties, function (PHPProperty $property) use ($propertyName) {
-                return $property->name === $propertyName && $property->stubObjectHash == null;
+                return $property->name === $propertyName && $property->getOrCreateStubSpecificProperties()->stubObjectHash == null;
             });
         } else {
             $properties = array_filter($this->properties, function (PHPProperty $property) use ($propertyName) {
-                return $property->name === $propertyName && $property->duplicateOtherElement === false
+                return $property->name === $propertyName && $property->getOrCreateStubSpecificProperties()->duplicateOtherElement === false
                     && ParserUtils::entitySuitsCurrentPhpVersion($property);
             });
         }

@@ -85,7 +85,7 @@ class PHPProperty extends BasePHPElement
             $this->parentId = self::getFQN($parentNode);
         }
         $this->checkDeprecationTag($node);
-        $this->stubObjectHash = spl_object_hash($this);
+        $this->getOrCreateStubSpecificProperties()->stubObjectHash = spl_object_hash($this);
         return $this;
     }
 

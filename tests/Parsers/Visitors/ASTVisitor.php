@@ -13,6 +13,8 @@ use PhpParser\Node\Stmt\Interface_;
 use PhpParser\NodeVisitorAbstract;
 use StubTests\Model\CommonUtils;
 use StubTests\Model\PHPClass;
+use StubTests\Model\PHPClassConstant;
+use StubTests\Model\PHPConstant;
 use StubTests\Model\PHPConstantDeclaration;
 use StubTests\Model\PHPDefineConstant;
 use StubTests\Model\PHPEnum;
@@ -36,78 +38,80 @@ class ASTVisitor extends NodeVisitorAbstract
     {
         if ($node instanceof Function_) {
             $function = new PHPFunction()->readObjectFromStubNode($node);
-            $function->sourceFilePath = $this->sourceFilePath;
+            $function->getOrCreateStubSpecificProperties()->sourceFilePath = $this->sourceFilePath;
             if ($this->isStubCore) {
-                $function->stubBelongsToCore = true;
+                $function->getOrCreateStubSpecificProperties()->stubBelongsToCore = true;
             }
             $this->stubs->addFunction($function);
         } elseif ($node instanceof Node\Stmt\EnumCase) {
             $constant = new PHPEnumCase()->readObjectFromStubNode($node);
-            $constant->sourceFilePath = $this->sourceFilePath;
+            $constant->getOrCreateStubSpecificProperties()->sourceFilePath = $this->sourceFilePath;
             if ($this->isStubCore) {
-                $constant->stubBelongsToCore = true;
+                $constant->getOrCreateStubSpecificProperties()->stubBelongsToCore = true;
             }
             $this->childEntitiesToAddLater['enumCases'][] = $constant;
         } elseif ($node instanceof Node\Stmt\ClassConst) {
             $constantDeclaration = new PHPConstantDeclaration()->readObjectFromStubNode($node);
+            /** @var PHPClassConstant|PHPConstant $constant */
             foreach ($constantDeclaration->constants as $constant) {
-                $constant->sourceFilePath = $this->sourceFilePath;
+                $constant->getOrCreateStubSpecificProperties()->sourceFilePath = $this->sourceFilePath;
                 if ($this->isStubCore) {
-                    $constant->stubBelongsToCore = true;
+                    $constant->getOrCreateStubSpecificProperties()->stubBelongsToCore = true;
                 }
                 $this->childEntitiesToAddLater['classConstants'][] = $constant;
             }
         } elseif ($node instanceof Node\Stmt\Const_) {
             $constantDeclaration = new PHPConstantDeclaration()->readObjectFromStubNode($node);
+            /** @var PHPClassConstant|PHPConstant $constant */
             foreach ($constantDeclaration->constants as $constant) {
-                $constant->sourceFilePath = $this->sourceFilePath;
+                $constant->getOrCreateStubSpecificProperties()->sourceFilePath = $this->sourceFilePath;
                 if ($this->isStubCore) {
-                    $constant->stubBelongsToCore = true;
+                    $constant->getOrCreateStubSpecificProperties()->stubBelongsToCore = true;
                 }
                 $this->stubs->addConstant($constant);
             }
         } elseif ($node instanceof FuncCall) {
             if ((string)$node->name === 'define') {
                 $constant = new PHPDefineConstant()->readObjectFromStubNode($node);
-                $constant->sourceFilePath = $this->sourceFilePath;
+                $constant->getOrCreateStubSpecificProperties()->sourceFilePath = $this->sourceFilePath;
                 if ($this->isStubCore) {
-                    $constant->stubBelongsToCore = true;
+                    $constant->getOrCreateStubSpecificProperties()->stubBelongsToCore = true;
                 }
                 $this->stubs->addConstant($constant);
             }
         } elseif ($node instanceof ClassMethod) {
             $method = new PHPMethod()->readObjectFromStubNode($node);
-            $method->sourceFilePath = $this->sourceFilePath;
+            $method->getOrCreateStubSpecificProperties()->sourceFilePath = $this->sourceFilePath;
             if ($this->isStubCore) {
-                $method->stubBelongsToCore = true;
+                $method->getOrCreateStubSpecificProperties()->stubBelongsToCore = true;
             }
             $this->childEntitiesToAddLater['methods'][] = $method;
         } elseif ($node instanceof Interface_) {
             $interface = new PHPInterface()->readObjectFromStubNode($node);
-            $interface->sourceFilePath = $this->sourceFilePath;
+            $interface->getOrCreateStubSpecificProperties()->sourceFilePath = $this->sourceFilePath;
             if ($this->isStubCore) {
-                $interface->stubBelongsToCore = true;
+                $interface->getOrCreateStubSpecificProperties()->stubBelongsToCore = true;
             }
             $this->stubs->addInterface($interface);
         } elseif ($node instanceof Class_) {
             $class = new PHPClass()->readObjectFromStubNode($node);
-            $class->sourceFilePath = $this->sourceFilePath;
+            $class->getOrCreateStubSpecificProperties()->sourceFilePath = $this->sourceFilePath;
             if ($this->isStubCore) {
-                $class->stubBelongsToCore = true;
+                $class->getOrCreateStubSpecificProperties()->stubBelongsToCore = true;
             }
             $this->stubs->addClass($class);
         } elseif ($node instanceof Enum_) {
             $enum = new PHPEnum()->readObjectFromStubNode($node);
-            $enum->sourceFilePath = $this->sourceFilePath;
+            $enum->getOrCreateStubSpecificProperties()->sourceFilePath = $this->sourceFilePath;
             if ($this->isStubCore) {
-                $enum->stubBelongsToCore = true;
+                $enum->getOrCreateStubSpecificProperties()->stubBelongsToCore = true;
             }
             $this->stubs->addEnum($enum);
         } elseif ($node instanceof Node\Stmt\Property) {
             $property = new PHPProperty()->readObjectFromStubNode($node);
-            $property->sourceFilePath = $this->sourceFilePath;
+            $property->getOrCreateStubSpecificProperties()->sourceFilePath = $this->sourceFilePath;
             if ($this->isStubCore) {
-                $property->stubBelongsToCore = true;
+                $property->getOrCreateStubSpecificProperties()->stubBelongsToCore = true;
             }
             $this->childEntitiesToAddLater['properties'][] = $property;
         }
@@ -124,7 +128,7 @@ class ASTVisitor extends NodeVisitorAbstract
             $parents[] = $parentInterface;
             $alreadyParsedInterface = $this->stubs->getInterface(
                 $parentInterface,
-                $interface->stubBelongsToCore ? null : $interface->sourceFilePath,
+                $interface->getOrCreateStubSpecificProperties()->stubBelongsToCore ? null : $interface->getOrCreateStubSpecificProperties()->sourceFilePath,
                 false
             );
             if ($alreadyParsedInterface !== null) {
@@ -144,7 +148,7 @@ class ASTVisitor extends NodeVisitorAbstract
             $interfaces[] = $interface;
             $alreadyParsedInterface = $this->stubs->getInterface(
                 $interface,
-                $class->stubBelongsToCore ? null : $class->sourceFilePath,
+                $class->getOrCreateStubSpecificProperties()->stubBelongsToCore ? null : $class->getOrCreateStubSpecificProperties()->sourceFilePath,
                 false
             );
             if ($alreadyParsedInterface !== null) {
@@ -156,7 +160,7 @@ class ASTVisitor extends NodeVisitorAbstract
         }
         $alreadyParsedClass = $this->stubs->getClass(
             $class->parentClass,
-            $class->stubBelongsToCore ? null : $class->sourceFilePath,
+            $class->getOrCreateStubSpecificProperties()->stubBelongsToCore ? null : $class->getOrCreateStubSpecificProperties()->sourceFilePath,
             false
         );
         if ($alreadyParsedClass !== null) {

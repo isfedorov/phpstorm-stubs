@@ -67,7 +67,7 @@ class PHPEnum extends PHPClass
         $this->fqnBasedId = self::getFQN($node);
         $this->name = self::getShortName($node);
         $this->namespace = rtrim(str_replace((string)$node->name, "", "\\" . $node->namespacedName), '\\');
-        $this->availableVersionsRangeFromAttribute = self::findAvailableVersionsRangeFromAttribute($node->attrGroups);
+        $this->getOrCreateStubSpecificProperties()->availableVersionsRangeFromAttribute = self::findAvailableVersionsRangeFromAttribute($node->attrGroups);
         $this->collectTags($node);
         $this->checkDeprecationTag($node);
         if (!empty($node->extends)) {
@@ -105,7 +105,7 @@ class PHPEnum extends PHPClass
                 $this->properties[$propertyName] = $newProperty;
             }
         }
-        $this->stubObjectHash = spl_object_hash($this);
+        $this->getOrCreateStubSpecificProperties()->stubObjectHash = spl_object_hash($this);
         return $this;
     }
 
@@ -137,11 +137,11 @@ class PHPEnum extends PHPClass
     {
         if ($fromReflection) {
             $constants = array_filter($this->enumCases, function (PHPEnumCase $case) use ($caseName) {
-                return $case->name === $caseName && $case->stubObjectHash == null;
+                return $case->name === $caseName && $case->getOrCreateStubSpecificProperties()->stubObjectHash == null;
             });
         } else {
             $constants = array_filter($this->enumCases, function (PHPEnumCase $case) use ($caseName) {
-                return $case->name === $caseName && $case->duplicateOtherElement === false
+                return $case->name === $caseName && $case->getOrCreateStubSpecificProperties()->duplicateOtherElement === false
                     && ParserUtils::entitySuitsCurrentPhpVersion($case);
             });
         }

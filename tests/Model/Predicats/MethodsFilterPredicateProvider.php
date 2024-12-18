@@ -15,7 +15,7 @@ class MethodsFilterPredicateProvider
     public static function getDefaultSuitableMethods($methodName)
     {
         return function (PHPMethod $method) use ($methodName) {
-            return $method->name === $methodName && ParserUtils::entitySuitsCurrentPhpVersion($method) && $method->duplicateOtherElement === false;
+            return $method->name === $methodName && ParserUtils::entitySuitsCurrentPhpVersion($method) && $method->getOrCreateStubSpecificProperties()->duplicateOtherElement === false;
         };
     }
 
@@ -26,7 +26,7 @@ class MethodsFilterPredicateProvider
     public static function getMethodsFromReflection($methodName)
     {
         return function (PHPMethod $method) use ($methodName) {
-            return $method->name == $methodName && $method->stubObjectHash == null;
+            return $method->name == $methodName && $method->getOrCreateStubSpecificProperties()->stubObjectHash == null;
         };
     }
 
@@ -48,7 +48,7 @@ class MethodsFilterPredicateProvider
     public static function getMethodsByHash($methodHash)
     {
         return function (PHPMethod $method) use ($methodHash) {
-            return $method->stubObjectHash === $methodHash;
+            return $method->getOrCreateStubSpecificProperties()->stubObjectHash === $methodHash;
         };
     }
 }

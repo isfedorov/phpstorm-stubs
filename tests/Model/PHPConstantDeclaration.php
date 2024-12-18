@@ -28,10 +28,6 @@ class PHPConstantDeclaration extends BasePHPElement
                     $constant->visibility = 'public';
                 }
                 $constant->parentId = self::getFQN($parentNode);
-            } elseif ($parentNode instanceof Namespace_){
-                $constant = new PHPConstant();
-                $constant->fqnBasedId = self::getFQN($const);
-                $constant->namespace = rtrim(str_replace((string)$const->name, "", "\\" . $const->namespacedName), '\\');
             } else {
                 $constant = new PHPConstant();
                 $constant->fqnBasedId = self::getFQN($const);
@@ -40,11 +36,11 @@ class PHPConstantDeclaration extends BasePHPElement
             $constant->name = $const->name->name;
             $constant->value = $this->getConstValue($const);
             if (property_exists($node, 'attrGroups')) {
-                $constant->availableVersionsRangeFromAttribute = self::findAvailableVersionsRangeFromAttribute($node->attrGroups);
+                $constant->getOrCreateStubSpecificProperties()->availableVersionsRangeFromAttribute = self::findAvailableVersionsRangeFromAttribute($node->attrGroups);
             }
             $constant->collectTags($node);
             $constant->checkDeprecationTag($node);
-            $constant->stubObjectHash = spl_object_hash($constant);
+            $constant->getOrCreateStubSpecificProperties()->stubObjectHash = spl_object_hash($constant);
             array_push($this->constants, $constant);
         }
 

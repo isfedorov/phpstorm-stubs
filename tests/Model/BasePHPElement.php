@@ -32,32 +32,42 @@ abstract class BasePHPElement implements PHPDocumentable
     /** @var PHPDocProperties|null */
     private $phpdocProperties = null;
 
+    /** @var StubsSpecificAttributes|null */
+    private $stubSpecificProperties = null;
+
     /** @var string|null */
     public $name = null;
 
-    /** @var bool */
-    public $stubBelongsToCore = false;
-
     /** @var array|null  */
     public $mutedProblems = null;
-
-    /** @var array|null */
-    public $availableVersionsRangeFromAttribute = null;
-
-    /** @var string|null */
-    public $sourceFilePath = null;
-
-    /** @var bool */
-    public $duplicateOtherElement = false;
-
-    /** @var string|null */
-    public $stubObjectHash = null;
 
     /** @var string|null */
     public $fqnBasedId = null;
 
     /** @var bool */
     public $isDeprecated = false;
+
+    /**
+     * @param Node $node
+     * @return string
+     */
+    private static function buildFullyQualifiedName(Node $node)
+    {
+        $fqn = '';
+        foreach ($node->parts as $part) {
+            $fqn .= "$part\\";
+        }
+        return $fqn;
+    }
+
+    /**
+     * @param ReflectionNamedType $type
+     * @return bool
+     */
+    public static function typeIsNullable(ReflectionNamedType $type): bool
+    {
+        return $type->allowsNull() && $type->getName() !== 'mixed';
+    }
 
     /**
      * @param Reflector $reflectionObject
@@ -112,20 +122,13 @@ abstract class BasePHPElement implements PHPDocumentable
      */
     public static function getFQN(Node $node)
     {
-        $fqn = '';
-        if (!property_exists($node, 'namespacedName') || $node->namespacedName === null) {
-            if (property_exists($node, 'name')) {
-                $fqn = $node->name;
-            } else {
-                foreach ($node->parts as $part) {
-                    $fqn .= "$part\\";
-                }
-            }
-        } else {
+        if (property_exists($node, 'namespacedName') && $node->namespacedName !== null) {
             return "\\$node->namespacedName";
         }
-
-        return $fqn;
+        if (property_exists($node, 'name')) {
+            return $node->name;
+        }
+        return self::buildFullyQualifiedName($node);
     }
 
     /**
@@ -147,7 +150,7 @@ abstract class BasePHPElement implements PHPDocumentable
     {
         $reflectionTypes = [];
         if ($type instanceof ReflectionNamedType) {
-            $type->allowsNull() && $type->getName() !== 'mixed' ?
+            self::typeIsNullable($type) ?
                 array_push($reflectionTypes, '?' . $type->getName()) : array_push($reflectionTypes, $type->getName());
         }
         if ($type instanceof ReflectionUnionType) {
@@ -383,5 +386,13 @@ abstract class BasePHPElement implements PHPDocumentable
     public function getPhpdocProperties(): ?PHPDocProperties
     {
         return $this->phpdocProperties;
+    }
+
+    public function getOrCreateStubSpecificProperties(): ?StubsSpecificAttributes
+    {
+        if ($this->stubSpecificProperties === null) {
+            $this->stubSpecificProperties = new StubsSpecificAttributes();
+        }
+        return $this->stubSpecificProperties;
     }
 }
