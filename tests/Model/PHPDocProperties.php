@@ -2,6 +2,7 @@
 
 namespace StubTests\Model;
 
+use Exception;
 use phpDocumentor\Reflection\DocBlock\Tags\Deprecated;
 use phpDocumentor\Reflection\DocBlock\Tags\Link;
 use phpDocumentor\Reflection\DocBlock\Tags\Param;
@@ -78,5 +79,8 @@ class PHPDocProperties
      * @var list<Template>
      */
     public $templateTypes = [];
+
+    /** @var Exception|null */
+    public $phpDocParsingError = null;
 
 }

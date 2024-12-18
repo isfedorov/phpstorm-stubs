@@ -38,9 +38,6 @@ abstract class BasePHPElement implements PHPDocumentable
     /** @var bool */
     public $stubBelongsToCore = false;
 
-    /** @var Exception|null */
-    public $phpDocParsingError = null;
-
     /** @var array|null  */
     public $mutedProblems = null;
 
@@ -105,7 +102,7 @@ abstract class BasePHPElement implements PHPDocumentable
                 }
                 $this->phpdocProperties->hasInheritDocTag = $this->hasInheritDocLikeTag($phpDoc);
             } catch (Exception $e) {
-                $this->phpDocParsingError = $e;
+                $this->getPhpdocProperties()->phpDocParsingError = $e;
             }
         }
     }

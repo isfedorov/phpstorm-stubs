@@ -37,7 +37,7 @@ class StubsPhpDocTest extends AbstractBaseStubsTestCase
         }
         $class = PhpStormStubsSingleton::getPhpStormStubs()->getClassByHash($classHash);
         $constant = $class->getConstant($constantName, ConstantsFilterPredicateProvider::getConstantsIndependingOnPHPVersion($constantName));
-        self::assertNull($constant->phpDocParsingError, $constant->phpDocParsingError ?: '');
+        self::assertNull($constant->getPhpdocProperties()->phpDocParsingError, $constant->getPhpdocProperties()->phpDocParsingError ?: '');
         self::checkPHPDocCorrectness($constant, "constant $class->fqnBasedId::$constant->name");
     }
 
@@ -49,7 +49,7 @@ class StubsPhpDocTest extends AbstractBaseStubsTestCase
         }
         $class = PhpStormStubsSingleton::getPhpStormStubs()->getInterface($classId, shouldSuitCurrentPhpVersion: false);
         $constant = $class->getConstant($constantName, ConstantsFilterPredicateProvider::getConstantsIndependingOnPHPVersion($constantName));
-        self::assertNull($constant->phpDocParsingError, $constant->phpDocParsingError ?: '');
+        self::assertNull($constant->getPhpdocProperties()->phpDocParsingError, $constant->getPhpdocProperties()->phpDocParsingError ?: '');
         self::checkPHPDocCorrectness($constant, "constant $classId::$constant->name");
     }
 
@@ -61,7 +61,7 @@ class StubsPhpDocTest extends AbstractBaseStubsTestCase
         }
         $class = PhpStormStubsSingleton::getPhpStormStubs()->getEnum($classId, shouldSuitCurrentPhpVersion: false);
         $constant = $class->getConstant($constantName, ConstantsFilterPredicateProvider::getConstantsIndependingOnPHPVersion($constantName));
-        self::assertNull($constant->phpDocParsingError, $constant->phpDocParsingError ?: '');
+        self::assertNull($constant->getPhpdocProperties()->phpDocParsingError, $constant->getPhpdocProperties()->phpDocParsingError ?: '');
         self::checkPHPDocCorrectness($constant, "constant $classId::$constant->name");
     }
 
@@ -69,7 +69,7 @@ class StubsPhpDocTest extends AbstractBaseStubsTestCase
     public static function testConstantsPHPDocs(string $constantId): void
     {
         $constant = PhpStormStubsSingleton::getPhpStormStubs()->getConstant($constantId, shouldSuitCurrentPhpVersion: false);
-        self::assertNull($constant->phpDocParsingError, $constant->phpDocParsingError ?: '');
+        self::assertNull($constant->getPhpdocProperties()->phpDocParsingError, $constant->getPhpdocProperties()->phpDocParsingError ?: '');
         self::checkPHPDocCorrectness($constant, "constant $constant->name");
     }
 
@@ -77,7 +77,7 @@ class StubsPhpDocTest extends AbstractBaseStubsTestCase
     public static function testFunctionPHPDocs(string $functionId): void
     {
         $function = PhpStormStubsSingleton::getPhpStormStubs()->getFunction($functionId, shouldSuitCurrentPhpVersion: false);
-        self::assertNull($function->phpDocParsingError, $function->phpDocParsingError?->getMessage() ?: '');
+        self::assertNull($function->getPhpdocProperties()->phpDocParsingError, $function->getPhpdocProperties()->phpDocParsingError?->getMessage() ?: '');
         self::checkPHPDocCorrectness($function, "function $function->name");
     }
 
@@ -85,7 +85,7 @@ class StubsPhpDocTest extends AbstractBaseStubsTestCase
     public static function testClassesPHPDocs(string $classId, string $sourceFilePath): void
     {
         $class = PhpStormStubsSingleton::getPhpStormStubs()->getClass($classId, sourceFilePath: $sourceFilePath, shouldSuitCurrentPhpVersion: false);
-        self::assertNull($class->phpDocParsingError, $class->phpDocParsingError?->getMessage() ?: '');
+        self::assertNull($class->getPhpdocProperties()->phpDocParsingError, $class->getPhpdocProperties()->phpDocParsingError?->getMessage() ?: '');
         self::checkPHPDocCorrectness($class, "class $class->name");
     }
 
@@ -93,7 +93,7 @@ class StubsPhpDocTest extends AbstractBaseStubsTestCase
     public static function testInterfacesPHPDocs(string $classId, string $sourceFilePath): void
     {
         $class = PhpStormStubsSingleton::getPhpStormStubs()->getInterface($classId, sourceFilePath: $sourceFilePath, shouldSuitCurrentPhpVersion: false);
-        self::assertNull($class->phpDocParsingError, $class->phpDocParsingError?->getMessage() ?: '');
+        self::assertNull($class->getPhpdocProperties()->phpDocParsingError, $class->getPhpdocProperties()->phpDocParsingError?->getMessage() ?: '');
         self::checkPHPDocCorrectness($class, "class $class->name");
     }
 
@@ -101,7 +101,7 @@ class StubsPhpDocTest extends AbstractBaseStubsTestCase
     public static function testEumsPHPDocs(string $classId, string $sourceFilePath): void
     {
         $class = PhpStormStubsSingleton::getPhpStormStubs()->getEnum($classId, sourceFilePath: $sourceFilePath, shouldSuitCurrentPhpVersion: false);
-        self::assertNull($class->phpDocParsingError, $class->phpDocParsingError?->getMessage() ?: '');
+        self::assertNull($class->getPhpdocProperties()->phpDocParsingError, $class->getPhpdocProperties()->phpDocParsingError?->getMessage() ?: '');
         self::checkPHPDocCorrectness($class, "class $class->name");
     }
 
@@ -113,7 +113,7 @@ class StubsPhpDocTest extends AbstractBaseStubsTestCase
         if ($method->name === '__construct') {
             self::assertEmpty($method->returnTypesFromPhpDoc, '@return tag for __construct should be omitted');
         }
-        self::assertNull($method->phpDocParsingError, $method->phpDocParsingError ?: '');
+        self::assertNull($method->getPhpdocProperties()->phpDocParsingError, $method->getPhpdocProperties()->phpDocParsingError ?: '');
         self::checkPHPDocCorrectness($method, "method $method->name");
     }
 
@@ -125,7 +125,7 @@ class StubsPhpDocTest extends AbstractBaseStubsTestCase
         if ($method->name === '__construct') {
             self::assertEmpty($method->returnTypesFromPhpDoc, '@return tag for __construct should be omitted');
         }
-        self::assertNull($method->phpDocParsingError, $method->phpDocParsingError ?: '');
+        self::assertNull($method->getPhpdocProperties()->phpDocParsingError, $method->getPhpdocProperties()->phpDocParsingError ?: '');
         self::checkPHPDocCorrectness($method, "method $method->name");
     }
 
@@ -137,7 +137,7 @@ class StubsPhpDocTest extends AbstractBaseStubsTestCase
         if ($method->name === '__construct') {
             self::assertEmpty($method->returnTypesFromPhpDoc, '@return tag for __construct should be omitted');
         }
-        self::assertNull($method->phpDocParsingError, $method->phpDocParsingError ?: '');
+        self::assertNull($method->getPhpdocProperties()->phpDocParsingError, $method->getPhpdocProperties()->phpDocParsingError ?: '');
         self::checkPHPDocCorrectness($method, "method $method->name");
     }
 
