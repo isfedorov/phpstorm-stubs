@@ -35,8 +35,8 @@ class StubsPhpDocTest extends AbstractBaseStubsTestCase
         }
         $class = PhpStormStubsSingleton::getPhpStormStubs()->getClassByHash($classHash);
         $constant = $class->getConstant($constantName, false);
-        self::assertNull($constant->parseError, $constant->parseError ?: '');
-        self::checkPHPDocCorrectness($constant, "constant $class->id::$constant->name");
+        self::assertNull($constant->phpDocParsingError, $constant->phpDocParsingError ?: '');
+        self::checkPHPDocCorrectness($constant, "constant $class->fqnBasedId::$constant->name");
     }
 
     #[DataProviderExternal(StubConstantsProvider::class, 'interfaceConstantProvider')]
@@ -47,7 +47,7 @@ class StubsPhpDocTest extends AbstractBaseStubsTestCase
         }
         $class = PhpStormStubsSingleton::getPhpStormStubs()->getInterface($classId, shouldSuitCurrentPhpVersion: false);
         $constant = $class->getConstant($constantName, false);
-        self::assertNull($constant->parseError, $constant->parseError ?: '');
+        self::assertNull($constant->phpDocParsingError, $constant->phpDocParsingError ?: '');
         self::checkPHPDocCorrectness($constant, "constant $classId::$constant->name");
     }
 
@@ -59,7 +59,7 @@ class StubsPhpDocTest extends AbstractBaseStubsTestCase
         }
         $class = PhpStormStubsSingleton::getPhpStormStubs()->getEnum($classId, shouldSuitCurrentPhpVersion: false);
         $constant = $class->getConstant($constantName, false);
-        self::assertNull($constant->parseError, $constant->parseError ?: '');
+        self::assertNull($constant->phpDocParsingError, $constant->phpDocParsingError ?: '');
         self::checkPHPDocCorrectness($constant, "constant $classId::$constant->name");
     }
 
@@ -67,7 +67,7 @@ class StubsPhpDocTest extends AbstractBaseStubsTestCase
     public static function testConstantsPHPDocs(string $constantId): void
     {
         $constant = PhpStormStubsSingleton::getPhpStormStubs()->getConstant($constantId, shouldSuitCurrentPhpVersion: false);
-        self::assertNull($constant->parseError, $constant->parseError ?: '');
+        self::assertNull($constant->phpDocParsingError, $constant->phpDocParsingError ?: '');
         self::checkPHPDocCorrectness($constant, "constant $constant->name");
     }
 
@@ -75,7 +75,7 @@ class StubsPhpDocTest extends AbstractBaseStubsTestCase
     public static function testFunctionPHPDocs(string $functionId): void
     {
         $function = PhpStormStubsSingleton::getPhpStormStubs()->getFunction($functionId, shouldSuitCurrentPhpVersion: false);
-        self::assertNull($function->parseError, $function->parseError?->getMessage() ?: '');
+        self::assertNull($function->phpDocParsingError, $function->phpDocParsingError?->getMessage() ?: '');
         self::checkPHPDocCorrectness($function, "function $function->name");
     }
 
@@ -83,7 +83,7 @@ class StubsPhpDocTest extends AbstractBaseStubsTestCase
     public static function testClassesPHPDocs(string $classId, string $sourceFilePath): void
     {
         $class = PhpStormStubsSingleton::getPhpStormStubs()->getClass($classId, sourceFilePath: $sourceFilePath, shouldSuitCurrentPhpVersion: false);
-        self::assertNull($class->parseError, $class->parseError?->getMessage() ?: '');
+        self::assertNull($class->phpDocParsingError, $class->phpDocParsingError?->getMessage() ?: '');
         self::checkPHPDocCorrectness($class, "class $class->name");
     }
 
@@ -91,7 +91,7 @@ class StubsPhpDocTest extends AbstractBaseStubsTestCase
     public static function testInterfacesPHPDocs(string $classId, string $sourceFilePath): void
     {
         $class = PhpStormStubsSingleton::getPhpStormStubs()->getInterface($classId, sourceFilePath: $sourceFilePath, shouldSuitCurrentPhpVersion: false);
-        self::assertNull($class->parseError, $class->parseError?->getMessage() ?: '');
+        self::assertNull($class->phpDocParsingError, $class->phpDocParsingError?->getMessage() ?: '');
         self::checkPHPDocCorrectness($class, "class $class->name");
     }
 
@@ -99,7 +99,7 @@ class StubsPhpDocTest extends AbstractBaseStubsTestCase
     public static function testEumsPHPDocs(string $classId, string $sourceFilePath): void
     {
         $class = PhpStormStubsSingleton::getPhpStormStubs()->getEnum($classId, sourceFilePath: $sourceFilePath, shouldSuitCurrentPhpVersion: false);
-        self::assertNull($class->parseError, $class->parseError?->getMessage() ?: '');
+        self::assertNull($class->phpDocParsingError, $class->phpDocParsingError?->getMessage() ?: '');
         self::checkPHPDocCorrectness($class, "class $class->name");
     }
 
@@ -111,7 +111,7 @@ class StubsPhpDocTest extends AbstractBaseStubsTestCase
         if ($method->name === '__construct') {
             self::assertEmpty($method->returnTypesFromPhpDoc, '@return tag for __construct should be omitted');
         }
-        self::assertNull($method->parseError, $method->parseError ?: '');
+        self::assertNull($method->phpDocParsingError, $method->phpDocParsingError ?: '');
         self::checkPHPDocCorrectness($method, "method $method->name");
     }
 
@@ -123,7 +123,7 @@ class StubsPhpDocTest extends AbstractBaseStubsTestCase
         if ($method->name === '__construct') {
             self::assertEmpty($method->returnTypesFromPhpDoc, '@return tag for __construct should be omitted');
         }
-        self::assertNull($method->parseError, $method->parseError ?: '');
+        self::assertNull($method->phpDocParsingError, $method->phpDocParsingError ?: '');
         self::checkPHPDocCorrectness($method, "method $method->name");
     }
 
@@ -135,7 +135,7 @@ class StubsPhpDocTest extends AbstractBaseStubsTestCase
         if ($method->name === '__construct') {
             self::assertEmpty($method->returnTypesFromPhpDoc, '@return tag for __construct should be omitted');
         }
-        self::assertNull($method->parseError, $method->parseError ?: '');
+        self::assertNull($method->phpDocParsingError, $method->phpDocParsingError ?: '');
         self::checkPHPDocCorrectness($method, "method $method->name");
     }
 
@@ -143,8 +143,7 @@ class StubsPhpDocTest extends AbstractBaseStubsTestCase
 
     private static function checkDeprecatedRemovedSinceVersionsMajor(BasePHPElement $element, string $elementName): void
     {
-        /** @var PHPDocElement $element */
-        foreach ($element->sinceTags as $sinceTag) {
+        foreach ($element->getPhpdocProperties()->sinceTags as $sinceTag) {
             if ($sinceTag instanceof Since) {
                 $version = $sinceTag->getVersion();
                 if ($version !== null) {
@@ -154,7 +153,7 @@ class StubsPhpDocTest extends AbstractBaseStubsTestCase
                 }
             }
         }
-        foreach ($element->deprecatedTags as $deprecatedTag) {
+        foreach ($element->getPhpdocProperties()->deprecatedTags as $deprecatedTag) {
             if ($deprecatedTag instanceof Deprecated) {
                 $version = $deprecatedTag->getVersion();
                 if ($version !== null) {
@@ -164,7 +163,7 @@ class StubsPhpDocTest extends AbstractBaseStubsTestCase
                 }
             }
         }
-        foreach ($element->removedTags as $removedTag) {
+        foreach ($element->getPhpdocProperties()->removedTags as $removedTag) {
             if ($removedTag instanceof RemovedTag) {
                 $version = $removedTag->getVersion();
                 if ($version !== null) {
@@ -178,8 +177,7 @@ class StubsPhpDocTest extends AbstractBaseStubsTestCase
 
     private static function checkHtmlTags(BasePHPElement $element, string $elementName): void
     {
-        /** @var PHPDocElement $element */
-        $phpdoc = trim($element->phpdoc);
+        $phpdoc = trim($element->getPhpdocProperties()->phpdoc);
 
         $phpdoc = preg_replace(
             [
@@ -214,8 +212,7 @@ class StubsPhpDocTest extends AbstractBaseStubsTestCase
 
     private static function checkLinks(BasePHPElement $element, string $elementName): void
     {
-        /** @var PHPDocElement $element */
-        foreach ($element->links as $link) {
+        foreach ($element->getPhpdocProperties()->linkTags as $link) {
             if ($link instanceof Link) {
                 self::assertStringStartsWith(
                     'https',
@@ -234,7 +231,7 @@ class StubsPhpDocTest extends AbstractBaseStubsTestCase
                 }
             }
         }
-        foreach ($element->see as $see) {
+        foreach ($element->getPhpdocProperties()->seeTags as $see) {
             if ($see instanceof See && $see->getReference() instanceof Url) {
                 $uri = (string)$see->getReference();
                 self::assertStringStartsWith('https', $uri, "In $elementName @see doesn't start with https");
@@ -286,8 +283,7 @@ class StubsPhpDocTest extends AbstractBaseStubsTestCase
             'var',
             'version',
         ];
-        /** @var PHPDocElement $element */
-        foreach ($element->tagNames as $tagName) {
+        foreach ($element->getPhpdocProperties()->tagNames as $tagName) {
             self::assertContains($tagName, $VALID_TAGS, "Element $elementName has invalid tag: @$tagName");
         }
     }

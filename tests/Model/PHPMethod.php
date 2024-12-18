@@ -125,7 +125,7 @@ class PHPMethod extends PHPFunction
         }
 
         foreach ($this->parameters as $parameter) {
-            $relatedParamTags = array_filter($this->paramTags, function (Param $tag) use ($parameter) {
+            $relatedParamTags = array_filter($this->getPhpdocProperties()->paramTags, function (Param $tag) use ($parameter) {
                 return $tag->getVariableName() === $parameter->name;
             });
             /** @var Param $relatedParamTag */

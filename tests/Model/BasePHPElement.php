@@ -7,6 +7,7 @@ use JetBrains\PhpStorm\Deprecated;
 use JetBrains\PhpStorm\Internal\LanguageLevelTypeAware;
 use JetBrains\PhpStorm\Internal\PhpStormStubsElementAvailable;
 use JetBrains\PhpStorm\Internal\TentativeType;
+use phpDocumentor\Reflection\DocBlock;
 use phpDocumentor\Reflection\Type;
 use PhpParser\Node;
 use PhpParser\Node\AttributeGroup;
@@ -21,22 +22,28 @@ use ReflectionType;
 use ReflectionUnionType;
 use Reflector;
 use stdClass;
+use StubTests\Parsers\DocFactoryProvider;
 use function array_key_exists;
 use function count;
 use function in_array;
 
-abstract class BasePHPElement
+abstract class BasePHPElement implements PHPDocumentable
 {
-    use PHPDocElement;
+    /** @var PHPDocProperties|null */
+    private $phpdocProperties = null;
 
     /** @var string|null */
     public $name;
     public $stubBelongsToCore = false;
 
     /** @var Exception|null */
-    public $parseError;
-    public $mutedProblems = [];
-    public $availableVersionsRangeFromAttribute = [];
+    public $phpDocParsingError = null;
+
+    /** @var array|null  */
+    public $mutedProblems = null;
+
+    /** @var array|null */
+    public $availableVersionsRangeFromAttribute = null;
 
     /** @var string|null */
     public $sourceFilePath;
@@ -68,6 +75,37 @@ abstract class BasePHPElement
      */
     abstract public function readMutedProblems($jsonData);
 
+    public function collectTags(Node $node)
+    {
+        $this->phpdocProperties = new PHPDocProperties();
+        if ($node->getDocComment() !== null) {
+            try {
+                $text = $node->getDocComment()->getText();
+                $text = preg_replace("/int\<\w+,\s*\w+\>/", "int", $text);
+                $text = preg_replace("/callable\(\w+(,\s*\w+)*\)(:\s*\w*)?/", "callable", $text);
+                $this->phpdocProperties->phpdoc = $text;
+                $phpDoc = DocFactoryProvider::getDocFactory()->create($text);
+                $tags = $phpDoc->getTags();
+                foreach ($tags as $tag) {
+                    $this->phpdocProperties->tagNames[] = $tag->getName();
+                    $this->phpdocProperties->paramTags = $phpDoc->getTagsByName('param');
+                    $this->phpdocProperties->returnTags = $phpDoc->getTagsByName('return');
+                    $this->phpdocProperties->varTags = $phpDoc->getTagsByName('var');
+                    $this->phpdocProperties->linkTags = $phpDoc->getTagsByName('link');
+                    $this->phpdocProperties->seeTags = $phpDoc->getTagsByName('see');
+                    $this->phpdocProperties->sinceTags = $phpDoc->getTagsByName('since');
+                    $this->phpdocProperties->deprecatedTags = $phpDoc->getTagsByName('deprecated');
+                    $this->phpdocProperties->removedTags = $phpDoc->getTagsByName('removed');
+                    $this->phpdocProperties->hasInternalMetaTag = $phpDoc->hasTag('meta');
+                    $this->phpdocProperties->templateTypes += $phpDoc->getTagsByName('template');
+                }
+                $this->phpdocProperties->hasInheritDocTag = $this->hasInheritDocLikeTag($phpDoc);
+            } catch (Exception $e) {
+                $this->phpDocParsingError = $e;
+            }
+        }
+    }
+
     /**
      * @return string
      */
@@ -83,7 +121,7 @@ abstract class BasePHPElement
                 }
             }
         } else {
-            return "\\{$node->namespacedName}";
+            return "\\$node->namespacedName";
         }
 
         return $fqn;
@@ -291,13 +329,13 @@ abstract class BasePHPElement
     public function checkDeprecationTag($node)
     {
         $this->isDeprecated = self::hasDeprecatedAttribute($node) && self::deprecatedVersionSuitsCurrentLanguageLevel($node) ||
-            !empty($this->deprecatedTags) && self::deprecatedVersionSuitsCurrentLanguageLevel();
+            !empty($this->phpdocProperties->deprecatedTags) && self::deprecatedVersionSuitsCurrentLanguageLevel();
     }
 
     private function deprecatedVersionSuitsCurrentLanguageLevel($node = null)
     {
         if (!$node) {
-            foreach ($this->deprecatedTags as $deprecatedTag) {
+            foreach ($this->phpdocProperties->deprecatedTags as $deprecatedTag) {
                 return $deprecatedTag->getVersion() !== null && (float)$deprecatedTag->getVersion() <= (float)getenv('PHP_VERSION');
             }
         } else {
@@ -331,5 +369,19 @@ abstract class BasePHPElement
             }
         }
         return false;
+    }
+
+    /**
+     * @return bool
+     */
+    private function hasInheritDocLikeTag(DocBlock $phpDoc)
+    {
+        return $phpDoc->hasTag('inheritdoc') || $phpDoc->hasTag('inheritDoc') ||
+            stripos($phpDoc->getSummary(), 'inheritdoc') > 0;
+    }
+
+    public function getPhpdocProperties(): ?PHPDocProperties
+    {
+        return $this->phpdocProperties;
     }
 }

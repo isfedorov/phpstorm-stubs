@@ -29,7 +29,7 @@ class StubsMetaInternalTagTest extends AbstractBaseStubsTestCase
     {
         $functions = PhpStormStubsSingleton::getPhpStormStubs()->getFunctions();
         foreach ($functions as $function) {
-            if ($function->hasInternalMetaTag) {
+            if ($function->getPhpdocProperties()->hasInternalMetaTag) {
                 $reflectionFunctions = array_filter(
                     ReflectionStubsSingleton::getReflectionStubs()->getFunctions(),
                     fn ($refFunction) => $refFunction->name === $function->name
@@ -46,8 +46,8 @@ class StubsMetaInternalTagTest extends AbstractBaseStubsTestCase
     {
         foreach (PhpStormStubsSingleton::getPhpStormStubs()->getClasses() as $className => $class) {
             foreach ($class->methods as $methodName => $method) {
-                if ($method->hasInternalMetaTag) {
-                    $refClass = ReflectionStubsSingleton::getReflectionStubs()->getClass($className, fromReflection: true);
+                if ($method->getPhpdocProperties()->hasInternalMetaTag) {
+                    $refClass = ReflectionStubsSingleton::getReflectionStubs()->getClass($className, sourceFilePath: true);
                     if ($refClass !== null) {
                         $reflectionMethods = array_filter(
                             $refClass->methods,

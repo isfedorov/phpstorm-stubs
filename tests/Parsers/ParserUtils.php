@@ -25,7 +25,7 @@ class ParserUtils
         $allSinceVersions = self::getSinceVersionsFromPhpDoc($element);
         $allSinceVersions[] = self::getSinceVersionsFromAttribute($element);
         if ($element instanceof PHPMethod) {
-            if ($element->hasInheritDocTag) {
+            if ($element->getPhpdocProperties()->hasInheritDocTag) {
                 return null;
             }
             $allSinceVersions[] = self::getSinceVersionsFromParentClass($element);
@@ -42,7 +42,7 @@ class ParserUtils
         $latestVersionsFromPhpDoc = self::getLatestAvailableVersionFromPhpDoc($element);
         $latestVersionsFromAttribute = self::getLatestAvailableVersionsFromAttribute($element);
         if ($element instanceof PHPMethod) {
-            if ($element->hasInheritDocTag) {
+            if ($element->getPhpdocProperties()->hasInheritDocTag) {
                 return null;
             }
             $latestVersionsFromPhpDoc[] = self::getLatestAvailableVersionsFromParentClass($element);
@@ -83,8 +83,8 @@ class ParserUtils
     private static function getSinceVersionsFromPhpDoc(BasePHPElement $element): array
     {
         $allSinceVersions = [];
-        if (!empty($element->sinceTags) && $element->stubBelongsToCore) {
-            $allSinceVersions[] = array_map(fn (Since $tag) => (float)$tag->getVersion(), $element->sinceTags);
+        if (!empty($element->getPhpdocProperties()->sinceTags) && $element->stubBelongsToCore) {
+            $allSinceVersions[] = array_map(fn (Since $tag) => (float)$tag->getVersion(), $element->getPhpdocProperties()->sinceTags);
         }
         return $allSinceVersions;
     }
@@ -95,8 +95,8 @@ class ParserUtils
     private static function getLatestAvailableVersionFromPhpDoc(BasePHPElement $element): array
     {
         $latestAvailableVersion = [PhpVersions::getLatest()];
-        if (!empty($element->removedTags) && $element->stubBelongsToCore) {
-            $allRemovedVersions = array_map(fn (RemovedTag $tag) => (float)$tag->getVersion(), $element->removedTags);
+        if (!empty($element->getPhpdocProperties()->removedTags) && $element->stubBelongsToCore) {
+            $allRemovedVersions = array_map(fn (RemovedTag $tag) => (float)$tag->getVersion(), $element->getPhpdocProperties()->removedTags);
             sort($allRemovedVersions, SORT_DESC);
             $removedVersion = array_pop($allRemovedVersions);
             $allVersions = new PhpVersions();

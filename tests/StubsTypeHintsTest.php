@@ -460,7 +460,7 @@ class StubsTypeHintsTest extends AbstractBaseStubsTestCase
                 self::getTypePossibleNamespace(...),
                 $function->returnTypesFromPhpDoc,
             ),
-            fn (string $type) => self::handleTemplateTypes($type, $function->templateTypes),
+            fn (string $type) => self::handleTemplateTypes($type, $function->getPhpdocProperties()->templateTypes),
         );
         $unifiedSignatureTypes = array_map(self::getTypePossibleNamespace(...), $function->returnTypesFromSignature);
         if (count($unifiedSignatureTypes) === 1) {
@@ -495,7 +495,7 @@ class StubsTypeHintsTest extends AbstractBaseStubsTestCase
                         self::getTypePossibleNamespace(...),
                         $function->returnTypesFromPhpDoc,
                     ),
-                    fn (string $type) => self::handleTemplateTypes($type, $function->templateTypes),
+                    fn (string $type) => self::handleTemplateTypes($type, $function->getPhpdocProperties()->templateTypes),
                 ),
                 fn (string $type) => self::handleTemplateTypes($type, $classTemplateTypes),
             )
@@ -528,7 +528,7 @@ class StubsTypeHintsTest extends AbstractBaseStubsTestCase
                 self::getTypePossibleNamespace(...),
                 $function->returnTypesFromPhpDoc,
             ),
-            fn (string $type) => self::handleTemplateTypes($type, $function->templateTypes),
+            fn (string $type) => self::handleTemplateTypes($type, $function->getPhpdocProperties()->templateTypes),
         );
         $unifiedSignatureTypes = array_map(self::getTypePossibleNamespace(...), $function->returnTypesFromSignature);
         if (count($unifiedSignatureTypes) === 1) {
@@ -561,7 +561,7 @@ class StubsTypeHintsTest extends AbstractBaseStubsTestCase
                 self::getTypePossibleNamespace(...),
                 $function->returnTypesFromPhpDoc,
             ),
-            fn (string $type) => self::handleTemplateTypes($type, $function->templateTypes),
+            fn (string $type) => self::handleTemplateTypes($type, $function->getPhpdocProperties()->templateTypes),
         );
         $unifiedSignatureTypes = array_map(self::getTypePossibleNamespace(...), $function->returnTypesFromSignature);
         if (count($unifiedSignatureTypes) === 1) {
@@ -658,7 +658,7 @@ class StubsTypeHintsTest extends AbstractBaseStubsTestCase
         foreach ($templates as $templateType) {
             if ($typeName === $templateType->getTemplateName()) {
                 if ($templateType->getBound()) {
-                    $typeName = $templateType->getBound()?->__toString();
+                    $typeName = $templateType->getBound()->__toString();
                     /* A bounded type might be a union type */
                     if (str_contains($typeName, '|')) {
                         return array_map(

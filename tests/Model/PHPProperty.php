@@ -76,7 +76,7 @@ class PHPProperty extends BasePHPElement
         $this->isReadonly = $node->isReadonly();
         $this->typesFromSignature = self::convertParsedTypeToArray($node->type);
         $this->typesFromAttribute = self::findTypesFromAttribute($node->attrGroups);
-        foreach ($this->varTags as $varTag) {
+        foreach ($this->getPhpdocProperties()->varTags as $varTag) {
             $this->typesFromPhpDoc = explode('|', (string)$varTag->getType());
         }
 

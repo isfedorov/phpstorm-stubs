@@ -98,7 +98,7 @@ class PHPFunction extends PHPNamespacedElement
 
         $this->collectTags($node);
         foreach ($this->parameters as $parameter) {
-            $relatedParamTags = array_filter($this->paramTags, function (Param $tag) use ($parameter) {
+            $relatedParamTags = array_filter($this->getPhpdocProperties()->paramTags, function (Param $tag) use ($parameter) {
                 return $tag->getVariableName() === $parameter->name;
             });
             /** @var Param $relatedParamTag */
@@ -122,8 +122,8 @@ class PHPFunction extends PHPNamespacedElement
 
     protected function checkReturnTag()
     {
-        if (!empty($this->returnTags) && $this->returnTags[0] instanceof Return_) {
-            $type = $this->returnTags[0]->getType();
+        if (!empty($this->getPhpdocProperties()->returnTags) && $this->getPhpdocProperties()->returnTags[0] instanceof Return_) {
+            $type = $this->getPhpdocProperties()->returnTags[0]->getType();
             $this->returnTypesFromPhpDoc = self::handleType($type);
         }
     }
