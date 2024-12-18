@@ -2,6 +2,7 @@
 
 namespace StubTests\Model\Predicats;
 
+use Closure;
 use StubTests\Model\PHPClassConstant;
 use StubTests\Parsers\ParserUtils;
 
@@ -10,7 +11,7 @@ class ConstantsFilterPredicateProvider
 
     /**
      * @param string $constantName
-     * @return \Closure
+     * @return Closure
      */
     public static function getDefaultSuitableConstants($constantName)
     {
@@ -21,7 +22,7 @@ class ConstantsFilterPredicateProvider
 
     /**
      * @param string $constantName
-     * @return \Closure
+     * @return Closure
      */
     public static function getConstantsFromReflection($constantName)
     {
@@ -32,7 +33,7 @@ class ConstantsFilterPredicateProvider
 
     /**
      * @param string $constantName
-     * @return \Closure
+     * @return Closure
      */
     public static function getConstantsIndependingOnPHPVersion($constantName)
     {

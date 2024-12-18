@@ -2,6 +2,7 @@
 
 namespace StubTests\Model\Predicats;
 
+use Closure;
 use StubTests\Model\PHPMethod;
 use StubTests\Parsers\ParserUtils;
 
@@ -9,7 +10,7 @@ class MethodsFilterPredicateProvider
 {
     /**
      * @param string $methodName
-     * @return \Closure
+     * @return Closure
      */
     public static function getDefaultSuitableMethods($methodName)
     {
@@ -20,7 +21,7 @@ class MethodsFilterPredicateProvider
 
     /**
      * @param string $methodName
-     * @return \Closure
+     * @return Closure
      */
     public static function getMethodsFromReflection($methodName)
     {
@@ -31,7 +32,7 @@ class MethodsFilterPredicateProvider
 
     /**
      * @param string $methodName
-     * @return \Closure
+     * @return Closure
      */
     public static function getMethodsIndependingOnPHPVersion($methodName)
     {
@@ -42,7 +43,7 @@ class MethodsFilterPredicateProvider
 
     /**
      * @param string $methodName
-     * @return \Closure
+     * @return Closure
      */
     public static function getMethodsByHash($methodHash)
     {
