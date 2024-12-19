@@ -36,7 +36,7 @@ class StubsPhpDocTest extends AbstractBaseStubsTestCase
             self::markTestSkipped($this->emptyDataSetMessage);
         }
         $class = PhpStormStubsSingleton::getPhpStormStubs()->getClassByHash($classHash);
-        $constant = $class->getConstant($constantName, ConstantsFilterPredicateProvider::getConstantsIndependingOnPHPVersion($constantName));
+        $constant = $class->getConstant($constantName, ConstantsFilterPredicateProvider::getClassConstantsIndependingOnPHPVersion($constantName));
         self::assertNull($constant->getPhpdocProperties()->phpDocParsingError, $constant->getPhpdocProperties()->phpDocParsingError ?: '');
         self::checkPHPDocCorrectness($constant, "constant $class->fqnBasedId::$constant->name");
     }
@@ -48,7 +48,7 @@ class StubsPhpDocTest extends AbstractBaseStubsTestCase
             self::markTestSkipped($this->emptyDataSetMessage);
         }
         $class = PhpStormStubsSingleton::getPhpStormStubs()->getInterface($classId, shouldSuitCurrentPhpVersion: false);
-        $constant = $class->getConstant($constantName, ConstantsFilterPredicateProvider::getConstantsIndependingOnPHPVersion($constantName));
+        $constant = $class->getConstant($constantName, ConstantsFilterPredicateProvider::getClassConstantsIndependingOnPHPVersion($constantName));
         self::assertNull($constant->getPhpdocProperties()->phpDocParsingError, $constant->getPhpdocProperties()->phpDocParsingError ?: '');
         self::checkPHPDocCorrectness($constant, "constant $classId::$constant->name");
     }
@@ -60,7 +60,7 @@ class StubsPhpDocTest extends AbstractBaseStubsTestCase
             self::markTestSkipped($this->emptyDataSetMessage);
         }
         $class = PhpStormStubsSingleton::getPhpStormStubs()->getEnum($classId, shouldSuitCurrentPhpVersion: false);
-        $constant = $class->getConstant($constantName, ConstantsFilterPredicateProvider::getConstantsIndependingOnPHPVersion($constantName));
+        $constant = $class->getConstant($constantName, ConstantsFilterPredicateProvider::getClassConstantsIndependingOnPHPVersion($constantName));
         self::assertNull($constant->getPhpdocProperties()->phpDocParsingError, $constant->getPhpdocProperties()->phpDocParsingError ?: '');
         self::checkPHPDocCorrectness($constant, "constant $classId::$constant->name");
     }
@@ -68,7 +68,7 @@ class StubsPhpDocTest extends AbstractBaseStubsTestCase
     #[DataProviderExternal(StubConstantsProvider::class, 'globalConstantProvider')]
     public static function testConstantsPHPDocs(string $constantId): void
     {
-        $constant = PhpStormStubsSingleton::getPhpStormStubs()->getConstant($constantId, shouldSuitCurrentPhpVersion: false);
+        $constant = PhpStormStubsSingleton::getPhpStormStubs()->getConstant($constantId, ConstantsFilterPredicateProvider::getConstantsIndependingOnPHPVersion($constantId));
         self::assertNull($constant->getPhpdocProperties()->phpDocParsingError, $constant->getPhpdocProperties()->phpDocParsingError ?: '');
         self::checkPHPDocCorrectness($constant, "constant $constant->name");
     }

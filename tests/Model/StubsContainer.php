@@ -3,6 +3,7 @@
 namespace StubTests\Model;
 
 use RuntimeException;
+use StubTests\Model\Predicats\ConstantsFilterPredicateProvider;
 use StubTests\Parsers\ParserUtils;
 use function array_key_exists;
 use function count;
@@ -50,36 +51,12 @@ class StubsContainer
         return $this->constants;
     }
 
-    /**
-     * @param string $constantId
-     * @param string|null $sourceFilePath
-     * @param true $fromReflection
-     * @param true $shouldSuitCurrentPhpVersion
-     * @return PHPConstant|null
-     * @throws RuntimeException
-     */
-    public function getConstant($constantId, $sourceFilePath = null, $fromReflection = false, $shouldSuitCurrentPhpVersion = true)
+    public function getConstant($constantId, $filterCallback = null)
     {
-        if ($fromReflection) {
-            $constants = array_filter($this->constants, function ($const) use ($constantId) {
-                return $const->fqnBasedId === $constantId && $const->getOrCreateStubSpecificProperties()->stubObjectHash == null;
-            });
-        } else {
-            $constants = array_filter($this->constants, function ($const) use ($constantId, $shouldSuitCurrentPhpVersion) {
-                return $const->fqnBasedId === $constantId && $const->getOrCreateStubSpecificProperties()->duplicateOtherElement === false
-                    && (!$shouldSuitCurrentPhpVersion || ParserUtils::entitySuitsCurrentPhpVersion($const));
-            });
+        if ($filterCallback === null) {
+            $filterCallback = ConstantsFilterPredicateProvider::getDefaultSuitableConstants($constantId);
         }
-        if (count($constants) === 1) {
-            return array_pop($constants);
-        }
-
-        if ($sourceFilePath !== null) {
-            $constants = array_filter($constants, function ($constant) use ($sourceFilePath, $shouldSuitCurrentPhpVersion) {
-                return $constant->getOrCreateStubSpecificProperties()->sourceFilePath === $sourceFilePath
-                    && (!$shouldSuitCurrentPhpVersion || ParserUtils::entitySuitsCurrentPhpVersion($constant));
-            });
-        }
+        $constants = array_filter($this->constants, $filterCallback);
         if (count($constants) > 1) {
             throw new RuntimeException("Multiple constants with name $constantId found");
         }

@@ -34,7 +34,7 @@ abstract class BasePHPClass extends PHPNamespacedElement
     public function getConstant($constantName, $filterCallback = null)
     {
         if ($filterCallback === null) {
-            $filterCallback = ConstantsFilterPredicateProvider::getDefaultSuitableConstants($constantName);
+            $filterCallback = ConstantsFilterPredicateProvider::getDefaultSuitableClassConstants($constantName);
         }
         $constants = array_filter($this->constants, $filterCallback);
         return array_pop($constants);

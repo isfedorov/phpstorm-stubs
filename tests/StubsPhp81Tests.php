@@ -176,7 +176,7 @@ class StubsPhp81Tests extends AbstractBaseStubsTestCase
             self::markTestSkipped($this->emptyDataSetMessage);
         }
         $reflectionEnum = ReflectionStubsSingleton::getReflectionStubs()->getEnum($classId, fromReflection: true);
-        $reflectionConstant = $reflectionEnum->getConstant($constantName, ConstantsFilterPredicateProvider::getConstantsFromReflection($constantName));
+        $reflectionConstant = $reflectionEnum->getConstant($constantName, ConstantsFilterPredicateProvider::getClassConstantsFromReflection($constantName));
         $constantValue = $reflectionConstant->value;
         $stubsEnum = PhpStormStubsSingleton::getPhpStormStubs()->getEnum($classId);
         $stubConstant = $stubsEnum->getConstant($constantName);
@@ -192,7 +192,7 @@ class StubsPhp81Tests extends AbstractBaseStubsTestCase
         if (!$classId && !$caseName) {
             self::markTestSkipped($this->emptyDataSetMessage);
         }
-        $reflectionConstant = ReflectionStubsSingleton::getReflectionStubs()->getEnum($classId, fromReflection: true)->getCase($caseName, fromReflection: true);
+        $reflectionConstant = ReflectionStubsSingleton::getReflectionStubs()->getEnum($classId, fromReflection: true)->getCase($caseName, ConstantsFilterPredicateProvider::getEnumCaseFromReflection($caseName));
         $enumCaseName = $reflectionConstant->value->name;
         $enumCaseValue = $reflectionConstant->value->value;
         $stubsEnum = PhpStormStubsSingleton::getPhpStormStubs()->getEnum($classId);

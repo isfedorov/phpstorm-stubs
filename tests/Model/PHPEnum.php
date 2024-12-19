@@ -5,6 +5,7 @@ namespace StubTests\Model;
 use phpDocumentor\Reflection\DocBlock\Tags\PropertyRead;
 use phpDocumentor\Reflection\DocBlockFactory;
 use PhpParser\Node\Stmt\Enum_;
+use StubTests\Model\Predicats\ConstantsFilterPredicateProvider;
 use StubTests\Parsers\Helpers\AttributesHelper;
 use StubTests\Parsers\Helpers\IdentifierHelper;
 use StubTests\Parsers\Helpers\TypeHelper;
@@ -131,23 +132,12 @@ class PHPEnum extends PHPClass
         }
     }
 
-    /**
-     * @param string $caseName
-     * @param false $fromReflection
-     * @return PHPClassConstant|null
-     */
-    public function getCase($caseName, $fromReflection = false)
+    public function getCase($caseName, $filterCallback = null)
     {
-        if ($fromReflection) {
-            $constants = array_filter($this->enumCases, function (PHPEnumCase $case) use ($caseName) {
-                return $case->name === $caseName && $case->getOrCreateStubSpecificProperties()->stubObjectHash == null;
-            });
-        } else {
-            $constants = array_filter($this->enumCases, function (PHPEnumCase $case) use ($caseName) {
-                return $case->name === $caseName && $case->getOrCreateStubSpecificProperties()->duplicateOtherElement === false
-                    && ParserUtils::entitySuitsCurrentPhpVersion($case);
-            });
+        if ($filterCallback === null) {
+            $filterCallback = ConstantsFilterPredicateProvider::getDefaultSuitableEnumCases($caseName);
         }
-        return array_pop($constants);
+        $enumCases = array_filter($this->enumCases, $filterCallback);
+        return array_pop($enumCases);
     }
 }
