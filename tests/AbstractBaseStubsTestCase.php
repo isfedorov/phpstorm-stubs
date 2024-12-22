@@ -18,6 +18,7 @@ use StubTests\Model\PHPConstant;
 use StubTests\Model\PHPEnum;
 use StubTests\Model\PHPFunction;
 use StubTests\Model\PHPInterface;
+use StubTests\Model\Predicats\FunctionsFilterPredicateProvider;
 use StubTests\Parsers\ParserUtils;
 use StubTests\TestData\Providers\PhpStormStubsSingleton;
 use UnitEnum;
@@ -132,7 +133,7 @@ abstract class AbstractBaseStubsTestCase extends TestCase
         $duplicatedFunctions = array_filter($filtered, function (PHPFunction $value, int|string $key) {
             $duplicatesOfFunction = self::getAllDuplicatesOfFunction($value->name);
             $functionVersions[] = ParserUtils::getAvailableInVersions(
-                PhpStormStubsSingleton::getPhpStormStubs()->getFunction($value->name, shouldSuitCurrentPhpVersion: false)
+                PhpStormStubsSingleton::getPhpStormStubs()->getFunction($value->name, FunctionsFilterPredicateProvider::getFunctionsIndependingOnPHPVersion($value->name))
             );
             array_push($functionVersions, ...array_values(array_map(
                 fn (PHPFunction $function) => ParserUtils::getAvailableInVersions($function),

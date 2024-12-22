@@ -12,7 +12,7 @@ class ReflectionFunctionsProvider
 {
     public static function allFunctionsProvider(): ?Generator
     {
-        $filtered = EntitiesFilter::getFiltered(ReflectionStubsSingleton::getReflectionStubs()->getFunctions());
+        $filtered = EntitiesFilter::getFiltered(ReflectionStubsSingleton::getReflectionStubs()->getFunctions(), null, StubProblemType::HAS_DUPLICATION);
         if (empty($filtered)) {
             yield [null];
         } else {
@@ -27,7 +27,8 @@ class ReflectionFunctionsProvider
         $filtered = EntitiesFilter::getFiltered(
             ReflectionStubsSingleton::getReflectionStubs()->getFunctions(),
             null,
-            StubProblemType::WRONG_RETURN_TYPEHINT
+            StubProblemType::WRONG_RETURN_TYPEHINT,
+            StubProblemType::HAS_DUPLICATION
         );
         if (empty($filtered)) {
             yield [null];
@@ -43,7 +44,8 @@ class ReflectionFunctionsProvider
         $filtered = EntitiesFilter::getFiltered(
             ReflectionStubsSingleton::getReflectionStubs()->getFunctions(),
             null,
-            StubProblemType::FUNCTION_IS_DEPRECATED
+            StubProblemType::FUNCTION_IS_DEPRECATED,
+            StubProblemType::HAS_DUPLICATION
         );
         if (empty($filtered)) {
             yield [null];

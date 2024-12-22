@@ -12,7 +12,7 @@ use PHPUnit\Framework\Attributes\DataProviderExternal;
 use StubTests\Model\BasePHPElement;
 use StubTests\Model\PHPDocumentable;
 use StubTests\Model\Predicats\ConstantsFilterPredicateProvider;
-use StubTests\Model\Predicats\MethodsFilterPredicateProvider;
+use StubTests\Model\Predicats\FunctionsFilterPredicateProvider;
 use StubTests\Model\Tags\RemovedTag;
 use StubTests\Parsers\ParserUtils;
 use StubTests\TestData\Providers\PhpStormStubsSingleton;
@@ -76,7 +76,7 @@ class StubsPhpDocTest extends AbstractBaseStubsTestCase
     #[DataProviderExternal(StubsTestDataProviders::class, 'allFunctionsProvider')]
     public static function testFunctionPHPDocs(string $functionId): void
     {
-        $function = PhpStormStubsSingleton::getPhpStormStubs()->getFunction($functionId, shouldSuitCurrentPhpVersion: false);
+        $function = PhpStormStubsSingleton::getPhpStormStubs()->getFunction($functionId, FunctionsFilterPredicateProvider::getFunctionsIndependingOnPHPVersion($functionId));
         self::assertNull($function->getPhpdocProperties()->phpDocParsingError, $function->getPhpdocProperties()->phpDocParsingError?->getMessage() ?: '');
         self::checkPHPDocCorrectness($function, "function $function->name");
     }
@@ -109,7 +109,7 @@ class StubsPhpDocTest extends AbstractBaseStubsTestCase
     public static function testClassMethodsPHPDocs(string $classHash, string $methodName): void
     {
         $class = PhpStormStubsSingleton::getPhpStormStubs()->getClassByHash($classHash);
-        $method = $class->getMethod($methodName, MethodsFilterPredicateProvider::getMethodsIndependingOnPHPVersion($methodName));
+        $method = $class->getMethod($methodName, FunctionsFilterPredicateProvider::getMethodsIndependingOnPHPVersion($methodName));
         if ($method->name === '__construct') {
             self::assertEmpty($method->returnTypesFromPhpDoc, '@return tag for __construct should be omitted');
         }
@@ -121,7 +121,7 @@ class StubsPhpDocTest extends AbstractBaseStubsTestCase
     public static function testInterfaceMethodsPHPDocs(string $classId, string $methodName): void
     {
         $class = PhpStormStubsSingleton::getPhpStormStubs()->getInterface($classId, shouldSuitCurrentPhpVersion: false);
-        $method = $class->getMethod($methodName, MethodsFilterPredicateProvider::getMethodsIndependingOnPHPVersion($methodName));
+        $method = $class->getMethod($methodName, FunctionsFilterPredicateProvider::getMethodsIndependingOnPHPVersion($methodName));
         if ($method->name === '__construct') {
             self::assertEmpty($method->returnTypesFromPhpDoc, '@return tag for __construct should be omitted');
         }
@@ -133,7 +133,7 @@ class StubsPhpDocTest extends AbstractBaseStubsTestCase
     public static function testEnumMethodsPHPDocs(string $classId, string $methodName): void
     {
         $class = PhpStormStubsSingleton::getPhpStormStubs()->getEnum($classId, shouldSuitCurrentPhpVersion: false);
-        $method = $class->getMethod($methodName, MethodsFilterPredicateProvider::getMethodsIndependingOnPHPVersion($methodName));
+        $method = $class->getMethod($methodName, FunctionsFilterPredicateProvider::getMethodsIndependingOnPHPVersion($methodName));
         if ($method->name === '__construct') {
             self::assertEmpty($method->returnTypesFromPhpDoc, '@return tag for __construct should be omitted');
         }

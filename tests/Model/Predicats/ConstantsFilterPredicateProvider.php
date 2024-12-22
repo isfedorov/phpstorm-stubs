@@ -19,14 +19,14 @@ class ConstantsFilterPredicateProvider
     public static function getDefaultSuitableClassConstants($constantName)
     {
         return function (PHPClassConstant $constant) use ($constantName) {
-            return $constant->name === $constantName && ParserUtils::entitySuitsCurrentPhpVersion($constant) && $constant->getOrCreateStubSpecificProperties()->duplicateOtherElement === false;
+            return $constant->name === $constantName && ParserUtils::entitySuitsCurrentPhpVersion($constant);
         };
     }
 
     public static function getDefaultSuitableConstants($constantId)
     {
         return function (PHPConstant|PHPDefineConstant $constant) use ($constantId) {
-            return $constant->fqnBasedId === $constantId && ParserUtils::entitySuitsCurrentPhpVersion($constant) && $constant->getOrCreateStubSpecificProperties()->duplicateOtherElement === false;
+            return $constant->fqnBasedId === $constantId && ParserUtils::entitySuitsCurrentPhpVersion($constant);
         };
     }
 
@@ -76,7 +76,7 @@ class ConstantsFilterPredicateProvider
     public static function getDefaultSuitableEnumCases($caseName)
     {
         return function (PHPEnumCase $case) use ($caseName) {
-            return $case->name === $caseName && ParserUtils::entitySuitsCurrentPhpVersion($case) && $case->getOrCreateStubSpecificProperties()->duplicateOtherElement === false;
+            return $case->name === $caseName && ParserUtils::entitySuitsCurrentPhpVersion($case);
         };
     }
 

@@ -59,7 +59,7 @@ class StubMethodsProvider
             StubProblemType::TYPE_IN_PHPDOC_DIFFERS_FROM_SIGNATURE
         );
         foreach ($filteredFunctions as $functionId => $function) {
-            yield "function $functionId" => [$function->fqnBasedId];
+            yield "function $functionId" => [$function->getOrCreateStubSpecificProperties()->stubObjectHash];
         }
     }
 

@@ -3,7 +3,7 @@
 namespace StubTests;
 
 use PHPUnit\Framework\Attributes\DataProviderExternal;
-use StubTests\Model\Predicats\MethodsFilterPredicateProvider;
+use StubTests\Model\Predicats\FunctionsFilterPredicateProvider;
 use StubTests\Parsers\ParserUtils;
 use StubTests\TestData\Providers\PhpStormStubsSingleton;
 use StubTests\TestData\Providers\ReflectionStubsSingleton;
@@ -26,7 +26,7 @@ class StubsForbiddenTypeHintsTest extends AbstractBaseStubsTestCase
             self::markTestSkipped($this->emptyDataSetMessage);
         }
         $stubClass = PhpStormStubsSingleton::getPhpStormStubs()->getClassByHash($classHash);
-        $stubMethod = $stubClass->getMethod($methodHash, MethodsFilterPredicateProvider::getMethodsByHash($methodHash));
+        $stubMethod = $stubClass->getMethod($methodHash, FunctionsFilterPredicateProvider::getMethodsByHash($methodHash));
         $sinceVersion = ParserUtils::getDeclaredSinceVersion($stubMethod);
         $returnTypes = $stubMethod->returnTypesFromSignature;
         self::assertEmpty(
@@ -44,7 +44,7 @@ class StubsForbiddenTypeHintsTest extends AbstractBaseStubsTestCase
             self::markTestSkipped($this->emptyDataSetMessage);
         }
         $stubInterface = PhpStormStubsSingleton::getPhpStormStubs()->getInterfaceByHash($classHash);
-        $stubMethod = $stubInterface->getMethod($methodHash, MethodsFilterPredicateProvider::getMethodsByHash($methodHash));
+        $stubMethod = $stubInterface->getMethod($methodHash, FunctionsFilterPredicateProvider::getMethodsByHash($methodHash));
         $sinceVersion = ParserUtils::getDeclaredSinceVersion($stubMethod);
         $returnTypes = $stubMethod->returnTypesFromSignature;
         self::assertEmpty(
@@ -62,7 +62,7 @@ class StubsForbiddenTypeHintsTest extends AbstractBaseStubsTestCase
             self::markTestSkipped($this->emptyDataSetMessage);
         }
         $stubEnum = PhpStormStubsSingleton::getPhpStormStubs()->getEnumByHash($classHash);
-        $stubMethod = $stubEnum->getMethod($methodHash, MethodsFilterPredicateProvider::getMethodsByHash($methodHash));
+        $stubMethod = $stubEnum->getMethod($methodHash, FunctionsFilterPredicateProvider::getMethodsByHash($methodHash));
         $sinceVersion = ParserUtils::getDeclaredSinceVersion($stubMethod);
         $returnTypes = $stubMethod->returnTypesFromSignature;
         self::assertEmpty(
@@ -80,7 +80,7 @@ class StubsForbiddenTypeHintsTest extends AbstractBaseStubsTestCase
             self::markTestSkipped($this->emptyDataSetMessage);
         }
         $stubsClass = PhpStormStubsSingleton::getPhpStormStubs()->getClassByHash($classHash);
-        $stubsMethod = $stubsClass->getMethod($methodHash, MethodsFilterPredicateProvider::getMethodsByHash($methodHash));
+        $stubsMethod = $stubsClass->getMethod($methodHash, FunctionsFilterPredicateProvider::getMethodsByHash($methodHash));
         $stubParameter = $stubsMethod->getParameter($parameterName);
         $sinceVersion = ParserUtils::getDeclaredSinceVersion($stubsMethod);
         self::assertLessThan(
@@ -99,7 +99,7 @@ class StubsForbiddenTypeHintsTest extends AbstractBaseStubsTestCase
             self::markTestSkipped($this->emptyDataSetMessage);
         }
         $stubsInterface = PhpStormStubsSingleton::getPhpStormStubs()->getInterfaceByHash($classHash);
-        $stubsMethod = $stubsInterface->getMethod($methodHash, MethodsFilterPredicateProvider::getMethodsByHash($methodHash));
+        $stubsMethod = $stubsInterface->getMethod($methodHash, FunctionsFilterPredicateProvider::getMethodsByHash($methodHash));
         $stubParameter = $stubsMethod->getParameter($parameterName);
         $sinceVersion = ParserUtils::getDeclaredSinceVersion($stubsMethod);
         self::assertLessThan(
@@ -118,7 +118,7 @@ class StubsForbiddenTypeHintsTest extends AbstractBaseStubsTestCase
             self::markTestSkipped($this->emptyDataSetMessage);
         }
         $stubsEnum = PhpStormStubsSingleton::getPhpStormStubs()->getEnumByHash($classHash);
-        $stubsMethod = $stubsEnum->getMethod($methodHash, MethodsFilterPredicateProvider::getMethodsByHash($methodHash));
+        $stubsMethod = $stubsEnum->getMethod($methodHash, FunctionsFilterPredicateProvider::getMethodsByHash($methodHash));
         $stubParameter = $stubsMethod->getParameter($parameterName);
         $sinceVersion = ParserUtils::getDeclaredSinceVersion($stubsMethod);
         self::assertLessThan(
@@ -137,7 +137,7 @@ class StubsForbiddenTypeHintsTest extends AbstractBaseStubsTestCase
             self::markTestSkipped($this->emptyDataSetMessage);
         }
         $stubsClass = PhpStormStubsSingleton::getPhpStormStubs()->getClassByHash($classHash);
-        $stubsMethod = $stubsClass->getMethod($methodHash, MethodsFilterPredicateProvider::getMethodsByHash($methodHash));
+        $stubsMethod = $stubsClass->getMethod($methodHash, FunctionsFilterPredicateProvider::getMethodsByHash($methodHash));
         $stubParameter = $stubsMethod->getParameter($parameterName);
         $sinceVersion = ParserUtils::getDeclaredSinceVersion($stubsMethod);
         self::assertEmpty(
@@ -155,7 +155,7 @@ class StubsForbiddenTypeHintsTest extends AbstractBaseStubsTestCase
             self::markTestSkipped($this->emptyDataSetMessage);
         }
         $stubsInterface = PhpStormStubsSingleton::getPhpStormStubs()->getInterfaceByHash($classHash);
-        $stubsMethod = $stubsInterface->getMethod($methodHash, MethodsFilterPredicateProvider::getMethodsByHash($methodHash));
+        $stubsMethod = $stubsInterface->getMethod($methodHash, FunctionsFilterPredicateProvider::getMethodsByHash($methodHash));
         $stubParameter = $stubsMethod->getParameter($parameterName);
         $sinceVersion = ParserUtils::getDeclaredSinceVersion($stubsMethod);
         self::assertEmpty(
@@ -173,7 +173,7 @@ class StubsForbiddenTypeHintsTest extends AbstractBaseStubsTestCase
             self::markTestSkipped($this->emptyDataSetMessage);
         }
         $stubsEnum = PhpStormStubsSingleton::getPhpStormStubs()->getEnumByHash($classHash);
-        $stubsMethod = $stubsEnum->getMethod($methodHash, MethodsFilterPredicateProvider::getMethodsByHash($methodHash));
+        $stubsMethod = $stubsEnum->getMethod($methodHash, FunctionsFilterPredicateProvider::getMethodsByHash($methodHash));
         $stubParameter = $stubsMethod->getParameter($parameterName);
         $sinceVersion = ParserUtils::getDeclaredSinceVersion($stubsMethod);
         self::assertEmpty(
@@ -191,7 +191,7 @@ class StubsForbiddenTypeHintsTest extends AbstractBaseStubsTestCase
             self::markTestSkipped($this->emptyDataSetMessage);
         }
         $stubClass = PhpStormStubsSingleton::getPhpStormStubs()->getClassByHash($classHash);
-        $stubsMethod = $stubClass->getMethod($methodHash, MethodsFilterPredicateProvider::getMethodsByHash($methodHash));
+        $stubsMethod = $stubClass->getMethod($methodHash, FunctionsFilterPredicateProvider::getMethodsByHash($methodHash));
         $sinceVersion = ParserUtils::getDeclaredSinceVersion($stubsMethod);
         self::assertLessThan(
             2,
@@ -209,7 +209,7 @@ class StubsForbiddenTypeHintsTest extends AbstractBaseStubsTestCase
             self::markTestSkipped($this->emptyDataSetMessage);
         }
         $stubInterface = PhpStormStubsSingleton::getPhpStormStubs()->getInterfaceByHash($classHash);
-        $stubsMethod = $stubInterface->getMethod($methodHash, MethodsFilterPredicateProvider::getMethodsByHash($methodHash));
+        $stubsMethod = $stubInterface->getMethod($methodHash, FunctionsFilterPredicateProvider::getMethodsByHash($methodHash));
         $sinceVersion = ParserUtils::getDeclaredSinceVersion($stubsMethod);
         self::assertLessThan(
             2,
@@ -227,7 +227,7 @@ class StubsForbiddenTypeHintsTest extends AbstractBaseStubsTestCase
             self::markTestSkipped($this->emptyDataSetMessage);
         }
         $stubEnum = PhpStormStubsSingleton::getPhpStormStubs()->getEnumByHash($classHash);
-        $stubsMethod = $stubEnum->getMethod($methodHash, MethodsFilterPredicateProvider::getMethodsByHash($methodHash));
+        $stubsMethod = $stubEnum->getMethod($methodHash, FunctionsFilterPredicateProvider::getMethodsByHash($methodHash));
         $sinceVersion = ParserUtils::getDeclaredSinceVersion($stubsMethod);
         self::assertLessThan(
             2,
@@ -245,7 +245,7 @@ class StubsForbiddenTypeHintsTest extends AbstractBaseStubsTestCase
             self::markTestSkipped($this->emptyDataSetMessage);
         }
         $class = PhpStormStubsSingleton::getPhpStormStubs()->getClassByHash($classHash);
-        $stubsMethod = $class->getMethod($methodHash, MethodsFilterPredicateProvider::getMethodsByHash($methodHash));
+        $stubsMethod = $class->getMethod($methodHash, FunctionsFilterPredicateProvider::getMethodsByHash($methodHash));
         $stubsParameter = $stubsMethod->getParameter($parameterName);
         $sinceVersion = ParserUtils::getDeclaredSinceVersion($stubsMethod);
         self::assertEmpty(
@@ -263,7 +263,7 @@ class StubsForbiddenTypeHintsTest extends AbstractBaseStubsTestCase
             self::markTestSkipped($this->emptyDataSetMessage);
         }
         $stubsIntefrace = PhpStormStubsSingleton::getPhpStormStubs()->getInterfaceByHash($classHash);
-        $stubsMethod = $stubsIntefrace->getMethod($methodHash, MethodsFilterPredicateProvider::getMethodsByHash($methodHash));
+        $stubsMethod = $stubsIntefrace->getMethod($methodHash, FunctionsFilterPredicateProvider::getMethodsByHash($methodHash));
         $stubsParameter = $stubsMethod->getParameter($parameterName);
         $sinceVersion = ParserUtils::getDeclaredSinceVersion($stubsMethod);
         self::assertEmpty(
@@ -281,7 +281,7 @@ class StubsForbiddenTypeHintsTest extends AbstractBaseStubsTestCase
             self::markTestSkipped($this->emptyDataSetMessage);
         }
         $stubsEnum = PhpStormStubsSingleton::getPhpStormStubs()->getEnumByHash($classHash);
-        $stubsMethod = $stubsEnum->getMethod($methodHash, MethodsFilterPredicateProvider::getMethodsByHash($methodHash));
+        $stubsMethod = $stubsEnum->getMethod($methodHash, FunctionsFilterPredicateProvider::getMethodsByHash($methodHash));
         $stubsParameter = $stubsMethod->getParameter($parameterName);
         $sinceVersion = ParserUtils::getDeclaredSinceVersion($stubsMethod);
         self::assertEmpty(
@@ -299,7 +299,7 @@ class StubsForbiddenTypeHintsTest extends AbstractBaseStubsTestCase
             self::markTestSkipped($this->emptyDataSetMessage);
         }
         $stubClass = PhpStormStubsSingleton::getPhpStormStubs()->getClassByHash($classHash);
-        $stubMethod = $stubClass->getMethod($methodHash, MethodsFilterPredicateProvider::getMethodsByHash($methodHash));
+        $stubMethod = $stubClass->getMethod($methodHash, FunctionsFilterPredicateProvider::getMethodsByHash($methodHash));
         $sinceVersion = ParserUtils::getDeclaredSinceVersion($stubMethod);
         self::assertEmpty($stubMethod->returnTypesFromSignature, "Method '$stubMethod->parentId::$stubMethod->name' has since version '$sinceVersion'
             but has return typehint '" . implode('|', $stubMethod->returnTypesFromSignature) . "' that supported only since PHP 7. Please declare return type via PhpDoc");
@@ -312,7 +312,7 @@ class StubsForbiddenTypeHintsTest extends AbstractBaseStubsTestCase
             self::markTestSkipped($this->emptyDataSetMessage);
         }
         $stubInterface = PhpStormStubsSingleton::getPhpStormStubs()->getInterfaceByHash($classHash);
-        $stubMethod = $stubInterface->getMethod($methodHash, MethodsFilterPredicateProvider::getMethodsByHash($methodHash));
+        $stubMethod = $stubInterface->getMethod($methodHash, FunctionsFilterPredicateProvider::getMethodsByHash($methodHash));
         $sinceVersion = ParserUtils::getDeclaredSinceVersion($stubMethod);
         self::assertEmpty($stubMethod->returnTypesFromSignature, "Method '$stubMethod->parentId::$stubMethod->name' has since version '$sinceVersion'
             but has return typehint '" . implode('|', $stubMethod->returnTypesFromSignature) . "' that supported only since PHP 7. Please declare return type via PhpDoc");
@@ -325,7 +325,7 @@ class StubsForbiddenTypeHintsTest extends AbstractBaseStubsTestCase
             self::markTestSkipped($this->emptyDataSetMessage);
         }
         $stubEnum = PhpStormStubsSingleton::getPhpStormStubs()->getEnumByHash($classHash);
-        $stubMethod = $stubEnum->getMethod($methodHash, MethodsFilterPredicateProvider::getMethodsByHash($methodHash));
+        $stubMethod = $stubEnum->getMethod($methodHash, FunctionsFilterPredicateProvider::getMethodsByHash($methodHash));
         $sinceVersion = ParserUtils::getDeclaredSinceVersion($stubMethod);
         self::assertEmpty($stubMethod->returnTypesFromSignature, "Method '$stubMethod->parentId::$stubMethod->name' has since version '$sinceVersion'
             but has return typehint '" . implode('|', $stubMethod->returnTypesFromSignature) . "' that supported only since PHP 7. Please declare return type via PhpDoc");

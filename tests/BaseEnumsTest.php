@@ -4,7 +4,7 @@ namespace StubTests;
 
 use PHPUnit\Framework\Attributes\DataProviderExternal;
 use StubTests\Model\PhpVersions;
-use StubTests\Model\Predicats\MethodsFilterPredicateProvider;
+use StubTests\Model\Predicats\FunctionsFilterPredicateProvider;
 use StubTests\TestData\Providers\PhpStormStubsSingleton;
 use StubTests\TestData\Providers\Reflection\ReflectionClassesTestDataProviders;
 use StubTests\TestData\Providers\Reflection\ReflectionMethodsProvider;
@@ -45,7 +45,7 @@ class BaseEnumsTest extends AbstractBaseStubsTestCase
             self::markTestSkipped($this->emptyDataSetMessage);
         }
         $reflectionEnum = ReflectionStubsSingleton::getReflectionStubs()->getEnum($classId, fromReflection: true);
-        $reflectionMethod = $reflectionEnum->getMethod($methodName, MethodsFilterPredicateProvider::getMethodsFromReflection($methodName));
+        $reflectionMethod = $reflectionEnum->getMethod($methodName, FunctionsFilterPredicateProvider::getMethodsFromReflection($methodName));
         $stubMethod = PhpStormStubsSingleton::getPhpStormStubs()->getEnum($classId)->getMethod($methodName);
         static::assertEquals(
             $reflectionMethod->isFinal,
@@ -61,7 +61,7 @@ class BaseEnumsTest extends AbstractBaseStubsTestCase
             self::markTestSkipped($this->emptyDataSetMessage);
         }
         $reflectionEnum = ReflectionStubsSingleton::getReflectionStubs()->getEnum($classId, fromReflection: true);
-        $reflectionMethod = $reflectionEnum->getMethod($methodName, MethodsFilterPredicateProvider::getMethodsFromReflection($methodName));
+        $reflectionMethod = $reflectionEnum->getMethod($methodName, FunctionsFilterPredicateProvider::getMethodsFromReflection($methodName));
         $stubMethod = PhpStormStubsSingleton::getPhpStormStubs()->getEnum($classId)->getMethod($methodName);
         static::assertEquals(
             $reflectionMethod->isStatic,
@@ -77,7 +77,7 @@ class BaseEnumsTest extends AbstractBaseStubsTestCase
             self::markTestSkipped($this->emptyDataSetMessage);
         }
         $reflectionEnum = ReflectionStubsSingleton::getReflectionStubs()->getEnum($classId, fromReflection: true);
-        $reflectionMethod = $reflectionEnum->getMethod($methodName, MethodsFilterPredicateProvider::getMethodsFromReflection($methodName));
+        $reflectionMethod = $reflectionEnum->getMethod($methodName, FunctionsFilterPredicateProvider::getMethodsFromReflection($methodName));
         $stubMethod = PhpStormStubsSingleton::getPhpStormStubs()->getEnum($classId)->getMethod($methodName);
         static::assertEquals(
             $reflectionMethod->access,
@@ -93,7 +93,7 @@ class BaseEnumsTest extends AbstractBaseStubsTestCase
             self::markTestSkipped($this->emptyDataSetMessage);
         }
         $reflectionEnum = ReflectionStubsSingleton::getReflectionStubs()->getEnum($classId, fromReflection: true);
-        $reflectionMethod = $reflectionEnum->getMethod($methodName, MethodsFilterPredicateProvider::getMethodsFromReflection($methodName));
+        $reflectionMethod = $reflectionEnum->getMethod($methodName, FunctionsFilterPredicateProvider::getMethodsFromReflection($methodName));
         $stubMethod = PhpStormStubsSingleton::getPhpStormStubs()->getEnum($classId)->getMethod($methodName);
         $filteredStubParameters = array_filter(
             $stubMethod->parameters,

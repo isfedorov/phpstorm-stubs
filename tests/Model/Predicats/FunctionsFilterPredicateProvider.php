@@ -3,10 +3,11 @@
 namespace StubTests\Model\Predicats;
 
 use Closure;
+use StubTests\Model\PHPFunction;
 use StubTests\Model\PHPMethod;
 use StubTests\Parsers\ParserUtils;
 
-class MethodsFilterPredicateProvider
+class FunctionsFilterPredicateProvider
 {
     /**
      * @param string $methodName
@@ -15,7 +16,14 @@ class MethodsFilterPredicateProvider
     public static function getDefaultSuitableMethods($methodName)
     {
         return function (PHPMethod $method) use ($methodName) {
-            return $method->name === $methodName && ParserUtils::entitySuitsCurrentPhpVersion($method) && $method->getOrCreateStubSpecificProperties()->duplicateOtherElement === false;
+            return $method->name === $methodName && ParserUtils::entitySuitsCurrentPhpVersion($method);
+        };
+    }
+
+    public static function getDefaultSuitableFunctions($functionId)
+    {
+        return function (PHPFunction $function) use ($functionId) {
+            return $function->fqnBasedId === $functionId && ParserUtils::entitySuitsCurrentPhpVersion($function);
         };
     }
 
@@ -30,6 +38,13 @@ class MethodsFilterPredicateProvider
         };
     }
 
+    public static function getFunctionsFromReflection($functionId)
+    {
+        return function (PHPFunction $function) use ($functionId) {
+            return $function->fqnBasedId == $functionId && $function->getOrCreateStubSpecificProperties()->stubObjectHash == null;
+        };
+    }
+
     /**
      * @param string $methodName
      * @return Closure
@@ -41,6 +56,13 @@ class MethodsFilterPredicateProvider
         };
     }
 
+    public static function getFunctionsIndependingOnPHPVersion($functionId)
+    {
+        return function (PHPFunction $method) use ($functionId) {
+            return $method->fqnBasedId == $functionId;
+        };
+    }
+
     /**
      * @param string $methodName
      * @return Closure
@@ -49,6 +71,13 @@ class MethodsFilterPredicateProvider
     {
         return function (PHPMethod $method) use ($methodHash) {
             return $method->getOrCreateStubSpecificProperties()->stubObjectHash === $methodHash;
+        };
+    }
+
+    public static function getFunctionByHash(string $functionHash)
+    {
+        return function (PHPFunction $method) use ($functionHash) {
+            return $method->getOrCreateStubSpecificProperties()->stubObjectHash === $functionHash;
         };
     }
 }

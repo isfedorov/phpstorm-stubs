@@ -5,7 +5,7 @@ namespace StubTests;
 use PHPUnit\Framework\Attributes\DataProviderExternal;
 use StubTests\Model\PHPParameter;
 use StubTests\Model\Predicats\ConstantsFilterPredicateProvider;
-use StubTests\Model\Predicats\MethodsFilterPredicateProvider;
+use StubTests\Model\Predicats\FunctionsFilterPredicateProvider;
 use StubTests\TestData\Providers\PhpStormStubsSingleton;
 use StubTests\TestData\Providers\Reflection\ReflectionConstantsProvider;
 use StubTests\TestData\Providers\Reflection\ReflectionMethodsProvider;
@@ -44,7 +44,7 @@ class StubsPhp81Tests extends AbstractBaseStubsTestCase
             self::markTestSkipped($this->emptyDataSetMessage);
         }
         $reflectionClass = ReflectionStubsSingleton::getReflectionStubs()->getClass($classId, sourceFilePath: true);
-        $reflectionMethod = $reflectionClass->getMethod($methodName, MethodsFilterPredicateProvider::getMethodsFromReflection($methodName));
+        $reflectionMethod = $reflectionClass->getMethod($methodName, FunctionsFilterPredicateProvider::getMethodsFromReflection($methodName));
         $stubsMethod = PhpStormStubsSingleton::getPhpStormStubs()->getClass($classId)->getMethod($methodName);
         $unifiedStubsReturnTypes = [];
         $unifiedStubsAttributesReturnTypes = [];
@@ -88,7 +88,7 @@ class StubsPhp81Tests extends AbstractBaseStubsTestCase
             self::markTestSkipped($this->emptyDataSetMessage);
         }
         $reflectionInterface = ReflectionStubsSingleton::getReflectionStubs()->getInterface($classId, fromReflection: true);
-        $reflectionMethod = $reflectionInterface->getMethod($methodName, MethodsFilterPredicateProvider::getMethodsFromReflection($methodName));
+        $reflectionMethod = $reflectionInterface->getMethod($methodName, FunctionsFilterPredicateProvider::getMethodsFromReflection($methodName));
         $stubsMethod = PhpStormStubsSingleton::getPhpStormStubs()->getInterface($classId)->getMethod($methodName);
         $unifiedStubsReturnTypes = [];
         $unifiedStubsAttributesReturnTypes = [];
@@ -132,7 +132,7 @@ class StubsPhp81Tests extends AbstractBaseStubsTestCase
             self::markTestSkipped($this->emptyDataSetMessage);
         }
         $reflectionEnum = ReflectionStubsSingleton::getReflectionStubs()->getEnum($classId, fromReflection: true);
-        $reflectionMethod = $reflectionEnum->getMethod($methodName, MethodsFilterPredicateProvider::getMethodsFromReflection($methodName));
+        $reflectionMethod = $reflectionEnum->getMethod($methodName, FunctionsFilterPredicateProvider::getMethodsFromReflection($methodName));
         $stubsMethod = PhpStormStubsSingleton::getPhpStormStubs()->getEnum($classId)->getMethod($methodName);
         $unifiedStubsReturnTypes = [];
         $unifiedStubsAttributesReturnTypes = [];
@@ -210,7 +210,7 @@ class StubsPhp81Tests extends AbstractBaseStubsTestCase
             self::markTestSkipped($this->emptyDataSetMessage);
         }
         $reflectionEnum = ReflectionStubsSingleton::getReflectionStubs()->getEnum($classId, fromReflection: true);
-        $reflectionMethod = $reflectionEnum->getMethod($methodName, MethodsFilterPredicateProvider::getMethodsFromReflection($methodName));
+        $reflectionMethod = $reflectionEnum->getMethod($methodName, FunctionsFilterPredicateProvider::getMethodsFromReflection($methodName));
         $reflectionParameter = $reflectionMethod->getParameter($parameterName);
         $stubClass = PhpStormStubsSingleton::getPhpStormStubs()->getEnum($classId);
         $phpstormFunction = $stubClass->getMethod($methodName);
@@ -239,7 +239,7 @@ class StubsPhp81Tests extends AbstractBaseStubsTestCase
             self::markTestSkipped($this->emptyDataSetMessage);
         }
         $reflectionInterface = ReflectionStubsSingleton::getReflectionStubs()->getInterface($classId, fromReflection: true);
-        $reflectionMethod = $reflectionInterface->getMethod($methodName, MethodsFilterPredicateProvider::getMethodsFromReflection($methodName));
+        $reflectionMethod = $reflectionInterface->getMethod($methodName, FunctionsFilterPredicateProvider::getMethodsFromReflection($methodName));
         $reflectionParameter = $reflectionMethod->getParameter($parameterName);
         $stubClass = PhpStormStubsSingleton::getPhpStormStubs()->getInterface($classId);
         $phpstormFunction = $stubClass->getMethod($methodName);

@@ -4,7 +4,7 @@ namespace StubTests\Model;
 
 use RuntimeException;
 use StubTests\Model\Predicats\ConstantsFilterPredicateProvider;
-use StubTests\Model\Predicats\MethodsFilterPredicateProvider;
+use StubTests\Model\Predicats\FunctionsFilterPredicateProvider;
 use function array_key_exists;
 use function count;
 
@@ -55,7 +55,7 @@ abstract class BasePHPClass extends PHPNamespacedElement
     public function getMethod($searchCriteria, $filterCallback = null)
     {
         if ($filterCallback === null) {
-            $filterCallback = MethodsFilterPredicateProvider::getDefaultSuitableMethods($searchCriteria);
+            $filterCallback = FunctionsFilterPredicateProvider::getDefaultSuitableMethods($searchCriteria);
         }
         $methods = array_filter($this->methods, $filterCallback);
         return array_pop($methods);

@@ -4,6 +4,7 @@ namespace StubTests\Model;
 
 use RuntimeException;
 use StubTests\Model\Predicats\ConstantsFilterPredicateProvider;
+use StubTests\Model\Predicats\FunctionsFilterPredicateProvider;
 use StubTests\Parsers\ParserUtils;
 use function array_key_exists;
 use function count;
@@ -66,26 +67,35 @@ class StubsContainer
         return null;
     }
 
-    /**
-     * @param PHPConstant $constant
-     * @return void
-     */
-    public function addConstant($constant)
+    public function addConstant(PHPConstant|PHPDefineConstant $constant)
     {
-        if (isset($constant->name)) {
-            if (array_key_exists($constant->fqnBasedId, $this->constants)) {
-                $amount = count(array_filter(
-                    $this->constants,
-                    function ($nextConstant) use ($constant) {
-                        return $nextConstant->fqnBasedId === $constant->fqnBasedId;
-                    }
-                ));
-                $constant->getOrCreateStubSpecificProperties()->duplicateOtherElement = true;
-                $this->constants[$constant->fqnBasedId . '_duplicated_' . $amount] = $constant;
-            } else {
-                $this->constants[$constant->fqnBasedId] = $constant;
-            }
+        if (!isset($constant->name)) {
+            throw new RuntimeException("Constant name is not set");
         }
+        if ($this->constantExists($constant)) {
+            $this->addDuplicateConstant($constant);
+        } else {
+            $this->constants[$constant->fqnBasedId] = $constant;
+        }
+    }
+
+    private function constantExists(PHPConstant|PHPDefineConstant $constant)
+    {
+        return array_key_exists($constant->fqnBasedId, $this->constants);
+    }
+
+    private function addDuplicateConstant(PHPConstant|PHPDefineConstant $constant)
+    {
+        $duplicateCount = $this->getDuplicateCount($constant->fqnBasedId);
+        $duplicateConstantId = $constant->fqnBasedId . '_duplicated_' . $duplicateCount;
+        $this->constants[$duplicateConstantId] = $constant;
+    }
+
+    private function getDuplicateCount($fqnBasedId)
+    {
+        return count(array_filter($this->constants, function (PHPConstant|PHPDefineConstant $existingConstant) use ($fqnBasedId) {
+            return $existingConstant->fqnBasedId === $fqnBasedId;
+        }));
     }
 
     /**
@@ -96,59 +106,31 @@ class StubsContainer
         return $this->functions;
     }
 
-    /**
-     * @param string $id
-     * @param string|null $sourceFilePath
-     * @param bool $shouldSuitCurrentPhpVersion
-     * @param false $fromReflection
-     *
-     * @return PHPFunction|null
-     * @throws RuntimeException
-     */
-    public function getFunction($id, $sourceFilePath = null, $shouldSuitCurrentPhpVersion = true, $fromReflection = false)
+    public function getFunction($functionId, $filterCallback = null)
     {
-        if ($fromReflection) {
-            $functions = array_filter($this->functions, function (PHPFunction $function) use ($id) {
-                return $function->fqnBasedId === $id && $function->getOrCreateStubSpecificProperties()->stubObjectHash == null;
-            });
-        } else {
-            $functions = array_filter($this->functions, function (PHPFunction $function) use ($shouldSuitCurrentPhpVersion, $id) {
-                return $function->fqnBasedId === $id && (!$shouldSuitCurrentPhpVersion || ParserUtils::entitySuitsCurrentPhpVersion($function));
-            });
+        if ($filterCallback === null) {
+            $filterCallback = FunctionsFilterPredicateProvider::getDefaultSuitableFunctions($functionId);
         }
+        $functions = array_filter($this->functions, $filterCallback);
         if (count($functions) > 1) {
-            $functions = array_filter($functions, function (PHPFunction $function) {
-                return $function->getOrCreateStubSpecificProperties()->duplicateOtherElement === false;
-            });
+            throw new RuntimeException("Multiple functions with name $functionId found");
         }
-        if (count($functions) === 1) {
+        if (!empty($functions)) {
             return array_pop($functions);
         }
-
-        if ($sourceFilePath !== null) {
-            $functions = array_filter($functions, function (PHPFunction $function) use ($shouldSuitCurrentPhpVersion, $sourceFilePath) {
-                return $function->getOrCreateStubSpecificProperties()->sourceFilePath === $sourceFilePath
-                    && (!$shouldSuitCurrentPhpVersion || ParserUtils::entitySuitsCurrentPhpVersion($function));
-            });
-        }
-        if (count($functions) > 1) {
-            throw new RuntimeException("Multiple functions with name $id found");
-        }
-        return array_pop($functions);
+        return null;
     }
 
     public function addFunction(PHPFunction $function)
     {
         if (isset($function->fqnBasedId)) {
+            $duplicatedFunctions = $this->getFilteredDuplicatedFunctions($function);
             if (array_key_exists($function->fqnBasedId, $this->functions)) {
-                $amount = count(array_filter(
-                    $this->functions,
-                    function (PHPFunction $nextFunction) use ($function) {
-                        return $nextFunction->fqnBasedId === $function->fqnBasedId;
-                    }
-                ));
-                $function->getOrCreateStubSpecificProperties()->duplicateOtherElement = true;
+                $amount = count($duplicatedFunctions);
                 $this->functions[$function->fqnBasedId . '_duplicated_' . $amount] = $function;
+                if (!empty($duplicatedFunctions)) {
+                    $function->getOrCreateStubSpecificProperties()->duplicateOtherElement = true;
+                }
             } else {
                 $this->functions[$function->fqnBasedId] = $function;
             }
@@ -400,5 +382,23 @@ class StubsContainer
                 $this->enums[$enum->fqnBasedId] = $enum;
             }
         }
+    }
+
+    /**
+     * @param PHPFunction $function
+     * @return PHPFunction[]
+     */
+    public function getFilteredDuplicatedFunctions(PHPFunction $function): array
+    {
+        return array_map(function (PHPFunction $function) {
+            $function->getOrCreateStubSpecificProperties()->duplicateOtherElement = true;
+            return $function;
+        }, array_filter(
+            $this->functions,
+            function (PHPFunction $nextFunction) use ($function) {
+                return $nextFunction->fqnBasedId === $function->fqnBasedId &&
+                    array_intersect(ParserUtils::getAvailableInVersions($function), ParserUtils::getAvailableInVersions($nextFunction));
+            }
+        ));
     }
 }

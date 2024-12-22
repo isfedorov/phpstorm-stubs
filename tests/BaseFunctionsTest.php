@@ -6,7 +6,7 @@ namespace StubTests;
 use PHPUnit\Framework\Attributes\DataProviderExternal;
 use StubTests\Model\PHPFunction;
 use StubTests\Model\PHPParameter;
-use StubTests\Model\Predicats\MethodsFilterPredicateProvider;
+use StubTests\Model\Predicats\FunctionsFilterPredicateProvider;
 use StubTests\Model\StubProblemType;
 use StubTests\Parsers\ParserUtils;
 use StubTests\TestData\Providers\EntitiesFilter;
@@ -31,7 +31,7 @@ class BaseFunctionsTest extends AbstractBaseStubsTestCase
             self::markTestSkipped($this->emptyDataSetMessage);
         }
         $stubFunction = PhpStormStubsSingleton::getPhpStormStubs()->getFunction($functionId);
-        $reflectionFunction = ReflectionStubsSingleton::getReflectionStubs()->getFunction($functionId, fromReflection: true);
+        $reflectionFunction = ReflectionStubsSingleton::getReflectionStubs()->getFunction($functionId, FunctionsFilterPredicateProvider::getFunctionsFromReflection($functionId));
         $params = AbstractBaseStubsTestCase::getParameterRepresentation($reflectionFunction);
         static::assertNotEmpty($stubFunction, "Missing function: function $reflectionFunction->fqnBasedId($params){}");
     }
@@ -42,7 +42,7 @@ class BaseFunctionsTest extends AbstractBaseStubsTestCase
         if (!$functionId) {
             self::markTestSkipped($this->emptyDataSetMessage);
         }
-        $reflectionFunction = ReflectionStubsSingleton::getReflectionStubs()->getFunction($functionId, fromReflection: true);
+        $reflectionFunction = ReflectionStubsSingleton::getReflectionStubs()->getFunction($functionId, FunctionsFilterPredicateProvider::getFunctionsFromReflection($functionId));
         $stubFunction = PhpStormStubsSingleton::getPhpStormStubs()->getFunction($functionId);
         static::assertEquals(
             $reflectionFunction->isDeprecated,
@@ -57,7 +57,7 @@ class BaseFunctionsTest extends AbstractBaseStubsTestCase
         if (!$functionId) {
             self::markTestSkipped($this->emptyDataSetMessage);
         }
-        $reflectionFunction = ReflectionStubsSingleton::getReflectionStubs()->getFunction($functionId, fromReflection: true);
+        $reflectionFunction = ReflectionStubsSingleton::getReflectionStubs()->getFunction($functionId, FunctionsFilterPredicateProvider::getFunctionsFromReflection($functionId));
         $stubFunction = PhpStormStubsSingleton::getPhpStormStubs()->getFunction($functionId);
         $filteredStubParameters = array_filter(
             $stubFunction->parameters,
@@ -95,7 +95,7 @@ class BaseFunctionsTest extends AbstractBaseStubsTestCase
         if (!$functionId && !$parameterName) {
             self::markTestSkipped($this->emptyDataSetMessage);
         }
-        $reflectionFunction = ReflectionStubsSingleton::getReflectionStubs()->getFunction($functionId, fromReflection: true);
+        $reflectionFunction = ReflectionStubsSingleton::getReflectionStubs()->getFunction($functionId, FunctionsFilterPredicateProvider::getFunctionsFromReflection($functionId));
         $relfectionParameter = $reflectionFunction->getParameter($parameterName);
         $phpstormFunction = PhpStormStubsSingleton::getPhpStormStubs()->getFunction($functionId);
         $stubParameters = array_filter($phpstormFunction->parameters, fn (PHPParameter $stubParameter) => $stubParameter->indexInSignature === $relfectionParameter->indexInSignature);
@@ -140,7 +140,7 @@ class BaseFunctionsTest extends AbstractBaseStubsTestCase
             self::markTestSkipped($this->emptyDataSetMessage);
         }
         $reflectionClass = ReflectionStubsSingleton::getReflectionStubs()->getClass($classId, sourceFilePath: true);
-        $reflectionMethod = $reflectionClass->getMethod($methodName, MethodsFilterPredicateProvider::getMethodsFromReflection($methodName));
+        $reflectionMethod = $reflectionClass->getMethod($methodName, FunctionsFilterPredicateProvider::getMethodsFromReflection($methodName));
         $reflectionParameter = $reflectionMethod->getParameter($parameterName);
         $phpstormFunction = PhpStormStubsSingleton::getPhpStormStubs()->getClass($classId)->getMethod($methodName);
         $stubParameters = array_filter($phpstormFunction->parameters, fn (PHPParameter $stubParameter) => $stubParameter->indexInSignature === $reflectionParameter->indexInSignature);
@@ -170,7 +170,7 @@ class BaseFunctionsTest extends AbstractBaseStubsTestCase
             self::markTestSkipped($this->emptyDataSetMessage);
         }
         $reflectionInterface = ReflectionStubsSingleton::getReflectionStubs()->getInterface($classId, fromReflection: true);
-        $reflectionMethod = $reflectionInterface->getMethod($methodName, MethodsFilterPredicateProvider::getMethodsFromReflection($methodName));
+        $reflectionMethod = $reflectionInterface->getMethod($methodName, FunctionsFilterPredicateProvider::getMethodsFromReflection($methodName));
         $reflectionParameter = $reflectionMethod->getParameter($parameterName);
         $phpstormFunction = PhpStormStubsSingleton::getPhpStormStubs()->getInterface($classId)->getMethod($methodName);
         $stubParameters = array_filter($phpstormFunction->parameters, fn (PHPParameter $stubParameter) => $stubParameter->indexInSignature === $reflectionParameter->indexInSignature);
@@ -200,7 +200,7 @@ class BaseFunctionsTest extends AbstractBaseStubsTestCase
             self::markTestSkipped($this->emptyDataSetMessage);
         }
         $reflectionEnum = ReflectionStubsSingleton::getReflectionStubs()->getEnum($classId, fromReflection: true);
-        $reflectionMethod = $reflectionEnum->getMethod($methodName, MethodsFilterPredicateProvider::getMethodsFromReflection($methodName));
+        $reflectionMethod = $reflectionEnum->getMethod($methodName, FunctionsFilterPredicateProvider::getMethodsFromReflection($methodName));
         $reflectionParameter = $reflectionMethod->getParameter($parameterName);
         $phpstormFunction = PhpStormStubsSingleton::getPhpStormStubs()->getEnum($classId)->getMethod($methodName);
         $stubParameters = array_filter($phpstormFunction->parameters, fn (PHPParameter $stubParameter) => $stubParameter->indexInSignature === $reflectionParameter->indexInSignature);
