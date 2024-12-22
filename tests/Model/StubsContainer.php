@@ -3,6 +3,7 @@
 namespace StubTests\Model;
 
 use RuntimeException;
+use StubTests\Model\Predicats\ClassesFilterPredicateProvider;
 use StubTests\Model\Predicats\ConstantsFilterPredicateProvider;
 use StubTests\Model\Predicats\FunctionsFilterPredicateProvider;
 use StubTests\Parsers\ParserUtils;
@@ -183,15 +184,19 @@ class StubsContainer
         return null;
     }
 
-    public function getClassByHash(string $hash)
+    public function getClassNew($classId, $filterCallback = null)
     {
-        $classes = array_filter($this->classes, function (PHPClass $class) use ($hash) {
-            return $class->getOrCreateStubSpecificProperties()->stubObjectHash === $hash;
-        });
-        if (count($classes) > 1) {
-            throw new RuntimeException("Multiple classes with name $hash found");
+        if ($filterCallback === null) {
+            $filterCallback = ClassesFilterPredicateProvider::getDefaultSuitableFunctions($classId);
         }
-        return array_pop($classes);
+        $classes = array_filter($this->classes, $filterCallback);
+        if (count($classes) > 1) {
+            throw new RuntimeException("Multiple classes with name $classId found");
+        }
+        if (!empty($classes)) {
+            return array_pop($classes);
+        }
+        return null;
     }
 
     /**

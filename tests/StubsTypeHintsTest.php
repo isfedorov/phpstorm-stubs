@@ -9,6 +9,7 @@ use stdClass;
 use StubTests\Model\CommonUtils;
 use StubTests\Model\PHPFunction;
 use StubTests\Model\PHPParameter;
+use StubTests\Model\Predicats\ClassesFilterPredicateProvider;
 use StubTests\Model\Predicats\FunctionsFilterPredicateProvider;
 use StubTests\Model\StubProblemType;
 use StubTests\TestData\Providers\PhpStormStubsSingleton;
@@ -319,7 +320,7 @@ class StubsTypeHintsTest extends AbstractBaseStubsTestCase
         if (!$classHash && !$methodHash && !$parameterName) {
             self::markTestSkipped($this->emptyDataSetMessage);
         }
-        $stubsClass = PhpStormStubsSingleton::getPhpStormStubs()->getClassByHash($classHash);
+        $stubsClass = PhpStormStubsSingleton::getPhpStormStubs()->getClassNew($classHash, ClassesFilterPredicateProvider::getClassesByHash($classHash));
         $stubsMethod = $stubsClass->getMethod($methodHash, FunctionsFilterPredicateProvider::getMethodsByHash($methodHash));
         $stubParameter = $stubsMethod->getParameter($parameterName);
         $reflectionClass = ReflectionStubsSingleton::getReflectionStubs()->getClass($stubsClass->fqnBasedId, sourceFilePath: true);
@@ -374,7 +375,7 @@ class StubsTypeHintsTest extends AbstractBaseStubsTestCase
         if (!$classHash && !$methodHash && !$parameterName) {
             self::markTestSkipped($this->emptyDataSetMessage);
         }
-        $stubsClass = PhpStormStubsSingleton::getPhpStormStubs()->getClassByHash($classHash);
+        $stubsClass = PhpStormStubsSingleton::getPhpStormStubs()->getClassNew($classHash, ClassesFilterPredicateProvider::getClassesByHash($classHash));
         $stubsMethod = $stubsClass->getMethod($methodHash, FunctionsFilterPredicateProvider::getMethodsByHash($methodHash));
         $stubParameter = $stubsMethod->getParameter($parameterName);
         $reflectionClass = ReflectionStubsSingleton::getReflectionStubs()->getClass($stubsClass->fqnBasedId, sourceFilePath: true);
@@ -425,7 +426,7 @@ class StubsTypeHintsTest extends AbstractBaseStubsTestCase
         if (!$classHash && !$methodHash && !$parameterName) {
             self::markTestSkipped($this->emptyDataSetMessage);
         }
-        $stubsClass = PhpStormStubsSingleton::getPhpStormStubs()->getClassByHash($classHash);
+        $stubsClass = PhpStormStubsSingleton::getPhpStormStubs()->getClassNew($classHash, ClassesFilterPredicateProvider::getClassesByHash($classHash));
         $stubsMethod = $stubsClass->getMethod($methodHash, FunctionsFilterPredicateProvider::getMethodsByHash($methodHash));
         $stubParameter = $stubsMethod->getParameter($parameterName);
         $reflectionClass = ReflectionStubsSingleton::getReflectionStubs()->getClass($stubsClass->fqnBasedId, sourceFilePath: true);

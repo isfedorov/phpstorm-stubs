@@ -11,6 +11,7 @@ use phpDocumentor\Reflection\DocBlock\Tags\Since;
 use PHPUnit\Framework\Attributes\DataProviderExternal;
 use StubTests\Model\BasePHPElement;
 use StubTests\Model\PHPDocumentable;
+use StubTests\Model\Predicats\ClassesFilterPredicateProvider;
 use StubTests\Model\Predicats\ConstantsFilterPredicateProvider;
 use StubTests\Model\Predicats\FunctionsFilterPredicateProvider;
 use StubTests\Model\Tags\RemovedTag;
@@ -35,7 +36,7 @@ class StubsPhpDocTest extends AbstractBaseStubsTestCase
         if (!$classHash && !$constantName) {
             self::markTestSkipped($this->emptyDataSetMessage);
         }
-        $class = PhpStormStubsSingleton::getPhpStormStubs()->getClassByHash($classHash);
+        $class = PhpStormStubsSingleton::getPhpStormStubs()->getClassNew($classHash, ClassesFilterPredicateProvider::getClassesByHash($classHash));
         $constant = $class->getConstant($constantName, ConstantsFilterPredicateProvider::getClassConstantsIndependingOnPHPVersion($constantName));
         self::assertNull($constant->getPhpdocProperties()->phpDocParsingError, $constant->getPhpdocProperties()->phpDocParsingError ?: '');
         self::checkPHPDocCorrectness($constant, "constant $class->fqnBasedId::$constant->name");
@@ -108,7 +109,7 @@ class StubsPhpDocTest extends AbstractBaseStubsTestCase
     #[DataProviderExternal(StubMethodsProvider::class, 'allClassMethodsProvider')]
     public static function testClassMethodsPHPDocs(string $classHash, string $methodName): void
     {
-        $class = PhpStormStubsSingleton::getPhpStormStubs()->getClassByHash($classHash);
+        $class = PhpStormStubsSingleton::getPhpStormStubs()->getClassNew($classHash, ClassesFilterPredicateProvider::getClassesByHash($classHash));
         $method = $class->getMethod($methodName, FunctionsFilterPredicateProvider::getMethodsIndependingOnPHPVersion($methodName));
         if ($method->name === '__construct') {
             self::assertEmpty($method->returnTypesFromPhpDoc, '@return tag for __construct should be omitted');
