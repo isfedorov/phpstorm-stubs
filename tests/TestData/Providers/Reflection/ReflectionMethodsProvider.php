@@ -5,6 +5,7 @@ namespace StubTests\TestData\Providers\Reflection;
 
 use Exception;
 use Generator;
+use StubTests\Model\EntitiesProviders\EntitiesProvider;
 use StubTests\Model\PHPClass;
 use StubTests\Model\PHPEnum;
 use StubTests\Model\PHPInterface;
@@ -97,7 +98,7 @@ class ReflectionMethodsProvider
 
     public static function classMethodsWithoutTentitiveReturnTypeProvider(): ?Generator
     {
-        $classes = ReflectionStubsSingleton::getReflectionStubs()->getClasses();
+        $classes = EntitiesProvider::getClasses(ReflectionStubsSingleton::getReflectionStubs());
         $filteredClasses = EntitiesFilter::getFiltered($classes);
         $toYield = array_filter(array_map(fn ($class) => EntitiesFilter::getFiltered(
             $class->methods,
@@ -119,7 +120,7 @@ class ReflectionMethodsProvider
 
     public static function interfaceMethodsWithoutTentitiveReturnTypeProvider(): ?Generator
     {
-        $interfaces = ReflectionStubsSingleton::getReflectionStubs()->getInterfaces();
+        $interfaces = EntitiesProvider::getInterfaces(ReflectionStubsSingleton::getReflectionStubs());
         $filteredInterfaces = EntitiesFilter::getFiltered($interfaces);
         $toYield = array_filter(array_map(fn ($class) => EntitiesFilter::getFiltered(
             $class->methods,
@@ -140,7 +141,7 @@ class ReflectionMethodsProvider
 
     public static function enumMethodsWithoutTentitiveReturnTypeProvider(): ?Generator
     {
-        $enums = ReflectionStubsSingleton::getReflectionStubs()->getEnums();
+        $enums = EntitiesProvider::getEnums(ReflectionStubsSingleton::getReflectionStubs());
         $filteredEnums = EntitiesFilter::getFiltered($enums);
         $toYield = array_filter(array_map(fn ($class) => EntitiesFilter::getFiltered(
             $class->methods,
@@ -161,7 +162,7 @@ class ReflectionMethodsProvider
 
     public static function classMethodsWithTentitiveReturnTypeProvider(): ?Generator
     {
-        $classes = ReflectionStubsSingleton::getReflectionStubs()->getClasses();
+        $classes = EntitiesProvider::getClasses(ReflectionStubsSingleton::getReflectionStubs());
         $filteredClasses = EntitiesFilter::getFiltered($classes);
         $toYield = array_filter(array_map(fn ($class) => EntitiesFilter::getFiltered(
             $class->methods,
@@ -182,7 +183,7 @@ class ReflectionMethodsProvider
 
     public static function interfaceMethodsWithTentitiveReturnTypeProvider(): ?Generator
     {
-        $interfaces = ReflectionStubsSingleton::getReflectionStubs()->getInterfaces();
+        $interfaces = EntitiesProvider::getInterfaces(ReflectionStubsSingleton::getReflectionStubs());
         $filteredInterfaces = EntitiesFilter::getFiltered($interfaces);
         $toYield = array_filter(array_map(fn ($class) => EntitiesFilter::getFiltered(
             $class->methods,
@@ -203,7 +204,7 @@ class ReflectionMethodsProvider
 
     public static function enumMethodsWithTentitiveReturnTypeProvider(): ?Generator
     {
-        $enums = ReflectionStubsSingleton::getReflectionStubs()->getEnums();
+        $enums = EntitiesProvider::getEnums(ReflectionStubsSingleton::getReflectionStubs());
         $filteredEnums = EntitiesFilter::getFiltered($enums);
         $toYield = array_filter(array_map(fn ($class) => EntitiesFilter::getFiltered(
             $class->methods,
@@ -225,9 +226,9 @@ class ReflectionMethodsProvider
     private static function yieldFilteredMethods(string $classType, int ...$problemTypes): ?Generator
     {
         $classes = match ($classType) {
-            PHPClass::class => ReflectionStubsSingleton::getReflectionStubs()->getClasses(),
-            PHPInterface::class => ReflectionStubsSingleton::getReflectionStubs()->getInterfaces(),
-            PHPEnum::class => ReflectionStubsSingleton::getReflectionStubs()->getEnums(),
+            PHPClass::class => EntitiesProvider::getClasses(ReflectionStubsSingleton::getReflectionStubs()),
+            PHPInterface::class => EntitiesProvider::getInterfaces(ReflectionStubsSingleton::getReflectionStubs()),
+            PHPEnum::class => EntitiesProvider::getEnums(ReflectionStubsSingleton::getReflectionStubs()),
             default => throw new Exception("Unknows class type"),
         };
         $filteredClasses = EntitiesFilter::getFiltered($classes);

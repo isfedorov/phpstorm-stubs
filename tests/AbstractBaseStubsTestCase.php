@@ -13,6 +13,7 @@ use PhpParser\Node\Scalar\LNumber;
 use PhpParser\Node\Scalar\String_;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\TestCase;
+use StubTests\Model\EntitiesProviders\EntitiesProvider;
 use StubTests\Model\PHPClass;
 use StubTests\Model\PHPConstant;
 use StubTests\Model\PHPEnum;
@@ -36,7 +37,7 @@ abstract class AbstractBaseStubsTestCase extends TestCase
         if ($defaultValue instanceof ConstFetch) {
             $defaultValueName = (string)$defaultValue->name;
             if ($defaultValueName !== 'false' && $defaultValueName !== 'true' && $defaultValueName !== 'null') {
-                $constant = PhpStormStubsSingleton::getPhpStormStubs()->getConstant($defaultValue->name->toCodeString());
+                $constant = EntitiesProvider::getConstant(PhpStormStubsSingleton::getPhpStormStubs(), $defaultValue->name->toCodeString());
                 $value = $constant->value;
             } else {
                 $value = $defaultValueName;
@@ -46,14 +47,14 @@ abstract class AbstractBaseStubsTestCase extends TestCase
         } elseif ($defaultValue instanceof BitwiseOr) {
             if ($defaultValue->left instanceof ConstFetch && $defaultValue->right instanceof ConstFetch) {
                 $constants = array_filter(
-                    PhpStormStubsSingleton::getPhpStormStubs()->getConstants(),
+                    EntitiesProvider::getConstants(PhpStormStubsSingleton::getPhpStormStubs()),
                     fn ($const) => property_exists($defaultValue->left, 'name') &&
                         $const->name === (string)$defaultValue->left->name
                 );
                 /** @var PHPConstant $leftConstant */
                 $leftConstant = array_pop($constants);
                 $constants = array_filter(
-                    PhpStormStubsSingleton::getPhpStormStubs()->getConstants(),
+                    EntitiesProvider::getConstants(PhpStormStubsSingleton::getPhpStormStubs()),
                     fn ($const) => property_exists($defaultValue->right, 'name') &&
                         $const->name === (string)$defaultValue->right->name
                 );
@@ -63,8 +64,8 @@ abstract class AbstractBaseStubsTestCase extends TestCase
             } elseif ($defaultValue->left instanceof ClassConstFetch && $defaultValue->right instanceof ClassConstFetch){
                 $leftClass = $defaultValue->left->class->toCodeString();
                 $rightClass = $defaultValue->right->class->toCodeString();
-                $leftClass = PhpStormStubsSingleton::getPhpStormStubs()->getClass($leftClass);
-                $rightClass = PhpStormStubsSingleton::getPhpStormStubs()->getClass($rightClass);
+                $leftClass = EntitiesProvider::getClass(PhpStormStubsSingleton::getPhpStormStubs(), $leftClass);
+                $rightClass = EntitiesProvider::getClass(PhpStormStubsSingleton::getPhpStormStubs(), $rightClass);
                 if ($leftClass === null || $rightClass === null) {
                     throw new Exception("Class $leftClass->name or $rightClass->name not found in stubs");
                 }
@@ -79,9 +80,9 @@ abstract class AbstractBaseStubsTestCase extends TestCase
             if ($class === 'self' && $contextClass !== null) {
                 $class = $contextClass->fqnBasedId;
             }
-            $parentClass = PhpStormStubsSingleton::getPhpStormStubs()->getEnum($class) ??
-                PhpStormStubsSingleton::getPhpStormStubs()->getClass($class) ??
-                PhpStormStubsSingleton::getPhpStormStubs()->getInterface($class);
+            $parentClass = EntitiesProvider::getEnum(PhpStormStubsSingleton::getPhpStormStubs(), $class) ??
+                EntitiesProvider::getClass(PhpStormStubsSingleton::getPhpStormStubs(), $class) ??
+                EntitiesProvider::getInterface(PhpStormStubsSingleton::getPhpStormStubs(), $class);
             if ($parentClass === null) {
                 throw new Exception("Class $class not found in stubs");
             }
@@ -133,7 +134,7 @@ abstract class AbstractBaseStubsTestCase extends TestCase
         $duplicatedFunctions = array_filter($filtered, function (PHPFunction $value, int|string $key) {
             $duplicatesOfFunction = self::getAllDuplicatesOfFunction($value->name);
             $functionVersions[] = ParserUtils::getAvailableInVersions(
-                PhpStormStubsSingleton::getPhpStormStubs()->getFunction($value->name, FunctionsFilterPredicateProvider::getFunctionsIndependingOnPHPVersion($value->name))
+                EntitiesProvider::getFunction(PhpStormStubsSingleton::getPhpStormStubs(), $value->name, FunctionsFilterPredicateProvider::getFunctionsIndependingOnPHPVersion($value->name))
             );
             array_push($functionVersions, ...array_values(array_map(
                 fn (PHPFunction $function) => ParserUtils::getAvailableInVersions($function),
@@ -160,7 +161,7 @@ abstract class AbstractBaseStubsTestCase extends TestCase
     protected static function getAllDuplicatesOfFunction(?string $name): array
     {
         return array_filter(
-            PhpStormStubsSingleton::getPhpStormStubs()->getFunctions(),
+            EntitiesProvider::getFunctions(PhpStormStubsSingleton::getPhpStormStubs()),
             fn ($duplicateValue, $duplicateKey) => $duplicateValue->name === $name && str_contains($duplicateKey, 'duplicated'),
             ARRAY_FILTER_USE_BOTH
         );
@@ -219,12 +220,12 @@ abstract class AbstractBaseStubsTestCase extends TestCase
 
     public function getClassLikeFromStubs(string $classId, bool $shouldSuiteCurrentPHPVersion = true): PHPInterface|PHPEnum|PHPClass|null
     {
-        $stubClass = PhpStormStubsSingleton::getPhpStormStubs()->getEnum("$classId", $shouldSuiteCurrentPHPVersion);
+        $stubClass = EntitiesProvider::getEnum(PhpStormStubsSingleton::getPhpStormStubs(), "$classId", $shouldSuiteCurrentPHPVersion);
         if ($stubClass == null) {
-            $stubClass = PhpStormStubsSingleton::getPhpStormStubs()->getClass("$classId", $shouldSuiteCurrentPHPVersion);
+            $stubClass = EntitiesProvider::getClass(PhpStormStubsSingleton::getPhpStormStubs(), "$classId", $shouldSuiteCurrentPHPVersion);
         }
         if ($stubClass == null) {
-            $stubClass = PhpStormStubsSingleton::getPhpStormStubs()->getInterface("$classId", $shouldSuiteCurrentPHPVersion);
+            $stubClass = EntitiesProvider::getInterface(PhpStormStubsSingleton::getPhpStormStubs(), "$classId", $shouldSuiteCurrentPHPVersion);
         }
         return $stubClass;
     }

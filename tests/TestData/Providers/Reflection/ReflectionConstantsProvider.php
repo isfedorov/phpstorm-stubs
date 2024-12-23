@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace StubTests\TestData\Providers\Reflection;
 
 use Generator;
+use StubTests\Model\EntitiesProviders\EntitiesProvider;
 use StubTests\Model\PHPClass;
 use StubTests\Model\PHPConstant;
 use StubTests\Model\PHPEnum;
@@ -16,7 +17,7 @@ class ReflectionConstantsProvider
 {
     public static function constantProvider(): ?Generator
     {
-        $filteredConstants = EntitiesFilter::getFiltered(ReflectionStubsSingleton::getReflectionStubs()->getConstants());
+        $filteredConstants = EntitiesProvider::getConstants(ReflectionStubsSingleton::getReflectionStubs());
         if (empty($filteredConstants)) {
             yield [null];
         } else {
@@ -40,7 +41,7 @@ class ReflectionConstantsProvider
 
     public static function classConstantProvider(): ?Generator
     {
-        $classes = ReflectionStubsSingleton::getReflectionStubs()->getClasses();
+        $classes = EntitiesProvider::getClasses(ReflectionStubsSingleton::getReflectionStubs());
         $filteredClasses = EntitiesFilter::getFiltered($classes);
         $array = array_filter(array_map(fn (PHPClass $class) => EntitiesFilter::getFiltered($class->constants), $filteredClasses), fn ($arr) => !empty($arr));
         if (empty($array)) {
@@ -56,7 +57,7 @@ class ReflectionConstantsProvider
 
     public static function interfaceConstantProvider(): ?Generator
     {
-        $interfaces = ReflectionStubsSingleton::getReflectionStubs()->getInterfaces();
+        $interfaces = EntitiesProvider::getInterfaces(ReflectionStubsSingleton::getReflectionStubs());
         $filteredClasses = EntitiesFilter::getFiltered($interfaces);
         $array = array_filter(array_map(fn (PHPInterface $class) => EntitiesFilter::getFiltered($class->constants), $filteredClasses), fn ($arr) => !empty($arr));
         if (empty($array)) {
@@ -72,7 +73,7 @@ class ReflectionConstantsProvider
 
     public static function enumConstantProvider(): ?Generator
     {
-        $enums = ReflectionStubsSingleton::getReflectionStubs()->getEnums();
+        $enums = EntitiesProvider::getEnums(ReflectionStubsSingleton::getReflectionStubs());
         $filteredClasses = EntitiesFilter::getFiltered($enums);
         $array = array_filter(array_map(fn (PHPEnum $class) => EntitiesFilter::getFiltered($class->constants), $filteredClasses), fn ($arr) => !empty($arr));
         if (empty($array)) {
@@ -88,7 +89,7 @@ class ReflectionConstantsProvider
 
     public static function enumCaseProvider(): ?Generator
     {
-        $enums = ReflectionStubsSingleton::getReflectionStubs()->getEnums();
+        $enums = EntitiesProvider::getEnums(ReflectionStubsSingleton::getReflectionStubs());
         $filteredClasses = EntitiesFilter::getFiltered($enums);
         $array = array_filter(array_map(fn (PHPEnum $class) => EntitiesFilter::getFiltered($class->enumCases), $filteredClasses), fn ($arr) => !empty($arr));
         if (empty($array)) {
@@ -104,8 +105,8 @@ class ReflectionConstantsProvider
 
     public static function classConstantValuesProvider(): ?Generator
     {
-        $classesAndInterfaces = ReflectionStubsSingleton::getReflectionStubs()->getClasses() +
-            ReflectionStubsSingleton::getReflectionStubs()->getInterfaces();
+        $classesAndInterfaces = EntitiesProvider::getClasses(ReflectionStubsSingleton::getReflectionStubs()) +
+            EntitiesProvider::getInterfaces(ReflectionStubsSingleton::getReflectionStubs());
         foreach (EntitiesFilter::getFiltered($classesAndInterfaces) as $class) {
             foreach (self::getFilteredConstants($class) as $constant) {
                 yield "constant $class->name::$constant->name" => [$class, $constant];
@@ -116,7 +117,7 @@ class ReflectionConstantsProvider
     public static function getFilteredConstants(PHPInterface|PHPClass|null $class = null): array
     {
         if ($class === null) {
-            $allConstants = ReflectionStubsSingleton::getReflectionStubs()->getConstants();
+            $allConstants = EntitiesProvider::getConstants(ReflectionStubsSingleton::getReflectionStubs());
         } else {
             $allConstants = $class->constants;
         }

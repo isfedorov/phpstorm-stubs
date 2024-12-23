@@ -54,61 +54,61 @@ class StubParser
         $jsonData = json_decode(file_get_contents(__DIR__ . '/../TestData/mutedProblems.json'), false, 512, JSON_THROW_ON_ERROR);
         /** @var PHPEnumCase $enumCase */
         foreach ($childEntitiesToAdd['enumCases'] as $enumCase) {
-            if (self::$stubs->getEnum($enumCase->parentId, $enumCase->getOrCreateStubSpecificProperties()->sourceFilePath, shouldSuitCurrentPhpVersion: false)) {
-                self::$stubs->getEnum($enumCase->parentId, $enumCase->getOrCreateStubSpecificProperties()->sourceFilePath, shouldSuitCurrentPhpVersion: false)->addEnumCase($enumCase);
+            if (self::$stubs->getEnumsManager()->getEnum($enumCase->parentId, $enumCase->getOrCreateStubSpecificProperties()->sourceFilePath, shouldSuitCurrentPhpVersion: false)) {
+                self::$stubs->getEnumsManager()->getEnum($enumCase->parentId, $enumCase->getOrCreateStubSpecificProperties()->sourceFilePath, shouldSuitCurrentPhpVersion: false)->addEnumCase($enumCase);
             }
         }
         /** @var PHPClassConstant $constant */
         foreach ($childEntitiesToAdd['classConstants'] as $constant) {
             $classId = $constant->parentId;
-            if (self::$stubs->getClass($classId, $constant->getOrCreateStubSpecificProperties()->sourceFilePath, shouldSuitCurrentPhpVersion: false)) {
-                self::$stubs->getClass($classId, $constant->getOrCreateStubSpecificProperties()->sourceFilePath, shouldSuitCurrentPhpVersion: false)->addConstant($constant);
+            if (self::$stubs->getClassesManager()->getClass($classId, $constant->getOrCreateStubSpecificProperties()->sourceFilePath, shouldSuitCurrentPhpVersion: false)) {
+                self::$stubs->getClassesManager()->getClass($classId, $constant->getOrCreateStubSpecificProperties()->sourceFilePath, shouldSuitCurrentPhpVersion: false)->addConstant($constant);
             }
-            if (self::$stubs->getInterface($classId, $constant->getOrCreateStubSpecificProperties()->sourceFilePath, shouldSuitCurrentPhpVersion: false)) {
-                self::$stubs->getInterface($classId, $constant->getOrCreateStubSpecificProperties()->sourceFilePath, shouldSuitCurrentPhpVersion: false)->addConstant($constant);
+            if (self::$stubs->getInterfacesManager()->getInterface($classId, $constant->getOrCreateStubSpecificProperties()->sourceFilePath, shouldSuitCurrentPhpVersion: false)) {
+                self::$stubs->getInterfacesManager()->getInterface($classId, $constant->getOrCreateStubSpecificProperties()->sourceFilePath, shouldSuitCurrentPhpVersion: false)->addConstant($constant);
             }
-            if (self::$stubs->getEnum($classId, $constant->getOrCreateStubSpecificProperties()->sourceFilePath, shouldSuitCurrentPhpVersion: false)) {
-                self::$stubs->getEnum($classId, $constant->getOrCreateStubSpecificProperties()->sourceFilePath, shouldSuitCurrentPhpVersion: false)->addConstant($constant);
+            if (self::$stubs->getEnumsManager()->getEnum($classId, $constant->getOrCreateStubSpecificProperties()->sourceFilePath, shouldSuitCurrentPhpVersion: false)) {
+                self::$stubs->getEnumsManager()->getEnum($classId, $constant->getOrCreateStubSpecificProperties()->sourceFilePath, shouldSuitCurrentPhpVersion: false)->addConstant($constant);
             }
         }
         /** @var PHPMethod $method */
         foreach ($childEntitiesToAdd['methods'] as $method) {
             $classId = $method->parentId;
-            if (self::$stubs->getClass($classId, $method->getOrCreateStubSpecificProperties()->sourceFilePath, shouldSuitCurrentPhpVersion: false)) {
-                self::$stubs->getClass($classId, $method->getOrCreateStubSpecificProperties()->sourceFilePath, shouldSuitCurrentPhpVersion: false)->addMethod($method);
+            if (self::$stubs->getClassesManager()->getClass($classId, $method->getOrCreateStubSpecificProperties()->sourceFilePath, shouldSuitCurrentPhpVersion: false)) {
+                self::$stubs->getClassesManager()->getClass($classId, $method->getOrCreateStubSpecificProperties()->sourceFilePath, shouldSuitCurrentPhpVersion: false)->addMethod($method);
             }
-            if (self::$stubs->getInterface($classId, $method->getOrCreateStubSpecificProperties()->sourceFilePath, shouldSuitCurrentPhpVersion: false)) {
-                self::$stubs->getInterface($classId, $method->getOrCreateStubSpecificProperties()->sourceFilePath, shouldSuitCurrentPhpVersion: false)->addMethod($method);
+            if (self::$stubs->getInterfacesManager()->getInterface($classId, $method->getOrCreateStubSpecificProperties()->sourceFilePath, shouldSuitCurrentPhpVersion: false)) {
+                self::$stubs->getInterfacesManager()->getInterface($classId, $method->getOrCreateStubSpecificProperties()->sourceFilePath, shouldSuitCurrentPhpVersion: false)->addMethod($method);
             }
-            if (self::$stubs->getEnum($classId, $method->getOrCreateStubSpecificProperties()->sourceFilePath, shouldSuitCurrentPhpVersion: false)) {
-                self::$stubs->getEnum($classId, $method->getOrCreateStubSpecificProperties()->sourceFilePath, shouldSuitCurrentPhpVersion: false)->addMethod($method);
+            if (self::$stubs->getEnumsManager()->getEnum($classId, $method->getOrCreateStubSpecificProperties()->sourceFilePath, shouldSuitCurrentPhpVersion: false)) {
+                self::$stubs->getEnumsManager()->getEnum($classId, $method->getOrCreateStubSpecificProperties()->sourceFilePath, shouldSuitCurrentPhpVersion: false)->addMethod($method);
             }
         }
         /** @var PHPProperty $property */
         foreach ($childEntitiesToAdd['properties'] as $property) {
             $classId = $property->parentId;
-            if (self::$stubs->getClass($classId, $property->getOrCreateStubSpecificProperties()->sourceFilePath, shouldSuitCurrentPhpVersion: false)) {
-                self::$stubs->getClass($classId, $property->getOrCreateStubSpecificProperties()->sourceFilePath, shouldSuitCurrentPhpVersion: false)->addProperty($property);
+            if (self::$stubs->getClassesManager()->getClass($classId, $property->getOrCreateStubSpecificProperties()->sourceFilePath, shouldSuitCurrentPhpVersion: false)) {
+                self::$stubs->getClassesManager()->getClass($classId, $property->getOrCreateStubSpecificProperties()->sourceFilePath, shouldSuitCurrentPhpVersion: false)->addProperty($property);
             }
-            if (self::$stubs->getEnum($classId, $property->getOrCreateStubSpecificProperties()->sourceFilePath, shouldSuitCurrentPhpVersion: false)) {
-                self::$stubs->getEnum($classId, $property->getOrCreateStubSpecificProperties()->sourceFilePath, shouldSuitCurrentPhpVersion: false)->addProperty($property);
+            if (self::$stubs->getEnumsManager()->getEnum($classId, $property->getOrCreateStubSpecificProperties()->sourceFilePath, shouldSuitCurrentPhpVersion: false)) {
+                self::$stubs->getEnumsManager()->getEnum($classId, $property->getOrCreateStubSpecificProperties()->sourceFilePath, shouldSuitCurrentPhpVersion: false)->addProperty($property);
             }
         }
-        foreach (self::$stubs->getInterfaces() as $interface) {
+        foreach (self::$stubs->getInterfacesManager()->getInterfaces() as $interface) {
             $interface->readMutedProblems($jsonData->interfaces);
             $interface->parentInterfaces = $visitor->convertParentInterfacesFromStringsToObjects($interface);
         }
-        foreach (self::$stubs->getClasses() as $class) {
+        foreach (self::$stubs->getClassesManager()->getClasses() as $class) {
             $class->readMutedProblems($jsonData->classes);
             $class->interfaces = CommonUtils::flattenArray($visitor->convertImplementedInterfacesFromStringsToObjects($class), false);
             foreach ($class->methods as $method) {
                 $method->getPhpdocProperties()->templateTypes += $class->getPhpdocProperties()->templateTypes;
             }
         }
-        foreach (self::$stubs->getFunctions() as $function) {
+        foreach (self::$stubs->getFunctionsManager()->getFunctions() as $function) {
             $function->readMutedProblems($jsonData->functions);
         }
-        foreach (self::$stubs->getConstants() as $constant) {
+        foreach (self::$stubs->getConstantsManager()->getConstants() as $constant) {
             $constant->readMutedProblems($jsonData->constants);
         }
         return self::$stubs;

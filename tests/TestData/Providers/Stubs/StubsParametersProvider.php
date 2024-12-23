@@ -6,10 +6,12 @@ namespace StubTests\TestData\Providers\Stubs;
 use Exception;
 use Generator;
 use StubTests\Model\BasePHPClass;
+use StubTests\Model\EntitiesProviders\EntitiesProvider;
 use StubTests\Model\PHPClass;
 use StubTests\Model\PHPEnum;
 use StubTests\Model\PHPInterface;
 use StubTests\Model\PHPMethod;
+use StubTests\Model\Predicats\CoreEntitiesFilterPredicate;
 use StubTests\Model\StubProblemType;
 use StubTests\Parsers\ParserUtils;
 use StubTests\TestData\Providers\EntitiesFilter;
@@ -128,9 +130,9 @@ class StubsParametersProvider
     private static function yieldFilteredMethodParameters(string $classType, callable $filterFunction, int ...$problemTypes): ?Generator
     {
         $classes = match ($classType) {
-            PHPClass::class => PhpStormStubsSingleton::getPhpStormStubs()->getCoreClasses(),
-            PHPInterface::class => PhpStormStubsSingleton::getPhpStormStubs()->getCoreInterfaces(),
-            PHPEnum::class => PhpStormStubsSingleton::getPhpStormStubs()->getCoreEnums(),
+            PHPClass::class => EntitiesProvider::getClasses(PhpStormStubsSingleton::getPhpStormStubs(), CoreEntitiesFilterPredicate::getCoreClasses()),
+            PHPInterface::class => EntitiesProvider::getInterfaces(PhpStormStubsSingleton::getPhpStormStubs(), CoreEntitiesFilterPredicate::getCoreInterfaces()),
+            PHPEnum::class => EntitiesProvider::getEnums(PhpStormStubsSingleton::getPhpStormStubs(), CoreEntitiesFilterPredicate::getCoreEnums()),
             default => throw new Exception("Unkown class type"),
         };
         $filtered = EntitiesFilter::getFiltered($classes);

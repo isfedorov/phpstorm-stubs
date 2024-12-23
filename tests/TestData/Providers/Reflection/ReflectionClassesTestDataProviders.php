@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace StubTests\TestData\Providers\Reflection;
 
 use Generator;
+use StubTests\Model\EntitiesProviders\EntitiesProvider;
 use StubTests\Model\PHPClass;
 use StubTests\Model\PHPEnum;
 use StubTests\Model\PHPInterface;
@@ -15,7 +16,7 @@ class ReflectionClassesTestDataProviders
 {
     public static function allClassesProvider(): ?Generator
     {
-        $classes = ReflectionStubsSingleton::getReflectionStubs()->getClasses();
+        $classes = EntitiesProvider::getClasses(ReflectionStubsSingleton::getReflectionStubs());
         $filtered = EntitiesFilter::getFiltered($classes, fn (PHPClass $class) => $class->name === "DOMException");
         if (empty($filtered)) {
             yield [null];
@@ -31,7 +32,7 @@ class ReflectionClassesTestDataProviders
 
     public static function allInterfacesProvider(): ?Generator
     {
-        $interfaces = ReflectionStubsSingleton::getReflectionStubs()->getInterfaces();
+        $interfaces = EntitiesProvider::getInterfaces(ReflectionStubsSingleton::getReflectionStubs());
         $filtered = EntitiesFilter::getFiltered($interfaces);
         if (empty($filtered)) {
             yield [null];
@@ -44,7 +45,7 @@ class ReflectionClassesTestDataProviders
 
     public static function allEnumsProvider(): ?Generator
     {
-        $enums = ReflectionStubsSingleton::getReflectionStubs()->getEnums();
+        $enums = EntitiesProvider::getEnums(ReflectionStubsSingleton::getReflectionStubs());
         $filtered = EntitiesFilter::getFiltered($enums);
         if (empty($filtered)) {
             yield [null];
@@ -58,7 +59,7 @@ class ReflectionClassesTestDataProviders
     public static function classesWithInterfacesProvider(): ?Generator
     {
         $filtered = EntitiesFilter::getFiltered(
-            ReflectionStubsSingleton::getReflectionStubs()->getClasses(),
+            EntitiesProvider::getClasses(ReflectionStubsSingleton::getReflectionStubs()),
             fn (PHPClass $class) => empty($class->interfaces) || $class->name == 'DOMException',
             StubProblemType::WRONG_INTERFACE
         );
@@ -77,7 +78,7 @@ class ReflectionClassesTestDataProviders
     public static function enumsWithInterfacesProvider(): ?Generator
     {
         $filtered = EntitiesFilter::getFiltered(
-            ReflectionStubsSingleton::getReflectionStubs()->getEnums(),
+            EntitiesProvider::getEnums(ReflectionStubsSingleton::getReflectionStubs()),
             fn (PHPEnum $enum) => empty($enum->interfaces),
             StubProblemType::WRONG_INTERFACE
         );
@@ -92,7 +93,7 @@ class ReflectionClassesTestDataProviders
 
     public static function classWithParentProvider(): ?Generator
     {
-        $classes = ReflectionStubsSingleton::getReflectionStubs()->getClasses();
+        $classes = EntitiesProvider::getClasses(ReflectionStubsSingleton::getReflectionStubs());
         $filtered = EntitiesFilter::getFiltered(
             $classes,
             fn (PHPClass $class) => empty($class->parentClass) || $class->name == 'DOMException',
@@ -109,7 +110,7 @@ class ReflectionClassesTestDataProviders
 
     public static function interfaceWithParentProvider(): ?Generator
     {
-        $interfaces = ReflectionStubsSingleton::getReflectionStubs()->getInterfaces();
+        $interfaces = EntitiesProvider::getInterfaces(ReflectionStubsSingleton::getReflectionStubs());
         $filtered = EntitiesFilter::getFiltered(
             $interfaces,
             fn (PHPInterface $interface) => empty($interface->parentInterfaces),
@@ -126,7 +127,7 @@ class ReflectionClassesTestDataProviders
 
     public static function enumWithParentProvider(): ?Generator
     {
-        $enums = ReflectionStubsSingleton::getReflectionStubs()->getEnums();
+        $enums = EntitiesProvider::getEnums(ReflectionStubsSingleton::getReflectionStubs());
         $filtered = EntitiesFilter::getFiltered($enums, fn (PHPEnum $enum) => empty($enum->parentClass), StubProblemType::WRONG_PARENT);
         if (empty($filtered)) {
             yield [null];
@@ -139,7 +140,7 @@ class ReflectionClassesTestDataProviders
 
     public static function finalClassesProvider(): ?Generator
     {
-        $classes = ReflectionStubsSingleton::getReflectionStubs()->getClasses();
+        $classes = EntitiesProvider::getClasses(ReflectionStubsSingleton::getReflectionStubs());
         $filtered = EntitiesFilter::getFiltered(
             $classes,
             fn (PHPClass $class) => $class->name === "DOMException" || $class->name === '__PHP_Incomplete_Class',
@@ -156,7 +157,7 @@ class ReflectionClassesTestDataProviders
 
     public static function finalInterfacesProvider(): ?Generator
     {
-        $interfaces = ReflectionStubsSingleton::getReflectionStubs()->getInterfaces();
+        $interfaces = EntitiesProvider::getInterfaces(ReflectionStubsSingleton::getReflectionStubs());
         $filtered = EntitiesFilter::getFiltered($interfaces, null, StubProblemType::WRONG_FINAL_MODIFIER);
         if (empty($filtered)) {
             yield [null];
@@ -169,7 +170,7 @@ class ReflectionClassesTestDataProviders
 
     public static function finalEnumsProvider(): ?Generator
     {
-        $enums = ReflectionStubsSingleton::getReflectionStubs()->getEnums();
+        $enums = EntitiesProvider::getEnums(ReflectionStubsSingleton::getReflectionStubs());
         $filtered = EntitiesFilter::getFiltered($enums, null, StubProblemType::WRONG_FINAL_MODIFIER);
         if (empty($filtered)) {
             yield [null];
@@ -182,7 +183,7 @@ class ReflectionClassesTestDataProviders
 
     public static function readonlyClassesProvider(): ?Generator
     {
-        $classes = ReflectionStubsSingleton::getReflectionStubs()->getClasses();
+        $classes = EntitiesProvider::getClasses(ReflectionStubsSingleton::getReflectionStubs());
         $filtered = EntitiesFilter::getFiltered($classes, fn (PHPClass $class) => $class->name === "DOMException", StubProblemType::WRONG_READONLY);
         if (empty($filtered)) {
             yield [null];
@@ -195,7 +196,7 @@ class ReflectionClassesTestDataProviders
 
     public static function classWithNamespaceProvider(): ?Generator
     {
-        $interfaces = ReflectionStubsSingleton::getReflectionStubs()->getClasses();
+        $interfaces = EntitiesProvider::getClasses(ReflectionStubsSingleton::getReflectionStubs());
         $filtered = EntitiesFilter::getFiltered($interfaces, fn (PHPClass $class) => empty($class->namespace) || $class->name == 'DOMException');
         if (empty($filtered)) {
             yield [null];
@@ -208,7 +209,7 @@ class ReflectionClassesTestDataProviders
 
     public static function interfaceWithNamespaceProvider(): ?Generator
     {
-        $interfaces = ReflectionStubsSingleton::getReflectionStubs()->getInterfaces();
+        $interfaces = EntitiesProvider::getInterfaces(ReflectionStubsSingleton::getReflectionStubs());
         $filtered = EntitiesFilter::getFiltered($interfaces, fn (PHPInterface $class) => empty($class->namespace));
         if (empty($filtered)) {
             yield [null];
@@ -221,8 +222,8 @@ class ReflectionClassesTestDataProviders
 
     public static function enumsWithNamespaceProvider(): ?Generator
     {
-        $interfaces = ReflectionStubsSingleton::getReflectionStubs()->getEnums();
-        $filtered = EntitiesFilter::getFiltered($interfaces, fn (PHPEnum $class) => empty($class->namespace));
+        $enums = EntitiesProvider::getEnums(ReflectionStubsSingleton::getReflectionStubs());
+        $filtered = EntitiesFilter::getFiltered($enums, fn (PHPEnum $class) => empty($class->namespace));
         if (empty($filtered)) {
             yield [null];
         }else {

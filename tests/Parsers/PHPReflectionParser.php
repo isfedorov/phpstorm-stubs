@@ -38,14 +38,14 @@ class PHPReflectionParser
                     $constant = (new PHPDefineConstant())->readObjectFromReflection([$name, $value]);
                 }
                 $constant->readMutedProblems($jsonData->constants);
-                $stubs->addConstant($constant);
+                $stubs->getConstantsManager()->addConstant($constant);
             }
 
             foreach (get_defined_functions()['internal'] as $function) {
                 $reflectionFunction = new ReflectionFunction($function);
                 $phpFunction = (new PHPFunction())->readObjectFromReflection($reflectionFunction);
                 $phpFunction->readMutedProblems($jsonData->functions);
-                $stubs->addFunction($phpFunction);
+                $stubs->getFunctionsManager()->addFunction($phpFunction);
             }
 
             foreach (get_declared_classes() as $clazz) {
@@ -54,11 +54,11 @@ class PHPReflectionParser
                     if (method_exists($reflectionClass, 'isEnum') && $reflectionClass->isEnum()) {
                         $enum = (new PHPEnum())->readObjectFromReflection(new ReflectionEnum($clazz));
                         $enum->readMutedProblems($jsonData->enums);
-                        $stubs->addEnum($enum);
+                        $stubs->getEnumsManager()->addEnum($enum);
                     } else {
                         $class = (new PHPClass())->readObjectFromReflection($reflectionClass);
                         $class->readMutedProblems($jsonData->classes);
-                        $stubs->addClass($class);
+                        $stubs->getClassesManager()->addClass($class);
                     }
                 }
             }
@@ -68,7 +68,7 @@ class PHPReflectionParser
                 if ($reflectionInterface->isInternal()) {
                     $phpInterface = (new PHPInterface())->readObjectFromReflection($reflectionInterface);
                     $phpInterface->readMutedProblems($jsonData->interfaces);
-                    $stubs->addInterface($phpInterface);
+                    $stubs->getInterfacesManager()->addInterface($phpInterface);
                 }
             }
         }

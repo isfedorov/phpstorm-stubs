@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace StubTests\TestData\Providers\Reflection;
 
 use Generator;
+use StubTests\Model\EntitiesProviders\EntitiesProvider;
 use StubTests\Model\PHPEnum;
 use StubTests\Model\PHPFunction;
 use StubTests\Model\PHPMethod;
@@ -139,7 +140,7 @@ class ReflectionParametersProvider
 
     public static function classMethodsParametersProvider(): ?Generator
     {
-        $classes = ReflectionStubsSingleton::getReflectionStubs()->getClasses();
+        $classes = EntitiesProvider::getClasses(ReflectionStubsSingleton::getReflectionStubs());
         $filtered = EntitiesFilter::getFiltered($classes);
         $array = array_filter(array_map(function ($class) {
             return array_filter(array_map(function (PHPMethod $method) {
@@ -164,7 +165,7 @@ class ReflectionParametersProvider
 
     public static function interfaceMethodsParametersProvider(): ?Generator
     {
-        $interfaces = ReflectionStubsSingleton::getReflectionStubs()->getInterfaces();
+        $interfaces = EntitiesProvider::getInterfaces(ReflectionStubsSingleton::getReflectionStubs());
         $filtered = EntitiesFilter::getFiltered($interfaces);
         $array = array_filter(array_map(function ($class) {
             return array_filter(array_map(function (PHPMethod $method) {
@@ -186,7 +187,7 @@ class ReflectionParametersProvider
 
     public static function enumMethodsParametersProvider(): ?Generator
     {
-        $enums = ReflectionStubsSingleton::getReflectionStubs()->getEnums();
+        $enums = EntitiesProvider::getEnums(ReflectionStubsSingleton::getReflectionStubs());
         $filtered = EntitiesFilter::getFiltered($enums);
         $array = array_filter(array_map(function ($class) {
             return array_filter(array_map(function (PHPMethod $method) {
@@ -208,7 +209,7 @@ class ReflectionParametersProvider
 
     public static function classMethodParametersWithTypeHintProvider(): ?Generator
     {
-        $classes = ReflectionStubsSingleton::getReflectionStubs()->getClasses();
+        $classes = EntitiesProvider::getClasses(ReflectionStubsSingleton::getReflectionStubs());
         $filtered = EntitiesFilter::getFiltered($classes);
         $array = array_filter(array_map(function ($class) {
             return array_filter(array_map(function (PHPMethod $method) {
@@ -241,7 +242,7 @@ class ReflectionParametersProvider
 
     public static function interfaceMethodParametersWithTypeHintProvider(): ?Generator
     {
-        $interfaces = ReflectionStubsSingleton::getReflectionStubs()->getInterfaces();
+        $interfaces = EntitiesProvider::getInterfaces(ReflectionStubsSingleton::getReflectionStubs());
         $filtered = EntitiesFilter::getFiltered($interfaces);
         $array = array_filter(array_map(function ($class) {
             return array_filter(array_map(function (PHPMethod $method) {
@@ -271,7 +272,7 @@ class ReflectionParametersProvider
 
     public static function enumMethodParametersWithTypeHintProvider(): ?Generator
     {
-        $enums = ReflectionStubsSingleton::getReflectionStubs()->getEnums();
+        $enums = EntitiesProvider::getEnums(ReflectionStubsSingleton::getReflectionStubs());
         $filtered = EntitiesFilter::getFiltered($enums);
         $array = array_filter(array_map(function ($class) {
             return array_filter(array_map(function (PHPMethod $method) {
@@ -301,7 +302,7 @@ class ReflectionParametersProvider
 
     public static function classMethodOptionalParametersProvider(): ?Generator
     {
-        $classes = ReflectionStubsSingleton::getReflectionStubs()->getClasses();
+        $classes = EntitiesProvider::getClasses(ReflectionStubsSingleton::getReflectionStubs());
         $filtered = EntitiesFilter::getFiltered($classes);
         $array = array_filter(array_map(function ($class) {
             return array_filter(array_map(function (PHPMethod $method) {
@@ -334,7 +335,7 @@ class ReflectionParametersProvider
 
     public static function interfaceMethodOptionalParametersProvider(): ?Generator
     {
-        $interfaces = ReflectionStubsSingleton::getReflectionStubs()->getInterfaces();
+        $interfaces = EntitiesProvider::getInterfaces(ReflectionStubsSingleton::getReflectionStubs());
         $filtered = EntitiesFilter::getFiltered($interfaces);
         $array = array_filter(array_map(function ($class) {
             return array_filter(array_map(function (PHPMethod $method) {
@@ -364,7 +365,7 @@ class ReflectionParametersProvider
 
     public static function enumMethodOptionalParametersProvider(): ?Generator
     {
-        $enums = ReflectionStubsSingleton::getReflectionStubs()->getEnums();
+        $enums = EntitiesProvider::getEnums(ReflectionStubsSingleton::getReflectionStubs());
         $filtered = EntitiesFilter::getFiltered($enums);
         $array = array_filter(array_map(function (PHPEnum $enum) {
             return array_filter(array_map(function (PHPMethod $method) {
@@ -395,7 +396,7 @@ class ReflectionParametersProvider
 
     public static function classMethodOptionalParametersWithDefaultValueProvider(): ?Generator
     {
-        $classes = ReflectionStubsSingleton::getReflectionStubs()->getClasses();
+        $classes = EntitiesProvider::getClasses(ReflectionStubsSingleton::getReflectionStubs());
         $filtered = EntitiesFilter::getFiltered($classes);
         $array = array_filter(array_map(function ($enum) {
             return array_filter(array_map(function (PHPMethod $method) {
@@ -429,7 +430,7 @@ class ReflectionParametersProvider
 
     public static function interfaceMethodOptionalParametersWithDefaultValueProvider(): ?Generator
     {
-        $interfaces = ReflectionStubsSingleton::getReflectionStubs()->getInterfaces();
+        $interfaces = EntitiesProvider::getInterfaces(ReflectionStubsSingleton::getReflectionStubs());
         $filtered = EntitiesFilter::getFiltered($interfaces);
         $array = array_filter(array_map(function ($class) {
             return array_filter(array_map(function (PHPMethod $method) {
@@ -459,7 +460,7 @@ class ReflectionParametersProvider
 
     public static function enumMethodOptionalParametersWithDefaultValueProvider(): ?Generator
     {
-        $enums = ReflectionStubsSingleton::getReflectionStubs()->getEnums();
+        $enums = EntitiesProvider::getEnums(ReflectionStubsSingleton::getReflectionStubs());
         $filtered = EntitiesFilter::getFiltered($enums);
         $array = array_filter(array_map(function ($class) {
             return array_filter(array_map(function (PHPMethod $method) {
@@ -489,7 +490,7 @@ class ReflectionParametersProvider
 
     public static function classMethodOptionalParametersWithoutDefaultValueProvider(): ?Generator
     {
-        $classes = ReflectionStubsSingleton::getReflectionStubs()->getClasses();
+        $classes = EntitiesProvider::getClasses(ReflectionStubsSingleton::getReflectionStubs());
         $filtered = EntitiesFilter::getFiltered($classes);
         $array = array_filter(array_map(function ($class) {
             return array_filter(array_map(function (PHPMethod $method) {
@@ -522,7 +523,7 @@ class ReflectionParametersProvider
 
     public static function interfaceMethodOptionalParametersWithoutDefaultValueProvider(): ?Generator
     {
-        $interfaces = ReflectionStubsSingleton::getReflectionStubs()->getInterfaces();
+        $interfaces = EntitiesProvider::getInterfaces(ReflectionStubsSingleton::getReflectionStubs());
         $filtered = EntitiesFilter::getFiltered($interfaces);
         $array = array_filter(array_map(function ($class) {
             return array_filter(array_map(function (PHPMethod $method) {
@@ -552,7 +553,7 @@ class ReflectionParametersProvider
 
     public static function enumMethodOptionalParametersWithoutDefaultValueProvider(): ?Generator
     {
-        $enums = ReflectionStubsSingleton::getReflectionStubs()->getEnums();
+        $enums = EntitiesProvider::getEnums(ReflectionStubsSingleton::getReflectionStubs());
         $filtered = EntitiesFilter::getFiltered($enums);
         $array = array_filter(array_map(function ($class) {
             return array_filter(array_map(function (PHPMethod $method) {

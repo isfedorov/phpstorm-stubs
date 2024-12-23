@@ -6,11 +6,13 @@ namespace StubTests\TestData\Providers\Stubs;
 use Exception;
 use Generator;
 use RuntimeException;
+use StubTests\Model\EntitiesProviders\EntitiesProvider;
 use StubTests\Model\PHPClass;
 use StubTests\Model\PHPEnum;
 use StubTests\Model\PHPFunction;
 use StubTests\Model\PHPInterface;
 use StubTests\Model\PHPMethod;
+use StubTests\Model\Predicats\CoreEntitiesFilterPredicate;
 use StubTests\Model\StubProblemType;
 use StubTests\Parsers\ParserUtils;
 use StubTests\TestData\Providers\EntitiesFilter;
@@ -21,7 +23,7 @@ class StubMethodsProvider
 {
     public static function allClassMethodsProvider(): ?Generator
     {
-        $classes = PhpStormStubsSingleton::getPhpStormStubs()->getClasses();
+        $classes = EntitiesProvider::getClasses(PhpStormStubsSingleton::getPhpStormStubs());
         foreach ($classes as $className => $class) {
             foreach ($class->methods as $methodName => $method) {
                 yield "method $className::$methodName [{$class->getOrCreateStubSpecificProperties()->stubObjectHash}]" => [$class->getOrCreateStubSpecificProperties()->stubObjectHash, $method->name];
@@ -31,7 +33,7 @@ class StubMethodsProvider
 
     public static function allInterfaceMethodsProvider(): ?Generator
     {
-        $interfaces = PhpStormStubsSingleton::getPhpStormStubs()->getInterfaces();
+        $interfaces = EntitiesProvider::getInterfaces(PhpStormStubsSingleton::getPhpStormStubs());
         foreach ($interfaces as $className => $class) {
             foreach ($class->methods as $methodName => $method) {
                 yield "method $className::$methodName" => [$class->fqnBasedId, $method->name];
@@ -41,7 +43,7 @@ class StubMethodsProvider
 
     public static function allEnumsMethodsProvider(): ?Generator
     {
-        $enums = PhpStormStubsSingleton::getPhpStormStubs()->getEnums();
+        $enums = EntitiesProvider::getEnums(PhpStormStubsSingleton::getPhpStormStubs());
         foreach ($enums as $className => $class) {
             foreach ($class->methods as $methodName => $method) {
                 yield "method $className::$methodName" => [$class->fqnBasedId, $method->name];
@@ -51,7 +53,7 @@ class StubMethodsProvider
 
     public static function allFunctionWithReturnTypeHintsProvider(): ?Generator
     {
-        $allFunctions = PhpStormStubsSingleton::getPhpStormStubs()->getFunctions();
+        $allFunctions = EntitiesProvider::getFunctions(PhpStormStubsSingleton::getPhpStormStubs());
         $filteredFunctions = EntitiesFilter::getFiltered(
             $allFunctions,
             fn (PHPFunction $function) => empty($function->returnTypesFromSignature) || empty($function->returnTypesFromPhpDoc)
@@ -65,7 +67,7 @@ class StubMethodsProvider
 
     public static function allClassesMethodsWithReturnTypeHintsProvider(): ?Generator
     {
-        $coreClasses = PhpStormStubsSingleton::getPhpStormStubs()->getCoreClasses();
+        $coreClasses = EntitiesProvider::getClasses(PhpStormStubsSingleton::getPhpStormStubs(), CoreEntitiesFilterPredicate::getCoreClasses());
         foreach (EntitiesFilter::getFiltered($coreClasses) as $class) {
             $filteredMethods = EntitiesFilter::getFiltered(
                 $class->methods,
@@ -82,7 +84,7 @@ class StubMethodsProvider
 
     public static function allInterfacesMethodsWithReturnTypeHintsProvider(): ?Generator
     {
-        $coreInterfaces = PhpStormStubsSingleton::getPhpStormStubs()->getCoreInterfaces();
+        $coreInterfaces = EntitiesProvider::getInterfaces(PhpStormStubsSingleton::getPhpStormStubs(), CoreEntitiesFilterPredicate::getCoreInterfaces());
         foreach (EntitiesFilter::getFiltered($coreInterfaces) as $class) {
             $filteredMethods = EntitiesFilter::getFiltered(
                 $class->methods,
@@ -99,7 +101,7 @@ class StubMethodsProvider
 
     public static function allEnumsMethodsWithReturnTypeHintsProvider(): ?Generator
     {
-        $coreEnums = PhpStormStubsSingleton::getPhpStormStubs()->getCoreEnums();
+        $coreEnums = EntitiesProvider::getEnums(PhpStormStubsSingleton::getPhpStormStubs(), CoreEntitiesFilterPredicate::getCoreEnums());
         $array = array_filter(array_map(function (PHPEnum $enum) {
             return EntitiesFilter::getFiltered(
                 $enum->methods,
@@ -245,9 +247,9 @@ class StubMethodsProvider
     private static function yieldFilteredMethods(string $classType, callable $filterFunction, int ...$problemTypes): ?Generator
     {
         $classes = match ($classType) {
-            PHPClass::class => PhpStormStubsSingleton::getPhpStormStubs()->getCoreClasses(),
-            PHPInterface::class => PhpStormStubsSingleton::getPhpStormStubs()->getCoreInterfaces(),
-            PHPEnum::class => PhpStormStubsSingleton::getPhpStormStubs()->getCoreEnums(),
+            PHPClass::class => EntitiesProvider::getClasses(PhpStormStubsSingleton::getPhpStormStubs(), CoreEntitiesFilterPredicate::getCoreClasses()),
+            PHPInterface::class => EntitiesProvider::getInterfaces(PhpStormStubsSingleton::getPhpStormStubs(), CoreEntitiesFilterPredicate::getCoreInterfaces()),
+            PHPEnum::class => EntitiesProvider::getEnums(PhpStormStubsSingleton::getPhpStormStubs(), CoreEntitiesFilterPredicate::getCoreEnums()),
             default => throw new Exception("Unknown class type")
         };
         $filtered = EntitiesFilter::getFiltered($classes);

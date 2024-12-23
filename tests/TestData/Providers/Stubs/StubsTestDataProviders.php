@@ -6,6 +6,7 @@ namespace StubTests\TestData\Providers\Stubs;
 use DirectoryIterator;
 use Generator;
 use SplFileInfo;
+use StubTests\Model\EntitiesProviders\EntitiesProvider;
 use StubTests\Model\PHPFunction;
 use StubTests\TestData\Providers\PhpStormStubsSingleton;
 use function dirname;
@@ -15,14 +16,14 @@ class StubsTestDataProviders
 {
     public static function allFunctionsProvider(): ?Generator
     {
-        foreach (PhpStormStubsSingleton::getPhpStormStubs()->getFunctions() as $functionName => $function) {
+        foreach (EntitiesProvider::getFunctions(PhpStormStubsSingleton::getPhpStormStubs()) as $functionName => $function) {
             yield "function $functionName" => [$function->fqnBasedId];
         }
     }
 
     public static function allClassesProvider(): ?Generator
     {
-        $classes = PhpStormStubsSingleton::getPhpStormStubs()->getClasses();
+        $classes = EntitiesProvider::getClasses(PhpStormStubsSingleton::getPhpStormStubs());
         foreach ($classes as $class) {
             yield "class {$class->getOrCreateStubSpecificProperties()->sourceFilePath}/$class->fqnBasedId" => [$class->fqnBasedId, $class->getOrCreateStubSpecificProperties()->sourceFilePath];
         }
@@ -30,7 +31,7 @@ class StubsTestDataProviders
 
     public static function allInterfacesProvider(): ?Generator
     {
-        $interfaces = PhpStormStubsSingleton::getPhpStormStubs()->getInterfaces();
+        $interfaces = EntitiesProvider::getInterfaces(PhpStormStubsSingleton::getPhpStormStubs());
         foreach ($interfaces as $class) {
             yield "class {$class->getOrCreateStubSpecificProperties()->sourceFilePath}/$class->fqnBasedId" => [$class->fqnBasedId, $class->getOrCreateStubSpecificProperties()->sourceFilePath];
         }
@@ -38,7 +39,7 @@ class StubsTestDataProviders
 
     public static function allEnumsProvider(): ?Generator
     {
-        $enums = PhpStormStubsSingleton::getPhpStormStubs()->getEnums();
+        $enums = EntitiesProvider::getEnums(PhpStormStubsSingleton::getPhpStormStubs());
         foreach ($enums as $class) {
             yield "class {$class->getOrCreateStubSpecificProperties()->sourceFilePath}/$class->fqnBasedId" => [$class->fqnBasedId, $class->getOrCreateStubSpecificProperties()->sourceFilePath];
         }
@@ -46,7 +47,7 @@ class StubsTestDataProviders
 
     public static function coreFunctionsProvider(): ?Generator
     {
-        $allFunctions = PhpStormStubsSingleton::getPhpStormStubs()->getFunctions();
+        $allFunctions = EntitiesProvider::getFunctions(PhpStormStubsSingleton::getPhpStormStubs());
         $coreFunctions = array_filter($allFunctions, fn (PHPFunction $function): bool => $function->getOrCreateStubSpecificProperties()->stubBelongsToCore === true);
         foreach ($coreFunctions as $coreFunction) {
             yield "function $coreFunction->name" => [$coreFunction];

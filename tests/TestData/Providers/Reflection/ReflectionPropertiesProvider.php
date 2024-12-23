@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace StubTests\TestData\Providers\Reflection;
 
 use Generator;
+use StubTests\Model\EntitiesProviders\EntitiesProvider;
 use StubTests\Model\PHPProperty;
 use StubTests\Model\StubProblemType;
 use StubTests\TestData\Providers\EntitiesFilter;
@@ -38,7 +39,7 @@ class ReflectionPropertiesProvider
 
     private static function yieldFilteredClassProperties(int ...$problemTypes): ?Generator
     {
-        $classes = ReflectionStubsSingleton::getReflectionStubs()->getClasses();
+        $classes = EntitiesProvider::getClasses(ReflectionStubsSingleton::getReflectionStubs());
         $filteredClasses = EntitiesFilter::getFiltered($classes);
         $toYield = array_filter(array_map(fn ($class) => EntitiesFilter::getFiltered(
             $class->properties,
