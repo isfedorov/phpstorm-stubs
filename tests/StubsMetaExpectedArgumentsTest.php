@@ -11,6 +11,7 @@ use PhpParser\Node\Expr\FuncCall;
 use PhpParser\Node\Expr\StaticCall;
 use PhpParser\Node\Scalar\String_;
 use PHPUnit\Framework\Exception;
+use StubTests\Model\EntitiesProviders\EntitiesProvider;
 use StubTests\Model\PHPClass;
 use StubTests\Model\PHPFunction;
 use StubTests\Model\PHPMethod;
@@ -64,7 +65,7 @@ class StubsMetaExpectedArgumentsTest extends AbstractBaseStubsTestCase
         self::$expectedArguments = $argumentsCollector->getExpectedArgumentsInfos();
         self::$registeredArgumentsSet = $argumentsCollector->getRegisteredArgumentsSet();
         $stubs = PhpStormStubsSingleton::getPhpStormStubs();
-        self::$functionsFqns = array_map(fn (PHPFunction $func) => $func->fqnBasedId, $stubs->getFunctions());
+        self::$functionsFqns = array_map(fn (PHPFunction $func) => $func->fqnBasedId, EntitiesProvider::getFunctions($stubs));
         self::$methodsFqns = self::getMethodsFqns($stubs);
         self::$constantsFqns = self::getConstantsFqns($stubs);
     }
@@ -80,8 +81,8 @@ class StubsMetaExpectedArgumentsTest extends AbstractBaseStubsTestCase
 
     public static function getConstantsFqns(StubsContainer $stubs): array
     {
-        $constants = array_map(fn ($constant) => $constant->name, $stubs->getConstants());
-        foreach ($stubs->getClasses() as $class) {
+        $constants = array_map(fn ($constant) => $constant->name, EntitiesProvider::getConstants($stubs));
+        foreach (EntitiesProvider::getClasses($stubs) as $class) {
             foreach ($class->constants as $classConstant) {
                 $name = self::getClassMemberFqn($class->fqnBasedId, $classConstant->name);
                 $constants[$name] = $name;
@@ -93,7 +94,7 @@ class StubsMetaExpectedArgumentsTest extends AbstractBaseStubsTestCase
     public static function getMethodsFqns(StubsContainer $stubs): array
     {
         return self::flatten(
-            array_map(fn (PHPClass $class) => array_map(fn (PHPMethod $method) => self::getClassMemberFqn($class->fqnBasedId, $method->name), $class->methods), $stubs->getClasses())
+            array_map(fn (PHPClass $class) => array_map(fn (PHPMethod $method) => self::getClassMemberFqn($class->fqnBasedId, $method->name), $class->methods), EntitiesProvider::getClasses($stubs))
         );
     }
 

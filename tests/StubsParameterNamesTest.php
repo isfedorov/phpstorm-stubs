@@ -5,8 +5,12 @@ namespace StubTests;
 
 use JetBrains\PhpStorm\Pure;
 use PHPUnit\Framework\Attributes\DataProviderExternal;
+use StubTests\Model\EntitiesProviders\EntitiesProvider;
 use StubTests\Model\PHPParameter;
+use StubTests\Model\Predicats\ClassesFilterPredicateProvider;
+use StubTests\Model\Predicats\EnumsFilterPredicateProvider;
 use StubTests\Model\Predicats\FunctionsFilterPredicateProvider;
+use StubTests\Model\Predicats\InterfaceFilterPredicateProvider;
 use StubTests\TestData\Providers\PhpStormStubsSingleton;
 use StubTests\TestData\Providers\Reflection\ReflectionParametersProvider;
 use StubTests\TestData\Providers\ReflectionStubsSingleton;
@@ -26,8 +30,8 @@ class StubsParameterNamesTest extends AbstractBaseStubsTestCase
         if (!$functionId && !$parameterName) {
             self::markTestSkipped($this->emptyDataSetMessage);
         }
-        $reflectionFunction = ReflectionStubsSingleton::getReflectionStubs()->getFunction($functionId, FunctionsFilterPredicateProvider::getFunctionsFromReflection($functionId));
-        $phpstormFunction = PhpStormStubsSingleton::getPhpStormStubs()->getFunction($functionId);
+        $reflectionFunction = EntitiesProvider::getFunction(ReflectionStubsSingleton::getReflectionStubs(), FunctionsFilterPredicateProvider::getFunctionById($functionId));
+        $phpstormFunction = EntitiesProvider::getFunction(PhpStormStubsSingleton::getPhpStormStubs(),FunctionsFilterPredicateProvider::getFunctionById($functionId));
         self::assertNotEmpty(
             array_filter(
                 $phpstormFunction->parameters,
@@ -44,10 +48,10 @@ class StubsParameterNamesTest extends AbstractBaseStubsTestCase
         if (!$classId && !$methodName && !$parameterName) {
             self::markTestSkipped($this->emptyDataSetMessage);
         }
-        $reflectionClass = ReflectionStubsSingleton::getReflectionStubs()->getClass($classId, sourceFilePath: true);
+        $reflectionClass = EntitiesProvider::getClass(ReflectionStubsSingleton::getReflectionStubs(), ClassesFilterPredicateProvider::filterClassById($classId));
         $reflectionMethod = $reflectionClass->getMethod($methodName, FunctionsFilterPredicateProvider::getMethodsFromReflection($methodName));
         $reflectionParameter = $reflectionMethod->getParameter($parameterName);
-        $stubMethod = PhpStormStubsSingleton::getPhpStormStubs()->getClass($classId)->getMethod($methodName);
+        $stubMethod = EntitiesProvider::getClass(PhpStormStubsSingleton::getPhpStormStubs(), ClassesFilterPredicateProvider::filterClassById($classId))->getMethod($methodName);
         self::assertNotEmpty(
             array_filter(
                 $stubMethod->parameters,
@@ -64,10 +68,10 @@ class StubsParameterNamesTest extends AbstractBaseStubsTestCase
         if (!$classId && !$methodName && !$parameterName) {
             self::markTestSkipped($this->emptyDataSetMessage);
         }
-        $reflectionInterface = ReflectionStubsSingleton::getReflectionStubs()->getInterface($classId, fromReflection: true);
+        $reflectionInterface = EntitiesProvider::getInterface(ReflectionStubsSingleton::getReflectionStubs(), InterfaceFilterPredicateProvider::getInterfaceById($classId));
         $reflectionMethod = $reflectionInterface->getMethod($methodName, FunctionsFilterPredicateProvider::getMethodsFromReflection($methodName));
         $reflectionParameter = $reflectionMethod->getParameter($parameterName);
-        $stubMethod = PhpStormStubsSingleton::getPhpStormStubs()->getInterface($classId)->getMethod($methodName);
+        $stubMethod = EntitiesProvider::getInterface(PhpStormStubsSingleton::getPhpStormStubs(), InterfaceFilterPredicateProvider::getInterfaceById($classId))->getMethod($methodName);
         self::assertNotEmpty(
             array_filter(
                 $stubMethod->parameters,
@@ -84,10 +88,10 @@ class StubsParameterNamesTest extends AbstractBaseStubsTestCase
         if (!$classId && !$methodName && !$parameterName) {
             self::markTestSkipped($this->emptyDataSetMessage);
         }
-        $reflectionEnum = ReflectionStubsSingleton::getReflectionStubs()->getEnum($classId, fromReflection: true);
+        $reflectionEnum = EntitiesProvider::getEnum(ReflectionStubsSingleton::getReflectionStubs(), EnumsFilterPredicateProvider::getEnumById($classId));
         $reflectionMethod = $reflectionEnum->getMethod($methodName, FunctionsFilterPredicateProvider::getMethodsFromReflection($methodName));
         $reflectionParameter = $reflectionMethod->getParameter($parameterName);
-        $stubMethod = PhpStormStubsSingleton::getPhpStormStubs()->getEnum($classId)->getMethod($methodName);
+        $stubMethod = EntitiesProvider::getEnum(PhpStormStubsSingleton::getPhpStormStubs(), EnumsFilterPredicateProvider::getEnumById($classId))->getMethod($methodName);
         self::assertNotEmpty(
             array_filter(
                 $stubMethod->parameters,

@@ -41,6 +41,13 @@ class ConstantsFilterPredicateProvider
         };
     }
 
+    public static function getConstantById($constantId)
+    {
+        return function (PHPConstant $constant) use ($constantId) {
+            return $constant->fqnBasedId === $constantId;
+        };
+    }
+
     public static function getConstantsFromReflection($constantId)
     {
         return function (PHPConstant $constant) use ($constantId) {

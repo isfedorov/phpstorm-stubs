@@ -22,14 +22,11 @@ class ContainerFunctionsManager
         return $this->functions;
     }
 
-    public function getFunction($functionId, $filterCallback = null)
+    public function getFunction($filterCallback)
     {
-        if ($filterCallback === null) {
-            $filterCallback = FunctionsFilterPredicateProvider::getDefaultSuitableFunctions($functionId);
-        }
         $functions = array_filter($this->functions, $filterCallback);
         if (count($functions) > 1) {
-            throw new RuntimeException("Multiple functions with name $functionId found");
+            throw new RuntimeException("Multiple functions found");
         }
         if (!empty($functions)) {
             return array_pop($functions);

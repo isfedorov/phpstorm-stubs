@@ -4,8 +4,11 @@ declare(strict_types=1);
 namespace StubTests;
 
 use PHPUnit\Framework\Attributes\DataProviderExternal;
+use StubTests\Model\EntitiesProviders\EntitiesProvider;
 use StubTests\Model\PHPParameter;
+use StubTests\Model\Predicats\ClassesFilterPredicateProvider;
 use StubTests\Model\Predicats\FunctionsFilterPredicateProvider;
+use StubTests\Model\Predicats\InterfaceFilterPredicateProvider;
 use StubTests\TestData\Providers\PhpStormStubsSingleton;
 use StubTests\TestData\Providers\Reflection\ReflectionConstantsProvider;
 use StubTests\TestData\Providers\Reflection\ReflectionParametersProvider;
@@ -43,8 +46,8 @@ class StubsConstantsAndParametersValuesTest extends AbstractBaseStubsTestCase
         if (!$functionId && !$parameterName) {
             self::markTestSkipped($this->emptyDataSetMessage);
         }
-        $reflectionParameter = ReflectionStubsSingleton::getReflectionStubs()->getFunction($functionId, FunctionsFilterPredicateProvider::getFunctionsFromReflection($functionId))->getParameter($parameterName);
-        $phpstormFunction = PhpStormStubsSingleton::getPhpStormStubs()->getFunction($functionId);
+        $reflectionParameter = EntitiesProvider::getFunction(ReflectionStubsSingleton::getReflectionStubs(), FunctionsFilterPredicateProvider::getFunctionById($functionId))->getParameter($parameterName);
+        $phpstormFunction = EntitiesProvider::getFunction(PhpStormStubsSingleton::getPhpStormStubs(), FunctionsFilterPredicateProvider::getFunctionById($functionId));
         $stubParameters = array_filter($phpstormFunction->parameters, fn (PHPParameter $stubParameter) => $stubParameter->indexInSignature === $reflectionParameter->indexInSignature);
         /** @var PHPParameter $stubOptionalParameter */
         $stubOptionalParameter = array_pop($stubParameters);
@@ -69,8 +72,8 @@ class StubsConstantsAndParametersValuesTest extends AbstractBaseStubsTestCase
         if (!$functionId && !$parameterName) {
             self::markTestSkipped($this->emptyDataSetMessage);
         }
-        $reflectionParameter = ReflectionStubsSingleton::getReflectionStubs()->getFunction($functionId, FunctionsFilterPredicateProvider::getFunctionsFromReflection($functionId))->getParameter($parameterName);
-        $phpstormFunction = PhpStormStubsSingleton::getPhpStormStubs()->getFunction($functionId);
+        $reflectionParameter = EntitiesProvider::getFunction(ReflectionStubsSingleton::getReflectionStubs(), FunctionsFilterPredicateProvider::getFunctionById($functionId))->getParameter($parameterName);
+        $phpstormFunction = EntitiesProvider::getFunction(PhpStormStubsSingleton::getPhpStormStubs(), FunctionsFilterPredicateProvider::getFunctionById($functionId));
         $stubParameters = array_filter($phpstormFunction->parameters, fn (PHPParameter $stubParameter) => $stubParameter->indexInSignature === $reflectionParameter->indexInSignature);
         /** @var PHPParameter $stubOptionalParameter */
         $stubOptionalParameter = array_pop($stubParameters);
@@ -99,10 +102,10 @@ class StubsConstantsAndParametersValuesTest extends AbstractBaseStubsTestCase
         if (!$classId && !$methodName && !$parameterName) {
             self::markTestSkipped($this->emptyDataSetMessage);
         }
-        $reflectionClass = ReflectionStubsSingleton::getReflectionStubs()->getClass($classId, sourceFilePath: true);
-        $reflectionMethod = $reflectionClass->getMethod($methodName, FunctionsFilterPredicateProvider::getMethodsFromReflection($methodName));
+        $reflectionClass = EntitiesProvider::getClass(ReflectionStubsSingleton::getReflectionStubs(), ClassesFilterPredicateProvider::filterClassById($classId));
+        $reflectionMethod = $reflectionClass->getMethod($methodName);
         $reflectionParameter = $reflectionMethod->getParameter($parameterName);
-        $stubClass = PhpStormStubsSingleton::getPhpStormStubs()->getClass($classId);
+        $stubClass = EntitiesProvider::getClass(PhpStormStubsSingleton::getPhpStormStubs(), ClassesFilterPredicateProvider::filterClassById($classId));
         $phpstormFunction = $stubClass->getMethod($methodName);
         $stubParameters = array_filter($phpstormFunction->parameters, fn (PHPParameter $stubParameter) => $stubParameter->indexInSignature === $reflectionParameter->indexInSignature);
         /** @var PHPParameter $stubOptionalParameter */
@@ -129,10 +132,10 @@ class StubsConstantsAndParametersValuesTest extends AbstractBaseStubsTestCase
         if (!$classId && !$methodName && !$parameterName) {
             self::markTestSkipped($this->emptyDataSetMessage);
         }
-        $reflectionInterface = ReflectionStubsSingleton::getReflectionStubs()->getInterface($classId, fromReflection: true);
-        $reflectionMethod = $reflectionInterface->getMethod($methodName, FunctionsFilterPredicateProvider::getMethodsFromReflection($methodName));
+        $reflectionInterface = EntitiesProvider::getInterface(ReflectionStubsSingleton::getReflectionStubs(), InterfaceFilterPredicateProvider::getInterfaceById($classId));
+        $reflectionMethod = $reflectionInterface->getMethod($methodName);
         $reflectionParameter = $reflectionMethod->getParameter($parameterName);
-        $stubClass = PhpStormStubsSingleton::getPhpStormStubs()->getInterface($classId);
+        $stubClass = EntitiesProvider::getInterface(PhpStormStubsSingleton::getPhpStormStubs(), InterfaceFilterPredicateProvider::getInterfaceById($classId));
         $phpstormFunction = $stubClass->getMethod($methodName);
         $stubParameters = array_filter($phpstormFunction->parameters, fn (PHPParameter $stubParameter) => $stubParameter->indexInSignature === $reflectionParameter->indexInSignature);
         /** @var PHPParameter $stubOptionalParameter */
@@ -159,10 +162,10 @@ class StubsConstantsAndParametersValuesTest extends AbstractBaseStubsTestCase
         if (!$classId && !$methodName && !$parameterName) {
             self::markTestSkipped($this->emptyDataSetMessage);
         }
-        $reflectionClass = ReflectionStubsSingleton::getReflectionStubs()->getClass($classId, sourceFilePath: true);
-        $reflectionMethod = $reflectionClass->getMethod($methodName, FunctionsFilterPredicateProvider::getMethodsFromReflection($methodName));
+        $reflectionClass = EntitiesProvider::getClass(ReflectionStubsSingleton::getReflectionStubs(), ClassesFilterPredicateProvider::filterClassById($classId));
+        $reflectionMethod = $reflectionClass->getMethod($methodName);
         $reflectionParameter = $reflectionMethod->getParameter($parameterName);
-        $stubClass = PhpStormStubsSingleton::getPhpStormStubs()->getClass($classId);
+        $stubClass = EntitiesProvider::getClass(PhpStormStubsSingleton::getPhpStormStubs(), ClassesFilterPredicateProvider::filterClassById($classId));
         $phpstormFunction = $stubClass->getMethod($methodName);
         $stubParameters = array_filter($phpstormFunction->parameters, fn (PHPParameter $stubParameter) => $stubParameter->indexInSignature === $reflectionParameter->indexInSignature);
         /** @var PHPParameter $stubOptionalParameter */
@@ -194,10 +197,10 @@ class StubsConstantsAndParametersValuesTest extends AbstractBaseStubsTestCase
         if (!$classId && !$methodName && !$parameterName) {
             self::markTestSkipped($this->emptyDataSetMessage);
         }
-        $reflectionInterface = ReflectionStubsSingleton::getReflectionStubs()->getInterface($classId, fromReflection: true);
-        $reflectionMethod = $reflectionInterface->getMethod($methodName, FunctionsFilterPredicateProvider::getMethodsFromReflection($methodName));
+        $reflectionInterface = EntitiesProvider::getInterface(ReflectionStubsSingleton::getReflectionStubs(), InterfaceFilterPredicateProvider::getInterfaceById($classId));
+        $reflectionMethod = $reflectionInterface->getMethod($methodName);
         $reflectionParameter = $reflectionMethod->getParameter($parameterName);
-        $stubClass = PhpStormStubsSingleton::getPhpStormStubs()->getInterface($classId);
+        $stubClass = EntitiesProvider::getInterface(PhpStormStubsSingleton::getPhpStormStubs(), InterfaceFilterPredicateProvider::getInterfaceById($classId));
         $phpstormFunction = $stubClass->getMethod($methodName);
         $stubParameters = array_filter($phpstormFunction->parameters, fn (PHPParameter $stubParameter) => $stubParameter->indexInSignature === $reflectionParameter->indexInSignature);
         $stubOptionalParameter = array_pop($stubParameters);

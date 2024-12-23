@@ -2,6 +2,7 @@
 
 namespace StubTests\Model\ContainerEntitiesManagers;
 
+use RuntimeException;
 use StubTests\Model\PHPEnum;
 use StubTests\Parsers\ParserUtils;
 
@@ -13,6 +14,13 @@ class ContainerEnumsManager
      */
     private $enums = [];
 
+    /**
+     * @return PHPEnum[]
+     */
+    public function getEnums()
+    {
+        return $this->enums;
+    }
 
     /**
      * @param string $id
@@ -57,16 +65,6 @@ class ContainerEnumsManager
             throw new RuntimeException("Multiple enums with name $hash found");
         }
         return array_pop($enums);
-    }
-
-
-
-    /**
-     * @return PHPEnum[]
-     */
-    public function getEnums()
-    {
-        return $this->enums;
     }
 
 

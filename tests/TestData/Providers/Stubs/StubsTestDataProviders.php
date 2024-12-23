@@ -25,7 +25,7 @@ class StubsTestDataProviders
     {
         $classes = EntitiesProvider::getClasses(PhpStormStubsSingleton::getPhpStormStubs());
         foreach ($classes as $class) {
-            yield "class {$class->getOrCreateStubSpecificProperties()->sourceFilePath}/$class->fqnBasedId" => [$class->fqnBasedId, $class->getOrCreateStubSpecificProperties()->sourceFilePath];
+            yield "class {$class->getOrCreateStubSpecificProperties()->sourceFilePath}/$class->fqnBasedId" => [$class->getOrCreateStubSpecificProperties()->stubObjectHash];
         }
     }
 
@@ -33,7 +33,7 @@ class StubsTestDataProviders
     {
         $interfaces = EntitiesProvider::getInterfaces(PhpStormStubsSingleton::getPhpStormStubs());
         foreach ($interfaces as $class) {
-            yield "class {$class->getOrCreateStubSpecificProperties()->sourceFilePath}/$class->fqnBasedId" => [$class->fqnBasedId, $class->getOrCreateStubSpecificProperties()->sourceFilePath];
+            yield "class {$class->getOrCreateStubSpecificProperties()->sourceFilePath}/$class->fqnBasedId" => [$class->getOrCreateStubSpecificProperties()->stubObjectHash];
         }
     }
 
@@ -41,7 +41,7 @@ class StubsTestDataProviders
     {
         $enums = EntitiesProvider::getEnums(PhpStormStubsSingleton::getPhpStormStubs());
         foreach ($enums as $class) {
-            yield "class {$class->getOrCreateStubSpecificProperties()->sourceFilePath}/$class->fqnBasedId" => [$class->fqnBasedId, $class->getOrCreateStubSpecificProperties()->sourceFilePath];
+            yield "class {$class->getOrCreateStubSpecificProperties()->sourceFilePath}/$class->fqnBasedId" => [$class->getOrCreateStubSpecificProperties()->stubObjectHash];
         }
     }
 

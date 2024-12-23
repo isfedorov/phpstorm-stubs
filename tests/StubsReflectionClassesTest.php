@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace StubTests;
 
+use StubTests\Model\EntitiesProviders\EntitiesProvider;
+use StubTests\Model\Predicats\ClassesFilterPredicateProvider;
 use StubTests\TestData\Providers\PhpStormStubsSingleton;
 
 /**
@@ -18,7 +20,7 @@ class StubsReflectionClassesTest extends AbstractBaseStubsTestCase
 
     public function testReflectionFunctionAbstractGetReturnTypeMethod()
     {
-        $getReturnTypeMethod = PhpStormStubsSingleton::getPhpStormStubs()->getClass('\ReflectionFunctionAbstract')->getMethod('getReturnType');
+        $getReturnTypeMethod = EntitiesProvider::getClass(PhpStormStubsSingleton::getPhpStormStubs(), ClassesFilterPredicateProvider::filterClassById('\ReflectionFunctionAbstract'))->getMethod('getReturnType');
         $allReturnTypes = array_unique(Model\CommonUtils::flattenArray($getReturnTypeMethod->returnTypesFromAttribute +
             $getReturnTypeMethod->returnTypesFromSignature + $getReturnTypeMethod->returnTypesFromPhpDoc, false));
         self::assertContains(
@@ -40,7 +42,7 @@ class StubsReflectionClassesTest extends AbstractBaseStubsTestCase
 
     public function testReflectionPropertyGetTypeMethod()
     {
-        $getTypeMethod = PhpStormStubsSingleton::getPhpStormStubs()->getClass('\ReflectionProperty')->getMethod('getType');
+        $getTypeMethod = EntitiesProvider::getClass(PhpStormStubsSingleton::getPhpStormStubs(), ClassesFilterPredicateProvider::filterClassById('\ReflectionProperty'))->getMethod('getType');
         $allReturnTypes = array_unique(Model\CommonUtils::flattenArray($getTypeMethod->returnTypesFromAttribute +
             $getTypeMethod->returnTypesFromSignature + $getTypeMethod->returnTypesFromPhpDoc, false));
         self::assertContains(
@@ -57,7 +59,7 @@ class StubsReflectionClassesTest extends AbstractBaseStubsTestCase
 
     public function testReflectionParameterGetTypeMethod()
     {
-        $getTypeMethod = PhpStormStubsSingleton::getPhpStormStubs()->getClass('\ReflectionParameter')->getMethod('getType');
+        $getTypeMethod = EntitiesProvider::getClass(PhpStormStubsSingleton::getPhpStormStubs(), ClassesFilterPredicateProvider::filterClassById('\ReflectionParameter'))->getMethod('getType');
         $allReturnTypes = array_unique(Model\CommonUtils::flattenArray($getTypeMethod->returnTypesFromAttribute +
             $getTypeMethod->returnTypesFromSignature + $getTypeMethod->returnTypesFromPhpDoc, false));
         self::assertContains(

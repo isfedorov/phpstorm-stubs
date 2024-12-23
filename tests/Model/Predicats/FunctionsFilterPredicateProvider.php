@@ -20,6 +20,13 @@ class FunctionsFilterPredicateProvider
         };
     }
 
+    public static function getMethodsByName($methodName)
+    {
+        return function (PHPMethod $method) use ($methodName) {
+            return $method->name === $methodName;
+        };
+    }
+
     public static function getDefaultSuitableFunctions($functionId)
     {
         return function (PHPFunction $function) use ($functionId) {
@@ -78,6 +85,13 @@ class FunctionsFilterPredicateProvider
     {
         return function (PHPFunction $method) use ($functionHash) {
             return $method->getOrCreateStubSpecificProperties()->stubObjectHash === $functionHash;
+        };
+    }
+
+    public static function getFunctionById(?string $functionId)
+    {
+        return function (PHPFunction $function) use ($functionId) {
+            return $function->fqnBasedId === $functionId;
         };
     }
 }

@@ -3,8 +3,10 @@
 namespace StubTests;
 
 use PHPUnit\Framework\Attributes\DataProviderExternal;
+use StubTests\Model\EntitiesProviders\EntitiesProvider;
 use StubTests\Model\PhpVersions;
 use StubTests\Model\Predicats\FunctionsFilterPredicateProvider;
+use StubTests\Model\Predicats\InterfaceFilterPredicateProvider;
 use StubTests\TestData\Providers\PhpStormStubsSingleton;
 use StubTests\TestData\Providers\Reflection\ReflectionClassesTestDataProviders;
 use StubTests\TestData\Providers\Reflection\ReflectionMethodsProvider;
@@ -25,8 +27,8 @@ class BaseInterfacesTest extends AbstractBaseStubsTestCase
         if (!$interfaceId) {
             self::markTestSkipped($this->emptyDataSetMessage);
         }
-        $reflectionInterface = ReflectionStubsSingleton::getReflectionStubs()->getInterface($interfaceId, fromReflection: true);
-        $stubInterface = PhpStormStubsSingleton::getPhpStormStubs()->getInterface($interfaceId);
+        $reflectionInterface = EntitiesProvider::getInterface(ReflectionStubsSingleton::getReflectionStubs(), InterfaceFilterPredicateProvider::getInterfaceById($interfaceId));
+        $stubInterface = EntitiesProvider::getInterface(PhpStormStubsSingleton::getPhpStormStubs(), InterfaceFilterPredicateProvider::getInterfaceById($interfaceId));
         foreach ($reflectionInterface->parentInterfaces as $parentInterface) {
             static::assertContains(
                 $parentInterface,
@@ -42,7 +44,7 @@ class BaseInterfacesTest extends AbstractBaseStubsTestCase
         if (!$classId && !$methodName) {
             self::markTestSkipped($this->emptyDataSetMessage);
         }
-        $stubClass = PhpStormStubsSingleton::getPhpStormStubs()->getInterface($classId);
+        $stubClass = EntitiesProvider::getInterface(PhpStormStubsSingleton::getPhpStormStubs(), InterfaceFilterPredicateProvider::getInterfaceById($classId));
         static::assertNotEmpty($stubClass->getMethod($methodName), "Missing method $classId::$methodName");
     }
 
@@ -52,9 +54,9 @@ class BaseInterfacesTest extends AbstractBaseStubsTestCase
         if (!$classId && !$methodName) {
             self::markTestSkipped($this->emptyDataSetMessage);
         }
-        $reflectionInterface = ReflectionStubsSingleton::getReflectionStubs()->getInterface($classId, fromReflection: true);
-        $reflectionMethod = $reflectionInterface->getMethod($methodName, FunctionsFilterPredicateProvider::getMethodsFromReflection($methodName));
-        $stubMethod = PhpStormStubsSingleton::getPhpStormStubs()->getInterface($classId)->getMethod($methodName);
+        $reflectionInterface = EntitiesProvider::getInterface(ReflectionStubsSingleton::getReflectionStubs(), InterfaceFilterPredicateProvider::getInterfaceById($classId));
+        $reflectionMethod = $reflectionInterface->getMethod($methodName);
+        $stubMethod = EntitiesProvider::getInterface(PhpStormStubsSingleton::getPhpStormStubs(), InterfaceFilterPredicateProvider::getInterfaceById($classId))->getMethod($methodName);
         static::assertEquals(
             $reflectionMethod->isFinal,
             $stubMethod->isFinal,
@@ -68,9 +70,9 @@ class BaseInterfacesTest extends AbstractBaseStubsTestCase
         if (!$classId && !$methodName) {
             self::markTestSkipped($this->emptyDataSetMessage);
         }
-        $reflectionInterface = ReflectionStubsSingleton::getReflectionStubs()->getInterface($classId, fromReflection: true);
-        $reflectionMethod = $reflectionInterface->getMethod($methodName, FunctionsFilterPredicateProvider::getMethodsFromReflection($methodName));
-        $stubMethod = PhpStormStubsSingleton::getPhpStormStubs()->getInterface($classId)->getMethod($methodName);
+        $reflectionInterface = EntitiesProvider::getInterface(ReflectionStubsSingleton::getReflectionStubs(), InterfaceFilterPredicateProvider::getInterfaceById($classId));
+        $reflectionMethod = $reflectionInterface->getMethod($methodName);
+        $stubMethod = EntitiesProvider::getInterface(PhpStormStubsSingleton::getPhpStormStubs(), InterfaceFilterPredicateProvider::getInterfaceById($classId))->getMethod($methodName);
         static::assertEquals(
             $reflectionMethod->isStatic,
             $stubMethod->isStatic,
@@ -84,9 +86,9 @@ class BaseInterfacesTest extends AbstractBaseStubsTestCase
         if (!$classId && !$methodName) {
             self::markTestSkipped($this->emptyDataSetMessage);
         }
-        $reflectionInterface = ReflectionStubsSingleton::getReflectionStubs()->getInterface($classId, fromReflection: true);
-        $reflectionMethod = $reflectionInterface->getMethod($methodName, FunctionsFilterPredicateProvider::getMethodsFromReflection($methodName));
-        $stubMethod = PhpStormStubsSingleton::getPhpStormStubs()->getInterface($classId)->getMethod($methodName);
+        $reflectionInterface = EntitiesProvider::getInterface(ReflectionStubsSingleton::getReflectionStubs(), InterfaceFilterPredicateProvider::getInterfaceById($classId));
+        $reflectionMethod = $reflectionInterface->getMethod($methodName);
+        $stubMethod = EntitiesProvider::getInterface(PhpStormStubsSingleton::getPhpStormStubs(), InterfaceFilterPredicateProvider::getInterfaceById($classId))->getMethod($methodName);
         static::assertEquals(
             $reflectionMethod->access,
             $stubMethod->access,
@@ -100,9 +102,9 @@ class BaseInterfacesTest extends AbstractBaseStubsTestCase
         if (!$classId && !$methodName) {
             self::markTestSkipped($this->emptyDataSetMessage);
         }
-        $reflectionInterface = ReflectionStubsSingleton::getReflectionStubs()->getInterface($classId, fromReflection: true);
-        $reflectionMethod = $reflectionInterface->getMethod($methodName, FunctionsFilterPredicateProvider::getMethodsFromReflection($methodName));
-        $stubMethod = PhpStormStubsSingleton::getPhpStormStubs()->getInterface($classId)->getMethod($methodName);
+        $reflectionInterface = EntitiesProvider::getInterface(ReflectionStubsSingleton::getReflectionStubs(), InterfaceFilterPredicateProvider::getInterfaceById($classId));
+        $reflectionMethod = $reflectionInterface->getMethod($methodName);
+        $stubMethod = EntitiesProvider::getInterface(PhpStormStubsSingleton::getPhpStormStubs(), InterfaceFilterPredicateProvider::getInterfaceById($classId))->getMethod($methodName);
         $filteredStubParameters = array_filter(
             $stubMethod->parameters,
             function ($parameter) {
@@ -128,7 +130,7 @@ class BaseInterfacesTest extends AbstractBaseStubsTestCase
         if (!$classId) {
             self::markTestSkipped($this->emptyDataSetMessage);
         }
-        $class = PhpStormStubsSingleton::getPhpStormStubs()->getInterface($classId);
+        $class = EntitiesProvider::getInterface(PhpStormStubsSingleton::getPhpStormStubs(), InterfaceFilterPredicateProvider::getInterfaceById($classId));
         static::assertNotEmpty($class, "Missing interface $classId: interface $class->name {}");
     }
 
@@ -138,8 +140,8 @@ class BaseInterfacesTest extends AbstractBaseStubsTestCase
         if (!$classId) {
             self::markTestSkipped($this->emptyDataSetMessage);
         }
-        $reflectionClass = ReflectionStubsSingleton::getReflectionStubs()->getInterface($classId, fromReflection: true);
-        $stubClass = PhpStormStubsSingleton::getPhpStormStubs()->getInterface($classId);
+        $reflectionClass = EntitiesProvider::getInterface(ReflectionStubsSingleton::getReflectionStubs(), InterfaceFilterPredicateProvider::getInterfaceById($classId));
+        $stubClass = EntitiesProvider::getInterface(PhpStormStubsSingleton::getPhpStormStubs(), InterfaceFilterPredicateProvider::getInterfaceById($classId));
         static::assertEquals($reflectionClass->isFinal, $stubClass->isFinal, "Final modifier of interface $classId is incorrect");
     }
 
@@ -149,8 +151,8 @@ class BaseInterfacesTest extends AbstractBaseStubsTestCase
         if (!$classId) {
             self::markTestSkipped($this->emptyDataSetMessage);
         }
-        $reflectionClass = ReflectionStubsSingleton::getReflectionStubs()->getInterface($classId, fromReflection: true);
-        $stubClass = PhpStormStubsSingleton::getPhpStormStubs()->getInterface($classId);
+        $reflectionClass = EntitiesProvider::getInterface(ReflectionStubsSingleton::getReflectionStubs(), InterfaceFilterPredicateProvider::getInterfaceById($classId));
+        $stubClass = EntitiesProvider::getInterface(PhpStormStubsSingleton::getPhpStormStubs(), InterfaceFilterPredicateProvider::getInterfaceById($classId));
         static::assertEquals(
             $reflectionClass->namespace,
             $stubClass->namespace,

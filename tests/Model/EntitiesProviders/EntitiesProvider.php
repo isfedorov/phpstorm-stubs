@@ -14,9 +14,9 @@ class EntitiesProvider
         return $container->getClassesManager()->getClasses();
     }
 
-    public static function getClass(StubsContainer $container, $classId, $filterCallback = null)
+    public static function getClass(StubsContainer $container, $filterCallback)
     {
-        return $container->getClassesManager()->getClass($classId, $filterCallback);
+        return $container->getClassesManager()->getClassNew($filterCallback);
     }
 
     public static function getInterfaces(StubsContainer $container, $filterCallback = null)
@@ -27,9 +27,9 @@ class EntitiesProvider
         return $container->getInterfacesManager()->getInterfaces();
     }
 
-    public static function getInterface(StubsContainer $container, $interfaceId, $filterCallback = null)
+    public static function getInterface(StubsContainer $container, $filterCallback)
     {
-        return $container->getInterfacesManager()->getInterface($interfaceId, $filterCallback);
+        return $container->getInterfacesManager()->getInterface($filterCallback);
     }
 
     public static function getEnums(StubsContainer $container, $filterCallback = null)
@@ -40,9 +40,9 @@ class EntitiesProvider
         return $container->getEnumsManager()->getEnums();
     }
 
-    public static function getEnum(StubsContainer $container, $enumId, $filterCallback = null)
+    public static function getEnum(StubsContainer $container, $filterCallback)
     {
-        return $container->getEnumsManager()->getEnum($enumId, $filterCallback);
+        return $container->getEnumsManager()->getEnum($filterCallback);
     }
 
     public static function getConstants(StubsContainer $container, $filterCallback = null)
@@ -53,9 +53,9 @@ class EntitiesProvider
         return $container->getConstantsManager()->getConstants();
     }
 
-    public static function getConstant(StubsContainer $container, $constantId, $filterCallback = null)
+    public static function getConstant(StubsContainer $container, $filterCallback)
     {
-        return $container->getConstantsManager()->getConstant($constantId, $filterCallback);
+        return $container->getConstantsManager()->getConstant($filterCallback);
     }
 
     public static function getFunctions(StubsContainer $container, $filterCallback = null)
@@ -66,8 +66,8 @@ class EntitiesProvider
         return $container->getFunctionsManager()->getFunctions();
     }
 
-    public static function getFunction(StubsContainer $container, $functionId, $filterCallback = null)
+    public static function getFunction(StubsContainer $container, $filterCallback)
     {
-        return $container->getFunctionsManager()->getFunction($functionId, $filterCallback);
+        return $container->getFunctionsManager()->getFunction($filterCallback);
     }
 }

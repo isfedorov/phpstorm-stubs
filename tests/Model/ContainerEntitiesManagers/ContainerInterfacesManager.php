@@ -2,6 +2,7 @@
 
 namespace StubTests\Model\ContainerEntitiesManagers;
 
+use RuntimeException;
 use StubTests\Model\PHPInterface;
 use StubTests\Parsers\ParserUtils;
 
@@ -11,6 +12,14 @@ class ContainerInterfacesManager
      * @var PHPInterface[]
      */
     private $interfaces = [];
+
+    /**
+     * @return PHPInterface[]
+     */
+    public function getInterfaces()
+    {
+        return $this->interfaces;
+    }
 
     /**
      * @param string $id
@@ -49,35 +58,6 @@ class ContainerInterfacesManager
             return array_pop($interfaces);
         }
         return null;
-    }
-
-    public function getInterfaceByHash(string $hash)
-    {
-        $interfaces = array_filter($this->interfaces, function (PHPInterface $class) use ($hash) {
-            return $class->getOrCreateStubSpecificProperties()->stubObjectHash === $hash;
-        });
-        if (count($interfaces) > 1) {
-            throw new RuntimeException("Multiple interfaces with hash $hash found");
-        }
-        return array_pop($interfaces);
-    }
-
-    /**
-     * @return PHPInterface[]
-     */
-    public function getInterfaces()
-    {
-        return $this->interfaces;
-    }
-
-    /**
-     * @return PHPInterface[]
-     */
-    public function getCoreInterfaces($shouldSuitCurrentPhpVersion = true)
-    {
-        return array_filter($this->interfaces, function (PHPInterface $interface) use ($shouldSuitCurrentPhpVersion) {
-            return $interface->getOrCreateStubSpecificProperties()->stubBelongsToCore === true && (!$shouldSuitCurrentPhpVersion || ParserUtils::entitySuitsCurrentPhpVersion($interface));
-        });
     }
 
     public function addInterface(PHPInterface $interface)

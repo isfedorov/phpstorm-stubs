@@ -10,10 +10,13 @@ use phpDocumentor\Reflection\DocBlock\Tags\See;
 use phpDocumentor\Reflection\DocBlock\Tags\Since;
 use PHPUnit\Framework\Attributes\DataProviderExternal;
 use StubTests\Model\BasePHPElement;
+use StubTests\Model\EntitiesProviders\EntitiesProvider;
 use StubTests\Model\PHPDocumentable;
 use StubTests\Model\Predicats\ClassesFilterPredicateProvider;
 use StubTests\Model\Predicats\ConstantsFilterPredicateProvider;
+use StubTests\Model\Predicats\EnumsFilterPredicateProvider;
 use StubTests\Model\Predicats\FunctionsFilterPredicateProvider;
+use StubTests\Model\Predicats\InterfaceFilterPredicateProvider;
 use StubTests\Model\Tags\RemovedTag;
 use StubTests\Parsers\ParserUtils;
 use StubTests\TestData\Providers\PhpStormStubsSingleton;
@@ -36,7 +39,7 @@ class StubsPhpDocTest extends AbstractBaseStubsTestCase
         if (!$classHash && !$constantName) {
             self::markTestSkipped($this->emptyDataSetMessage);
         }
-        $class = PhpStormStubsSingleton::getPhpStormStubs()->getClassNew($classHash, ClassesFilterPredicateProvider::getClassesByHash($classHash));
+        $class = EntitiesProvider::getClass(PhpStormStubsSingleton::getPhpStormStubs(), ClassesFilterPredicateProvider::getClassesByHash($classHash));
         $constant = $class->getConstant($constantName, ConstantsFilterPredicateProvider::getClassConstantsIndependingOnPHPVersion($constantName));
         self::assertNull($constant->getPhpdocProperties()->phpDocParsingError, $constant->getPhpdocProperties()->phpDocParsingError ?: '');
         self::checkPHPDocCorrectness($constant, "constant $class->fqnBasedId::$constant->name");
@@ -48,7 +51,7 @@ class StubsPhpDocTest extends AbstractBaseStubsTestCase
         if (!$classId && !$constantName) {
             self::markTestSkipped($this->emptyDataSetMessage);
         }
-        $class = PhpStormStubsSingleton::getPhpStormStubs()->getInterface($classId, shouldSuitCurrentPhpVersion: false);
+        $class = EntitiesProvider::getInterface(PhpStormStubsSingleton::getPhpStormStubs(), InterfaceFilterPredicateProvider::getInterfaceIndependingOnPHPVersion($classId));
         $constant = $class->getConstant($constantName, ConstantsFilterPredicateProvider::getClassConstantsIndependingOnPHPVersion($constantName));
         self::assertNull($constant->getPhpdocProperties()->phpDocParsingError, $constant->getPhpdocProperties()->phpDocParsingError ?: '');
         self::checkPHPDocCorrectness($constant, "constant $classId::$constant->name");
@@ -60,7 +63,7 @@ class StubsPhpDocTest extends AbstractBaseStubsTestCase
         if (!$classId && !$constantName) {
             self::markTestSkipped($this->emptyDataSetMessage);
         }
-        $class = PhpStormStubsSingleton::getPhpStormStubs()->getEnum($classId, shouldSuitCurrentPhpVersion: false);
+        $class = EntitiesProvider::getEnum(PhpStormStubsSingleton::getPhpStormStubs(), EnumsFilterPredicateProvider::getEnumIndependingOnPHPVersion($classId));
         $constant = $class->getConstant($constantName, ConstantsFilterPredicateProvider::getClassConstantsIndependingOnPHPVersion($constantName));
         self::assertNull($constant->getPhpdocProperties()->phpDocParsingError, $constant->getPhpdocProperties()->phpDocParsingError ?: '');
         self::checkPHPDocCorrectness($constant, "constant $classId::$constant->name");
@@ -69,7 +72,7 @@ class StubsPhpDocTest extends AbstractBaseStubsTestCase
     #[DataProviderExternal(StubConstantsProvider::class, 'globalConstantProvider')]
     public static function testConstantsPHPDocs(string $constantId): void
     {
-        $constant = PhpStormStubsSingleton::getPhpStormStubs()->getConstant($constantId, ConstantsFilterPredicateProvider::getConstantsIndependingOnPHPVersion($constantId));
+        $constant = EntitiesProvider::getConstant(PhpStormStubsSingleton::getPhpStormStubs(), ConstantsFilterPredicateProvider::getConstantsIndependingOnPHPVersion($constantId));
         self::assertNull($constant->getPhpdocProperties()->phpDocParsingError, $constant->getPhpdocProperties()->phpDocParsingError ?: '');
         self::checkPHPDocCorrectness($constant, "constant $constant->name");
     }
@@ -77,31 +80,31 @@ class StubsPhpDocTest extends AbstractBaseStubsTestCase
     #[DataProviderExternal(StubsTestDataProviders::class, 'allFunctionsProvider')]
     public static function testFunctionPHPDocs(string $functionId): void
     {
-        $function = PhpStormStubsSingleton::getPhpStormStubs()->getFunction($functionId, FunctionsFilterPredicateProvider::getFunctionsIndependingOnPHPVersion($functionId));
+        $function = EntitiesProvider::getFunction(PhpStormStubsSingleton::getPhpStormStubs(), FunctionsFilterPredicateProvider::getFunctionsIndependingOnPHPVersion($functionId));
         self::assertNull($function->getPhpdocProperties()->phpDocParsingError, $function->getPhpdocProperties()->phpDocParsingError?->getMessage() ?: '');
         self::checkPHPDocCorrectness($function, "function $function->name");
     }
 
     #[DataProviderExternal(StubsTestDataProviders::class, 'allClassesProvider')]
-    public static function testClassesPHPDocs(string $classId, string $sourceFilePath): void
+    public static function testClassesPHPDocs(string $classHash): void
     {
-        $class = PhpStormStubsSingleton::getPhpStormStubs()->getClass($classId, sourceFilePath: $sourceFilePath, shouldSuitCurrentPhpVersion: false);
+        $class = EntitiesProvider::getClass(PhpStormStubsSingleton::getPhpStormStubs(), ClassesFilterPredicateProvider::getClassesByHash($classHash));
         self::assertNull($class->getPhpdocProperties()->phpDocParsingError, $class->getPhpdocProperties()->phpDocParsingError?->getMessage() ?: '');
         self::checkPHPDocCorrectness($class, "class $class->name");
     }
 
     #[DataProviderExternal(StubsTestDataProviders::class, 'allInterfacesProvider')]
-    public static function testInterfacesPHPDocs(string $classId, string $sourceFilePath): void
+    public static function testInterfacesPHPDocs(string $classHash): void
     {
-        $class = PhpStormStubsSingleton::getPhpStormStubs()->getInterface($classId, sourceFilePath: $sourceFilePath, shouldSuitCurrentPhpVersion: false);
+        $class = EntitiesProvider::getInterface(PhpStormStubsSingleton::getPhpStormStubs(), InterfaceFilterPredicateProvider::getInterfaceByHash($classHash));
         self::assertNull($class->getPhpdocProperties()->phpDocParsingError, $class->getPhpdocProperties()->phpDocParsingError?->getMessage() ?: '');
         self::checkPHPDocCorrectness($class, "class $class->name");
     }
 
     #[DataProviderExternal(StubsTestDataProviders::class, 'allEnumsProvider')]
-    public static function testEumsPHPDocs(string $classId, string $sourceFilePath): void
+    public static function testEumsPHPDocs(string $classHash): void
     {
-        $class = PhpStormStubsSingleton::getPhpStormStubs()->getEnum($classId, sourceFilePath: $sourceFilePath, shouldSuitCurrentPhpVersion: false);
+        $class = EntitiesProvider::getEnum(PhpStormStubsSingleton::getPhpStormStubs(), EnumsFilterPredicateProvider::getEnumByHash($classHash));
         self::assertNull($class->getPhpdocProperties()->phpDocParsingError, $class->getPhpdocProperties()->phpDocParsingError?->getMessage() ?: '');
         self::checkPHPDocCorrectness($class, "class $class->name");
     }
@@ -109,7 +112,7 @@ class StubsPhpDocTest extends AbstractBaseStubsTestCase
     #[DataProviderExternal(StubMethodsProvider::class, 'allClassMethodsProvider')]
     public static function testClassMethodsPHPDocs(string $classHash, string $methodName): void
     {
-        $class = PhpStormStubsSingleton::getPhpStormStubs()->getClassNew($classHash, ClassesFilterPredicateProvider::getClassesByHash($classHash));
+        $class = EntitiesProvider::getClass(PhpStormStubsSingleton::getPhpStormStubs(), ClassesFilterPredicateProvider::getClassesByHash($classHash));
         $method = $class->getMethod($methodName, FunctionsFilterPredicateProvider::getMethodsIndependingOnPHPVersion($methodName));
         if ($method->name === '__construct') {
             self::assertEmpty($method->returnTypesFromPhpDoc, '@return tag for __construct should be omitted');
@@ -119,9 +122,9 @@ class StubsPhpDocTest extends AbstractBaseStubsTestCase
     }
 
     #[DataProviderExternal(StubMethodsProvider::class, 'allInterfaceMethodsProvider')]
-    public static function testInterfaceMethodsPHPDocs(string $classId, string $methodName): void
+    public static function testInterfaceMethodsPHPDocs(string $classHash, string $methodName): void
     {
-        $class = PhpStormStubsSingleton::getPhpStormStubs()->getInterface($classId, shouldSuitCurrentPhpVersion: false);
+        $class = EntitiesProvider::getInterface(PhpStormStubsSingleton::getPhpStormStubs(), InterfaceFilterPredicateProvider::getInterfaceByHash($classHash));
         $method = $class->getMethod($methodName, FunctionsFilterPredicateProvider::getMethodsIndependingOnPHPVersion($methodName));
         if ($method->name === '__construct') {
             self::assertEmpty($method->returnTypesFromPhpDoc, '@return tag for __construct should be omitted');
@@ -131,9 +134,9 @@ class StubsPhpDocTest extends AbstractBaseStubsTestCase
     }
 
     #[DataProviderExternal(StubMethodsProvider::class, 'allEnumsMethodsProvider')]
-    public static function testEnumMethodsPHPDocs(string $classId, string $methodName): void
+    public static function testEnumMethodsPHPDocs(string $classHash, string $methodName): void
     {
-        $class = PhpStormStubsSingleton::getPhpStormStubs()->getEnum($classId, shouldSuitCurrentPhpVersion: false);
+        $class = EntitiesProvider::getEnum(PhpStormStubsSingleton::getPhpStormStubs(), EnumsFilterPredicateProvider::getEnumByHash($classHash));
         $method = $class->getMethod($methodName, FunctionsFilterPredicateProvider::getMethodsIndependingOnPHPVersion($methodName));
         if ($method->name === '__construct') {
             self::assertEmpty($method->returnTypesFromPhpDoc, '@return tag for __construct should be omitted');

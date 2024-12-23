@@ -22,14 +22,11 @@ class ContainerConstantsManager
         return $this->constants;
     }
 
-    public function getConstant($constantId, $filterCallback = null)
+    public function getConstant($filterCallback)
     {
-        if ($filterCallback === null) {
-            $filterCallback = ConstantsFilterPredicateProvider::getDefaultSuitableConstants($constantId);
-        }
         $constants = array_filter($this->constants, $filterCallback);
         if (count($constants) > 1) {
-            throw new RuntimeException("Multiple constants with name $constantId found");
+            throw new RuntimeException("Multiple constants found");
         }
         if (!empty($constants)) {
             return array_pop($constants);

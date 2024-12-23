@@ -42,7 +42,7 @@ class ASTVisitor extends NodeVisitorAbstract
             if ($this->isStubCore) {
                 $function->getOrCreateStubSpecificProperties()->stubBelongsToCore = true;
             }
-            $this->stubs->addFunction($function);
+            $this->stubs->getFunctionsManager()->addFunction($function);
         } elseif ($node instanceof Node\Stmt\EnumCase) {
             $constant = new PHPEnumCase()->readObjectFromStubNode($node);
             $constant->getOrCreateStubSpecificProperties()->sourceFilePath = $this->sourceFilePath;
@@ -68,7 +68,7 @@ class ASTVisitor extends NodeVisitorAbstract
                 if ($this->isStubCore) {
                     $constant->getOrCreateStubSpecificProperties()->stubBelongsToCore = true;
                 }
-                $this->stubs->addConstant($constant);
+                $this->stubs->getConstantsManager()->addConstant($constant);
             }
         } elseif ($node instanceof FuncCall) {
             if ((string)$node->name === 'define') {
@@ -77,7 +77,7 @@ class ASTVisitor extends NodeVisitorAbstract
                 if ($this->isStubCore) {
                     $constant->getOrCreateStubSpecificProperties()->stubBelongsToCore = true;
                 }
-                $this->stubs->addConstant($constant);
+                $this->stubs->getConstantsManager()->addConstant($constant);
             }
         } elseif ($node instanceof ClassMethod) {
             $method = new PHPMethod()->readObjectFromStubNode($node);
@@ -92,21 +92,21 @@ class ASTVisitor extends NodeVisitorAbstract
             if ($this->isStubCore) {
                 $interface->getOrCreateStubSpecificProperties()->stubBelongsToCore = true;
             }
-            $this->stubs->addInterface($interface);
+            $this->stubs->getInterfacesManager()->addInterface($interface);
         } elseif ($node instanceof Class_) {
             $class = new PHPClass()->readObjectFromStubNode($node);
             $class->getOrCreateStubSpecificProperties()->sourceFilePath = $this->sourceFilePath;
             if ($this->isStubCore) {
                 $class->getOrCreateStubSpecificProperties()->stubBelongsToCore = true;
             }
-            $this->stubs->addClass($class);
+            $this->stubs->getClassesManager()->addClass($class);
         } elseif ($node instanceof Enum_) {
             $enum = new PHPEnum()->readObjectFromStubNode($node);
             $enum->getOrCreateStubSpecificProperties()->sourceFilePath = $this->sourceFilePath;
             if ($this->isStubCore) {
                 $enum->getOrCreateStubSpecificProperties()->stubBelongsToCore = true;
             }
-            $this->stubs->addEnum($enum);
+            $this->stubs->getEnumsManager()->addEnum($enum);
         } elseif ($node instanceof Node\Stmt\Property) {
             $property = new PHPProperty()->readObjectFromStubNode($node);
             $property->getOrCreateStubSpecificProperties()->sourceFilePath = $this->sourceFilePath;
@@ -126,7 +126,7 @@ class ASTVisitor extends NodeVisitorAbstract
         /** @var string $parentInterface */
         foreach ($interface->parentInterfaces as $parentInterface) {
             $parents[] = $parentInterface;
-            $alreadyParsedInterface = $this->stubs->getInterface(
+            $alreadyParsedInterface = $this->stubs->getInterfacesManager()->getInterface(
                 $parentInterface,
                 $interface->getOrCreateStubSpecificProperties()->stubBelongsToCore ? null : $interface->getOrCreateStubSpecificProperties()->sourceFilePath,
                 false
@@ -146,7 +146,7 @@ class ASTVisitor extends NodeVisitorAbstract
         /** @var string $interface */
         foreach ($class->interfaces as $interface) {
             $interfaces[] = $interface;
-            $alreadyParsedInterface = $this->stubs->getInterface(
+            $alreadyParsedInterface = $this->stubs->getInterfacesManager()->getInterface(
                 $interface,
                 $class->getOrCreateStubSpecificProperties()->stubBelongsToCore ? null : $class->getOrCreateStubSpecificProperties()->sourceFilePath,
                 false
@@ -158,7 +158,7 @@ class ASTVisitor extends NodeVisitorAbstract
         if ($class->parentClass === null) {
             return $interfaces;
         }
-        $alreadyParsedClass = $this->stubs->getClass(
+        $alreadyParsedClass = $this->stubs->getClassesManager()->getClass(
             $class->parentClass,
             $class->getOrCreateStubSpecificProperties()->stubBelongsToCore ? null : $class->getOrCreateStubSpecificProperties()->sourceFilePath,
             false

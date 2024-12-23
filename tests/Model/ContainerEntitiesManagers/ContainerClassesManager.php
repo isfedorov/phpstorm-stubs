@@ -2,9 +2,9 @@
 
 namespace StubTests\Model\ContainerEntitiesManagers;
 
+use RuntimeException;
 use StubTests\Model\PHPClass;
 use StubTests\Model\Predicats\ClassesFilterPredicateProvider;
-use StubTests\Model\RuntimeException;
 use StubTests\Parsers\ParserUtils;
 
 class ContainerClassesManager
@@ -61,31 +61,16 @@ class ContainerClassesManager
         return null;
     }
 
-    public function getClassNew($classId, $filterCallback = null)
+    public function getClassNew(callable $filterCallback)
     {
-        if ($filterCallback === null) {
-            $filterCallback = ClassesFilterPredicateProvider::getDefaultSuitableFunctions($classId);
-        }
         $classes = array_filter($this->classes, $filterCallback);
         if (count($classes) > 1) {
-            throw new RuntimeException("Multiple classes with name $classId found");
+            throw new RuntimeException("Multiple classes found");
         }
         if (!empty($classes)) {
             return array_pop($classes);
         }
         return null;
-    }
-
-
-    /**
-     * @param true $shouldSuitCurrentLanguageVersion
-     * @return PHPClass[]
-     */
-    public function getCoreClasses($shouldSuitCurrentPhpVersion = true)
-    {
-        return array_filter($this->classes, function (PHPClass $class) use ($shouldSuitCurrentPhpVersion) {
-            return $class->getOrCreateStubSpecificProperties()->stubBelongsToCore === true && (!$shouldSuitCurrentPhpVersion || ParserUtils::entitySuitsCurrentPhpVersion($class));
-        });
     }
 
     public function addClass(PHPClass $class)

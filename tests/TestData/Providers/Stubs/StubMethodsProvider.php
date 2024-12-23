@@ -36,7 +36,7 @@ class StubMethodsProvider
         $interfaces = EntitiesProvider::getInterfaces(PhpStormStubsSingleton::getPhpStormStubs());
         foreach ($interfaces as $className => $class) {
             foreach ($class->methods as $methodName => $method) {
-                yield "method $className::$methodName" => [$class->fqnBasedId, $method->name];
+                yield "method $className::$methodName" => [$class->getOrCreateStubSpecificProperties()->stubObjectHash, $method->name];
             }
         }
     }
@@ -46,7 +46,7 @@ class StubMethodsProvider
         $enums = EntitiesProvider::getEnums(PhpStormStubsSingleton::getPhpStormStubs());
         foreach ($enums as $className => $class) {
             foreach ($class->methods as $methodName => $method) {
-                yield "method $className::$methodName" => [$class->fqnBasedId, $method->name];
+                yield "method $className::$methodName" => [$class->getOrCreateStubSpecificProperties()->stubObjectHash, $method->name];
             }
         }
     }

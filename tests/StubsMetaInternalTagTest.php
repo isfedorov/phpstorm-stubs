@@ -3,7 +3,9 @@ declare(strict_types=1);
 
 namespace StubTests;
 
+use StubTests\Model\EntitiesProviders\EntitiesProvider;
 use StubTests\Model\PHPMethod;
+use StubTests\Model\Predicats\ClassesFilterPredicateProvider;
 use StubTests\Model\StubProblemType;
 use StubTests\Parsers\Visitors\MetaOverrideFunctionsParser;
 use StubTests\TestData\Providers\PhpStormStubsSingleton;
@@ -27,11 +29,11 @@ class StubsMetaInternalTagTest extends AbstractBaseStubsTestCase
 
     public function testFunctionInternalMetaTag(): void
     {
-        $functions = PhpStormStubsSingleton::getPhpStormStubs()->getFunctions();
+        $functions = EntitiesProvider::getFunctions(PhpStormStubsSingleton::getPhpStormStubs());
         foreach ($functions as $function) {
             if ($function->getPhpdocProperties()->hasInternalMetaTag) {
                 $reflectionFunctions = array_filter(
-                    ReflectionStubsSingleton::getReflectionStubs()->getFunctions(),
+                    EntitiesProvider::getFunctions(ReflectionStubsSingleton::getReflectionStubs()),
                     fn ($refFunction) => $refFunction->name === $function->name
                 );
                 $reflectionFunction = array_pop($reflectionFunctions);
@@ -44,10 +46,10 @@ class StubsMetaInternalTagTest extends AbstractBaseStubsTestCase
 
     public function testMethodsInternalMetaTag(): void
     {
-        foreach (PhpStormStubsSingleton::getPhpStormStubs()->getClasses() as $className => $class) {
+        foreach (EntitiesProvider::getClasses(PhpStormStubsSingleton::getPhpStormStubs()) as $className => $class) {
             foreach ($class->methods as $methodName => $method) {
                 if ($method->getPhpdocProperties()->hasInternalMetaTag) {
-                    $refClass = ReflectionStubsSingleton::getReflectionStubs()->getClass($className, sourceFilePath: true);
+                    $refClass = EntitiesProvider::getClass(ReflectionStubsSingleton::getReflectionStubs(), ClassesFilterPredicateProvider::getClassByName($className));
                     if ($refClass !== null) {
                         $reflectionMethods = array_filter(
                             $refClass->methods,
