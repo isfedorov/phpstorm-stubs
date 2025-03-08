@@ -1,6 +1,7 @@
 const core = require('@actions/core');
 const github = require('@actions/github');
 const { execSync } = require('child_process');
+const fs = require('fs');
 
 async function run() {
     try {
@@ -12,29 +13,14 @@ async function run() {
         console.log('Initializing and updating submodule...');
         execSync('git submodule update --init --recursive meta/attributes/public');
 
-        // Verify PHP files exist in submodule
-        console.log('Checking PHP files in submodule...');
-        const submodulePath = 'meta/attributes/public';
+        // Create a ZIP archive with submodule files
+        console.log('Creating archive with submodule files...');
+        const archiveName = 'release-with-submodule.zip';
+        execSync(`git archive --format=zip HEAD > ${archiveName}`);
         
-        try {
-            const files = execSync(`cd ${submodulePath} && find . -name "*.php"`)
-                .toString()
-                .trim()
-                .split('\n')
-                .filter(file => file !== '')
-                .map(file => file.replace('./', ''));
-
-            if (files.length === 0) {
-                console.log('No PHP files found in submodule');
-                return;
-            }
-
-            console.log(`Found ${files.length} PHP files in submodule`);
-
-        } catch (error) {
-            console.error(`Error accessing submodule: ${error.message}`);
-            throw new Error('Failed to access submodule directory');
-        }
+        // Add submodule contents to the archive
+        console.log('Adding submodule contents to archive...');
+        execSync(`cd meta/attributes/public && git archive HEAD --prefix=meta/attributes/public/ --format=zip >> ../../${archiveName}`);
 
         // Create release
         const ref = context.ref;
@@ -47,24 +33,32 @@ async function run() {
         const releaseName = `PhpStorm ${tagName.replace('v', '')}`;
         console.log(`Creating release ${releaseName} from tag ${tagName}...`);
 
-        // Get the current commit SHA
-        const sha = execSync('git rev-parse HEAD').toString().trim();
-        console.log(`Creating release from commit: ${sha}`);
-
         const release = await octokit.rest.repos.createRelease({
             ...context.repo,
             tag_name: tagName,
             name: releaseName,
             body: 'Automated release including submodule files',
             draft: false,
-            prerelease: false,
-            target_commitish: sha
+            prerelease: false
         });
+
+        // Upload the archive as the main source code
+        console.log('Uploading archive to release...');
+        await octokit.rest.repos.uploadReleaseAsset({
+            ...context.repo,
+            release_id: release.data.id,
+            name: 'Source code (zip)',
+            data: fs.readFileSync(archiveName)
+        });
+
+        // Clean up
+        fs.unlinkSync(archiveName);
 
         console.log('Release created successfully!');
         core.setOutput("release-url", release.data.html_url);
 
     } catch (error) {
+        console.error('Error details:', error);
         core.setFailed(error.message);
     }
 }
