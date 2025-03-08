@@ -14,53 +14,48 @@ try {
     execSync('git submodule init');
     execSync('git submodule update');
 
-    // Navigate to submodule and get files
-    console.log('Collecting PHP files from submodule...');
-    const submodulePath = 'meta/attributes/public';
-    const files = execSync(`cd ${submodulePath} && find . -name "*.php"`)
-        .toString()
-        .trim()
-        .split('\n')
-        .map(file => file.replace('./', '')); // Remove leading './'
+     // Create a temporary directory for organizing files
+     const tempDir = 'release-temp';
+     const targetDir = path.join(tempDir, 'meta/attributes/public');
+     fs.mkdirSync(targetDir, { recursive: true });
 
-    if (files.length === 0 || (files.length === 1 && files[0] === '')) {
-        console.log('No PHP files found in submodule');
-        return;
-    }
+     // Copy PHP files from submodule to temp directory
+     console.log('Checking PHP files in submodule...');
+        const submodulePath = 'meta/attributes/public';
+        const files = execSync(`cd ${submodulePath} && find . -name "*.php"`)
+            .toString()
+            .trim()
+            .split('\n')
+            .filter(file => file !== '')
+            .map(file => file.replace('./', ''));
 
-    // Create a new release
-    const ref = context.ref; // refs/tags/v2024.3
-    const tagName = ref.replace('refs/tags/', '');
-    
-    if (!ref.startsWith('refs/tags/')) {
-        throw new Error('This action should be triggered by a tag push');
-    }
-    
-    const releaseName = `PhpStorm ${tagName.replace('v', '')}`;
-    console.log(`Creating release ${releaseName} from tag ${tagName}...`);
+        if (files.length === 0) {
+            console.log('No PHP files found in submodule');
+            return;
+        }
 
-    const release = await octokit.rest.repos.createRelease({
-        ...context.repo,
-        tag_name: tagName,
-        name: releaseName,
-        body: 'Automated release including submodule files',
-        draft: false,
-        prerelease: false
-    });
+        // Create release
+        const ref = context.ref;
+        const tagName = ref.replace('refs/tags/', '');
+        
+        if (!ref.startsWith('refs/tags/')) {
+            throw new Error('This action should be triggered by a tag push');
+        }
+        
+        const releaseName = `PhpStorm ${tagName.replace('v', '')}`;
+        console.log(`Creating release ${releaseName} from tag ${tagName}...`);
 
-    // Upload submodule files to the release
-    for (const file of files) {
-        const filePath = `${submodulePath}/${file}`;
-        await octokit.rest.repos.uploadReleaseAsset({
+        const release = await octokit.rest.repos.createRelease({
             ...context.repo,
-            release_id: release.data.id,
-            name: file,
-            data: require('fs').readFileSync(filePath)
+            tag_name: tagName,
+            name: releaseName,
+            body: 'Automated release including submodule files',
+            draft: false,
+            prerelease: false
         });
-    }
 
-    console.log('Release created successfully!');
-    core.setOutput("release-url", release.data.html_url);
+        console.log('Release created successfully!');
+        core.setOutput("release-url", release.data.html_url);
 
 } catch (error) {
     core.setFailed(error.message);
