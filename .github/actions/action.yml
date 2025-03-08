@@ -1,13 +1,9 @@
-name: 'Hello World Action'
-description: 'Greet someone and record the time'
+name: 'Create Release with Submodule Files'
+description: 'Creates a GitHub release including files from a specified submodule'
 inputs:
-  who-to-greet:
-    description: 'Who to greet'
+  github-token:
+    description: 'GitHub token for authentication'
     required: true
-    default: 'World'
-outputs:
-  time:
-    description: 'The time we greeted you'
 runs:
   using: 'node16'
   main: 'action.js'
