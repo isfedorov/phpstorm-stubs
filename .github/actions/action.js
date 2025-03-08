@@ -8,14 +8,9 @@ async function run() {
         const octokit = github.getOctokit(token);
         const context = github.context;
 
-        // Configure git for the action
-        execSync('git config --global user.email "action@github.com"');
-        execSync('git config --global user.name "GitHub Action"');
-
         // Initialize and update submodule with explicit path
         console.log('Initializing and updating submodule...');
-        execSync('git submodule init meta/attributes/public');
-        execSync('git submodule update meta/attributes/public');
+        execSync('git submodule update --init --recursive meta/attributes/public');
 
         // Verify PHP files exist in submodule
         console.log('Checking PHP files in submodule...');
@@ -36,19 +31,9 @@ async function run() {
 
             console.log(`Found ${files.length} PHP files in submodule`);
 
-            // Add submodule files to the repository
-            console.log('Adding submodule files to repository...');
-            execSync('git add meta/attributes/public');
-            execSync('git commit -m "Add submodule files for release"');
-            
-            // Force push to the tag to include submodule files
-            const tagName = context.ref.replace('refs/tags/', '');
-            execSync(`git tag -f ${tagName}`);
-            execSync(`git push origin refs/tags/${tagName} -f`);
-
         } catch (error) {
-            console.error(`Error processing submodule: ${error.message}`);
-            throw new Error('Failed to process submodule files');
+            console.error(`Error accessing submodule: ${error.message}`);
+            throw new Error('Failed to access submodule directory');
         }
 
         // Create release
@@ -62,13 +47,18 @@ async function run() {
         const releaseName = `PhpStorm ${tagName.replace('v', '')}`;
         console.log(`Creating release ${releaseName} from tag ${tagName}...`);
 
+        // Get the current commit SHA
+        const sha = execSync('git rev-parse HEAD').toString().trim();
+        console.log(`Creating release from commit: ${sha}`);
+
         const release = await octokit.rest.repos.createRelease({
             ...context.repo,
             tag_name: tagName,
             name: releaseName,
             body: 'Automated release including submodule files',
             draft: false,
-            prerelease: false
+            prerelease: false,
+            target_commitish: sha
         });
 
         console.log('Release created successfully!');
