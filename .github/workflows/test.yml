@@ -9,7 +9,19 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: .github/actions/package.json
+  
+      - name: Install Dependencies
+        run: |
+          cd .github/actions
+          npm ci
+  
       - name: Greet
         uses: ./.github/actions  # This assumes that action.yml is in the root directory of the repository
         with:
