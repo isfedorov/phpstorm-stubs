@@ -8,11 +8,14 @@ on:
 jobs:
   create-release:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write  # This is important for pushing tags and creating releases
     steps:
       - uses: actions/checkout@v4
         with:
           submodules: true
           fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}  # Needed for pushing
       
       - name: Setup Node.js
         uses: actions/setup-node@v3
