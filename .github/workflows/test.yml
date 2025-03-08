@@ -15,7 +15,6 @@ jobs:
         with:
           submodules: true
           fetch-depth: 0
-          token: ${{ secrets.GITHUB_TOKEN }}  # Needed for pushing
       
       - name: Setup Node.js
         uses: actions/setup-node@v3
