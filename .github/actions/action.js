@@ -2,6 +2,7 @@ const core = require('@actions/core');
 const github = require('@actions/github');
 const { execSync } = require('child_process');
 
+async function run() {
 try {
     // Get the GitHub token from inputs
     const token = core.getInput('github-token', { required: true });
@@ -64,3 +65,6 @@ try {
 } catch (error) {
     core.setFailed(error.message);
 }
+}
+
+run();
