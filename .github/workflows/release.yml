@@ -16,6 +16,11 @@ jobs:
           submodules: true
           fetch-depth: 0
       
+      - name: Configure Git
+        run: |
+          git config --global user.name "GitHub Action"
+          git config --global user.email "action@github.com"
+      
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
