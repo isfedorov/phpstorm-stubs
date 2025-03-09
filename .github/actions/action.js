@@ -45,36 +45,23 @@ async function run() {
         console.log(`Creating temporary branch ${tempBranch}...`);
         execSync(`git checkout -b ${tempBranch}`);
 
-        // Save submodule files to a temporary location
-        console.log('Saving submodule files...');
-        execSync('mkdir -p temp_submodule');
-        execSync('cp -r meta/attributes/public/* temp_submodule/');
+        // Process submodule files
+        console.log('Processing submodule and filtering PHP files recursively...');
+        const submoduleDir = 'meta/attributes/public/';
+        const filteredSubmoduleDir = 'filtered_submodule/';
 
-        // Filter only PHP files recursively
-        console.log('Filtering PHP files recursively...');
-        const tempDir = 'temp_submodule/';
-        const phpFilesDir = 'filtered_submodule/';
-
-        if (!fs.existsSync(phpFilesDir)) {
-            fs.mkdirSync(phpFilesDir, { recursive: true });
+        if (!fs.existsSync(filteredSubmoduleDir)) {
+            fs.mkdirSync(filteredSubmoduleDir, { recursive: true });
         }
 
-        // Use recursive function to find all PHP files in tempDir
-        const phpFiles = findPhpFilesRecursively(tempDir);
+        // Find PHP files in the submodule directory
+        const submodulePhpFiles = findPhpFilesRecursively(submoduleDir);
 
-        // Exit if no PHP files are found
-        if (phpFiles.length === 0) {
-            console.error('No PHP files were found in the submodule. Aborting release process.');
-            core.setFailed('No PHP files found to include in the release artifacts.');
-            return;
-        }
+        // Copy PHP files from the submodule to the filtered directory
+        submodulePhpFiles.forEach(file => {
+            const relativePath = path.relative(submoduleDir, file);
+            const destinationPath = path.join(filteredSubmoduleDir, relativePath);
 
-        // Copy all PHP files to the filtered_submodule directory
-        phpFiles.forEach(file => {
-            const relativePath = path.relative(tempDir, file);
-            const destinationPath = path.join(phpFilesDir, relativePath);
-
-            // Ensure the directory structure is preserved
             const destinationDir = path.dirname(destinationPath);
             if (!fs.existsSync(destinationDir)) {
                 fs.mkdirSync(destinationDir, { recursive: true });
@@ -83,25 +70,66 @@ async function run() {
             fs.copyFileSync(file, destinationPath);
         });
 
+        console.log(`Found ${submodulePhpFiles.length} PHP files in the submodule.`);
 
-
-        // Remove submodule
+        // Remove the submodule
         console.log('Removing submodule...');
         execSync('git submodule deinit -f meta/attributes/public');
         execSync('git rm -f meta/attributes/public');
         execSync('rm -rf .git/modules/meta/attributes/public');
 
-        // Create the directory and copy filtered PHP files back
-        console.log('Restoring filtered PHP files...');
-        execSync('mkdir -p meta/attributes/public');
-        execSync(`cp -r ${phpFilesDir}/* meta/attributes/public/`);
-        execSync(`rm -rf ${phpFilesDir}`);
-        execSync('rm -rf temp_submodule');
+        // Process main repository files
+        console.log('Processing main repository and filtering PHP files recursively...');
+        const repoDir = './'; // Root of the repository
+        const filteredRepoDir = 'filtered_main_repo/';
 
-        // Add and commit the changes
-        console.log('Committing changes...');
-        execSync('git add -f meta/attributes/public/');
-        execSync('git commit -m "Convert submodule to regular files for release"');
+        if (!fs.existsSync(filteredRepoDir)) {
+            fs.mkdirSync(filteredRepoDir, { recursive: true });
+        }
+
+        // Find PHP files in the main repository (ignore some directories, if needed)
+        const repoPhpFiles = findPhpFilesRecursively(repoDir).filter(file => {
+            // Skip temporary or output directories (e.g., filtered output folders) to avoid infinite loops
+            return !file.includes('filtered_main_repo') && !file.includes('filtered_submodule');
+        });
+
+        // Copy PHP files from the main repo to the filtered directory
+        repoPhpFiles.forEach(file => {
+            const relativePath = path.relative(repoDir, file);
+            const destinationPath = path.join(filteredRepoDir, relativePath);
+
+            const destinationDir = path.dirname(destinationPath);
+            if (!fs.existsSync(destinationDir)) {
+                fs.mkdirSync(destinationDir, { recursive: true });
+            }
+
+            fs.copyFileSync(file, destinationPath);
+        });
+
+        console.log(`Found ${repoPhpFiles.length} PHP files in the main repository.`);
+
+        // Verify that we have PHP files from both sources
+        if (repoPhpFiles.length === 0 && submodulePhpFiles.length === 0) {
+            console.error('No PHP files found in either the main repository or the submodule.');
+            core.setFailed('No PHP files to include in the release artifacts.');
+            return;
+        }
+
+        // Combine filtered submodule and main repository into final directory (optional if needed for release)
+        console.log('Combining PHP files from submodule and main repository...');
+        execSync('mkdir -p release/');
+        execSync(`cp -r ${filteredSubmoduleDir}/* release/ || true`); // Copy submodule files
+        execSync(`cp -r ${filteredRepoDir}/* release/ || true`); // Copy main repo files
+
+        // Clean up temporary directories
+        console.log('Cleaning up temporary directories...');
+        execSync(`rm -rf ${filteredSubmoduleDir}`);
+        execSync(`rm -rf ${filteredRepoDir}`);
+
+        // Add processed files to the repository and commit
+        console.log('Committing filtered PHP files...');
+        execSync('git add -f release/');
+        execSync('git commit -m "Pack only PHP files from main repository and submodule for release"');
 
         // Get the tag name
         const ref = context.ref;
