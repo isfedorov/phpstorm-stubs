@@ -1,6 +1,32 @@
 const core = require('@actions/core');
 const github = require('@actions/github');
 const { execSync } = require('child_process');
+const fs = require('fs');
+const path = require('path');
+
+/**
+ * Recursively reads a directory and returns all files within it.
+ * @param {string} dir - The directory to start reading from.
+ * @param {Array<string>} [fileList] - An array used during recursion to collect file paths.
+ * @returns {Array<string>} - A flat list of all file paths.
+ */
+function readDirRecursively(dir, fileList = []) {
+    const entries = fs.readdirSync(dir); // Get all files and subdirectories in the current directory
+
+    entries.forEach(entry => {
+        const fullPath = path.join(dir, entry); // Get full path of the entry
+        if (fs.lstatSync(fullPath).isDirectory()) {
+            // If the entry is a directory, recursively read its contents
+            readDirRecursively(fullPath, fileList);
+        } else {
+            // If it's a file, add it to the file list
+            fileList.push(fullPath);
+        }
+    });
+
+    return fileList; // Return the accumulated list of file paths
+}
+
 
 async function run() {
     try {
@@ -23,9 +49,37 @@ async function run() {
         execSync(`git checkout -b ${tempBranch}`);
 
         // Save submodule files to a temporary location
+        const tempDir = 'temp_submodule';
+        const phpFilesDir = 'filtered_submodule';
         console.log('Saving submodule files...');
-        execSync('mkdir -p temp_submodule');
-        execSync('cp -r meta/attributes/public/* temp_submodule/');
+        execSync(`mkdir -p ${tempDir}`);
+        execSync(`cp -r meta/attributes/public/* ${tempDir}`);
+
+        console.log(`Reading contents of ${tempDir} recursively...`);
+        const allFiles = readDirRecursively(tempDir);
+
+        // Make sure filtered_submodule exists
+        if (!fs.existsSync(phpFilesDir)) {
+            fs.mkdirSync(phpFilesDir, { recursive: true });
+        }
+
+        // Filter only `.php` files and copy them to the `filtered_submodule` directory
+        console.log('Filtering PHP files...');
+        allFiles.forEach(filePath => {
+            if (filePath.endsWith('.php')) {
+                const fileName = path.basename(filePath); // Extract file name
+                const destPath = path.join(phpFilesDir, fileName); // Destination path
+                fs.copyFileSync(filePath, destPath); // Copy the file
+            }
+        });
+
+        if (fs.readdirSync(phpFilesDir).length === 0) {
+            console.log('No PHP files found during filtering.');
+        } else {
+            console.log('PHP files successfully filtered and copied.');
+        }
+
+
 
         // Remove submodule
         console.log('Removing submodule...');
@@ -33,11 +87,12 @@ async function run() {
         execSync('git rm -f meta/attributes/public');
         execSync('rm -rf .git/modules/meta/attributes/public');
 
-        // Create the directory and copy files back
-        console.log('Restoring submodule files...');
+        // Create the directory and copy filtered PHP files back
+        console.log('Restoring filtered PHP files...');
         execSync('mkdir -p meta/attributes/public');
-        execSync('cp -r temp_submodule/* meta/attributes/public/');
-        execSync('rm -rf temp_submodule');
+        execSync(`cp -r ${phpFilesDir}/* meta/attributes/public/`);
+        execSync(`rm -rf ${phpFilesDir}`);
+        execSync(`rm -rf ${tempDir}`);
 
         // Add and commit the changes
         console.log('Committing changes...');
