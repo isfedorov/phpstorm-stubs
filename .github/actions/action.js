@@ -1,7 +1,6 @@
 const core = require('@actions/core');
 const github = require('@actions/github');
 const { execSync } = require('child_process');
-const fs = require('fs');
 
 async function run() {
     try {
@@ -13,31 +12,10 @@ async function run() {
         console.log('Initializing and updating submodule...');
         execSync('git submodule update --init --recursive meta/attributes/public');
 
-        // Create a temporary directory for the release
-        const tempDir = 'release-temp';
-        console.log('Creating temporary directory...');
-        execSync(`rm -rf ${tempDir}`); // Clean up any existing temp directory
-        execSync(`mkdir -p ${tempDir}/meta/attributes/public`);
-
-        // Copy main repository files
-        console.log('Copying repository files...');
-        execSync(`git ls-files -z | xargs -0 -I {} cp -r --parents {} ${tempDir}/`);
-
-        // Copy submodule files
-        console.log('Copying submodule files...');
-        execSync(`
-            cd meta/attributes/public && 
-            git ls-files -z | 
-            while IFS= read -r -d '' file; do
-                mkdir -p "../../../${tempDir}/meta/attributes/public/$(dirname "$file")"
-                cp -r "$file" "../../../${tempDir}/meta/attributes/public/$file"
-            done
-        `);
-
-        // Create ZIP archive
-        const archiveName = 'release-with-submodule.zip';
-        console.log('Creating ZIP archive...');
-        execSync(`cd ${tempDir} && zip -r ../${archiveName} .`);
+        // Stage submodule files
+        console.log('Staging submodule files...');
+        execSync('git add -f meta/attributes/public');
+        execSync('git commit -m "Include submodule files for release"');
 
         // Create release
         const ref = context.ref;
@@ -50,6 +28,10 @@ async function run() {
         const releaseName = `PhpStorm ${tagName.replace('v', '')}`;
         console.log(`Creating release ${releaseName} from tag ${tagName}...`);
 
+        // Update the tag to include submodule files
+        execSync(`git tag -f ${tagName}`);
+        execSync(`git push origin refs/tags/${tagName} -f`);
+
         const release = await octokit.rest.repos.createRelease({
             ...context.repo,
             tag_name: tagName,
@@ -59,19 +41,6 @@ async function run() {
             prerelease: false,
             generate_release_notes: true
         });
-
-        // Upload the archive
-        console.log('Uploading archive to release...');
-        await octokit.rest.repos.uploadReleaseAsset({
-            ...context.repo,
-            release_id: release.data.id,
-            name: 'Source code (zip)',
-            data: fs.readFileSync(archiveName)
-        });
-
-        // Clean up
-        console.log('Cleaning up...');
-        execSync(`rm -rf ${tempDir} ${archiveName}`);
 
         console.log('Release created successfully!');
         core.setOutput("release-url", release.data.html_url);
