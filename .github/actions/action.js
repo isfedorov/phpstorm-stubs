@@ -1,7 +1,6 @@
 const core = require('@actions/core');
 const github = require('@actions/github');
 const { execSync } = require('child_process');
-const fs = require('fs');
 
 async function run() {
     try {
@@ -9,36 +8,49 @@ async function run() {
         const octokit = github.getOctokit(token);
         const context = github.context;
 
+        // Configure git
+        console.log('Configuring git...');
+        execSync('git config --global user.name "GitHub Action"');
+        execSync('git config --global user.email "action@github.com"');
+
         // Initialize and update submodule with explicit path
         console.log('Initializing and updating submodule...');
         execSync('git submodule update --init --recursive meta/attributes/public');
 
-        // Create a temporary directory and copy all files
-        const tempDir = 'release-temp';
-        console.log('Preparing release files...');
-        execSync(`rm -rf ${tempDir}`);
-        execSync(`mkdir -p ${tempDir}`);
-        
-        // Copy main repository files
-        console.log('Copying main repository files...');
-        execSync(`git archive HEAD | tar x -C ${tempDir}`);
+        // Get the current commit SHA
+        const currentSha = execSync('git rev-parse HEAD').toString().trim();
+        console.log(`Current commit: ${currentSha}`);
 
-        // Copy submodule files
-        console.log('Copying submodule files...');
-        execSync(`cd meta/attributes/public && git archive HEAD | tar x -C ../../../${tempDir}/meta/attributes/public`);
+        // Create a temporary branch from the current state
+        const tempBranch = `release-${Date.now()}`;
+        console.log(`Creating temporary branch ${tempBranch}...`);
+        execSync(`git checkout -b ${tempBranch}`);
 
-        // Create ZIP archive
-        console.log('Creating ZIP archive...');
-        execSync(`cd ${tempDir} && zip -r ../source-code.zip .`);
+        // Remove the submodule entry but keep its files
+        console.log('Preparing submodule files...');
+        execSync('git rm --cached meta/attributes/public');
+        execSync('rm -rf .git/modules/meta/attributes/public');
+        execSync('git add meta/attributes/public/');
 
-        // Create release
+        // Commit the changes
+        console.log('Committing changes...');
+        execSync('git commit -m "Include submodule files for release"');
+
+        // Get the tag name and create release
         const ref = context.ref;
         const tagName = ref.replace('refs/tags/', '');
         
         if (!ref.startsWith('refs/tags/')) {
             throw new Error('This action should be triggered by a tag push');
         }
-        
+
+        // Force update the tag to our new commit
+        const newSha = execSync('git rev-parse HEAD').toString().trim();
+        console.log(`New commit: ${newSha}`);
+        execSync(`git tag -f ${tagName} ${newSha}`);
+        execSync('git push origin --force --tags');
+
+        // Create the release
         const releaseName = `PhpStorm ${tagName.replace('v', '')}`;
         console.log(`Creating release ${releaseName} from tag ${tagName}...`);
 
@@ -50,19 +62,6 @@ async function run() {
             draft: false,
             prerelease: false
         });
-
-        // Upload the ZIP file as Source code
-        console.log('Uploading source code archive...');
-        await octokit.rest.repos.uploadReleaseAsset({
-            ...context.repo,
-            release_id: release.data.id,
-            name: 'Source code.zip',
-            data: fs.readFileSync('source-code.zip')
-        });
-
-        // Clean up
-        console.log('Cleaning up...');
-        execSync(`rm -rf ${tempDir} source-code.zip`);
 
         console.log('Release created successfully!');
         core.setOutput("release-url", release.data.html_url);
