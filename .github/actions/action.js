@@ -22,10 +22,13 @@ async function run() {
         console.log(`Creating temporary branch ${tempBranch}...`);
         execSync(`git checkout -b ${tempBranch}`);
 
-        // Copy submodule contents
-        console.log('Copying submodule contents...');
-        execSync('cp -r meta/attributes/public/* meta/attributes/public/');
-        
+        // Extract submodule contents
+        console.log('Extracting submodule contents...');
+        execSync(`
+            cd meta/attributes/public && 
+            git archive HEAD | tar x -C ..
+        `);
+
         // Stage and commit the changes
         console.log('Staging and committing changes...');
         execSync('git add -f meta/attributes/public');
