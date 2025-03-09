@@ -16,15 +16,18 @@ async function run() {
         // Create a temporary directory for the release
         const tempDir = 'release-temp';
         console.log('Creating temporary directory...');
-        execSync(`mkdir -p ${tempDir}/meta/attributes/public`);
+        execSync(`rm -rf ${tempDir}`); // Clean up any existing temp directory
+        execSync(`mkdir -p ${tempDir}`);
 
-        // Copy all repository files
+        // Create a file list and copy files
         console.log('Copying repository files...');
-        execSync(`cp -r $(git ls-files) ${tempDir}/`);
+        execSync(`git ls-files > files.txt`);
+        execSync(`rsync -R --files-from=files.txt . ${tempDir}/`);
 
         // Copy submodule files
         console.log('Copying submodule files...');
-        execSync(`cp -r meta/attributes/public/* ${tempDir}/meta/attributes/public/`);
+        execSync(`cd meta/attributes/public && git ls-files > ../../../submodule-files.txt`);
+        execSync(`cd meta/attributes/public && rsync -R --files-from=../../submodule-files.txt . ../../${tempDir}/meta/attributes/public/`);
 
         // Create ZIP archive
         const archiveName = 'release-with-submodule.zip';
@@ -63,7 +66,7 @@ async function run() {
 
         // Clean up
         console.log('Cleaning up...');
-        execSync(`rm -rf ${tempDir} ${archiveName}`);
+        execSync(`rm -rf ${tempDir} ${archiveName} files.txt submodule-files.txt`);
 
         console.log('Release created successfully!');
         core.setOutput("release-url", release.data.html_url);
