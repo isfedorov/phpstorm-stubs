@@ -1,6 +1,9 @@
 const core = require('@actions/core');
 const github = require('@actions/github');
 const { execSync } = require('child_process');
+const fs = require('fs'); // Import fs module
+const path = require('path'); // Import path module
+
 
 async function run() {
     try {
