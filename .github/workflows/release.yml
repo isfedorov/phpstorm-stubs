@@ -16,9 +16,6 @@ jobs:
           submodules: true
           fetch-depth: 0
       
-      - name: Install rsync
-        run: sudo apt-get install -y rsync
-      
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
