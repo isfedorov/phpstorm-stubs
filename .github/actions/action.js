@@ -13,14 +13,23 @@ async function run() {
         console.log('Initializing and updating submodule...');
         execSync('git submodule update --init --recursive meta/attributes/public');
 
-        // Create a ZIP archive with submodule files
-        console.log('Creating archive with submodule files...');
+        // Create a temporary directory for the release
+        const tempDir = 'release-temp';
+        console.log('Creating temporary directory...');
+        execSync(`mkdir -p ${tempDir}/meta/attributes/public`);
+
+        // Copy all repository files
+        console.log('Copying repository files...');
+        execSync(`cp -r $(git ls-files) ${tempDir}/`);
+
+        // Copy submodule files
+        console.log('Copying submodule files...');
+        execSync(`cp -r meta/attributes/public/* ${tempDir}/meta/attributes/public/`);
+
+        // Create ZIP archive
         const archiveName = 'release-with-submodule.zip';
-        execSync(`git archive --format=zip HEAD > ${archiveName}`);
-        
-        // Add submodule contents to the archive
-        console.log('Adding submodule contents to archive...');
-        execSync(`cd meta/attributes/public && git archive HEAD --prefix=meta/attributes/public/ --format=zip >> ../../${archiveName}`);
+        console.log('Creating ZIP archive...');
+        execSync(`cd ${tempDir} && zip -r ../${archiveName} .`);
 
         // Create release
         const ref = context.ref;
@@ -39,10 +48,11 @@ async function run() {
             name: releaseName,
             body: 'Automated release including submodule files',
             draft: false,
-            prerelease: false
+            prerelease: false,
+            generate_release_notes: true
         });
 
-        // Upload the archive as the main source code
+        // Upload the archive
         console.log('Uploading archive to release...');
         await octokit.rest.repos.uploadReleaseAsset({
             ...context.repo,
@@ -52,7 +62,8 @@ async function run() {
         });
 
         // Clean up
-        fs.unlinkSync(archiveName);
+        console.log('Cleaning up...');
+        execSync(`rm -rf ${tempDir} ${archiveName}`);
 
         console.log('Release created successfully!');
         core.setOutput("release-url", release.data.html_url);
