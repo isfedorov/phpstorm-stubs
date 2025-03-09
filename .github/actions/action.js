@@ -1,6 +1,7 @@
 const core = require('@actions/core');
 const github = require('@actions/github');
 const { execSync } = require('child_process');
+const fs = require('fs');
 
 async function run() {
     try {
@@ -27,16 +28,35 @@ async function run() {
         execSync('mkdir -p temp_submodule');
         execSync('cp -r meta/attributes/public/* temp_submodule/');
 
+        // Filter only PHP files
+        console.log('Filtering PHP files...');
+        const tempDir = 'temp_submodule/';
+        const phpFilesDir = 'filtered_submodule/';
+
+        if (!fs.existsSync(phpFilesDir)) {
+            fs.mkdirSync(phpFilesDir, { recursive: true });
+        }
+
+        const files = fs.readdirSync(tempDir);
+        files.forEach(file => {
+            const fullPath = path.join(tempDir, file);
+            if (fs.lstatSync(fullPath).isFile() && file.endsWith('.php')) {
+                fs.copyFileSync(fullPath, path.join(phpFilesDir, file));
+            }
+        });
+
+
         // Remove submodule
         console.log('Removing submodule...');
         execSync('git submodule deinit -f meta/attributes/public');
         execSync('git rm -f meta/attributes/public');
         execSync('rm -rf .git/modules/meta/attributes/public');
 
-        // Create the directory and copy files back
-        console.log('Restoring submodule files...');
+        // Create the directory and copy filtered PHP files back
+        console.log('Restoring filtered PHP files...');
         execSync('mkdir -p meta/attributes/public');
-        execSync('cp -r temp_submodule/* meta/attributes/public/');
+        execSync(`cp -r ${phpFilesDir}/* meta/attributes/public/`);
+        execSync(`rm -rf ${phpFilesDir}`);
         execSync('rm -rf temp_submodule');
 
         // Add and commit the changes
