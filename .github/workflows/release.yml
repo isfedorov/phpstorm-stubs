@@ -11,10 +11,13 @@ jobs:
     permissions:
       contents: write  # This is important for pushing tags and creating releases
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v3
         with:
           submodules: true
           fetch-depth: 0
+      
+      - name: Install rsync
+        run: sudo apt-get install -y rsync
       
       - name: Setup Node.js
         uses: actions/setup-node@v3
