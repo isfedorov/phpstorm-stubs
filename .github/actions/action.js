@@ -4,6 +4,26 @@ const { execSync } = require('child_process');
 const fs = require('fs'); // Import fs module
 const path = require('path'); // Import path module
 
+// Recursive function to find all PHP files
+function findPhpFilesRecursively(dir, fileList = []) {
+    const files = fs.readdirSync(dir);
+
+    files.forEach(file => {
+        const fullPath = path.join(dir, file);
+
+        // Check if the file is a directory
+        if (fs.lstatSync(fullPath).isDirectory()) {
+            // If a directory, recursively fetch PHP files from it
+            findPhpFilesRecursively(fullPath, fileList);
+        } else if (file.endsWith('.php')) {
+            // If a .php file, add to the list
+            fileList.push(fullPath);
+        }
+    });
+
+    return fileList;
+}
+
 
 async function run() {
     try {
@@ -30,8 +50,8 @@ async function run() {
         execSync('mkdir -p temp_submodule');
         execSync('cp -r meta/attributes/public/* temp_submodule/');
 
-        // Filter only PHP files
-        console.log('Filtering PHP files...');
+        // Filter only PHP files recursively
+        console.log('Filtering PHP files recursively...');
         const tempDir = 'temp_submodule/';
         const phpFilesDir = 'filtered_submodule/';
 
@@ -39,13 +59,30 @@ async function run() {
             fs.mkdirSync(phpFilesDir, { recursive: true });
         }
 
-        const files = fs.readdirSync(tempDir);
-        files.forEach(file => {
-            const fullPath = path.join(tempDir, file);
-            if (fs.lstatSync(fullPath).isFile() && file.endsWith('.php')) {
-                fs.copyFileSync(fullPath, path.join(phpFilesDir, file));
+        // Use recursive function to find all PHP files in tempDir
+        const phpFiles = findPhpFilesRecursively(tempDir);
+
+        // Exit if no PHP files are found
+        if (phpFiles.length === 0) {
+            console.error('No PHP files were found in the submodule. Aborting release process.');
+            core.setFailed('No PHP files found to include in the release artifacts.');
+            return;
+        }
+
+        // Copy all PHP files to the filtered_submodule directory
+        phpFiles.forEach(file => {
+            const relativePath = path.relative(tempDir, file);
+            const destinationPath = path.join(phpFilesDir, relativePath);
+
+            // Ensure the directory structure is preserved
+            const destinationDir = path.dirname(destinationPath);
+            if (!fs.existsSync(destinationDir)) {
+                fs.mkdirSync(destinationDir, { recursive: true });
             }
+
+            fs.copyFileSync(file, destinationPath);
         });
+
 
 
         // Remove submodule
