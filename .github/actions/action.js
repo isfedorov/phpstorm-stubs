@@ -22,10 +22,10 @@ async function run() {
         console.log(`Creating temporary branch ${tempBranch}...`);
         execSync(`git checkout -b ${tempBranch}`);
 
-        // Save submodule files to a temporary location
-        console.log('Saving submodule files...');
+        // Save PHP files from submodule to a temporary location
+        console.log('Saving PHP files from submodule...');
         execSync('mkdir -p temp_submodule');
-        execSync('cp -r meta/attributes/public/* temp_submodule/');
+        execSync('cd meta/attributes/public && find . -name "*.php" -type f -exec cp --parents {} ../../temp_submodule/ \\;');
 
         // Remove submodule
         console.log('Removing submodule...');
@@ -33,16 +33,16 @@ async function run() {
         execSync('git rm -f meta/attributes/public');
         execSync('rm -rf .git/modules/meta/attributes/public');
 
-        // Create the directory and copy files back
-        console.log('Restoring submodule files...');
+        // Create the directory and copy PHP files back
+        console.log('Restoring PHP files from submodule...');
         execSync('mkdir -p meta/attributes/public');
-        execSync('cp -r temp_submodule/* meta/attributes/public/');
+        execSync('cp -r temp_submodule/* meta/attributes/public/ 2>/dev/null || true');
         execSync('rm -rf temp_submodule');
 
         // Add and commit the changes
         console.log('Committing changes...');
         execSync('git add -f meta/attributes/public/');
-        execSync('git commit -m "Convert submodule to regular files for release"');
+        execSync('git commit -m "Add PHP files from submodule for release"');
 
         // Get the tag name
         const ref = context.ref;
@@ -65,7 +65,7 @@ async function run() {
             ...context.repo,
             tag_name: tagName,
             name: releaseName,
-            body: 'Automated release including submodule files',
+            body: 'Automated release including PHP files from submodule',
             draft: false,
             prerelease: false
         });
