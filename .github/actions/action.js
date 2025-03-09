@@ -21,11 +21,18 @@ async function run() {
 
         // Copy main repository files
         console.log('Copying repository files...');
-        execSync(`git ls-files | xargs -I {} cp --parents {} ${tempDir}/`);
+        execSync(`git ls-files -z | xargs -0 -I {} cp -r --parents {} ${tempDir}/`);
 
         // Copy submodule files
         console.log('Copying submodule files...');
-        execSync(`cd meta/attributes/public && git ls-files | xargs -I {} cp --parents {} ../../../${tempDir}/meta/attributes/public/`);
+        execSync(`
+            cd meta/attributes/public && 
+            git ls-files -z | 
+            while IFS= read -r -d '' file; do
+                mkdir -p "../../../${tempDir}/meta/attributes/public/$(dirname "$file")"
+                cp -r "$file" "../../../${tempDir}/meta/attributes/public/$file"
+            done
+        `);
 
         // Create ZIP archive
         const archiveName = 'release-with-submodule.zip';
