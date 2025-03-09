@@ -17,42 +17,34 @@ async function run() {
         console.log('Initializing and updating submodule...');
         execSync('git submodule update --init --recursive meta/attributes/public');
 
-        // Get the current commit SHA
-        const currentSha = execSync('git rev-parse HEAD').toString().trim();
-        console.log(`Current commit: ${currentSha}`);
-
-        // Create a temporary branch from the current state
+        // Create a temporary branch
         const tempBranch = `release-${Date.now()}`;
         console.log(`Creating temporary branch ${tempBranch}...`);
         execSync(`git checkout -b ${tempBranch}`);
 
-        // Remove the submodule entry but keep its files
-        console.log('Preparing submodule files...');
-        try {
-            // Remove submodule from git while keeping files
-            execSync('git rm -f --cached meta/attributes/public');
-            execSync('rm -rf .git/modules/meta/attributes/public');
-            
-            // Stage all files from the former submodule
-            console.log('Staging submodule files...');
-            execSync('git add -f meta/attributes/public/');
-            
-            // Check if there are changes to commit
-            const status = execSync('git status --porcelain').toString();
-            if (status) {
-                console.log('Changes detected, committing...');
-                execSync('git commit -m "Include submodule files for release" --allow-empty');
-            } else {
-                console.log('No changes to commit, creating empty commit...');
-                execSync('git commit --allow-empty -m "Prepare release"');
-            }
-        } catch (error) {
-            console.log('Error during git operations:', error);
-            // Create an empty commit anyway to ensure we have a new state
-            execSync('git commit --allow-empty -m "Prepare release"');
-        }
+        // Save submodule files to a temporary location
+        console.log('Saving submodule files...');
+        execSync('mkdir -p temp_submodule');
+        execSync('cp -r meta/attributes/public/* temp_submodule/');
 
-        // Get the tag name and create release
+        // Remove submodule
+        console.log('Removing submodule...');
+        execSync('git submodule deinit -f meta/attributes/public');
+        execSync('git rm -f meta/attributes/public');
+        execSync('rm -rf .git/modules/meta/attributes/public');
+
+        // Create the directory and copy files back
+        console.log('Restoring submodule files...');
+        execSync('mkdir -p meta/attributes/public');
+        execSync('cp -r temp_submodule/* meta/attributes/public/');
+        execSync('rm -rf temp_submodule');
+
+        // Add and commit the changes
+        console.log('Committing changes...');
+        execSync('git add -f meta/attributes/public/');
+        execSync('git commit -m "Convert submodule to regular files for release"');
+
+        // Get the tag name
         const ref = context.ref;
         const tagName = ref.replace('refs/tags/', '');
         
@@ -60,10 +52,9 @@ async function run() {
             throw new Error('This action should be triggered by a tag push');
         }
 
-        // Force update the tag to our new commit
-        const newSha = execSync('git rev-parse HEAD').toString().trim();
-        console.log(`New commit: ${newSha}`);
-        execSync(`git tag -f ${tagName} ${newSha}`);
+        // Update the tag
+        console.log('Updating tag...');
+        execSync(`git tag -f ${tagName}`);
         execSync('git push origin --force --tags');
 
         // Create the release
