@@ -28,13 +28,29 @@ async function run() {
 
         // Remove the submodule entry but keep its files
         console.log('Preparing submodule files...');
-        execSync('git rm --cached meta/attributes/public');
-        execSync('rm -rf .git/modules/meta/attributes/public');
-        execSync('git add meta/attributes/public/');
-
-        // Commit the changes
-        console.log('Committing changes...');
-        execSync('git commit -m "Include submodule files for release"');
+        try {
+            // Remove submodule from git while keeping files
+            execSync('git rm -f --cached meta/attributes/public');
+            execSync('rm -rf .git/modules/meta/attributes/public');
+            
+            // Stage all files from the former submodule
+            console.log('Staging submodule files...');
+            execSync('git add -f meta/attributes/public/');
+            
+            // Check if there are changes to commit
+            const status = execSync('git status --porcelain').toString();
+            if (status) {
+                console.log('Changes detected, committing...');
+                execSync('git commit -m "Include submodule files for release" --allow-empty');
+            } else {
+                console.log('No changes to commit, creating empty commit...');
+                execSync('git commit --allow-empty -m "Prepare release"');
+            }
+        } catch (error) {
+            console.log('Error during git operations:', error);
+            // Create an empty commit anyway to ensure we have a new state
+            execSync('git commit --allow-empty -m "Prepare release"');
+        }
 
         // Get the tag name and create release
         const ref = context.ref;
