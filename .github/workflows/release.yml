@@ -3,13 +3,13 @@ name: Create Release
 on:
   push:
     tags:
-      - 'v*' # This will match tags like v2024.3, v1.0.0, etc.
+      - 'v*' # This will match tags like v2024.3, etc.
 
 jobs:
   create-release:
     runs-on: ubuntu-latest
     permissions:
-      contents: write  # This is important for pushing tags and creating releases
+      contents: write
     steps:
       - uses: actions/checkout@v3
         with:
