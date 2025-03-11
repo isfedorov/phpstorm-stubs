@@ -8,7 +8,7 @@ const execAsync = util.promisify(exec);
 
 async function run() {
     try {
-        const token = core.getInput('github-token', { required: true });
+        const { token, gitUserName, gitUserEmail } = validateInputs();
         const octokit = github.getOctokit(token);
         const context = github.context;
         const tagName = await getTagName(context.ref);
@@ -16,7 +16,7 @@ async function run() {
         const tempDir = process.env.TEMP_DIR || 'temp_submodule';
         const phpFilesDir = process.env.PHP_FILES_DIR || 'filtered_submodule';
 
-        await configureGit();
+        await configureGit(gitUserName, gitUserEmail);
 
         try {
             await createTemporaryBranch();
@@ -70,13 +70,16 @@ async function readDirRecursively(dir, fileList = []) {
     }
 }
 
-async function configureGit() {
-    const gitUserName = core.getInput('git-user-name') || 'GitHub Action';
-    const gitUserEmail = core.getInput('git-user-email') || 'action@github.com';
-
+async function configureGit(gitUserName, gitUserEmail) {
     core.info('Configuring Git...');
-    await execAsync(`git config --global user.name "${gitUserName}"`);
-    await execAsync(`git config --global user.email "${gitUserEmail}"`);
+    try {
+        await execAsync(`git config --global user.name "${gitUserName}"`);
+        await execAsync(`git config --global user.email "${gitUserEmail}"`);
+        core.info(`Git configured successfully with user: ${gitUserName}, email: ${gitUserEmail}`);
+    } catch (error) {
+        core.error('Failed to configure Git.');
+        throw error;
+    }
 }
 
 async function manageSubmoduleFiles(tempDir, phpFilesDir) {
@@ -123,7 +126,7 @@ async function manageSubmoduleFiles(tempDir, phpFilesDir) {
     await execAsync('rm -rf .git/modules/meta/attributes/public');
 
     console.log('Restoring filtered PHP files...');
-    await execAsync('mkdir -p meta/attributes/public');
+    await fs.promises.mkdir('meta/attributes/public', { recursive: true });
     await execAsync(`cp -r ${phpFilesDir}/* meta/attributes/public/`);
     await execAsync(`rm -rf ${phpFilesDir}`);
     await execAsync(`rm -rf ${tempDir}`);
@@ -174,4 +177,16 @@ async function cleanupDir(directory) {
     } catch (error) {
         core.warning(`Failed to clean up directory: ${directory}. Error: ${error.message}`);
     }
+}
+
+function validateInputs() {
+    const token = core.getInput('github-token', { required: true });
+    const gitUserName = core.getInput('git-user-name') || 'GitHub Action';
+    const gitUserEmail = core.getInput('git-user-email') || 'action@github.com';
+
+    if (!token) {
+        throw new Error('A valid GitHub Token is required to authenticate.');
+    }
+
+    return { token, gitUserName, gitUserEmail };
 }
