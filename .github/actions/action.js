@@ -36,6 +36,56 @@ async function configureGit() {
     await execAsync(`git config --global user.email "${gitUserEmail}"`);
 }
 
+async function manageSubmoduleFiles(tempDir, phpFilesDir) {
+    console.log('Initializing and updating submodule...');
+    execSync('git submodule update --init --recursive');
+
+    const tempBranch = `release-${Date.now()}`;
+    console.log(`Creating temporary branch ${tempBranch}...`);
+    execSync(`git checkout -b ${tempBranch}`);
+
+    console.log('Saving submodule files...');
+    fs.mkdirSync(tempDir, {recursive: true});
+    fs.mkdirSync(phpFilesDir, {recursive: true});
+    execSync(`cp -r meta/attributes/public/* ${tempDir}`);
+
+
+    core.info(`Reading contents of ${tempDir} recursively...`);
+    core.info('Reading files recursively...');
+    const allFiles = await readDirRecursively(tempDir);
+    core.info(`Files read: ${allFiles.length}`);
+    allFiles.forEach(filePath => {
+        core.info(`Processing file: ${filePath}`);
+    });
+
+
+    console.log('Filtering PHP files...');
+    allFiles.forEach(filePath => {
+        if (filePath.endsWith('.php')) {
+            const fileName = path.basename(filePath);
+            const destPath = path.join(phpFilesDir, fileName);
+            fs.copyFileSync(filePath, destPath);
+        }
+    });
+
+    if (fs.readdirSync(phpFilesDir).length === 0) {
+        console.log('No PHP files found during filtering.');
+    } else {
+        console.log('PHP files successfully filtered and copied.');
+    }
+
+    console.log('Removing submodule...');
+    execSync('git submodule deinit -f -- meta/attributes/public');
+    execSync('git rm -f meta/attributes/public');
+    execSync('rm -rf .git/modules/meta/attributes/public');
+
+    console.log('Restoring filtered PHP files...');
+    execSync('mkdir -p meta/attributes/public');
+    execSync(`cp -r ${phpFilesDir}/* meta/attributes/public/`);
+    execSync(`rm -rf ${phpFilesDir}`);
+    execSync(`rm -rf ${tempDir}`);
+}
+
 async function run() {
     try {
         const token = core.getInput('github-token', { required: true });
@@ -44,55 +94,17 @@ async function run() {
         const context = github.context;
         await configureGit();
 
-        console.log('Initializing and updating submodule...');
-        execSync('git submodule update --init --recursive');
+        const tempDir = process.env.TEMP_DIR || 'temp_submodule';
+        const phpFilesDir = process.env.PHP_FILES_DIR || 'filtered_submodule';
 
-        const tempBranch = `release-${Date.now()}`;
-        console.log(`Creating temporary branch ${tempBranch}...`);
-        execSync(`git checkout -b ${tempBranch}`);
-
-        const tempDir = 'temp_submodule';
-        const phpFilesDir = 'filtered_submodule';
-        console.log('Saving submodule files...');
-        fs.mkdirSync(tempDir, {recursive: true});
-        fs.mkdirSync(phpFilesDir, {recursive: true});
-        execSync(`cp -r meta/attributes/public/* ${tempDir}`);
-
-
-        core.info(`Reading contents of ${tempDir} recursively...`);
-        core.info('Reading files recursively...');
-        const allFiles = await readDirRecursively(tempDir);
-        core.info(`Files read: ${allFiles.length}`);
-        allFiles.forEach(filePath => {
-            core.info(`Processing file: ${filePath}`);
-        });
-
-
-        console.log('Filtering PHP files...');
-        allFiles.forEach(filePath => {
-            if (filePath.endsWith('.php')) {
-                const fileName = path.basename(filePath);
-                const destPath = path.join(phpFilesDir, fileName);
-                fs.copyFileSync(filePath, destPath);
-            }
-        });
-
-        if (fs.readdirSync(phpFilesDir).length === 0) {
-            console.log('No PHP files found during filtering.');
-        } else {
-            console.log('PHP files successfully filtered and copied.');
+        try {
+            await manageSubmoduleFiles(tempDir, phpFilesDir);
+        } finally {
+            core.info('Cleaning up temporary directories...');
+            fs.rmSync(tempDir, { recursive: true, force: true });
+            fs.rmSync(phpFilesDir, { recursive: true, force: true });
         }
 
-        console.log('Removing submodule...');
-        execSync('git submodule deinit -f -- meta/attributes/public');
-        execSync('git rm -f meta/attributes/public');
-        execSync('rm -rf .git/modules/meta/attributes/public');
-
-        console.log('Restoring filtered PHP files...');
-        execSync('mkdir -p meta/attributes/public');
-        execSync(`cp -r ${phpFilesDir}/* meta/attributes/public/`);
-        execSync(`rm -rf ${phpFilesDir}`);
-        execSync(`rm -rf ${tempDir}`);
 
         console.log('Committing changes...');
         execSync('git add -f meta/attributes/public/');
