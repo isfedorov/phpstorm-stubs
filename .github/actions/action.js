@@ -4,7 +4,6 @@ const {exec} = require('child_process');
 const fs = require('fs');
 const path = require('path');
 const util = require('util');
-const { execSync } = require('child_process');
 const execAsync = util.promisify(exec);
 
 async function run() {
@@ -131,12 +130,12 @@ async function createTemporaryBranch() {
 
 async function commitAndPushChanges(tagName) {
     console.log('Committing changes...');
-    execSync('git add -f meta/attributes/public/');
-    execSync('git commit -m "Convert submodule to regular files for release"');
+    await execAsync('git add -f meta/attributes/public/');
+    await execAsync('git commit -m "Convert submodule to regular files for release"');
 
     core.info('Updating and pushing tag...');
-    execSync(`git tag -f ${tagName}`);
-    execSync('git push origin --force --tags');
+    await execAsync(`git tag -f ${tagName}`);
+    await execAsync('git push origin --force --tags');
 }
 
 async function getTagName(ref) {
