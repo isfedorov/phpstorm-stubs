@@ -49,20 +49,25 @@ run().catch(error => {
  * @returns {Array<string>} - A flat list of all file paths.
  */
 async function readDirRecursively(dir, fileList = []) {
-    const entries = await fs.promises.readdir(dir, { withFileTypes: true });
+    try {
+        const entries = await fs.promises.readdir(dir, { withFileTypes: true });
 
-    await Promise.all(
-        entries.map(async entry => {
-            const fullPath = path.join(dir, entry.name);
-            if (entry.isDirectory()) {
-                return readDirRecursively(fullPath, fileList);
-            } else {
-                fileList.push(fullPath);
-            }
-        })
-    );
+        await Promise.all(
+            entries.map(async entry => {
+                const fullPath = path.join(dir, entry.name);
+                if (entry.isDirectory()) {
+                    return readDirRecursively(fullPath, fileList);
+                } else {
+                    fileList.push(fullPath);
+                }
+            })
+        );
 
-    return fileList;
+        return fileList;
+    } catch (error) {
+        core.error(`Error reading directory ${dir}: ${error.message}`);
+        throw error;
+    }
 }
 
 async function configureGit() {
