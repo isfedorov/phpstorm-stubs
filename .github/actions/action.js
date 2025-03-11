@@ -7,6 +7,43 @@ const util = require('util');
 const { execSync } = require('child_process');
 const execAsync = util.promisify(exec);
 
+async function run() {
+    try {
+        const token = core.getInput('github-token', { required: true });
+        const octokit = github.getOctokit(token);
+        const context = github.context;
+        const tagName = await getTagName(context.ref);
+        const releaseName = `PhpStorm ${tagName.replace('v', '')}`;
+        const tempDir = process.env.TEMP_DIR || 'temp_submodule';
+        const phpFilesDir = process.env.PHP_FILES_DIR || 'filtered_submodule';
+
+        await configureGit();
+
+        try {
+            await createTemporaryBranch();
+            await manageSubmoduleFiles(tempDir, phpFilesDir);
+        } finally {
+            core.info('Cleaning up temporary directories...');
+            fs.rmSync(tempDir, { recursive: true, force: true });
+            fs.rmSync(phpFilesDir, { recursive: true, force: true });
+        }
+
+        await commitAndPushChanges(tagName);
+
+        await createGithubRelease(octokit, tagName, releaseName, context);
+
+    } catch (error) {
+        core.error(`Run failed: ${error.message}`);
+        core.setFailed(error.message);
+    }
+}
+
+// Top-level error handling
+run().catch(error => {
+    core.error(`Unhandled error: ${error.message}`);
+    core.setFailed(error.message);
+});
+
 /**
  * @param {string} dir - The directory to start reading from.
  * @param {Array<string>} [fileList] - An array used during recursion to collect file paths.
@@ -102,7 +139,7 @@ async function commitAndPushChanges(tagName) {
     execSync('git push origin --force --tags');
 }
 
-function getTagName(ref) {
+async function getTagName(ref) {
     if (!ref.startsWith('refs/tags/')) {
         throw new Error('This action should be triggered by a tag push');
     }
@@ -123,36 +160,3 @@ async function createGithubRelease(octokit, tagName, releaseName, context) {
     core.info('Release created successfully!');
     core.setOutput('release-url', release.data.html_url);
 }
-
-async function run() {
-    try {
-        const token = core.getInput('github-token', { required: true });
-        const octokit = github.getOctokit(token);
-        const context = github.context;
-        const tagName = getTagName(context.ref);
-        const releaseName = `PhpStorm ${tagName.replace('v', '')}`;
-        const tempDir = process.env.TEMP_DIR || 'temp_submodule';
-        const phpFilesDir = process.env.PHP_FILES_DIR || 'filtered_submodule';
-
-        await configureGit();
-
-        try {
-            await createTemporaryBranch();
-            await manageSubmoduleFiles(tempDir, phpFilesDir);
-        } finally {
-            core.info('Cleaning up temporary directories...');
-            fs.rmSync(tempDir, { recursive: true, force: true });
-            fs.rmSync(phpFilesDir, { recursive: true, force: true });
-        }
-
-        await commitAndPushChanges(tagName);
-
-        await createGithubRelease(octokit, tagName, releaseName, context);
-
-    } catch (error) {
-        console.error('Error details:', error);
-        core.setFailed(error.message);
-    }
-}
-
-run();
