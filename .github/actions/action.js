@@ -109,16 +109,32 @@ function getTagName(ref) {
     return ref.replace('refs/tags/', '');
 }
 
+async function createGithubRelease(octokit, tagName, releaseName, context) {
+    core.info(`Creating release ${releaseName} from tag ${tagName}...`);
+    const release = await octokit.rest.repos.createRelease({
+        ...context.repo,
+        tag_name: tagName,
+        name: releaseName,
+        body: 'Automated release including submodule files',
+        draft: false,
+        prerelease: false
+    });
+
+    core.info('Release created successfully!');
+    core.setOutput('release-url', release.data.html_url);
+}
+
 async function run() {
     try {
         const token = core.getInput('github-token', { required: true });
         const octokit = github.getOctokit(token);
-
         const context = github.context;
-        await configureGit();
-
+        const tagName = getTagName(context.ref);
+        const releaseName = `PhpStorm ${tagName.replace('v', '')}`;
         const tempDir = process.env.TEMP_DIR || 'temp_submodule';
         const phpFilesDir = process.env.PHP_FILES_DIR || 'filtered_submodule';
+
+        await configureGit();
 
         try {
             await createTemporaryBranch();
@@ -129,24 +145,9 @@ async function run() {
             fs.rmSync(phpFilesDir, { recursive: true, force: true });
         }
 
-        const tagName = getTagName(context.ref);
-        const releaseName = `PhpStorm ${tagName.replace('v', '')}`;
-
         await commitAndPushChanges(tagName);
 
-        console.log(`Creating release ${releaseName} from tag ${tagName}...`);
-
-        const release = await octokit.rest.repos.createRelease({
-            ...context.repo,
-            tag_name: tagName,
-            name: releaseName,
-            body: 'Automated release including submodule files',
-            draft: false,
-            prerelease: false
-        });
-
-        console.log('Release created successfully!');
-        core.setOutput("release-url", release.data.html_url);
+        await createGithubRelease(octokit, tagName, releaseName, context);
 
     } catch (error) {
         console.error('Error details:', error);
