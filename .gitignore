@@ -21,3 +21,4 @@ vendor
 .phpunit.result.cache
 
 ReflectionData.json
+/.github/actions/node_modules/
