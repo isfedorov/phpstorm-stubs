@@ -27,16 +27,22 @@ async function readDirRecursively(dir, fileList = []) {
     return fileList;
 }
 
+async function configureGit() {
+    const gitUserName = core.getInput('git-user-name') || 'GitHub Action';
+    const gitUserEmail = core.getInput('git-user-email') || 'action@github.com';
+
+    core.info('Configuring Git...');
+    await execAsync(`git config --global user.name "${gitUserName}"`);
+    await execAsync(`git config --global user.email "${gitUserEmail}"`);
+}
 
 async function run() {
     try {
-        const token = core.getInput('github-token', {required: true});
+        const token = core.getInput('github-token', { required: true });
         const octokit = github.getOctokit(token);
-        const context = github.context;
 
-        console.log('Configuring git...');
-        execSync('git config --global user.name "GitHub Action"');
-        execSync('git config --global user.email "action@github.com"');
+        const context = github.context;
+        await configureGit();
 
         console.log('Initializing and updating submodule...');
         execSync('git submodule update --init --recursive');
