@@ -45,30 +45,26 @@ run().catch(error => {
 
 /**
  * @param {string} dir - The directory to start reading from.
- * @param {Array<string>} [fileList] - An array used during recursion to collect file paths.
  * @returns {Array<string>} - A flat list of all file paths.
  */
-async function readDirRecursively(dir, fileList = []) {
+async function readDirRecursively(dir) {
     try {
         const entries = await fs.promises.readdir(dir, { withFileTypes: true });
 
-        await Promise.all(
-            entries.map(async entry => {
+        const files = await Promise.all(
+            entries.map(entry => {
                 const fullPath = path.join(dir, entry.name);
-                if (entry.isDirectory()) {
-                    return readDirRecursively(fullPath, fileList);
-                } else {
-                    fileList.push(fullPath);
-                }
+                return entry.isDirectory() ? readDirRecursively(fullPath) : fullPath;
             })
         );
 
-        return fileList;
+        return files.flat();
     } catch (error) {
         core.error(`Error reading directory ${dir}: ${error.message}`);
         throw error;
     }
 }
+
 
 async function configureGit(gitUserName, gitUserEmail) {
     core.info('Configuring Git...');
@@ -78,23 +74,23 @@ async function configureGit(gitUserName, gitUserEmail) {
         core.info(`Git configured successfully with user: ${gitUserName}, email: ${gitUserEmail}`);
     } catch (error) {
         core.error('Failed to configure Git.');
+        core.setFailed(error.message);
         throw error;
     }
 }
 
 async function manageSubmoduleFiles(tempDir, phpFilesDir) {
-    console.log('Initializing and updating submodule...');
+    core.info('Initializing and updating submodule...');
     await execAsync('git submodule update --init --recursive');
 
     const tempBranch = `release-${Date.now()}`;
-    console.log(`Creating temporary branch ${tempBranch}...`);
+    core.info(`Creating temporary branch ${tempBranch}...`);
     await execAsync(`git checkout -b ${tempBranch}`);
 
-    console.log('Saving submodule files...');
+    core.info('Saving submodule files...');
     fs.mkdirSync(tempDir, {recursive: true});
     fs.mkdirSync(phpFilesDir, {recursive: true});
     await execAsync(`cp -r meta/attributes/public/* ${tempDir}`);
-
 
     core.info(`Reading contents of ${tempDir} recursively...`);
     core.info('Reading files recursively...');
@@ -105,7 +101,7 @@ async function manageSubmoduleFiles(tempDir, phpFilesDir) {
     });
 
 
-    console.log('Filtering PHP files...');
+    core.info('Filtering PHP files...');
     allFiles.forEach(filePath => {
         if (filePath.endsWith('.php')) {
             const fileName = path.basename(filePath);
@@ -115,17 +111,17 @@ async function manageSubmoduleFiles(tempDir, phpFilesDir) {
     });
 
     if (fs.readdirSync(phpFilesDir).length === 0) {
-        console.log('No PHP files found during filtering.');
+        core.info('No PHP files found during filtering.');
     } else {
-        console.log('PHP files successfully filtered and copied.');
+        core.info('PHP files successfully filtered and copied.');
     }
 
-    console.log('Removing submodule...');
+    core.info('Removing submodule...');
     await execAsync('git submodule deinit -f -- meta/attributes/public');
     await execAsync('git rm -f meta/attributes/public');
     await execAsync('rm -rf .git/modules/meta/attributes/public');
 
-    console.log('Restoring filtered PHP files...');
+    core.info('Restoring filtered PHP files...');
     await fs.promises.mkdir('meta/attributes/public', { recursive: true });
     await execAsync(`cp -r ${phpFilesDir}/* meta/attributes/public/`);
     await execAsync(`rm -rf ${phpFilesDir}`);
@@ -139,7 +135,7 @@ async function createTemporaryBranch() {
 }
 
 async function commitAndPushChanges(tagName) {
-    console.log('Committing changes...');
+    core.info('Committing changes...');
     await execAsync('git add -f meta/attributes/public/');
     await execAsync('git commit -m "Convert submodule to regular files for release"');
 
