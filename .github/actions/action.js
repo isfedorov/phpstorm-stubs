@@ -86,6 +86,29 @@ async function manageSubmoduleFiles(tempDir, phpFilesDir) {
     execSync(`rm -rf ${tempDir}`);
 }
 
+async function createTemporaryBranch() {
+    const tempBranch = `release-${Date.now()}`;
+    core.info(`Creating temporary branch ${tempBranch}...`);
+    execSync(`git checkout -b ${tempBranch}`);
+}
+
+async function commitAndPushChanges(tagName) {
+    console.log('Committing changes...');
+    execSync('git add -f meta/attributes/public/');
+    execSync('git commit -m "Convert submodule to regular files for release"');
+
+    core.info('Updating and pushing tag...');
+    execSync(`git tag -f ${tagName}`);
+    execSync('git push origin --force --tags');
+}
+
+function getTagName(ref) {
+    if (!ref.startsWith('refs/tags/')) {
+        throw new Error('This action should be triggered by a tag push');
+    }
+    return ref.replace('refs/tags/', '');
+}
+
 async function run() {
     try {
         const token = core.getInput('github-token', { required: true });
@@ -98,6 +121,7 @@ async function run() {
         const phpFilesDir = process.env.PHP_FILES_DIR || 'filtered_submodule';
 
         try {
+            await createTemporaryBranch();
             await manageSubmoduleFiles(tempDir, phpFilesDir);
         } finally {
             core.info('Cleaning up temporary directories...');
@@ -105,23 +129,11 @@ async function run() {
             fs.rmSync(phpFilesDir, { recursive: true, force: true });
         }
 
-
-        console.log('Committing changes...');
-        execSync('git add -f meta/attributes/public/');
-        execSync('git commit -m "Convert submodule to regular files for release"');
-
-        const ref = context.ref;
-        const tagName = ref.replace('refs/tags/', '');
-
-        if (!ref.startsWith('refs/tags/')) {
-            throw new Error('This action should be triggered by a tag push');
-        }
-
-        console.log('Updating tag...');
-        execSync(`git tag -f ${tagName}`);
-        execSync('git push origin --force --tags');
-
+        const tagName = getTagName(context.ref);
         const releaseName = `PhpStorm ${tagName.replace('v', '')}`;
+
+        await commitAndPushChanges(tagName);
+
         console.log(`Creating release ${releaseName} from tag ${tagName}...`);
 
         const release = await octokit.rest.repos.createRelease({
