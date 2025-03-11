@@ -49,16 +49,18 @@ run().catch(error => {
  * @returns {Array<string>} - A flat list of all file paths.
  */
 async function readDirRecursively(dir, fileList = []) {
-    const entries = await fs.promises.readdir(dir, {withFileTypes: true});
+    const entries = await fs.promises.readdir(dir, { withFileTypes: true });
 
-    for (const entry of entries) {
-        const fullPath = path.join(dir, entry.name);
-        if (entry.isDirectory()) {
-            await readDirRecursively(fullPath, fileList);
-        } else {
-            fileList.push(fullPath);
-        }
-    }
+    await Promise.all(
+        entries.map(async entry => {
+            const fullPath = path.join(dir, entry.name);
+            if (entry.isDirectory()) {
+                return readDirRecursively(fullPath, fileList);
+            } else {
+                fileList.push(fullPath);
+            }
+        })
+    );
 
     return fileList;
 }
