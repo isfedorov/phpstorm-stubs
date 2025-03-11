@@ -54,7 +54,7 @@ async function readDirRecursively(dir, fileList = []) {
     for (const entry of entries) {
         const fullPath = path.join(dir, entry.name);
         if (entry.isDirectory()) {
-            await readDirRecursively(fullPath, fileList);
+            readDirRecursively(fullPath, fileList);
         } else {
             fileList.push(fullPath);
         }
@@ -88,7 +88,7 @@ async function manageSubmoduleFiles(tempDir, phpFilesDir) {
 
     core.info(`Reading contents of ${tempDir} recursively...`);
     core.info('Reading files recursively...');
-    const allFiles = await readDirRecursively(tempDir);
+    const allFiles = readDirRecursively(tempDir);
     core.info(`Files read: ${allFiles.length}`);
     allFiles.forEach(filePath => {
         core.info(`Processing file: ${filePath}`);
