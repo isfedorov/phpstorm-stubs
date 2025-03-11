@@ -1,25 +1,28 @@
 const core = require('@actions/core');
 const github = require('@actions/github');
-const { execSync } = require('child_process');
+const { exec } = require('child_process');
 const fs = require('fs');
 const path = require('path');
+const util = require('util');
+
+const execAsync = util.promisify(exec);
 
 /**
  * @param {string} dir - The directory to start reading from.
  * @param {Array<string>} [fileList] - An array used during recursion to collect file paths.
  * @returns {Array<string>} - A flat list of all file paths.
  */
-function readDirRecursively(dir, fileList = []) {
-    const entries = fs.readdirSync(dir);
+async function readDirRecursively(dir, fileList = []) {
+    const entries = await fs.promises.readdir(dir, { withFileTypes: true });
 
-    entries.forEach(entry => {
-        const fullPath = path.join(dir, entry);
-        if (fs.lstatSync(fullPath).isDirectory()) {
-            readDirRecursively(fullPath, fileList);
+    for (const entry of entries) {
+        const fullPath = path.join(dir, entry.name);
+        if (entry.isDirectory()) {
+            await readDirRecursively(fullPath, fileList);
         } else {
             fileList.push(fullPath);
         }
-    });
+    }
 
     return fileList;
 }
@@ -51,9 +54,8 @@ async function run() {
         console.log(`Reading contents of ${tempDir} recursively...`);
         const allFiles = readDirRecursively(tempDir);
 
-        if (!fs.existsSync(phpFilesDir)) {
-            fs.mkdirSync(phpFilesDir, { recursive: true });
-        }
+    core.info(`Reading contents of ${tempDir} recursively...`);
+    const allFiles = await readDirRecursively(tempDir);
 
         console.log('Filtering PHP files...');
         allFiles.forEach(filePath => {
