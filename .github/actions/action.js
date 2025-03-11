@@ -23,8 +23,8 @@ async function run() {
             await manageSubmoduleFiles(tempDir, phpFilesDir);
         } finally {
             core.info('Cleaning up temporary directories...');
-            fs.rmSync(tempDir, { recursive: true, force: true });
-            fs.rmSync(phpFilesDir, { recursive: true, force: true });
+            await cleanupDir(tempDir);
+            await cleanupDir(phpFilesDir);
         }
 
         await commitAndPushChanges(tagName);
@@ -165,4 +165,13 @@ async function createGithubRelease(octokit, tagName, releaseName, context) {
 
     core.info('Release created successfully!');
     core.setOutput('release-url', release.data.html_url);
+}
+
+async function cleanupDir(directory) {
+    try {
+        await fs.promises.rm(directory, { recursive: true, force: true });
+        core.info(`Successfully cleaned up directory: ${directory}`);
+    } catch (error) {
+        core.warning(`Failed to clean up directory: ${directory}. Error: ${error.message}`);
+    }
 }
