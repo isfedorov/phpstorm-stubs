@@ -75,16 +75,16 @@ async function configureGit() {
 
 async function manageSubmoduleFiles(tempDir, phpFilesDir) {
     console.log('Initializing and updating submodule...');
-    execSync('git submodule update --init --recursive');
+    await execAsync('git submodule update --init --recursive');
 
     const tempBranch = `release-${Date.now()}`;
     console.log(`Creating temporary branch ${tempBranch}...`);
-    execSync(`git checkout -b ${tempBranch}`);
+    await execAsync(`git checkout -b ${tempBranch}`);
 
     console.log('Saving submodule files...');
     fs.mkdirSync(tempDir, {recursive: true});
     fs.mkdirSync(phpFilesDir, {recursive: true});
-    execSync(`cp -r meta/attributes/public/* ${tempDir}`);
+    await execAsync(`cp -r meta/attributes/public/* ${tempDir}`);
 
 
     core.info(`Reading contents of ${tempDir} recursively...`);
@@ -112,21 +112,21 @@ async function manageSubmoduleFiles(tempDir, phpFilesDir) {
     }
 
     console.log('Removing submodule...');
-    execSync('git submodule deinit -f -- meta/attributes/public');
-    execSync('git rm -f meta/attributes/public');
-    execSync('rm -rf .git/modules/meta/attributes/public');
+    await execAsync('git submodule deinit -f -- meta/attributes/public');
+    await execAsync('git rm -f meta/attributes/public');
+    await execAsync('rm -rf .git/modules/meta/attributes/public');
 
     console.log('Restoring filtered PHP files...');
-    execSync('mkdir -p meta/attributes/public');
-    execSync(`cp -r ${phpFilesDir}/* meta/attributes/public/`);
-    execSync(`rm -rf ${phpFilesDir}`);
-    execSync(`rm -rf ${tempDir}`);
+    await execAsync('mkdir -p meta/attributes/public');
+    await execAsync(`cp -r ${phpFilesDir}/* meta/attributes/public/`);
+    await execAsync(`rm -rf ${phpFilesDir}`);
+    await execAsync(`rm -rf ${tempDir}`);
 }
 
 async function createTemporaryBranch() {
     const tempBranch = `release-${Date.now()}`;
     core.info(`Creating temporary branch ${tempBranch}...`);
-    execSync(`git checkout -b ${tempBranch}`);
+    await execAsync(`git checkout -b ${tempBranch}`);
 }
 
 async function commitAndPushChanges(tagName) {
