@@ -89,16 +89,12 @@ async function manageSubmoduleFiles(tempDir, phpFilesDir) {
     await execAsync(`cp -r meta/attributes/public/* ${tempDir}`);
 
     core.info(`Reading contents of ${tempDir} recursively...`);
-    core.info('Reading files recursively...');
     const allFiles = await readDirRecursively(tempDir);
     core.info(`Files read: ${allFiles.length}`);
-    allFiles.forEach(filePath => {
-        core.info(`Processing file: ${filePath}`);
-    });
-
 
     core.info('Filtering PHP files...');
     allFiles.forEach(filePath => {
+        core.info(`Processing file: ${filePath}`);
         if (filePath.endsWith('.php')) {
             const fileName = path.basename(filePath);
             const destPath = path.join(phpFilesDir, fileName);
@@ -120,8 +116,6 @@ async function manageSubmoduleFiles(tempDir, phpFilesDir) {
     core.info('Restoring filtered PHP files...');
     await fs.promises.mkdir('meta/attributes/public', { recursive: true });
     await execAsync(`cp -r ${phpFilesDir}/* meta/attributes/public/`);
-    await execAsync(`rm -rf ${phpFilesDir}`);
-    await execAsync(`rm -rf ${tempDir}`);
 }
 
 async function createTemporaryBranch() {
