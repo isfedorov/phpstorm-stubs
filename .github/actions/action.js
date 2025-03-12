@@ -69,8 +69,8 @@ async function readDirRecursively(dir) {
 async function configureGit(gitUserName, gitUserEmail) {
     core.info('Configuring Git...');
     try {
-        await execAsync(`git config --global user.name "${gitUserName}"`);
-        await execAsync(`git config --global user.email "${gitUserEmail}"`);
+        await safeExec(`git config --global user.name "${gitUserName}"`);
+        await safeExec(`git config --global user.email "${gitUserEmail}"`);
         core.info(`Git configured successfully with user: ${gitUserName}, email: ${gitUserEmail}`);
     } catch (error) {
         core.error('Failed to configure Git.');
@@ -81,12 +81,12 @@ async function configureGit(gitUserName, gitUserEmail) {
 
 async function manageSubmoduleFiles(tempDir, phpFilesDir) {
     core.info('Initializing and updating submodule...');
-    await execAsync('git submodule update --init --recursive');
+    await safeExec('git submodule update --init --recursive');
 
     core.info('Saving submodule files...');
     await createDir(tempDir)
     await createDir(phpFilesDir);
-    await execAsync(`cp -r ${SUBMODULE_PATH}/*  ${tempDir}`);
+    await safeExec(`cp -r ${SUBMODULE_PATH}/*  ${tempDir}`);
 
     await copyPhpFiles(tempDir, phpFilesDir);
 
@@ -111,13 +111,13 @@ async function manageSubmoduleFiles(tempDir, phpFilesDir) {
     }*/
 
     core.info('Removing submodule...');
-    await execAsync(`git submodule deinit -f -- ${SUBMODULE_PATH}`);
-    await execAsync(`git rm -f ${SUBMODULE_PATH}`);
-    await execAsync(`rm -rf .git/modules/${SUBMODULE_PATH}`);
+    await safeExec(`git submodule deinit -f -- ${SUBMODULE_PATH}`);
+    await safeExec(`git rm -f ${SUBMODULE_PATH}`);
+    await safeExec(`rm -rf .git/modules/${SUBMODULE_PATH}`);
 
     core.info('Restoring filtered PHP files...');
     await fs.promises.mkdir(`${SUBMODULE_PATH}`, { recursive: true });
-    await execAsync(`cp -r ${phpFilesDir}/* ${SUBMODULE_PATH}`);
+    await safeExec(`cp -r ${phpFilesDir}/* ${SUBMODULE_PATH}`);
 }
 
 async function copyPhpFiles(sourceDir, destinationDir) {
@@ -141,17 +141,17 @@ async function copyPhpFiles(sourceDir, destinationDir) {
 async function createTemporaryBranch() {
     const tempBranch = `release-${Date.now()}`;
     core.info(`Creating temporary branch ${tempBranch}...`);
-    await execAsync(`git checkout -b ${tempBranch}`);
+    await safeExec(`git checkout -b ${tempBranch}`);
 }
 
 async function commitAndPushChanges(tagName) {
     core.info('Committing changes...');
-    await execAsync('git add -f ' + SUBMODULE_PATH);
-    await execAsync('git commit -m "Convert submodule to regular files for release"');
+    await safeExec('git add -f ' + SUBMODULE_PATH);
+    await safeExec('git commit -m "Convert submodule to regular files for release"');
 
     core.info('Updating and pushing tag...');
-    await execAsync(`git tag -f ${tagName}`);
-    await execAsync('git push origin --force --tags');
+    await safeExec(`git tag -f ${tagName}`);
+    await safeExec('git push origin --force --tags');
 }
 
 async function getTagName(ref) {
@@ -210,6 +210,20 @@ async function createDir(directory) {
         core.info(`Directory created: ${directory}`);
     } catch (error) {
         core.error(`Failed to create directory: ${directory}`);
+        throw error;
+    }
+}
+
+async function safeExec(command) {
+    try {
+        const { stdout, stderr } = await execAsync(command);
+        if (stderr) {
+            core.warning(`Command warning: ${stderr}`);
+        }
+        return stdout.trim();
+    } catch (error) {
+        core.error(`Command failed: ${command}`);
+        core.error(`Error: ${error.message}`);
         throw error;
     }
 }
