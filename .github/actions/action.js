@@ -197,8 +197,16 @@ function validateInputs() {
     const gitUserName = core.getInput('git-user-name') || 'GitHub Action';
     const gitUserEmail = core.getInput('git-user-email') || 'action@github.com';
 
+    if (!/^[a-zA-Z0-9-_]+$/.test(gitUserName)) {
+        throw new Error('Invalid Git user name provided.');
+    }
+
+    if (!/\S+@\S+\.\S+/.test(gitUserEmail)) {
+        throw new Error('Invalid Git email address provided.');
+    }
+
     if (!token) {
-        throw new Error('A valid GitHub Token is required to authenticate.');
+        throw new Error('A valid GitHub token is required.');
     }
 
     return { token, gitUserName, gitUserEmail };
