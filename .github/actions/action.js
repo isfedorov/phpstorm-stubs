@@ -88,7 +88,9 @@ async function manageSubmoduleFiles(tempDir, phpFilesDir) {
     await createDir(phpFilesDir);
     await execAsync(`cp -r ${SUBMODULE_PATH}/*  ${tempDir}`);
 
-    core.info(`Reading contents of ${tempDir} recursively...`);
+    await copyPhpFiles(tempDir, phpFilesDir);
+
+    /*core.info(`Reading contents of ${tempDir} recursively...`);
     const allFiles = await readDirRecursively(tempDir);
     core.info(`Files read: ${allFiles.length}`);
 
@@ -106,7 +108,7 @@ async function manageSubmoduleFiles(tempDir, phpFilesDir) {
         core.info('No PHP files found during filtering.');
     } else {
         core.info('PHP files successfully filtered and copied.');
-    }
+    }*/
 
     core.info('Removing submodule...');
     await execAsync(`git submodule deinit -f -- ${SUBMODULE_PATH}`);
@@ -116,6 +118,24 @@ async function manageSubmoduleFiles(tempDir, phpFilesDir) {
     core.info('Restoring filtered PHP files...');
     await fs.promises.mkdir(`${SUBMODULE_PATH}`, { recursive: true });
     await execAsync(`cp -r ${phpFilesDir}/* ${SUBMODULE_PATH}`);
+}
+
+async function copyPhpFiles(sourceDir, destinationDir) {
+    const phpFiles = [];
+    const allFiles = await readDirRecursively(sourceDir);
+
+    await Promise.all(
+        allFiles.map(async (filePath) => {
+            if (filePath.endsWith('.php')) {
+                const fileName = path.basename(filePath);
+                const destPath = path.join(destinationDir, fileName);
+                phpFiles.push(filePath);
+                await fs.promises.copyFile(filePath, destPath);
+            }
+        })
+    );
+
+    return phpFiles;
 }
 
 async function createTemporaryBranch() {
