@@ -23,8 +23,7 @@ async function run() {
             await manageSubmoduleFiles(tempDir, phpFilesDir);
         } finally {
             core.info('Cleaning up temporary directories...');
-            await cleanupDir(tempDir);
-            await cleanupDir(phpFilesDir);
+            await cleanupDirs([tempDir, phpFilesDir]);
         }
 
         await commitAndPushChanges(tagName);
@@ -84,8 +83,8 @@ async function manageSubmoduleFiles(tempDir, phpFilesDir) {
     await execAsync('git submodule update --init --recursive');
 
     core.info('Saving submodule files...');
-    fs.mkdirSync(tempDir, {recursive: true});
-    fs.mkdirSync(phpFilesDir, {recursive: true});
+    await createDir(tempDir)
+    await createDir(phpFilesDir);
     await execAsync(`cp -r meta/attributes/public/* ${tempDir}`);
 
     core.info(`Reading contents of ${tempDir} recursively...`);
@@ -156,12 +155,16 @@ async function createGithubRelease(octokit, tagName, releaseName, context) {
     core.setOutput('release-url', release.data.html_url);
 }
 
-async function cleanupDir(directory) {
+async function cleanupDirs(directories) {
     try {
-        await fs.promises.rm(directory, { recursive: true, force: true });
-        core.info(`Successfully cleaned up directory: ${directory}`);
+        await Promise.all(
+            directories.map(async (directory) => {
+                await fs.promises.rm(directory, { recursive: true, force: true });
+                core.info(`Successfully cleaned: ${directory}`);
+            })
+        );
     } catch (error) {
-        core.warning(`Failed to clean up directory: ${directory}. Error: ${error.message}`);
+        core.warning(`Error during cleanup: ${error.message}`);
     }
 }
 
@@ -175,4 +178,14 @@ function validateInputs() {
     }
 
     return { token, gitUserName, gitUserEmail };
+}
+
+async function createDir(directory) {
+    try {
+        await fs.promises.mkdir(directory, { recursive: true });
+        core.info(`Directory created: ${directory}`);
+    } catch (error) {
+        core.error(`Failed to create directory: ${directory}`);
+        throw error;
+    }
 }
