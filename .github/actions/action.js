@@ -5,6 +5,9 @@ const fs = require('fs');
 const path = require('path');
 const util = require('util');
 const execAsync = util.promisify(exec);
+const SUBMODULE_PATH = 'meta/attributes/public';
+const TEMP_DIR = process.env.TEMP_DIR || 'temp_submodule';
+const PHP_FILES_DIR = process.env.PHP_FILES_DIR || 'filtered_submodule';
 
 async function run() {
     try {
@@ -13,17 +16,15 @@ async function run() {
         const context = github.context;
         const tagName = await getTagName(context.ref);
         const releaseName = `PhpStorm ${tagName.replace('v', '')}`;
-        const tempDir = process.env.TEMP_DIR || 'temp_submodule';
-        const phpFilesDir = process.env.PHP_FILES_DIR || 'filtered_submodule';
 
         await configureGit(gitUserName, gitUserEmail);
 
         try {
             await createTemporaryBranch();
-            await manageSubmoduleFiles(tempDir, phpFilesDir);
+            await manageSubmoduleFiles(TEMP_DIR, PHP_FILES_DIR);
         } finally {
             core.info('Cleaning up temporary directories...');
-            await cleanupDirs([tempDir, phpFilesDir]);
+            await cleanupDirs([TEMP_DIR, PHP_FILES_DIR]);
         }
 
         await commitAndPushChanges(tagName);
@@ -85,7 +86,7 @@ async function manageSubmoduleFiles(tempDir, phpFilesDir) {
     core.info('Saving submodule files...');
     await createDir(tempDir)
     await createDir(phpFilesDir);
-    await execAsync(`cp -r meta/attributes/public/* ${tempDir}`);
+    await execAsync(`cp -r ${SUBMODULE_PATH}/*  ${tempDir}`);
 
     core.info(`Reading contents of ${tempDir} recursively...`);
     const allFiles = await readDirRecursively(tempDir);
@@ -108,13 +109,13 @@ async function manageSubmoduleFiles(tempDir, phpFilesDir) {
     }
 
     core.info('Removing submodule...');
-    await execAsync('git submodule deinit -f -- meta/attributes/public');
-    await execAsync('git rm -f meta/attributes/public');
-    await execAsync('rm -rf .git/modules/meta/attributes/public');
+    await execAsync(`git submodule deinit -f -- ${SUBMODULE_PATH}`);
+    await execAsync(`git rm -f ${SUBMODULE_PATH}`);
+    await execAsync(`rm -rf .git/modules/${SUBMODULE_PATH}`);
 
     core.info('Restoring filtered PHP files...');
-    await fs.promises.mkdir('meta/attributes/public', { recursive: true });
-    await execAsync(`cp -r ${phpFilesDir}/* meta/attributes/public/`);
+    await fs.promises.mkdir(`${SUBMODULE_PATH}`, { recursive: true });
+    await execAsync(`cp -r ${phpFilesDir}/* ${SUBMODULE_PATH}`);
 }
 
 async function createTemporaryBranch() {
@@ -125,7 +126,7 @@ async function createTemporaryBranch() {
 
 async function commitAndPushChanges(tagName) {
     core.info('Committing changes...');
-    await execAsync('git add -f meta/attributes/public/');
+    await execAsync('git add -f ' + SUBMODULE_PATH);
     await execAsync('git commit -m "Convert submodule to regular files for release"');
 
     core.info('Updating and pushing tag...');
@@ -135,9 +136,12 @@ async function commitAndPushChanges(tagName) {
 
 async function getTagName(ref) {
     if (!ref.startsWith('refs/tags/')) {
-        throw new Error('This action should be triggered by a tag push');
+        core.error(`Invalid ref: ${ref}. This action should be triggered by a tag push.`);
+        throw new Error('This action expects a tag push event.');
     }
-    return ref.replace('refs/tags/', '');
+    const tagName = ref.replace('refs/tags/', '');
+    core.info(`Tag identified: ${tagName}`);
+    return tagName;
 }
 
 async function createGithubRelease(octokit, tagName, releaseName, context) {
