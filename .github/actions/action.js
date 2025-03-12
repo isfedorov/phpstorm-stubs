@@ -83,8 +83,6 @@ async function manageSubmoduleFiles(tempDir, phpFilesDir) {
     core.info('Initializing and updating submodule...');
     await execAsync('git submodule update --init --recursive');
 
-    await createTemporaryBranch();
-
     core.info('Saving submodule files...');
     fs.mkdirSync(tempDir, {recursive: true});
     fs.mkdirSync(phpFilesDir, {recursive: true});
