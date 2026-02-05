@@ -1,0 +1,116 @@
+<?php
+
+namespace StubTests\Unit\Parsers\AST;
+
+use PHPUnit\Framework\TestCase as BaseTestCase;
+use StubTests\Sources\Model\Entities\PHPClassConstant;
+use StubTests\Sources\Parsers\Entities\Stubs\StubClassParser;
+use StubTests\Unit\Parsers\AST\fixtures\FixtureStubsDataProvider;
+
+class StubConstantParserTest extends BaseTestCase
+{
+    private FixtureStubsDataProvider $filesProvider;
+    private StubClassParser $classParser;
+
+    protected function setUp(): void
+    {
+        $fixturesPath = __DIR__ . '/fixtures/Constants';
+        $this->filesProvider = new FixtureStubsDataProvider($fixturesPath);
+        $this->classParser = new StubClassParser();
+    }
+
+    private function getConstantsFromClass(string $fixtureFile): array
+    {
+        $stubCode = $this->filesProvider->getStubFileContent($fixtureFile);
+        $class = $this->classParser->parse($stubCode);
+        return $class->getConstants();
+    }
+
+    public function testItReturnsCorrectInstance()
+    {
+        $constants = $this->getConstantsFromClass('simple_constant.txt');
+        self::assertInstanceOf(PHPClassConstant::class, $constants[0]);
+    }
+
+    public function testItCanParseConstantName()
+    {
+        $constants = $this->getConstantsFromClass('simple_constant.txt');
+        self::assertEquals('SIMPLE_CONST', $constants[0]->getName());
+    }
+
+    public function testItCanParsePublicVisibility()
+    {
+        $constants = $this->getConstantsFromClass('complete_constant.txt');
+        $publicConstant = $constants[0]; // PUBLIC_CONST
+        self::assertEquals('public', $publicConstant->visibility);
+    }
+
+    public function testItCanParseProtectedVisibility()
+    {
+        $constants = $this->getConstantsFromClass('complete_constant.txt');
+        $protectedConstant = $constants[1]; // PROTECTED_CONST
+        self::assertEquals('protected', $protectedConstant->visibility);
+    }
+
+    public function testItCanParsePrivateVisibility()
+    {
+        $constants = $this->getConstantsFromClass('complete_constant.txt');
+        $privateConstant = $constants[2]; // PRIVATE_CONST
+        self::assertEquals('private', $privateConstant->visibility);
+    }
+
+    public function testItCanParseFinalModifier()
+    {
+        $constants = $this->getConstantsFromClass('complete_constant.txt');
+        $finalConstant = $constants[3]; // FINAL_CONST
+        self::assertTrue($finalConstant->isFinal());
+    }
+
+    public function testItParsesNonFinalByDefault()
+    {
+        $constants = $this->getConstantsFromClass('simple_constant.txt');
+        self::assertFalse($constants[0]->isFinal());
+    }
+
+    public function testItParsesPublicByDefaultForOldStyleConstants()
+    {
+        $constants = $this->getConstantsFromClass('simple_constant.txt');
+        self::assertEquals('public', $constants[0]->visibility);
+    }
+
+    public function testItParsesAllConstantsFromClass()
+    {
+        $constants = $this->getConstantsFromClass('complete_constant.txt');
+        self::assertCount(4, $constants);
+
+        self::assertEquals('PUBLIC_CONST', $constants[0]->getName());
+        self::assertEquals('PROTECTED_CONST', $constants[1]->getName());
+        self::assertEquals('PRIVATE_CONST', $constants[2]->getName());
+        self::assertEquals('FINAL_CONST', $constants[3]->getName());
+    }
+
+    public function testItParsesVisibilityCorrectly()
+    {
+        $constants = $this->getConstantsFromClass('visibility_constants.txt');
+        self::assertCount(3, $constants);
+
+        self::assertEquals('PUBLIC', $constants[0]->getName());
+        self::assertEquals('public', $constants[0]->visibility);
+
+        self::assertEquals('PROTECTED', $constants[1]->getName());
+        self::assertEquals('protected', $constants[1]->visibility);
+
+        self::assertEquals('PRIVATE', $constants[2]->getName());
+        self::assertEquals('private', $constants[2]->visibility);
+    }
+
+    public function testItParsesCombinedModifiers()
+    {
+        $constants = $this->getConstantsFromClass('complete_constant.txt');
+        $finalConstant = $constants[3]; // final public const
+
+        self::assertEquals('FINAL_CONST', $finalConstant->getName());
+        self::assertEquals('public', $finalConstant->visibility);
+        self::assertTrue($finalConstant->isFinal());
+    }
+}
