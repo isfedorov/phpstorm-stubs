@@ -19,7 +19,7 @@ class ReflectionPropertyParser implements Parser
     public function parse($object)
     {
         $property = new PHPProperty();
-        $property->name = $object->getName();
+        $property->setName($object->getName());
         return $property;
     }
 }

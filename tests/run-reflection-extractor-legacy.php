@@ -37,8 +37,8 @@ require_once __DIR__ . '/testSrc/DataProvider/Wrappers/SerializableReflectionTyp
 require_once __DIR__ . '/testSrc/DataProvider/Wrappers/SerializableReflectionNamedType.php';
 
 use StubTests\Sources\DataProvider\CurrentRuntimeReflectionDataProvider;
-use StubTests\Sources\DataProvider\Wrappers\SerializableReflectionClass;
-use StubTests\Sources\DataProvider\Wrappers\SerializableReflectionFunction;
+use StubTests\Sources\Parsers\Entities\Reflection\Wrappers\SerializableReflectionClass;
+use StubTests\Sources\Parsers\Entities\Reflection\Wrappers\SerializableReflectionFunction;
 
 // Parse CLI arguments
 $phpVersion = isset($argv[1]) ? $argv[1] : PHP_MAJOR_VERSION . '.' . PHP_MINOR_VERSION;

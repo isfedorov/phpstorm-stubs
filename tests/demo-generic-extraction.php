@@ -20,8 +20,7 @@ require_once __DIR__ . '/testSrc/DataProvider/Wrappers/SerializableReflectionPar
 require_once __DIR__ . '/testSrc/DataProvider/Wrappers/SerializableReflectionType.php';
 require_once __DIR__ . '/testSrc/DataProvider/Wrappers/SerializableReflectionNamedType.php';
 
-use StubTests\Sources\DataProvider\Wrappers\SerializableReflectionClass;
-use StubTests\Sources\DataProvider\Wrappers\SerializableReflectionMethod;
+use StubTests\Sources\Parsers\Entities\Reflection\Wrappers\SerializableReflectionClass;
 
 echo "==========================================\n";
 echo "Generic Reflection Data Extraction Demo\n";

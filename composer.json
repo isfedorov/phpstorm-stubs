@@ -26,7 +26,7 @@
   "autoload-dev": {
     "psr-4": {
       "StubTests\\": "tests",
-      "StubTests\\Sources\\": "tests/testSrc",
+      "StubTests\\Sources\\": "tests/Framework",
       "StubTests\\Unit\\": "tests/Unit"
     }
   },

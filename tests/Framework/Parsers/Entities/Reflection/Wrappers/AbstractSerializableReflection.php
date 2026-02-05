@@ -1,6 +1,6 @@
 <?php
 
-namespace StubTests\Sources\DataProvider\Wrappers;
+namespace StubTests\Sources\Parsers\Entities\Reflection\Wrappers;
 
 /**
  * Abstract base class for serializable Reflection wrappers
