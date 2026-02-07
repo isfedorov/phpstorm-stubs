@@ -2,7 +2,7 @@
 
 namespace StubTests\Sources\Parsers\Entities\Stubs;
 
-use StubTests\Sources\Model\Entities\PHPFunction;
+use StubTests\Sources\Parsers\Entities\Model\PHPFunction;
 use StubTests\Sources\Parsers\Entities\Stubs\Adapters\Nikic\NikicNodeExtractor;
 use StubTests\Sources\Parsers\Entities\Stubs\Nodes\FunctionNode;
 

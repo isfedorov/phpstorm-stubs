@@ -3,8 +3,8 @@
 namespace StubTests\Unit\Parsers\Storage\Managers;
 
 use PHPUnit\Framework\TestCase;
-use StubTests\Sources\Model\Entities\PHPClass;
 use StubTests\Sources\Parsers\DefaultParsedDataStorageManager;
+use StubTests\Sources\Parsers\Entities\Model\PHPClass;
 use StubTests\Sources\Parsers\InMemoryParsedDataStorage;
 use StubTests\Sources\Parsers\ParsedDataStorageProvider;
 

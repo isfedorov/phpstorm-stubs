@@ -2,7 +2,7 @@
 
 namespace StubTests\Sources\Parsers\Entities\Reflection;
 
-use StubTests\Sources\DataProvider\CurrentRuntimeReflectionDataProvider;
+use StubTests\Sources\DataProvider\CurrentRuntimeReflectionRawDataProvider;
 use StubTests\Sources\Parsers\ParsedDataStorageManager;
 
 /**
@@ -11,7 +11,7 @@ use StubTests\Sources\Parsers\ParsedDataStorageManager;
  */
 class AllReflectionParser
 {
-    private CurrentRuntimeReflectionDataProvider $dataProvider;
+    private CurrentRuntimeReflectionRawDataProvider $dataProvider;
     private ParsedDataStorageManager $storageManager;
     private ReflectionClassParser $classParser;
     private ReflectionFunctionParser $functionParser;
@@ -20,8 +20,8 @@ class AllReflectionParser
     private ReflectionModernConstantParser $constantParser;
 
     public function __construct(
-        CurrentRuntimeReflectionDataProvider $dataProvider,
-        ParsedDataStorageManager $storageManager
+        CurrentRuntimeReflectionRawDataProvider $dataProvider,
+        ParsedDataStorageManager                $storageManager
     ) {
         $this->dataProvider = $dataProvider;
         $this->storageManager = $storageManager;

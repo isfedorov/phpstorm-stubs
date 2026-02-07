@@ -3,8 +3,6 @@
 namespace StubTests\Unit\Parsers\Reflection;
 
 use PHPUnit\Framework\TestCase;
-use StubTests\Sources\Parsers\Entities\Reflection\ReflectionClassLikeParsersRegistry;
-use StubTests\Sources\Parsers\Entities\Reflection\ReflectionClassObjectFactory;
 use StubTests\Sources\Parsers\Entities\Reflection\ReflectionClassParser;
 
 class ReflectionParserRegistryTest extends TestCase

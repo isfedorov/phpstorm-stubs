@@ -4,7 +4,7 @@ namespace StubTests\Sources\Runner;
 
 use ReflectionClass;
 use StubTests\Sources\DataProvider\AllStubsDataProvider;
-use StubTests\Sources\DataProvider\CurrentRuntimeReflectionDataProvider;
+use StubTests\Sources\DataProvider\CurrentRuntimeReflectionRawDataProvider;
 use StubTests\Sources\Parsers\Entities\Reflection\AllReflectionParser;
 use StubTests\Sources\Parsers\Entities\Stubs\AllStubsParser;
 use StubTests\Sources\Parsers\Entities\Stubs\StubClassParser;
@@ -30,7 +30,7 @@ class Runner
                 new JsonParsedDataStorage($cacheFilePath)
             );
             $parser = new AllReflectionParser(
-                new CurrentRuntimeReflectionDataProvider(),
+                new CurrentRuntimeReflectionRawDataProvider(),
                 $parsedReflectionDataStorageManager
             );
             $parser->parseAll();

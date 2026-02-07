@@ -4,11 +4,8 @@ namespace StubTests\Unit\Parsers\Reflection;
 
 use PHPUnit\Framework\TestCase;
 use ReflectionFunction;
-use StubTests\Sources\Model\Entities\NoType;
-use StubTests\Sources\Model\Entities\NullableType;
-use StubTests\Sources\Model\Entities\PHPFunction;
-use StubTests\Sources\Model\Entities\PHPParameter;
-use StubTests\Sources\Model\Entities\StandaloneType;
+use StubTests\Sources\Parsers\Entities\Model\PHPFunction;
+use StubTests\Sources\Parsers\Entities\Model\PHPParameter;
 use StubTests\Sources\Parsers\Entities\Reflection\ReflectionFunctionParser;
 
 class ReflectionFunctionParserTest extends TestCase

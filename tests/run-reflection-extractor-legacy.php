@@ -18,27 +18,27 @@
 error_reporting(E_ALL & ~E_DEPRECATED);
 
 // Manually include only PHP 5.6-compatible files
-require_once __DIR__ . '/testSrc/DataProvider/ReflectionDataProvider.php';
-require_once __DIR__ . '/testSrc/DataProvider/CurrentRuntimeReflectionDataProvider.php';
+require_once __DIR__ . '/Framework/DataProvider/ReflectionDataProvider.php';
+require_once __DIR__ . '/Framework/DataProvider/CurrentRuntimeReflectionRawDataProvider.php';
 
 // Include base wrapper classes first
-require_once __DIR__ . '/testSrc/DataProvider/Wrappers/ReflectionMethodExtractor.php';
-require_once __DIR__ . '/testSrc/DataProvider/Wrappers/AbstractSerializableReflection.php';
+require_once __DIR__ . '/Framework/Parsers/Entities/Reflection/Wrappers/ReflectionMethodExtractor.php';
+require_once __DIR__ . '/Framework/Parsers/Entities/Reflection/Wrappers/AbstractReflectionAdapter.php';
 
 // Include wrapper classes
-require_once __DIR__ . '/testSrc/DataProvider/Wrappers/SerializableReflectionClass.php';
-require_once __DIR__ . '/testSrc/DataProvider/Wrappers/SerializableReflectionClassReference.php';
-require_once __DIR__ . '/testSrc/DataProvider/Wrappers/SerializableReflectionMethod.php';
-require_once __DIR__ . '/testSrc/DataProvider/Wrappers/SerializableReflectionProperty.php';
-require_once __DIR__ . '/testSrc/DataProvider/Wrappers/SerializableReflectionClassConstant.php';
-require_once __DIR__ . '/testSrc/DataProvider/Wrappers/SerializableReflectionFunction.php';
-require_once __DIR__ . '/testSrc/DataProvider/Wrappers/SerializableReflectionParameter.php';
-require_once __DIR__ . '/testSrc/DataProvider/Wrappers/SerializableReflectionType.php';
-require_once __DIR__ . '/testSrc/DataProvider/Wrappers/SerializableReflectionNamedType.php';
+require_once __DIR__ . '/Framework/Parsers/Entities/Reflection/Wrappers/AdaptedReflectionClass.php';
+require_once __DIR__ . '/Framework/Parsers/Entities/Reflection/Wrappers/AdaptedReflectionClassReference.php';
+require_once __DIR__ . '/Framework/Parsers/Entities/Reflection/Wrappers/AdaptedReflectionMethod.php';
+require_once __DIR__ . '/Framework/Parsers/Entities/Reflection/Wrappers/AdaptedReflectionProperty.php';
+require_once __DIR__ . '/Framework/Parsers/Entities/Reflection/Wrappers/AdaptedReflectionClassConstant.php';
+require_once __DIR__ . '/Framework/Parsers/Entities/Reflection/Wrappers/AdaptedReflectionFunction.php';
+require_once __DIR__ . '/Framework/Parsers/Entities/Reflection/Wrappers/AdaptedReflectionParameter.php';
+require_once __DIR__ . '/Framework/Parsers/Entities/Reflection/Wrappers/AdaptedReflectionType.php';
+require_once __DIR__ . '/Framework/Parsers/Entities/Reflection/Wrappers/AdaptedReflectionNamedType.php';
 
-use StubTests\Sources\DataProvider\CurrentRuntimeReflectionDataProvider;
-use StubTests\Sources\Parsers\Entities\Reflection\Wrappers\SerializableReflectionClass;
-use StubTests\Sources\Parsers\Entities\Reflection\Wrappers\SerializableReflectionFunction;
+use StubTests\Sources\DataProvider\CurrentRuntimeReflectionRawDataProvider;
+use StubTests\Sources\Parsers\Entities\Reflection\Wrappers\AdaptedReflectionClass;
+use StubTests\Sources\Parsers\Entities\Reflection\Wrappers\AdaptedReflectionFunction;
 
 // Parse CLI arguments
 $phpVersion = isset($argv[1]) ? $argv[1] : PHP_MAJOR_VERSION . '.' . PHP_MINOR_VERSION;
@@ -56,7 +56,7 @@ echo "========================================\n\n";
 try {
     // Create data provider
     echo "[1/7] Creating reflection data provider...\n";
-    $dataProvider = new CurrentRuntimeReflectionDataProvider();
+    $dataProvider = new CurrentRuntimeReflectionRawDataProvider();
     echo "      ✓ Data provider created\n\n";
 
     // Extract and wrap classes
@@ -66,7 +66,7 @@ try {
     foreach ($classNames as $className) {
         try {
             $reflection = new ReflectionClass($className);
-            $wrappedClasses[] = new SerializableReflectionClass($reflection);
+            $wrappedClasses[] = new AdaptedReflectionClass($reflection);
         } catch (Exception $e) {
             // Skip classes that can't be reflected
             continue;
@@ -81,7 +81,7 @@ try {
     foreach ($interfaceNames as $interfaceName) {
         try {
             $reflection = new ReflectionClass($interfaceName);
-            $wrappedInterfaces[] = new SerializableReflectionClass($reflection);
+            $wrappedInterfaces[] = new AdaptedReflectionClass($reflection);
         } catch (Exception $e) {
             continue;
         }
@@ -95,7 +95,7 @@ try {
     foreach ($enumNames as $enumName) {
         try {
             $reflection = new ReflectionClass($enumName);
-            $wrappedEnums[] = new SerializableReflectionClass($reflection);
+            $wrappedEnums[] = new AdaptedReflectionClass($reflection);
         } catch (Exception $e) {
             continue;
         }
@@ -109,7 +109,7 @@ try {
     foreach ($functionNames as $functionName) {
         try {
             $reflection = new ReflectionFunction($functionName);
-            $wrappedFunctions[] = new SerializableReflectionFunction($reflection);
+            $wrappedFunctions[] = new AdaptedReflectionFunction($reflection);
         } catch (Exception $e) {
             continue;
         }

@@ -3,7 +3,10 @@
 namespace StubTests\Sources\Parsers\Entities\Stubs;
 
 use StubTests\Sources\Parsers\Entities\Stubs\Nodes\ClassNode;
+use StubTests\Sources\Parsers\Entities\Stubs\Nodes\ConstantDefinitionNode;
+use StubTests\Sources\Parsers\Entities\Stubs\Nodes\EnumNode;
 use StubTests\Sources\Parsers\Entities\Stubs\Nodes\FunctionNode;
+use StubTests\Sources\Parsers\Entities\Stubs\Nodes\InterfaceNode;
 
 /**
  * Interface for extracting AST nodes from PHP stub code.

@@ -5,7 +5,6 @@ namespace StubTests\Unit\Parsers\Helpers;
 use PHPUnit\Framework\TestCase;
 use ReflectionNamedType;
 use ReflectionType;
-use StubTests\Sources\Parsers\Helpers\TypeHelper;
 
 class TypeHelperTest extends TestCase
 {

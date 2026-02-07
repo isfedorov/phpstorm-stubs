@@ -4,9 +4,8 @@ namespace StubTests\Unit\Parsers\Reflection;
 
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
-use ReflectionMethod;
-use StubTests\Sources\Model\Entities\PHPInterface;
-use StubTests\Sources\Model\Entities\PHPMethod;
+use StubTests\Sources\Parsers\Entities\Model\PHPInterface;
+use StubTests\Sources\Parsers\Entities\Model\PHPMethod;
 use StubTests\Sources\Parsers\Entities\Reflection\ReflectionInterfaceParser;
 
 class ReflectionInterfaceParserTest extends TestCase

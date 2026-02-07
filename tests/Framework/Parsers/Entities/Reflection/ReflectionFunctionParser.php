@@ -3,12 +3,12 @@
 namespace StubTests\Sources\Parsers\Entities\Reflection;
 
 use ReflectionFunction;
-use StubTests\Sources\Model\Entities\NoType;
-use StubTests\Sources\Model\Entities\NullableType;
-use StubTests\Sources\Model\Entities\PHPFunction;
-use StubTests\Sources\Model\Entities\PHPParameter;
-use StubTests\Sources\Model\Entities\StandaloneType;
-use StubTests\Sources\Model\Entities\UnionType;
+use StubTests\Sources\Parsers\Entities\Model\NoType;
+use StubTests\Sources\Parsers\Entities\Model\NullableType;
+use StubTests\Sources\Parsers\Entities\Model\PHPFunction;
+use StubTests\Sources\Parsers\Entities\Model\PHPParameter;
+use StubTests\Sources\Parsers\Entities\Model\StandaloneType;
+use StubTests\Sources\Parsers\Entities\Model\UnionType;
 use StubTests\Sources\Parsers\Parser;
 
 /**

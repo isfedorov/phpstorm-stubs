@@ -2,10 +2,20 @@
 
 namespace StubTests\Sources\Parsers;
 
-use StubTests\Sources\Model;
-use StubTests\Sources\Model\Entities\PHPClass;
+use StubTests\Sources\Parsers\Entities\Model\PHPClass;
+use StubTests\Sources\Parsers\Entities\Model\PHPClassConstant;
+use StubTests\Sources\Parsers\Entities\Model\PHPConstant;
+use StubTests\Sources\Parsers\Entities\Model\PHPEnum;
+use StubTests\Sources\Parsers\Entities\Model\PHPFunction;
+use StubTests\Sources\Parsers\Entities\Model\PHPInterface;
+use StubTests\Sources\Parsers\Entities\Model\PHPMethod;
+use StubTests\Sources\Parsers\Entities\Model\PHPParameter;
+use StubTests\Sources\Parsers\Entities\Model\PHPProperty;
+use StubTests\Sources\Parsers\Entities\Model\PrivateAccessModifier;
+use StubTests\Sources\Parsers\Entities\Model\ProtectedAccessModifier;
+use StubTests\Sources\Parsers\Entities\Model\PublicAccessModifier;
 
-class JsonParsedDataStorage implements ParsedDataStorageProvider
+class JsonParsedDataStorage implements ParsedDataPersistentStorageProvider
 {
     private string $pathToJsonFile;
     private array $entities = [];
@@ -129,7 +139,7 @@ class JsonParsedDataStorage implements ParsedDataStorageProvider
     /**
      * Serialize a PHPMethod to array
      */
-    private function serializeMethod(Model\Entities\PHPMethod $method): array
+    private function serializeMethod(PHPMethod $method): array
     {
         $data = [
             'name' => $method->getName(),
@@ -153,7 +163,7 @@ class JsonParsedDataStorage implements ParsedDataStorageProvider
     /**
      * Serialize a PHPProperty to array
      */
-    private function serializeProperty(Model\Entities\PHPProperty $property): array
+    private function serializeProperty(PHPProperty $property): array
     {
         $data = [
             'name' => $property->getName(),
@@ -176,7 +186,7 @@ class JsonParsedDataStorage implements ParsedDataStorageProvider
     /**
      * Serialize a PHPClassConstant to array
      */
-    private function serializeClassConstant(Model\Entities\PHPClassConstant $constant): array
+    private function serializeClassConstant(PHPClassConstant $constant): array
     {
         return [
             'name' => $constant->getName(),
@@ -189,9 +199,9 @@ class JsonParsedDataStorage implements ParsedDataStorageProvider
     /**
      * Deserialize a PHPMethod from array
      */
-    private function deserializeMethod(array $data): Model\Entities\PHPMethod
+    private function deserializeMethod(array $data): PHPMethod
     {
-        $method = new Model\Entities\PHPMethod();
+        $method = new PHPMethod();
         $method->setName($data['name'] ?? '');
         $method->setIsStatic($data['isStatic'] ?? false);
         $method->setIsFinal($data['isFinal'] ?? false);
@@ -201,11 +211,11 @@ class JsonParsedDataStorage implements ParsedDataStorageProvider
         // Deserialize access modifier
         $accessModifier = $data['accessModifier'] ?? 'public';
         if ($accessModifier === 'private') {
-            $method->setAccess(new Model\Entities\PrivateAccessModifier());
+            $method->setAccess(new PrivateAccessModifier());
         } elseif ($accessModifier === 'protected') {
-            $method->setAccess(new Model\Entities\ProtectedAccessModifier());
+            $method->setAccess(new ProtectedAccessModifier());
         } else {
-            $method->setAccess(new Model\Entities\PublicAccessModifier());
+            $method->setAccess(new PublicAccessModifier());
         }
 
         return $method;
@@ -214,9 +224,9 @@ class JsonParsedDataStorage implements ParsedDataStorageProvider
     /**
      * Deserialize a PHPProperty from array
      */
-    private function deserializeProperty(array $data): Model\Entities\PHPProperty
+    private function deserializeProperty(array $data): PHPProperty
     {
-        $property = new Model\Entities\PHPProperty();
+        $property = new PHPProperty();
         $property->setName($data['name'] ?? '');
         $property->setIsStatic($data['isStatic'] ?? false);
         $property->setIsReadonly($data['isReadonly'] ?? false);
@@ -225,11 +235,11 @@ class JsonParsedDataStorage implements ParsedDataStorageProvider
         // Deserialize access modifier
         $accessModifier = $data['accessModifier'] ?? 'public';
         if ($accessModifier === 'private') {
-            $property->setAccess(new Model\Entities\PrivateAccessModifier());
+            $property->setAccess(new PrivateAccessModifier());
         } elseif ($accessModifier === 'protected') {
-            $property->setAccess(new Model\Entities\ProtectedAccessModifier());
+            $property->setAccess(new ProtectedAccessModifier());
         } else {
-            $property->setAccess(new Model\Entities\PublicAccessModifier());
+            $property->setAccess(new PublicAccessModifier());
         }
 
         return $property;
@@ -238,9 +248,9 @@ class JsonParsedDataStorage implements ParsedDataStorageProvider
     /**
      * Deserialize a PHPClassConstant from array
      */
-    private function deserializeClassConstant(array $data): Model\Entities\PHPClassConstant
+    private function deserializeClassConstant(array $data): PHPClassConstant
     {
-        $constant = new Model\Entities\PHPClassConstant();
+        $constant = new PHPClassConstant();
         $constant->setName($data['name'] ?? '');
         $constant->value = $data['value'] ?? null;
         $constant->visibility = $data['visibility'] ?? 'public';
@@ -302,7 +312,7 @@ class JsonParsedDataStorage implements ParsedDataStorageProvider
             return $data;
         }
 
-        if ($entity instanceof Model\Entities\PHPFunction) {
+        if ($entity instanceof PHPFunction) {
             $data = [
                 '_type' => 'PHPFunction',
                 'name' => $this->toJsonSafe($entity->getName()),
@@ -342,7 +352,7 @@ class JsonParsedDataStorage implements ParsedDataStorageProvider
             return $data;
         }
 
-        if ($entity instanceof Model\Entities\PHPInterface) {
+        if ($entity instanceof PHPInterface) {
             $data = [
                 '_type' => 'PHPInterface',
                 'name' => $this->toJsonSafe($entity->getName()),
@@ -372,7 +382,7 @@ class JsonParsedDataStorage implements ParsedDataStorageProvider
             return $data;
         }
 
-        if ($entity instanceof Model\Entities\PHPEnum) {
+        if ($entity instanceof PHPEnum) {
             $data = [
                 '_type' => 'PHPEnum',
                 'name' => $this->toJsonSafe($entity->getName()),
@@ -404,7 +414,7 @@ class JsonParsedDataStorage implements ParsedDataStorageProvider
             return $data;
         }
 
-        if ($entity instanceof Model\Entities\PHPConstant) {
+        if ($entity instanceof PHPConstant) {
             $data = [
                 '_type' => 'PHPConstant',
                 'name' => $this->toJsonSafe($entity->getName()),
@@ -471,7 +481,7 @@ class JsonParsedDataStorage implements ParsedDataStorageProvider
         }
 
         if ($data['_type'] === 'PHPFunction') {
-            $function = new Model\Entities\PHPFunction();
+            $function = new PHPFunction();
             $function->setName($data['name'] ?? null);
             $function->setNamespace($data['namespace'] ?? null);
             $function->setId($data['id'] ?? null);
@@ -483,7 +493,7 @@ class JsonParsedDataStorage implements ParsedDataStorageProvider
             // Deserialize parameters
             if (isset($data['parameters']) && is_array($data['parameters'])) {
                 $parameters = array_map(function ($paramData) {
-                    return new Model\Entities\PHPParameter($paramData['name'] ?? '');
+                    return new PHPParameter($paramData['name'] ?? '');
                 }, $data['parameters']);
                 $function->setParameters($parameters);
             }
@@ -492,7 +502,7 @@ class JsonParsedDataStorage implements ParsedDataStorageProvider
         }
 
         if ($data['_type'] === 'PHPInterface') {
-            $interface = new Model\Entities\PHPInterface();
+            $interface = new PHPInterface();
             $interface->setName($data['name'] ?? null);
             $interface->setNamespace($data['namespace'] ?? null);
             $interface->setId($data['id'] ?? null);
@@ -517,7 +527,7 @@ class JsonParsedDataStorage implements ParsedDataStorageProvider
         }
 
         if ($data['_type'] === 'PHPEnum') {
-            $enum = new Model\Entities\PHPEnum();
+            $enum = new PHPEnum();
             $enum->setName($data['name'] ?? null);
             $enum->setNamespace($data['namespace'] ?? null);
             $enum->setId($data['id'] ?? null);
@@ -539,7 +549,7 @@ class JsonParsedDataStorage implements ParsedDataStorageProvider
         }
 
         if ($data['_type'] === 'PHPConstant') {
-            $constant = new Model\Entities\PHPConstant();
+            $constant = new PHPConstant();
             $constant->setName($data['name'] ?? null);
             $constant->setNamespace($data['namespace'] ?? null);
             $constant->setId($data['id'] ?? null);

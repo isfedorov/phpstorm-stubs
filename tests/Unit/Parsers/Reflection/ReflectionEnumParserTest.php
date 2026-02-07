@@ -7,9 +7,9 @@ use ReflectionClass;
 use ReflectionClassConstant;
 use ReflectionEnum;
 use ReflectionMethod;
-use StubTests\Sources\Model\Entities\PHPEnum;
-use StubTests\Sources\Model\Entities\PHPInterface;
-use StubTests\Sources\Model\Entities\PHPMethod;
+use StubTests\Sources\Parsers\Entities\Model\PHPEnum;
+use StubTests\Sources\Parsers\Entities\Model\PHPInterface;
+use StubTests\Sources\Parsers\Entities\Model\PHPMethod;
 use StubTests\Sources\Parsers\Entities\Reflection\ReflectionEnumParser;
 
 class ReflectionEnumParserTest extends TestCase

@@ -5,7 +5,7 @@ namespace StubTests\Unit\Parsers\Reflection;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 use ReflectionMethod;
-use StubTests\Sources\Model\Entities\PHPMethod;
+use StubTests\Sources\Parsers\Entities\Model\PHPMethod;
 use StubTests\Sources\Parsers\Entities\Reflection\ReflectionMethodParser;
 
 class ReflectionMethodParserTest extends TestCase
@@ -197,7 +197,7 @@ class ReflectionMethodParserTest extends TestCase
         $reflectionMethodMock = $this->getMockBuilder(ReflectionMethod::class)
             ->disableOriginalConstructor()
             ->getMock();
-        $basePHPElement = new ReflectionObjectMethodParser()->parse($reflectionMethodMock);
+        $basePHPElement = new ReflectionMethodParser()->parse($reflectionMethodMock);
         self::assertEquals([], $basePHPElement->returnTypesFromSignature);
     }
 
@@ -207,7 +207,7 @@ class ReflectionMethodParserTest extends TestCase
         $returnTypeMock->method('__toString')->willReturn('string');
         $reflectionMethodMock->method('hasReturnType')->willReturn(true);
         $reflectionMethodMock->method('getReturnType')->willReturn($returnTypeMock);
-        $basePhpElement = new ReflectionObjectMethodParser()->parse($reflectionMethodMock);
+        $basePhpElement = new ReflectionMethodParser()->parse($reflectionMethodMock);
         self::assertEquals(['string'], $basePhpElement->returnTypesFromSignature);
     }
 
@@ -217,7 +217,7 @@ class ReflectionMethodParserTest extends TestCase
         $reflectionTypeMock->method('getName')->willReturn('string');
         $reflectionMethodMock->method('hasTentativeReturnType')->willReturn(true);
         $reflectionMethodMock->method('getTentativeReturnType')->willReturn($reflectionTypeMock);
-        $basePHPElement = new ReflectionObjectMethodParser()->parse($reflectionMethodMock);
+        $basePHPElement = new ReflectionMethodParser()->parse($reflectionMethodMock);
         self::assertTrue($basePHPElement->hasTentativeReturnType);
     }
 
@@ -227,7 +227,7 @@ class ReflectionMethodParserTest extends TestCase
 
         $reflectionTypeMock->method('getName')->willReturn('string');
         $reflectionMethodMock->method('getReturnType')->willReturn($reflectionTypeMock);
-        $basePHPElement = new ReflectionObjectMethodParser()->parse($reflectionMethodMock);
+        $basePHPElement = new ReflectionMethodParser()->parse($reflectionMethodMock);
         self::assertFalse($basePHPElement->hasTentativeReturnType);
     }
 
@@ -241,7 +241,7 @@ class ReflectionMethodParserTest extends TestCase
         $reflectionMethodMock->method('hasReturnType')->willReturn(false);
         $reflectionMethodMock->method('hasTentativeReturnType')->willReturn(true);
         $reflectionMethodMock->method('getTentativeReturnType')->willReturn($returnTypeMock);
-        $basePHPElement = new ReflectionObjectMethodParser()->parse($reflectionMethodMock);
+        $basePHPElement = new ReflectionMethodParser()->parse($reflectionMethodMock);
         self::assertEquals(['string'], $basePHPElement->returnTypesFromSignature);
     }
 

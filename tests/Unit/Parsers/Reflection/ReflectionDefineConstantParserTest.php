@@ -3,7 +3,7 @@
 namespace StubTests\Unit\Parsers\Reflection;
 
 use PHPUnit\Framework\TestCase;
-use StubTests\Sources\Model\Entities\PHPConstant;
+use StubTests\Sources\Parsers\Entities\Model\PHPConstant;
 use StubTests\Sources\Parsers\Entities\Reflection\ReflectionDefineConstantParser;
 
 class ReflectionDefineConstantParserTest extends TestCase

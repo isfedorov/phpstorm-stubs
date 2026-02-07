@@ -2,7 +2,7 @@
 
 namespace StubTests\Sources\Parsers\Entities\Stubs;
 
-use StubTests\Sources\Model\Entities\PHPInterface;
+use StubTests\Sources\Parsers\Entities\Model\PHPInterface;
 use StubTests\Sources\Parsers\Entities\Stubs\Adapters\Nikic\NikicNodeExtractor;
 use StubTests\Sources\Parsers\Entities\Stubs\Nodes\InterfaceNode;
 

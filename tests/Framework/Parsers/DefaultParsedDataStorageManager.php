@@ -2,7 +2,12 @@
 
 namespace StubTests\Sources\Parsers;
 
-use StubTests\Sources\Model;
+use StubTests\Framework\Parsers\Processors\EntityProcessingPipeline;
+use StubTests\Sources\Parsers\Entities\Model\PHPClass;
+use StubTests\Sources\Parsers\Entities\Model\PHPConstant;
+use StubTests\Sources\Parsers\Entities\Model\PHPEnum;
+use StubTests\Sources\Parsers\Entities\Model\PHPFunction;
+use StubTests\Sources\Parsers\Entities\Model\PHPInterface;
 
 class DefaultParsedDataStorageManager implements ParsedDataStorageManager
 {
@@ -101,15 +106,15 @@ class DefaultParsedDataStorageManager implements ParsedDataStorageManager
      */
     public function addEntity($entity)
     {
-        if ($entity instanceof Model\Entities\PHPClass) {
+        if ($entity instanceof PHPClass) {
             $this->addClass($entity);
-        } elseif ($entity instanceof Model\Entities\PHPFunction) {
+        } elseif ($entity instanceof PHPFunction) {
             $this->addFunction($entity);
-        } elseif ($entity instanceof Model\Entities\PHPInterface) {
+        } elseif ($entity instanceof PHPInterface) {
             $this->addInterface($entity);
-        } elseif ($entity instanceof Model\Entities\PHPEnum) {
+        } elseif ($entity instanceof PHPEnum) {
             $this->addEnum($entity);
-        } elseif ($entity instanceof Model\Entities\PHPConstant) {
+        } elseif ($entity instanceof PHPConstant) {
             $this->addConstant($entity);
         } else {
             // For unknown types, process directly
@@ -158,8 +163,10 @@ class DefaultParsedDataStorageManager implements ParsedDataStorageManager
         // Process any remaining raw entities before saving
         $this->process();
 
-        // Delegate to storage provider
-        $this->parsedDataStorageProvider->save();
+        // Delegate to storage provider if it supports persistence
+        if ($this->parsedDataStorageProvider instanceof ParsedDataPersistentStorageProvider) {
+            $this->parsedDataStorageProvider->save();
+        }
     }
 
     /**
@@ -167,7 +174,10 @@ class DefaultParsedDataStorageManager implements ParsedDataStorageManager
      */
     public function load(): void
     {
-        $this->parsedDataStorageProvider->load();
+        // Delegate to storage provider if it supports persistence
+        if ($this->parsedDataStorageProvider instanceof ParsedDataPersistentStorageProvider) {
+            $this->parsedDataStorageProvider->load();
+        }
     }
 
     public function getClasses()
@@ -178,7 +188,7 @@ class DefaultParsedDataStorageManager implements ParsedDataStorageManager
         }
 
         return array_filter($allEntities, function ($entity) {
-            return $entity instanceof Model\Entities\PHPClass;
+            return $entity instanceof PHPClass;
         });
     }
 
@@ -201,7 +211,7 @@ class DefaultParsedDataStorageManager implements ParsedDataStorageManager
         }
 
         return array_filter($allEntities, function ($entity) {
-            return $entity instanceof Model\Entities\PHPFunction;
+            return $entity instanceof PHPFunction;
         });
     }
 
@@ -213,7 +223,7 @@ class DefaultParsedDataStorageManager implements ParsedDataStorageManager
         }
 
         return array_filter($allEntities, function ($entity) {
-            return $entity instanceof Model\Entities\PHPInterface;
+            return $entity instanceof PHPInterface;
         });
     }
 
@@ -225,7 +235,7 @@ class DefaultParsedDataStorageManager implements ParsedDataStorageManager
         }
 
         return array_filter($allEntities, function ($entity) {
-            return $entity instanceof Model\Entities\PHPEnum;
+            return $entity instanceof PHPEnum;
         });
     }
 
@@ -237,7 +247,7 @@ class DefaultParsedDataStorageManager implements ParsedDataStorageManager
         }
 
         return array_filter($allEntities, function ($entity) {
-            return $entity instanceof Model\Entities\PHPConstant;
+            return $entity instanceof PHPConstant;
         });
     }
 }

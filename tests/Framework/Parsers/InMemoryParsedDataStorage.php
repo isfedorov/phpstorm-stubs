@@ -2,7 +2,11 @@
 
 namespace StubTests\Sources\Parsers;
 
-use StubTests\Sources\Model;
+use StubTests\Sources\Parsers\Entities\Model\PHPClass;
+use StubTests\Sources\Parsers\Entities\Model\PHPConstant;
+use StubTests\Sources\Parsers\Entities\Model\PHPEnum;
+use StubTests\Sources\Parsers\Entities\Model\PHPFunction;
+use StubTests\Sources\Parsers\Entities\Model\PHPInterface;
 
 class InMemoryParsedDataStorage implements ParsedDataStorageProvider
 {
@@ -29,15 +33,15 @@ class InMemoryParsedDataStorage implements ParsedDataStorageProvider
         $this->entities[] = $entity;
 
         // Also categorize by type for faster lookups
-        if ($entity instanceof Model\Entities\PHPClass) {
+        if ($entity instanceof PHPClass) {
             $this->classes[] = $entity;
-        } elseif ($entity instanceof Model\Entities\PHPFunction) {
+        } elseif ($entity instanceof PHPFunction) {
             $this->functions[] = $entity;
-        } elseif ($entity instanceof Model\Entities\PHPInterface) {
+        } elseif ($entity instanceof PHPInterface) {
             $this->interfaces[] = $entity;
-        } elseif ($entity instanceof Model\Entities\PHPEnum) {
+        } elseif ($entity instanceof PHPEnum) {
             $this->enums[] = $entity;
-        } elseif ($entity instanceof Model\Entities\PHPConstant) {
+        } elseif ($entity instanceof PHPConstant) {
             $this->constants[] = $entity;
         }
     }
@@ -65,22 +69,6 @@ class InMemoryParsedDataStorage implements ParsedDataStorageProvider
     public function getConstants(): array
     {
         return $this->constants;
-    }
-
-    /**
-     * No-op for in-memory storage (nothing to load)
-     */
-    public function load(): void
-    {
-        // No persistent storage to load from
-    }
-
-    /**
-     * No-op for in-memory storage (nothing to save)
-     */
-    public function save(): void
-    {
-        // No persistent storage to save to
     }
 
 }

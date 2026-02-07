@@ -3,7 +3,7 @@
 namespace StubTests\Sources\Parsers\Entities\Reflection;
 
 use ReflectionEnum;
-use StubTests\Sources\Model\Entities\PHPEnum;
+use StubTests\Sources\Parsers\Entities\Model\PHPEnum;
 use StubTests\Sources\Parsers\Parser;
 
 /**

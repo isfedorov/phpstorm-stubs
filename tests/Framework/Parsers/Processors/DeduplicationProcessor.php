@@ -2,12 +2,12 @@
 
 namespace StubTests\Sources\Parsers\Processors;
 
-use StubTests\Sources\Model\Entities\PHPClass;
-use StubTests\Sources\Model\Entities\PHPConstant;
-use StubTests\Sources\Model\Entities\PHPEnum;
-use StubTests\Sources\Model\Entities\PHPFunction;
-use StubTests\Sources\Model\Entities\PHPInterface;
-use StubTests\Sources\Parsers\EntityProcessor;
+use StubTests\Framework\Parsers\Processors\EntityProcessor;
+use StubTests\Sources\Parsers\Entities\Model\PHPClass;
+use StubTests\Sources\Parsers\Entities\Model\PHPConstant;
+use StubTests\Sources\Parsers\Entities\Model\PHPEnum;
+use StubTests\Sources\Parsers\Entities\Model\PHPFunction;
+use StubTests\Sources\Parsers\Entities\Model\PHPInterface;
 
 class DeduplicationProcessor implements EntityProcessor
 {

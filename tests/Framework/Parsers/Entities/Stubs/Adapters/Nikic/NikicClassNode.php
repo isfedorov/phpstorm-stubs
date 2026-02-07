@@ -7,9 +7,6 @@ use PhpParser\Node\Stmt\ClassConst;
 use PhpParser\Node\Stmt\ClassMethod;
 use PhpParser\Node\Stmt\Property;
 use StubTests\Sources\Parsers\Entities\Stubs\Nodes\ClassNode;
-use StubTests\Sources\Parsers\Entities\Stubs\Nodes\ConstantNode;
-use StubTests\Sources\Parsers\Entities\Stubs\Nodes\MethodNode;
-use StubTests\Sources\Parsers\Entities\Stubs\Nodes\PropertyNode;
 
 /**
  * Adapter for nikic/php-parser Class_ nodes.

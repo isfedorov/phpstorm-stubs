@@ -136,38 +136,38 @@ class ReflectionMethodExtractor
             // Check if it's a Reflection object
             $className = get_class($value);
 
-            // Map Reflection classes to their serializable wrappers
+            // Map Reflection classes to their adapter wrappers
             if ($className === 'ReflectionClass') {
-                return new SerializableReflectionClass($value);
+                return new AdaptedReflectionClass($value);
             }
             if ($className === 'ReflectionMethod') {
-                return new SerializableReflectionMethod($value);
+                return new AdaptedReflectionMethod($value);
             }
             if ($className === 'ReflectionProperty') {
-                return new SerializableReflectionProperty($value);
+                return new AdaptedReflectionProperty($value);
             }
             if ($className === 'ReflectionParameter') {
-                return new SerializableReflectionParameter($value);
+                return new AdaptedReflectionParameter($value);
             }
             if ($className === 'ReflectionFunction') {
-                return new SerializableReflectionFunction($value);
+                return new AdaptedReflectionFunction($value);
             }
             if ($className === 'ReflectionClassConstant') {
-                return new SerializableReflectionClassConstant($value);
+                return new AdaptedReflectionClassConstant($value);
             }
             if ($className === 'ReflectionNamedType') {
-                return new SerializableReflectionType($value);
+                return new AdaptedReflectionType($value);
             }
             if ($className === 'ReflectionUnionType' || $className === 'ReflectionIntersectionType') {
-                return new SerializableReflectionType($value);
+                return new AdaptedReflectionType($value);
             }
             // Handle base ReflectionType (catch-all for any type objects)
             if ($value instanceof \ReflectionType) {
-                return new SerializableReflectionType($value);
+                return new AdaptedReflectionType($value);
             }
 
-            // For already serializable wrappers, return as-is
-            if (strpos($className, 'SerializableReflection') === 0 || strpos($className, 'StubTests\\Sources\\DataProvider\\Wrappers\\SerializableReflection') === 0) {
+            // For already adapted wrappers, return as-is
+            if (strpos($className, 'AdaptedReflection') === 0 || strpos($className, 'StubTests\\Sources\\Parsers\\Entities\\Reflection\\Wrappers\\AdaptedReflection') === 0) {
                 return $value;
             }
 

@@ -3,7 +3,7 @@
 namespace StubTests\Sources\Parsers\Entities\Reflection;
 
 use ReflectionProperty;
-use StubTests\Sources\Model\Entities\PHPProperty;
+use StubTests\Sources\Parsers\Entities\Model\PHPProperty;
 use StubTests\Sources\Parsers\Parser;
 
 /**

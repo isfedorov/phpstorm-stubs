@@ -4,11 +4,11 @@ namespace StubTests\Unit\Parsers\AST;
 
 use PHPUnit\Framework\TestCase as BaseTestCase;
 use StubTests\Sources\DataProvider\StubsDataProvider;
-use StubTests\Sources\Model\Entities\PHPClass;
-use StubTests\Sources\Model\Entities\PHPClassConstant;
-use StubTests\Sources\Model\Entities\PHPInterface;
-use StubTests\Sources\Model\Entities\PHPMethod;
-use StubTests\Sources\Model\Entities\PHPProperty;
+use StubTests\Sources\Parsers\Entities\Model\PHPClass;
+use StubTests\Sources\Parsers\Entities\Model\PHPClassConstant;
+use StubTests\Sources\Parsers\Entities\Model\PHPInterface;
+use StubTests\Sources\Parsers\Entities\Model\PHPMethod;
+use StubTests\Sources\Parsers\Entities\Model\PHPProperty;
 use StubTests\Sources\Parsers\Entities\Stubs\StubClassParser;
 use StubTests\Unit\Parsers\AST\fixtures\FixtureStubsDataProvider;
 

@@ -3,14 +3,12 @@
 namespace StubTests\Unit\Parsers\AST;
 
 use PHPUnit\Framework\TestCase as BaseTestCase;
+use StubTests\Framework\Parsers\Processors\EntityProcessingPipeline;
 use StubTests\Sources\DataProvider\StubsDataProvider;
-use StubTests\Sources\Model\Entities\PHPClass;
-use StubTests\Sources\Model\Entities\PHPFunction;
 use StubTests\Sources\Parsers\DefaultParsedDataStorageManager;
 use StubTests\Sources\Parsers\Entities\Stubs\AllStubsParser;
 use StubTests\Sources\Parsers\Entities\Stubs\StubClassParser;
 use StubTests\Sources\Parsers\Entities\Stubs\StubFunctionParser;
-use StubTests\Sources\Parsers\EntityProcessingPipeline;
 use StubTests\Sources\Parsers\InMemoryParsedDataStorage;
 use StubTests\Sources\Parsers\Processors\DeduplicationProcessor;
 use StubTests\Unit\Parsers\AST\fixtures\FixtureStubsDataProvider;

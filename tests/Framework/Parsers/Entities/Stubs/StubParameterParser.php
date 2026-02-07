@@ -2,7 +2,7 @@
 
 namespace StubTests\Sources\Parsers\Entities\Stubs;
 
-use StubTests\Sources\Model\Entities\PHPParameter;
+use StubTests\Sources\Parsers\Entities\Model\PHPParameter;
 use StubTests\Sources\Parsers\Entities\Stubs\Nodes\ParameterNode;
 
 /**

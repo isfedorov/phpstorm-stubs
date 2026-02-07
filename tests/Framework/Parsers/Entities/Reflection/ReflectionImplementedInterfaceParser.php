@@ -2,7 +2,7 @@
 
 namespace StubTests\Sources\Parsers\Entities\Reflection;
 
-use StubTests\Sources\Model\Entities\PHPInterface;
+use StubTests\Sources\Parsers\Entities\Model\PHPInterface;
 use StubTests\Sources\Parsers\Parser;
 
 /**

@@ -4,7 +4,7 @@ namespace StubTests\Unit\Parsers\Reflection;
 
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
-use StubTests\Sources\Model\Entities\PHPClassConstant;
+use StubTests\Sources\Parsers\Entities\Model\PHPClassConstant;
 use StubTests\Sources\Parsers\Entities\Reflection\ReflectionClassConstantParser;
 use function PHPUnit\Framework\assertEquals;
 

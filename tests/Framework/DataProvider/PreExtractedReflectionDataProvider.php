@@ -19,7 +19,7 @@ class PreExtractedReflectionDataProvider implements ReflectionDataProvider
 
     /**
      * Returns wrapped ReflectionClass objects (not names)
-     * Each item is a SerializableReflectionClass that can be passed to parsers
+     * Each item is a AdaptedReflectionClass that can be passed to parsers
      */
     public function getReflectionClasses(): array
     {

@@ -2,8 +2,8 @@
 
 namespace StubTests\Sources\Parsers\Entities\Stubs;
 
-use StubTests\Sources\Model\Entities\PHPEnum;
-use StubTests\Sources\Model\Entities\PHPInterface;
+use StubTests\Sources\Parsers\Entities\Model\PHPEnum;
+use StubTests\Sources\Parsers\Entities\Model\PHPInterface;
 use StubTests\Sources\Parsers\Entities\Stubs\Adapters\Nikic\NikicNodeExtractor;
 use StubTests\Sources\Parsers\Entities\Stubs\Nodes\EnumNode;
 

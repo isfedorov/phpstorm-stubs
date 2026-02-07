@@ -17,7 +17,7 @@ error_reporting(E_ALL & ~E_DEPRECATED);
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-use StubTests\Sources\DataProvider\CurrentRuntimeReflectionDataProvider;
+use StubTests\Sources\DataProvider\CurrentRuntimeReflectionRawDataProvider;
 use StubTests\Sources\Parsers\DefaultParsedDataStorageManager;
 use StubTests\Sources\Parsers\Entities\Reflection\AllReflectionParser;
 use StubTests\Sources\Parsers\JsonParsedDataStorage;
@@ -41,7 +41,7 @@ echo "Output File: {$cacheFilePath}\n\n";
 try {
     // Create data provider
     echo "[1/4] Creating reflection data provider...\n";
-    $dataProvider = new CurrentRuntimeReflectionDataProvider();
+    $dataProvider = new CurrentRuntimeReflectionRawDataProvider();
     echo "      ✓ Data provider created\n\n";
 
     // Create storage manager with JSON storage

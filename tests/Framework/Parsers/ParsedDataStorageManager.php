@@ -2,6 +2,8 @@
 
 namespace StubTests\Sources\Parsers;
 
+use StubTests\Framework\Parsers\Processors\EntityProcessingPipeline;
+
 interface ParsedDataStorageManager
 {
     public function getParsedDataStorageProvider(): ParsedDataStorageProvider;

@@ -7,11 +7,11 @@ use ReflectionClass;
 use ReflectionClassConstant;
 use ReflectionMethod;
 use ReflectionProperty;
-use StubTests\Sources\Model\Entities\PHPClass;
-use StubTests\Sources\Model\Entities\PHPClassConstant;
-use StubTests\Sources\Model\Entities\PHPInterface;
-use StubTests\Sources\Model\Entities\PHPMethod;
-use StubTests\Sources\Model\Entities\PHPProperty;
+use StubTests\Sources\Parsers\Entities\Model\PHPClass;
+use StubTests\Sources\Parsers\Entities\Model\PHPClassConstant;
+use StubTests\Sources\Parsers\Entities\Model\PHPInterface;
+use StubTests\Sources\Parsers\Entities\Model\PHPMethod;
+use StubTests\Sources\Parsers\Entities\Model\PHPProperty;
 use StubTests\Sources\Parsers\Entities\Reflection\ReflectionClassParser;
 
 class ReflectionClassParserTest extends BaseTestCase

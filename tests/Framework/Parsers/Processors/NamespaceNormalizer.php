@@ -2,7 +2,7 @@
 
 namespace StubTests\Sources\Parsers\Processors;
 
-use StubTests\Sources\Parsers\EntityProcessor;
+use StubTests\Framework\Parsers\Processors\EntityProcessor;
 
 class NamespaceNormalizer implements EntityProcessor
 {

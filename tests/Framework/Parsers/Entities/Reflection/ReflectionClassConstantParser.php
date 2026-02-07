@@ -3,7 +3,7 @@
 namespace StubTests\Sources\Parsers\Entities\Reflection;
 
 use ReflectionClassConstant;
-use StubTests\Sources\Model\Entities\PHPClassConstant;
+use StubTests\Sources\Parsers\Entities\Model\PHPClassConstant;
 use StubTests\Sources\Parsers\Parser;
 
 /**

@@ -2,7 +2,7 @@
 
 namespace StubTests\Sources\Parsers\Entities\Reflection;
 
-use StubTests\Sources\Model\Entities\PHPConstant;
+use StubTests\Sources\Parsers\Entities\Model\PHPConstant;
 use StubTests\Sources\Parsers\Parser;
 
 /**

@@ -2,7 +2,7 @@
 
 namespace StubTests\Sources\Parsers\Entities\Stubs;
 
-use StubTests\Sources\Model\Entities\PHPClassConstant;
+use StubTests\Sources\Parsers\Entities\Model\PHPClassConstant;
 use StubTests\Sources\Parsers\Entities\Stubs\Nodes\ConstantNode;
 
 /**

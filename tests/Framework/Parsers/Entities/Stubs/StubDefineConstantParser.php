@@ -5,7 +5,7 @@ namespace StubTests\Sources\Parsers\Entities\Stubs;
 use PhpParser\Node\Scalar\DNumber;
 use PhpParser\Node\Scalar\LNumber;
 use PhpParser\Node\Scalar\String_;
-use StubTests\Sources\Model\Entities\PHPConstant;
+use StubTests\Sources\Parsers\Entities\Model\PHPConstant;
 use StubTests\Sources\Parsers\Entities\Stubs\Adapters\Nikic\NikicNodeExtractor;
 use StubTests\Sources\Parsers\Entities\Stubs\Nodes\ConstantDefinitionNode;
 

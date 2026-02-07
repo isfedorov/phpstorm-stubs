@@ -3,7 +3,7 @@
 namespace StubTests\Unit\Parsers\AST;
 
 use PHPUnit\Framework\TestCase as BaseTestCase;
-use StubTests\Sources\Model\Entities\PHPParameter;
+use StubTests\Sources\Parsers\Entities\Model\PHPParameter;
 use StubTests\Sources\Parsers\Entities\Stubs\StubFunctionParser;
 use StubTests\Unit\Parsers\AST\fixtures\FixtureStubsDataProvider;
 
