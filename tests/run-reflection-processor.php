@@ -2,9 +2,9 @@
 <?php
 
 /**
- * Modern PHP processor for wrapped reflection data
+ * Modern PHP processor for adapted reflection data
  *
- * This script processes serialized reflection wrappers extracted by the legacy extractor
+ * This script processes serialized adapted reflection objects created by adapt-legacy-reflection.php
  * and uses existing reflection parsers to convert them to the final JSON format.
  *
  * Usage:

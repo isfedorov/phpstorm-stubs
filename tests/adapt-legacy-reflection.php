@@ -2,16 +2,17 @@
 <?php
 
 /**
- * PHP 5.6-compatible reflection data extractor
+ * Legacy PHP Reflection Adapter (PHP 5.6+ compatible)
  *
- * This script creates full Reflection objects and wraps them in serializable wrappers.
- * The wrappers can then be deserialized and passed to parsers in modern PHP.
+ * This script extracts reflection data from legacy PHP runtimes and adapts it
+ * by wrapping Reflection objects in AdaptedReflection* classes. The adapted objects
+ * can then be serialized and processed by modern PHP parsers.
  *
  * Usage:
- *   php tests/run-reflection-extractor-legacy.php [php-version] [output-file]
+ *   php tests/adapt-legacy-reflection.php [php-version] [output-file]
  *
  * Example:
- *   php tests/run-reflection-extractor-legacy.php 5.6 /tmp/reflection-5.6.dat
+ *   php tests/adapt-legacy-reflection.php 5.6 /tmp/reflection-5.6.dat
  */
 
 // Suppress deprecation warnings but show other errors
@@ -45,7 +46,7 @@ $phpVersion = isset($argv[1]) ? $argv[1] : PHP_MAJOR_VERSION . '.' . PHP_MINOR_V
 $outputFile = isset($argv[2]) ? $argv[2] : '/tmp/reflection-' . $phpVersion . '.dat';
 
 echo "========================================\n";
-echo "PHP Reflection Extractor (Legacy Mode)\n";
+echo "Legacy PHP Reflection Adapter\n";
 echo "========================================\n";
 echo "PHP Version: {$phpVersion}\n";
 echo "Runtime Version: " . PHP_VERSION . "\n";

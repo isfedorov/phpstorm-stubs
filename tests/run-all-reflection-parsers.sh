@@ -5,8 +5,8 @@
 #
 # This script:
 # 1. Builds Docker images for each PHP version (5.6 - 8.4)
-# 2. Runs legacy reflection extractor in each container (Stage 1)
-# 3. Processes extracted data with modern PHP (Stage 2)
+# 2. Runs legacy reflection adapter in each container (Stage 1)
+# 3. Processes adapted data with modern PHP (Stage 2)
 # 4. Outputs JSON files to tests/cache/Reflection{version}.json
 #
 # Usage:
@@ -84,19 +84,19 @@ for VERSION in "${PHP_VERSIONS[@]}"; do
         echo -e "${BLUE}[1/4] Skipping Docker build (--skip-build flag)${NC}"
     fi
 
-    # Run reflection extractor in container (Stage 1 - Legacy PHP 5.6+ compatible)
-    echo -e "${BLUE}[2/4] Running reflection extractor for PHP $VERSION (Stage 1)...${NC}"
+    # Run reflection adapter in container (Stage 1 - Legacy PHP 5.6+ compatible)
+    echo -e "${BLUE}[2/4] Running reflection adapter for PHP $VERSION (Stage 1)...${NC}"
 
     # Create temp directory for intermediate data
     TEMP_DATA_FILE="$SCRIPT_DIR/cache/.tmp-reflection-$VERSION.dat"
 
-    # Use docker compose to run the legacy extractor
+    # Use docker compose to run the legacy adapter
     if PHP_VERSION=$VERSION docker compose -f "$PROJECT_ROOT/docker-compose.yml" run --rm \
         php_under_test \
-        php tests/run-reflection-extractor-legacy.php $VERSION "/opt/project/phpstorm-stubs/tests/cache/.tmp-reflection-$VERSION.dat"; then
-        echo -e "${GREEN}      ✓ Reflection extraction completed${NC}"
+        php tests/adapt-legacy-reflection.php $VERSION "/opt/project/phpstorm-stubs/tests/cache/.tmp-reflection-$VERSION.dat"; then
+        echo -e "${GREEN}      ✓ Reflection adaptation completed${NC}"
     else
-        echo -e "${RED}✗ Failed to run reflection extractor for PHP $VERSION${NC}"
+        echo -e "${RED}✗ Failed to run reflection adapter for PHP $VERSION${NC}"
         FAILED_VERSIONS+=("$VERSION")
         FAILED_COUNT=$((FAILED_COUNT + 1))
         continue
