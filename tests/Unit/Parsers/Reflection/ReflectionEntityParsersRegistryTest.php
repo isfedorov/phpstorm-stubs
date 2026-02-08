@@ -3,57 +3,134 @@
 namespace StubTests\Unit\Parsers\Reflection;
 
 use PHPUnit\Framework\TestCase;
-use StubTests\Sources\Parsers\Entities\EntityType;
 use StubTests\Sources\Parsers\Entities\Reflection\ReflectionClassParser;
 use StubTests\Sources\Parsers\Entities\Reflection\ReflectionEnumParser;
 use StubTests\Sources\Parsers\Entities\Reflection\ReflectionFunctionParser;
+use StubTests\Sources\Parsers\Entities\Reflection\ReflectionInterfaceParser;
 use StubTests\Sources\Parsers\Entities\Reflection\ReflectionModernConstantParser;
+use StubTests\Sources\Parsers\Entities\Reflection\Wrappers\AdaptedReflectionClass;
+use StubTests\Sources\Parsers\Entities\Reflection\Wrappers\AdaptedReflectionFunction;
 use StubTests\Sources\Parsers\Registries\EntityReflectionObjectParsersRegistry;
 
 class ReflectionEntityParsersRegistryTest extends TestCase
 {
-    public function testItReturnsNullForUnknownType()
+    public function testItFindsParserForClassObject()
     {
-        self::assertNull(new EntityReflectionObjectParsersRegistry()->findParser(EntityType::UNKNOWN));
+        $mock = $this->createMock(AdaptedReflectionClass::class);
+        $mock->method('isInternal')->willReturn(true);
+        $mock->method('isInterface')->willReturn(false);
+        $mock->method('isEnum')->willReturn(false);
+
+        $parser = (new EntityReflectionObjectParsersRegistry())->findParserForObject($mock);
+
+        self::assertInstanceOf(ReflectionClassParser::class, $parser);
     }
 
-    public function testItContainsParserForClasses()
+    public function testItFindsParserForInterfaceObject()
     {
-        self::assertNotNull(new EntityReflectionObjectParsersRegistry()->findParser(EntityType::A_CLASS));
+        $mock = $this->createMock(AdaptedReflectionClass::class);
+        $mock->method('isInternal')->willReturn(true);
+        $mock->method('isInterface')->willReturn(true);
+
+        $parser = (new EntityReflectionObjectParsersRegistry())->findParserForObject($mock);
+
+        self::assertInstanceOf(ReflectionInterfaceParser::class, $parser);
     }
 
-    public function testItContainsExactClassParserForClasses()
+    public function testItFindsParserForEnumObject()
     {
-        self::assertInstanceOf(ReflectionClassParser::class, new EntityReflectionObjectParsersRegistry()->findParser(EntityType::A_CLASS));
+        $mock = $this->createMock(AdaptedReflectionClass::class);
+        $mock->method('isInternal')->willReturn(true);
+        $mock->method('isEnum')->willReturn(true);
+
+        $parser = (new EntityReflectionObjectParsersRegistry())->findParserForObject($mock);
+
+        self::assertInstanceOf(ReflectionEnumParser::class, $parser);
     }
 
-    public function testItContainsParserForConstants()
+    public function testItFindsParserForFunctionObject()
     {
-        self::assertNotNull(new EntityReflectionObjectParsersRegistry()->findParser(EntityType::CONSTANT));
+        $mock = $this->createMock(AdaptedReflectionFunction::class);
+
+        $parser = (new EntityReflectionObjectParsersRegistry())->findParserForObject($mock);
+
+        self::assertInstanceOf(ReflectionFunctionParser::class, $parser);
     }
 
-    public function testItContainsExactConstantParserForConstants()
+    public function testItFindsParserForReflectionConstantObject()
     {
-        self::assertInstanceOf(ReflectionModernConstantParser::class, new EntityReflectionObjectParsersRegistry()->findParser(EntityType::CONSTANT));
+        if (!class_exists('\ReflectionConstant')) {
+            self::markTestSkipped('ReflectionConstant is not available in PHP < 8.1');
+        }
+
+        // Define a test constant if it doesn't exist
+        if (!defined('TEST_CONSTANT_FOR_PARSER_REGISTRY')) {
+            define('TEST_CONSTANT_FOR_PARSER_REGISTRY', 'test_value');
+        }
+
+        $reflectionConstant = new \ReflectionConstant('TEST_CONSTANT_FOR_PARSER_REGISTRY');
+
+        $parser = (new EntityReflectionObjectParsersRegistry())->findParserForObject($reflectionConstant);
+
+        self::assertInstanceOf(ReflectionModernConstantParser::class, $parser);
     }
 
-    public function testItContainsParserForFunctions()
+    public function testItFindsParserForArrayConstant()
     {
-        self::assertNotNull(new EntityReflectionObjectParsersRegistry()->findParser(EntityType::FUNCTION));
+        $constantArray = ['SOME_CONSTANT' => 'value'];
+
+        $parser = (new EntityReflectionObjectParsersRegistry())->findParserForObject($constantArray);
+
+        self::assertInstanceOf(ReflectionModernConstantParser::class, $parser);
     }
 
-    public function testItContainsExactFunctionParserForFunctions()
+    public function testItReturnsNullForUnknownObject()
     {
-        self::assertInstanceOf(ReflectionFunctionParser::class, new EntityReflectionObjectParsersRegistry()->findParser(EntityType::FUNCTION));
+        $unknownObject = new \stdClass();
+
+        $parser = (new EntityReflectionObjectParsersRegistry())->findParserForObject($unknownObject);
+
+        self::assertNull($parser);
     }
 
-    public function testItContainsParserForEnums()
+    public function testItPrioritizesEnumParserOverClassParser()
     {
-        self::assertNotNull(new EntityReflectionObjectParsersRegistry()->findParser(EntityType::ENUM));
+        // Ensure enum parser is selected when object is both internal and enum
+        $mock = $this->createMock(AdaptedReflectionClass::class);
+        $mock->method('isInternal')->willReturn(true);
+        $mock->method('isEnum')->willReturn(true);
+        $mock->method('isInterface')->willReturn(false);
+
+        $parser = (new EntityReflectionObjectParsersRegistry())->findParserForObject($mock);
+
+        self::assertInstanceOf(ReflectionEnumParser::class, $parser);
+        self::assertNotInstanceOf(ReflectionClassParser::class, $parser);
     }
 
-    public function testItContainsExactEnumParserForEnums()
+    public function testItPrioritizesInterfaceParserOverClassParser()
     {
-        self::assertInstanceOf(ReflectionEnumParser::class, new EntityReflectionObjectParsersRegistry()->findParser(EntityType::ENUM));
+        // Ensure interface parser is selected when object is interface
+        $mock = $this->createMock(AdaptedReflectionClass::class);
+        $mock->method('isInternal')->willReturn(true);
+        $mock->method('isInterface')->willReturn(true);
+        $mock->method('isEnum')->willReturn(false);
+
+        $parser = (new EntityReflectionObjectParsersRegistry())->findParserForObject($mock);
+
+        self::assertInstanceOf(ReflectionInterfaceParser::class, $parser);
+        self::assertNotInstanceOf(ReflectionClassParser::class, $parser);
+    }
+
+    public function testItReturnsNullForNonInternalClass()
+    {
+        // Non-internal classes should not be parsed
+        $mock = $this->createMock(AdaptedReflectionClass::class);
+        $mock->method('isInternal')->willReturn(false);
+        $mock->method('isInterface')->willReturn(false);
+        $mock->method('isEnum')->willReturn(false);
+
+        $parser = (new EntityReflectionObjectParsersRegistry())->findParserForObject($mock);
+
+        self::assertNull($parser);
     }
 }

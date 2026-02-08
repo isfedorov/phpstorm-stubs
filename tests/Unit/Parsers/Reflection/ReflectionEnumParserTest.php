@@ -11,12 +11,13 @@ use StubTests\Sources\Parsers\Entities\Model\PHPEnum;
 use StubTests\Sources\Parsers\Entities\Model\PHPInterface;
 use StubTests\Sources\Parsers\Entities\Model\PHPMethod;
 use StubTests\Sources\Parsers\Entities\Reflection\ReflectionEnumParser;
+use StubTests\Sources\Parsers\Entities\Reflection\Wrappers\AdaptedReflectionClass;
 
 class ReflectionEnumParserTest extends TestCase
 {
     public function testItCanParseInternalEnums()
     {
-        $stubReflectionClass = $this->getMockBuilder(ReflectionClass::class)
+        $stubReflectionClass = $this->getMockBuilder(AdaptedReflectionClass::class)
             ->disableOriginalConstructor()
             ->getMock();
         $stubReflectionClass->method('isInternal')->willReturn(true);

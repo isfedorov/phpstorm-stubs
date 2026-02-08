@@ -28,7 +28,9 @@ class ReflectionEnumParser implements Parser
 
     public function canParse($object): bool
     {
-        return $object->isInternal() && $object->isEnum();
+        return $object instanceof AdaptedReflectionClass
+            && $object->isInternal()
+            && $object->isEnum();
     }
 
     /**

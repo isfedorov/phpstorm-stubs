@@ -2,7 +2,6 @@
 
 namespace StubTests\Sources\Parsers\Registries;
 
-use StubTests\Sources\Parsers\Entities\EntityType;
 use StubTests\Sources\Parsers\Entities\Reflection\ReflectionClassParser;
 use StubTests\Sources\Parsers\Entities\Reflection\ReflectionEnumParser;
 use StubTests\Sources\Parsers\Entities\Reflection\ReflectionFunctionParser;
@@ -31,21 +30,9 @@ class EntityReflectionObjectParsersRegistry {
         $this->enumParser = $enumParser ?? new ReflectionEnumParser();
     }
 
-    public function findParser(EntityType $entityType)
-    {
-        return match ($entityType) {
-            EntityType::A_CLASS => $this->classParser,
-            EntityType::CONSTANT => $this->constantParser,
-            EntityType::FUNCTION => $this->functionParser,
-            EntityType::INTERFACE => $this->interfaceParser,
-            EntityType::ENUM => $this->enumParser,
-            default => null,
-        };
-    }
-
     /**
      * Find the appropriate parser for the given reflection object
-     * by calling canParseReflectionClass() on each parser.
+     * by calling canParse() on each parser.
      *
      * @param mixed $object The reflection object to find a parser for
      * @return ReflectionClassParser|ReflectionInterfaceParser|ReflectionEnumParser|ReflectionFunctionParser|ReflectionModernConstantParser|null

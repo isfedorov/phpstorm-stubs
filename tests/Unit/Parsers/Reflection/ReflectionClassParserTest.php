@@ -13,13 +13,14 @@ use StubTests\Sources\Parsers\Entities\Model\PHPInterface;
 use StubTests\Sources\Parsers\Entities\Model\PHPMethod;
 use StubTests\Sources\Parsers\Entities\Model\PHPProperty;
 use StubTests\Sources\Parsers\Entities\Reflection\ReflectionClassParser;
+use StubTests\Sources\Parsers\Entities\Reflection\Wrappers\AdaptedReflectionClass;
 
 class ReflectionClassParserTest extends BaseTestCase
 {
 
     public function testItCanParseInternalClass()
     {
-        $stubReflectionClass = $this->getMockBuilder(ReflectionClass::class)
+        $stubReflectionClass = $this->getMockBuilder(AdaptedReflectionClass::class)
             ->disableOriginalConstructor()
             ->getMock();
         $stubReflectionClass->method('isInternal')->willReturn(true);

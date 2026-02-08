@@ -4,7 +4,6 @@ namespace StubTests\Sources\Parsers\Entities\Reflection;
 
 use StubTests\Sources\DataProvider\CurrentRuntimeReflectionRawDataProvider;
 use StubTests\Sources\Parsers\ParsedDataStorageManager;
-use StubTests\Sources\Parsers\Entities\EntityType;
 use StubTests\Sources\Parsers\Entities\Reflection\Wrappers\AdaptedReflectionClass;
 use StubTests\Sources\Parsers\Entities\Reflection\Wrappers\AdaptedReflectionFunction;
 use StubTests\Sources\Parsers\Registries\EntityReflectionObjectParsersRegistry;

@@ -34,7 +34,10 @@ class ReflectionClassParser implements Parser
 
     public function canParse($object): bool
     {
-        return $object->isInternal() && !$object->isInterface() && !$object->isEnum();
+        return $object instanceof AdaptedReflectionClass
+            && $object->isInternal()
+            && !$object->isInterface()
+            && !$object->isEnum();
     }
 
     /**

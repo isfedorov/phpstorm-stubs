@@ -24,7 +24,9 @@ class ReflectionInterfaceParser implements Parser
 
     public function canParse($object): bool
     {
-        return $object->isInternal() && $object->isInterface();
+        return $object instanceof AdaptedReflectionClass
+            && $object->isInternal()
+            && $object->isInterface();
     }
 
     /**
