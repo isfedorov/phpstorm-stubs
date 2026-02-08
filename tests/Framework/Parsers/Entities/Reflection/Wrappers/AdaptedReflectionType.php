@@ -58,7 +58,7 @@ class AdaptedReflectionType extends AbstractReflectionAdapter
                     $types[] = $type->getName();
                 }
             }
-            $this->setData('types', $types);
+            $this->setData('getTypes', $types);
             $this->setData('getName', null);
         }
         // Handle intersection types (PHP 8.1+)
@@ -67,18 +67,18 @@ class AdaptedReflectionType extends AbstractReflectionAdapter
             foreach ($reflectionObject->getTypes() as $type) {
                 $types[] = $type->getName();
             }
-            $this->setData('types', $types);
+            $this->setData('getTypes', $types);
             $this->setData('getName', null);
         }
         // Handle named types (PHP 7.0+)
         elseif ($isNamed) {
             $this->setData('getName', $reflectionObject->getName());
-            $this->setData('types', array());
+            $this->setData('getTypes', array());
         }
         // Fallback
         else {
             $this->setData('getName', null);
-            $this->setData('types', array());
+            $this->setData('getTypes', array());
         }
     }
 
@@ -96,7 +96,7 @@ class AdaptedReflectionType extends AbstractReflectionAdapter
     public function getTypes()
     {
         // Return array of pseudo-ReflectionNamedType objects
-        $types = $this->getData('types', array());
+        $types = $this->getData('getTypes', array());
         $result = array();
         foreach ($types as $typeName) {
             $result[] = new AdaptedReflectionNamedType($typeName);

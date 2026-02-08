@@ -57,6 +57,47 @@ class AdaptedReflectionMethod extends AbstractReflectionAdapter
         // Store declaring class as a minimal reference to avoid recursion
         $declaringClass = $reflectionObject->getDeclaringClass();
         $this->setData('declaringClassName', $declaringClass->getName());
+
+        // Extract parameters
+        $parameters = array();
+        foreach ($reflectionObject->getParameters() as $parameter) {
+            $parameters[] = new AdaptedReflectionParameter($parameter);
+        }
+        $this->setData('getParameters', $parameters);
+
+        // Extract return type if exists (PHP 7.0+)
+        if (method_exists($reflectionObject, 'hasReturnType') && $reflectionObject->hasReturnType()) {
+            $returnType = $reflectionObject->getReturnType();
+            if ($returnType) {
+                $this->setData('getReturnType', new AdaptedReflectionType($returnType));
+            } else {
+                $this->setData('getReturnType', null);
+            }
+        } else {
+            $this->setData('getReturnType', null);
+        }
+
+        // Extract doc comment
+        $docComment = $reflectionObject->getDocComment();
+        $this->setData('getDocComment', $docComment !== false ? $docComment : false);
+
+        // Extract attributes (PHP 8.0+)
+        if (method_exists($reflectionObject, 'getAttributes')) {
+            try {
+                $attributes = array();
+                foreach ($reflectionObject->getAttributes() as $attribute) {
+                    $attributes[] = array(
+                        'name' => $attribute->getName(),
+                        'arguments' => $attribute->getArguments()
+                    );
+                }
+                $this->setData('getAttributes', $attributes);
+            } catch (\Exception $e) {
+                $this->setData('getAttributes', array());
+            }
+        } else {
+            $this->setData('getAttributes', array());
+        }
     }
 
     // Implement ReflectionMethod interface methods explicitly for IDE support
@@ -104,5 +145,30 @@ class AdaptedReflectionMethod extends AbstractReflectionAdapter
     public function isDeprecated()
     {
         return $this->getData('isDeprecated');
+    }
+
+    public function getParameters()
+    {
+        return $this->getData('getParameters', array());
+    }
+
+    public function hasReturnType()
+    {
+        return $this->getData('hasReturnType', false);
+    }
+
+    public function getReturnType()
+    {
+        return $this->getData('getReturnType');
+    }
+
+    public function getDocComment()
+    {
+        return $this->getData('getDocComment', false);
+    }
+
+    public function getAttributes()
+    {
+        return $this->getData('getAttributes', array());
     }
 }

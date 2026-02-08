@@ -45,6 +45,28 @@ class AdaptedReflectionClassConstant extends AbstractReflectionAdapter
         // Store declaring class as a minimal reference to avoid recursion
         $declaringClass = $reflectionObject->getDeclaringClass();
         $this->setData('declaringClassName', $declaringClass->getName());
+
+        // Extract doc comment
+        $docComment = $reflectionObject->getDocComment();
+        $this->setData('getDocComment', $docComment !== false ? $docComment : false);
+
+        // Extract attributes (PHP 8.0+)
+        if (method_exists($reflectionObject, 'getAttributes')) {
+            try {
+                $attributes = array();
+                foreach ($reflectionObject->getAttributes() as $attribute) {
+                    $attributes[] = array(
+                        'name' => $attribute->getName(),
+                        'arguments' => $attribute->getArguments()
+                    );
+                }
+                $this->setData('getAttributes', $attributes);
+            } catch (\Exception $e) {
+                $this->setData('getAttributes', array());
+            }
+        } else {
+            $this->setData('getAttributes', array());
+        }
     }
 
     // Implement ReflectionClassConstant interface methods explicitly for IDE support
@@ -87,5 +109,15 @@ class AdaptedReflectionClassConstant extends AbstractReflectionAdapter
     public function isEnumCase()
     {
         return $this->getData('isEnumCase', false);
+    }
+
+    public function getDocComment()
+    {
+        return $this->getData('getDocComment', false);
+    }
+
+    public function getAttributes()
+    {
+        return $this->getData('getAttributes', array());
     }
 }

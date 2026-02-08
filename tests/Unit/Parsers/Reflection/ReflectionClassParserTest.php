@@ -368,9 +368,9 @@ class ReflectionClassParserTest extends BaseTestCase
         $reflectionClassMock->method('getProperties')->willReturn([$reflectionPropertyMock1, $reflectionPropertyMock2, $reflectionPropertyMock3]);
         $basePHPElement = new ReflectionClassParser()->parse($reflectionClassMock);
         $properties = $basePHPElement->getProperties();
-        self::assertEquals("prop", $properties[0]->name);
-        self::assertEquals("prop1", $properties[1]->name);
-        self::assertEquals("prop3", $properties[2]->name);
+        self::assertEquals("prop", $properties[0]->getName());
+        self::assertEquals("prop1", $properties[1]->getName());
+        self::assertEquals("prop3", $properties[2]->getName());
     }
 
     public function testItCanParseOneProperty()

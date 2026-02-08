@@ -55,7 +55,45 @@ class AdaptedReflectionProperty extends AbstractReflectionAdapter
             $type = $reflectionObject->getType();
             if ($type) {
                 $this->setData('getType', new AdaptedReflectionType($type));
+            } else {
+                $this->setData('getType', null);
             }
+        } else {
+            $this->setData('getType', null);
+        }
+
+        // Extract default value (PHP 8.0+)
+        if (method_exists($reflectionObject, 'hasDefaultValue') && $reflectionObject->hasDefaultValue()) {
+            try {
+                $this->setData('getDefaultValue', $reflectionObject->getDefaultValue());
+            } catch (\Exception $e) {
+                // Can't access default value
+                $this->setData('getDefaultValue', null);
+            }
+        } else {
+            $this->setData('getDefaultValue', null);
+        }
+
+        // Extract doc comment
+        $docComment = $reflectionObject->getDocComment();
+        $this->setData('getDocComment', $docComment !== false ? $docComment : false);
+
+        // Extract attributes (PHP 8.0+)
+        if (method_exists($reflectionObject, 'getAttributes')) {
+            try {
+                $attributes = array();
+                foreach ($reflectionObject->getAttributes() as $attribute) {
+                    $attributes[] = array(
+                        'name' => $attribute->getName(),
+                        'arguments' => $attribute->getArguments()
+                    );
+                }
+                $this->setData('getAttributes', $attributes);
+            } catch (\Exception $e) {
+                $this->setData('getAttributes', array());
+            }
+        } else {
+            $this->setData('getAttributes', array());
         }
     }
 
@@ -94,5 +132,35 @@ class AdaptedReflectionProperty extends AbstractReflectionAdapter
     {
         // Return a minimal wrapper with just the name
         return new AdaptedReflectionClassReference($this->getData('declaringClassName'));
+    }
+
+    public function hasType()
+    {
+        return $this->getData('hasType', false);
+    }
+
+    public function getType()
+    {
+        return $this->getData('getType');
+    }
+
+    public function hasDefaultValue()
+    {
+        return $this->getData('hasDefaultValue', false);
+    }
+
+    public function getDefaultValue()
+    {
+        return $this->getData('getDefaultValue');
+    }
+
+    public function getDocComment()
+    {
+        return $this->getData('getDocComment', false);
+    }
+
+    public function getAttributes()
+    {
+        return $this->getData('getAttributes', array());
     }
 }

@@ -44448,7 +44448,7 @@
         "duplicates": [],
         "namespace": "\\",
         "isDeprecated": false,
-        "returnType": "[object:StubTests\\Sources\\Parsers\\Entities\\Model\\StandaloneType]",
+        "returnType": "[object:StubTests\\Sources\\Parsers\\Entities\\Model\\NullableType]",
         "parameters": [
             {
                 "name": "position"
@@ -46266,7 +46266,7 @@
         "duplicates": [],
         "namespace": "\\",
         "isDeprecated": false,
-        "returnType": "[object:StubTests\\Sources\\Parsers\\Entities\\Model\\StandaloneType]",
+        "returnType": "[object:StubTests\\Sources\\Parsers\\Entities\\Model\\NullableType]",
         "parameters": []
     },
     {
@@ -48764,7 +48764,7 @@
         "duplicates": [],
         "namespace": "\\",
         "isDeprecated": false,
-        "returnType": "[object:StubTests\\Sources\\Parsers\\Entities\\Model\\StandaloneType]",
+        "returnType": "[object:StubTests\\Sources\\Parsers\\Entities\\Model\\NullableType]",
         "parameters": [
             {
                 "name": "handle"
@@ -48878,7 +48878,7 @@
         "duplicates": [],
         "namespace": "\\",
         "isDeprecated": false,
-        "returnType": "[object:StubTests\\Sources\\Parsers\\Entities\\Model\\StandaloneType]",
+        "returnType": "[object:StubTests\\Sources\\Parsers\\Entities\\Model\\NullableType]",
         "parameters": [
             {
                 "name": "handle"
@@ -48958,7 +48958,7 @@
         "duplicates": [],
         "namespace": "\\",
         "isDeprecated": false,
-        "returnType": "[object:StubTests\\Sources\\Parsers\\Entities\\Model\\StandaloneType]",
+        "returnType": "[object:StubTests\\Sources\\Parsers\\Entities\\Model\\NullableType]",
         "parameters": [
             {
                 "name": "error_code"
@@ -49107,7 +49107,7 @@
         "duplicates": [],
         "namespace": "\\",
         "isDeprecated": false,
-        "returnType": "[object:StubTests\\Sources\\Parsers\\Entities\\Model\\StandaloneType]",
+        "returnType": "[object:StubTests\\Sources\\Parsers\\Entities\\Model\\NullableType]",
         "parameters": [
             {
                 "name": "error_code"
@@ -49122,7 +49122,7 @@
         "duplicates": [],
         "namespace": "\\",
         "isDeprecated": false,
-        "returnType": "[object:StubTests\\Sources\\Parsers\\Entities\\Model\\StandaloneType]",
+        "returnType": "[object:StubTests\\Sources\\Parsers\\Entities\\Model\\NullableType]",
         "parameters": [
             {
                 "name": "error_code"
@@ -49295,7 +49295,7 @@
         "duplicates": [],
         "namespace": "\\",
         "isDeprecated": false,
-        "returnType": "[object:StubTests\\Sources\\Parsers\\Entities\\Model\\StandaloneType]",
+        "returnType": "[object:StubTests\\Sources\\Parsers\\Entities\\Model\\NullableType]",
         "parameters": [
             {
                 "name": "type"
@@ -49319,7 +49319,7 @@
         "duplicates": [],
         "namespace": "\\",
         "isDeprecated": false,
-        "returnType": "[object:StubTests\\Sources\\Parsers\\Entities\\Model\\StandaloneType]",
+        "returnType": "[object:StubTests\\Sources\\Parsers\\Entities\\Model\\NullableType]",
         "parameters": [
             {
                 "name": "value"
@@ -50032,7 +50032,7 @@
         "duplicates": [],
         "namespace": "\\",
         "isDeprecated": false,
-        "returnType": "[object:StubTests\\Sources\\Parsers\\Entities\\Model\\StandaloneType]",
+        "returnType": "[object:StubTests\\Sources\\Parsers\\Entities\\Model\\NullableType]",
         "parameters": [
             {
                 "name": "json"
@@ -51771,7 +51771,7 @@
         "duplicates": [],
         "namespace": "\\",
         "isDeprecated": false,
-        "returnType": "[object:StubTests\\Sources\\Parsers\\Entities\\Model\\StandaloneType]",
+        "returnType": "[object:StubTests\\Sources\\Parsers\\Entities\\Model\\NullableType]",
         "parameters": [
             {
                 "name": "array"
@@ -51786,7 +51786,7 @@
         "duplicates": [],
         "namespace": "\\",
         "isDeprecated": false,
-        "returnType": "[object:StubTests\\Sources\\Parsers\\Entities\\Model\\StandaloneType]",
+        "returnType": "[object:StubTests\\Sources\\Parsers\\Entities\\Model\\NullableType]",
         "parameters": [
             {
                 "name": "array"
@@ -51801,7 +51801,7 @@
         "duplicates": [],
         "namespace": "\\",
         "isDeprecated": false,
-        "returnType": "[object:StubTests\\Sources\\Parsers\\Entities\\Model\\StandaloneType]",
+        "returnType": "[object:StubTests\\Sources\\Parsers\\Entities\\Model\\NullableType]",
         "parameters": [
             {
                 "name": "array"
@@ -51816,7 +51816,7 @@
         "duplicates": [],
         "namespace": "\\",
         "isDeprecated": false,
-        "returnType": "[object:StubTests\\Sources\\Parsers\\Entities\\Model\\StandaloneType]",
+        "returnType": "[object:StubTests\\Sources\\Parsers\\Entities\\Model\\NullableType]",
         "parameters": [
             {
                 "name": "array"
@@ -51831,7 +51831,7 @@
         "duplicates": [],
         "namespace": "\\",
         "isDeprecated": false,
-        "returnType": "[object:StubTests\\Sources\\Parsers\\Entities\\Model\\StandaloneType]",
+        "returnType": "[object:StubTests\\Sources\\Parsers\\Entities\\Model\\NullableType]",
         "parameters": [
             {
                 "name": "array"
@@ -51846,7 +51846,7 @@
         "duplicates": [],
         "namespace": "\\",
         "isDeprecated": false,
-        "returnType": "[object:StubTests\\Sources\\Parsers\\Entities\\Model\\StandaloneType]",
+        "returnType": "[object:StubTests\\Sources\\Parsers\\Entities\\Model\\NullableType]",
         "parameters": [
             {
                 "name": "array"
@@ -51876,7 +51876,7 @@
         "duplicates": [],
         "namespace": "\\",
         "isDeprecated": false,
-        "returnType": "[object:StubTests\\Sources\\Parsers\\Entities\\Model\\StandaloneType]",
+        "returnType": "[object:StubTests\\Sources\\Parsers\\Entities\\Model\\NullableType]",
         "parameters": [
             {
                 "name": "value"
@@ -51894,7 +51894,7 @@
         "duplicates": [],
         "namespace": "\\",
         "isDeprecated": false,
-        "returnType": "[object:StubTests\\Sources\\Parsers\\Entities\\Model\\StandaloneType]",
+        "returnType": "[object:StubTests\\Sources\\Parsers\\Entities\\Model\\NullableType]",
         "parameters": [
             {
                 "name": "value"
@@ -52110,7 +52110,7 @@
         "duplicates": [],
         "namespace": "\\",
         "isDeprecated": false,
-        "returnType": "[object:StubTests\\Sources\\Parsers\\Entities\\Model\\StandaloneType]",
+        "returnType": "[object:StubTests\\Sources\\Parsers\\Entities\\Model\\NullableType]",
         "parameters": [
             {
                 "name": "array"
@@ -52125,7 +52125,7 @@
         "duplicates": [],
         "namespace": "\\",
         "isDeprecated": false,
-        "returnType": "[object:StubTests\\Sources\\Parsers\\Entities\\Model\\StandaloneType]",
+        "returnType": "[object:StubTests\\Sources\\Parsers\\Entities\\Model\\NullableType]",
         "parameters": [
             {
                 "name": "array"
@@ -52818,7 +52818,7 @@
         "duplicates": [],
         "namespace": "\\",
         "isDeprecated": false,
-        "returnType": "[object:StubTests\\Sources\\Parsers\\Entities\\Model\\StandaloneType]",
+        "returnType": "[object:StubTests\\Sources\\Parsers\\Entities\\Model\\NullableType]",
         "parameters": [
             {
                 "name": "array"
@@ -53004,7 +53004,7 @@
         "duplicates": [],
         "namespace": "\\",
         "isDeprecated": false,
-        "returnType": "[object:StubTests\\Sources\\Parsers\\Entities\\Model\\StandaloneType]",
+        "returnType": "[object:StubTests\\Sources\\Parsers\\Entities\\Model\\NullableType]",
         "parameters": [
             {
                 "name": "name"
@@ -53227,7 +53227,7 @@
         "duplicates": [],
         "namespace": "\\",
         "isDeprecated": false,
-        "returnType": "[object:StubTests\\Sources\\Parsers\\Entities\\Model\\StandaloneType]",
+        "returnType": "[object:StubTests\\Sources\\Parsers\\Entities\\Model\\NullableType]",
         "parameters": []
     },
     {
@@ -53249,7 +53249,7 @@
         "duplicates": [],
         "namespace": "\\",
         "isDeprecated": false,
-        "returnType": "[object:StubTests\\Sources\\Parsers\\Entities\\Model\\StandaloneType]",
+        "returnType": "[object:StubTests\\Sources\\Parsers\\Entities\\Model\\NullableType]",
         "parameters": [
             {
                 "name": "callback"
@@ -53267,7 +53267,7 @@
         "duplicates": [],
         "namespace": "\\",
         "isDeprecated": false,
-        "returnType": "[object:StubTests\\Sources\\Parsers\\Entities\\Model\\StandaloneType]",
+        "returnType": "[object:StubTests\\Sources\\Parsers\\Entities\\Model\\NullableType]",
         "parameters": [
             {
                 "name": "callback"
@@ -53285,7 +53285,7 @@
         "duplicates": [],
         "namespace": "\\",
         "isDeprecated": false,
-        "returnType": "[object:StubTests\\Sources\\Parsers\\Entities\\Model\\StandaloneType]",
+        "returnType": "[object:StubTests\\Sources\\Parsers\\Entities\\Model\\NullableType]",
         "parameters": [
             {
                 "name": "callback"
@@ -53303,7 +53303,7 @@
         "duplicates": [],
         "namespace": "\\",
         "isDeprecated": false,
-        "returnType": "[object:StubTests\\Sources\\Parsers\\Entities\\Model\\StandaloneType]",
+        "returnType": "[object:StubTests\\Sources\\Parsers\\Entities\\Model\\NullableType]",
         "parameters": [
             {
                 "name": "callback"
@@ -54544,7 +54544,7 @@
         "duplicates": [],
         "namespace": "\\",
         "isDeprecated": false,
-        "returnType": "[object:StubTests\\Sources\\Parsers\\Entities\\Model\\StandaloneType]",
+        "returnType": "[object:StubTests\\Sources\\Parsers\\Entities\\Model\\NullableType]",
         "parameters": [
             {
                 "name": "option"
@@ -56087,7 +56087,7 @@
         "duplicates": [],
         "namespace": "\\",
         "isDeprecated": false,
-        "returnType": "[object:StubTests\\Sources\\Parsers\\Entities\\Model\\StandaloneType]",
+        "returnType": "[object:StubTests\\Sources\\Parsers\\Entities\\Model\\NullableType]",
         "parameters": [
             {
                 "name": "command"
@@ -60078,7 +60078,7 @@
         "duplicates": [],
         "namespace": "\\",
         "isDeprecated": false,
-        "returnType": "[object:StubTests\\Sources\\Parsers\\Entities\\Model\\StandaloneType]",
+        "returnType": "[object:StubTests\\Sources\\Parsers\\Entities\\Model\\NullableType]",
         "parameters": [
             {
                 "name": "brigade"
@@ -60224,7 +60224,7 @@
         "duplicates": [],
         "namespace": "\\",
         "isDeprecated": false,
-        "returnType": "[object:StubTests\\Sources\\Parsers\\Entities\\Model\\StandaloneType]",
+        "returnType": "[object:StubTests\\Sources\\Parsers\\Entities\\Model\\NullableType]",
         "parameters": [
             {
                 "name": "value"
@@ -60275,7 +60275,7 @@
         "duplicates": [],
         "namespace": "\\",
         "isDeprecated": false,
-        "returnType": "[object:StubTests\\Sources\\Parsers\\Entities\\Model\\StandaloneType]",
+        "returnType": "[object:StubTests\\Sources\\Parsers\\Entities\\Model\\NullableType]",
         "parameters": [
             {
                 "name": "data"
@@ -61280,7 +61280,7 @@
         "duplicates": [],
         "namespace": "\\",
         "isDeprecated": false,
-        "returnType": "[object:StubTests\\Sources\\Parsers\\Entities\\Model\\StandaloneType]",
+        "returnType": "[object:StubTests\\Sources\\Parsers\\Entities\\Model\\NullableType]",
         "parameters": [
             {
                 "name": "var_name"
@@ -61833,7 +61833,7 @@
         "duplicates": [],
         "namespace": "\\",
         "isDeprecated": false,
-        "returnType": "[object:StubTests\\Sources\\Parsers\\Entities\\Model\\StandaloneType]",
+        "returnType": "[object:StubTests\\Sources\\Parsers\\Entities\\Model\\NullableType]",
         "parameters": [
             {
                 "name": "node"
@@ -62160,7 +62160,7 @@
         "duplicates": [],
         "namespace": "\\",
         "isDeprecated": false,
-        "returnType": "[object:StubTests\\Sources\\Parsers\\Entities\\Model\\StandaloneType]",
+        "returnType": "[object:StubTests\\Sources\\Parsers\\Entities\\Model\\NullableType]",
         "parameters": [
             {
                 "name": "error_code"
@@ -64231,7 +64231,7 @@
         "duplicates": [],
         "namespace": "\\",
         "isDeprecated": false,
-        "returnType": "[object:StubTests\\Sources\\Parsers\\Entities\\Model\\StandaloneType]",
+        "returnType": "[object:StubTests\\Sources\\Parsers\\Entities\\Model\\NullableType]",
         "parameters": [
             {
                 "name": "ftp"
@@ -65918,7 +65918,7 @@
         "duplicates": [],
         "namespace": "\\",
         "isDeprecated": false,
-        "returnType": "[object:StubTests\\Sources\\Parsers\\Entities\\Model\\StandaloneType]",
+        "returnType": "[object:StubTests\\Sources\\Parsers\\Entities\\Model\\NullableType]",
         "parameters": [
             {
                 "name": "image"
@@ -69698,7 +69698,7 @@
         "duplicates": [],
         "namespace": "\\",
         "isDeprecated": false,
-        "returnType": "[object:StubTests\\Sources\\Parsers\\Entities\\Model\\StandaloneType]",
+        "returnType": "[object:StubTests\\Sources\\Parsers\\Entities\\Model\\NullableType]",
         "parameters": [
             {
                 "name": "timezone"
@@ -70422,7 +70422,7 @@
         "duplicates": [],
         "namespace": "\\",
         "isDeprecated": false,
-        "returnType": "[object:StubTests\\Sources\\Parsers\\Entities\\Model\\StandaloneType]",
+        "returnType": "[object:StubTests\\Sources\\Parsers\\Entities\\Model\\NullableType]",
         "parameters": [
             {
                 "name": "datetime"
@@ -70485,7 +70485,7 @@
         "duplicates": [],
         "namespace": "\\",
         "isDeprecated": false,
-        "returnType": "[object:StubTests\\Sources\\Parsers\\Entities\\Model\\StandaloneType]",
+        "returnType": "[object:StubTests\\Sources\\Parsers\\Entities\\Model\\NullableType]",
         "parameters": [
             {
                 "name": "timezoneOrYear"
@@ -70566,7 +70566,7 @@
         "duplicates": [],
         "namespace": "\\",
         "isDeprecated": false,
-        "returnType": "[object:StubTests\\Sources\\Parsers\\Entities\\Model\\StandaloneType]",
+        "returnType": "[object:StubTests\\Sources\\Parsers\\Entities\\Model\\NullableType]",
         "parameters": [
             {
                 "name": "locale"
@@ -70852,7 +70852,7 @@
         "duplicates": [],
         "namespace": "\\",
         "isDeprecated": false,
-        "returnType": "[object:StubTests\\Sources\\Parsers\\Entities\\Model\\StandaloneType]",
+        "returnType": "[object:StubTests\\Sources\\Parsers\\Entities\\Model\\NullableType]",
         "parameters": [
             {
                 "name": "locale"
@@ -70990,7 +70990,7 @@
         "duplicates": [],
         "namespace": "\\",
         "isDeprecated": false,
-        "returnType": "[object:StubTests\\Sources\\Parsers\\Entities\\Model\\StandaloneType]",
+        "returnType": "[object:StubTests\\Sources\\Parsers\\Entities\\Model\\NullableType]",
         "parameters": [
             {
                 "name": "formatter"
@@ -71203,7 +71203,7 @@
         "duplicates": [],
         "namespace": "\\",
         "isDeprecated": false,
-        "returnType": "[object:StubTests\\Sources\\Parsers\\Entities\\Model\\StandaloneType]",
+        "returnType": "[object:StubTests\\Sources\\Parsers\\Entities\\Model\\NullableType]",
         "parameters": [
             {
                 "name": "locale"
@@ -71775,7 +71775,7 @@
         "duplicates": [],
         "namespace": "\\",
         "isDeprecated": false,
-        "returnType": "[object:StubTests\\Sources\\Parsers\\Entities\\Model\\StandaloneType]",
+        "returnType": "[object:StubTests\\Sources\\Parsers\\Entities\\Model\\NullableType]",
         "parameters": [
             {
                 "name": "locale"
@@ -71790,7 +71790,7 @@
         "duplicates": [],
         "namespace": "\\",
         "isDeprecated": false,
-        "returnType": "[object:StubTests\\Sources\\Parsers\\Entities\\Model\\StandaloneType]",
+        "returnType": "[object:StubTests\\Sources\\Parsers\\Entities\\Model\\NullableType]",
         "parameters": [
             {
                 "name": "locale"
@@ -71805,7 +71805,7 @@
         "duplicates": [],
         "namespace": "\\",
         "isDeprecated": false,
-        "returnType": "[object:StubTests\\Sources\\Parsers\\Entities\\Model\\StandaloneType]",
+        "returnType": "[object:StubTests\\Sources\\Parsers\\Entities\\Model\\NullableType]",
         "parameters": [
             {
                 "name": "locale"
@@ -71940,7 +71940,7 @@
         "duplicates": [],
         "namespace": "\\",
         "isDeprecated": false,
-        "returnType": "[object:StubTests\\Sources\\Parsers\\Entities\\Model\\StandaloneType]",
+        "returnType": "[object:StubTests\\Sources\\Parsers\\Entities\\Model\\NullableType]",
         "parameters": [
             {
                 "name": "locale"
@@ -71955,7 +71955,7 @@
         "duplicates": [],
         "namespace": "\\",
         "isDeprecated": false,
-        "returnType": "[object:StubTests\\Sources\\Parsers\\Entities\\Model\\StandaloneType]",
+        "returnType": "[object:StubTests\\Sources\\Parsers\\Entities\\Model\\NullableType]",
         "parameters": [
             {
                 "name": "locale"
@@ -71970,7 +71970,7 @@
         "duplicates": [],
         "namespace": "\\",
         "isDeprecated": false,
-        "returnType": "[object:StubTests\\Sources\\Parsers\\Entities\\Model\\StandaloneType]",
+        "returnType": "[object:StubTests\\Sources\\Parsers\\Entities\\Model\\NullableType]",
         "parameters": [
             {
                 "name": "languageTag"
@@ -71991,7 +71991,7 @@
         "duplicates": [],
         "namespace": "\\",
         "isDeprecated": false,
-        "returnType": "[object:StubTests\\Sources\\Parsers\\Entities\\Model\\StandaloneType]",
+        "returnType": "[object:StubTests\\Sources\\Parsers\\Entities\\Model\\NullableType]",
         "parameters": [
             {
                 "name": "locale"
@@ -72006,7 +72006,7 @@
         "duplicates": [],
         "namespace": "\\",
         "isDeprecated": false,
-        "returnType": "[object:StubTests\\Sources\\Parsers\\Entities\\Model\\StandaloneType]",
+        "returnType": "[object:StubTests\\Sources\\Parsers\\Entities\\Model\\NullableType]",
         "parameters": [
             {
                 "name": "languageTag"
@@ -72045,7 +72045,7 @@
         "duplicates": [],
         "namespace": "\\",
         "isDeprecated": false,
-        "returnType": "[object:StubTests\\Sources\\Parsers\\Entities\\Model\\StandaloneType]",
+        "returnType": "[object:StubTests\\Sources\\Parsers\\Entities\\Model\\NullableType]",
         "parameters": [
             {
                 "name": "locale"
@@ -72255,7 +72255,7 @@
         "duplicates": [],
         "namespace": "\\",
         "isDeprecated": false,
-        "returnType": "[object:StubTests\\Sources\\Parsers\\Entities\\Model\\StandaloneType]",
+        "returnType": "[object:StubTests\\Sources\\Parsers\\Entities\\Model\\NullableType]",
         "parameters": [
             {
                 "name": "string"
@@ -72273,7 +72273,7 @@
         "duplicates": [],
         "namespace": "\\",
         "isDeprecated": false,
-        "returnType": "[object:StubTests\\Sources\\Parsers\\Entities\\Model\\StandaloneType]",
+        "returnType": "[object:StubTests\\Sources\\Parsers\\Entities\\Model\\NullableType]",
         "parameters": [
             {
                 "name": "locale"
@@ -72294,7 +72294,7 @@
         "duplicates": [],
         "namespace": "\\",
         "isDeprecated": false,
-        "returnType": "[object:StubTests\\Sources\\Parsers\\Entities\\Model\\StandaloneType]",
+        "returnType": "[object:StubTests\\Sources\\Parsers\\Entities\\Model\\NullableType]",
         "parameters": [
             {
                 "name": "bundle"
@@ -72416,7 +72416,7 @@
         "duplicates": [],
         "namespace": "\\",
         "isDeprecated": false,
-        "returnType": "[object:StubTests\\Sources\\Parsers\\Entities\\Model\\StandaloneType]",
+        "returnType": "[object:StubTests\\Sources\\Parsers\\Entities\\Model\\NullableType]",
         "parameters": [
             {
                 "name": "timezoneId"
@@ -72452,7 +72452,7 @@
         "duplicates": [],
         "namespace": "\\",
         "isDeprecated": false,
-        "returnType": "[object:StubTests\\Sources\\Parsers\\Entities\\Model\\StandaloneType]",
+        "returnType": "[object:StubTests\\Sources\\Parsers\\Entities\\Model\\NullableType]",
         "parameters": [
             {
                 "name": "timezone"
@@ -72758,7 +72758,7 @@
         "duplicates": [],
         "namespace": "\\",
         "isDeprecated": false,
-        "returnType": "[object:StubTests\\Sources\\Parsers\\Entities\\Model\\StandaloneType]",
+        "returnType": "[object:StubTests\\Sources\\Parsers\\Entities\\Model\\NullableType]",
         "parameters": [
             {
                 "name": "id"
@@ -72776,7 +72776,7 @@
         "duplicates": [],
         "namespace": "\\",
         "isDeprecated": false,
-        "returnType": "[object:StubTests\\Sources\\Parsers\\Entities\\Model\\StandaloneType]",
+        "returnType": "[object:StubTests\\Sources\\Parsers\\Entities\\Model\\NullableType]",
         "parameters": [
             {
                 "name": "rules"
@@ -72805,7 +72805,7 @@
         "duplicates": [],
         "namespace": "\\",
         "isDeprecated": false,
-        "returnType": "[object:StubTests\\Sources\\Parsers\\Entities\\Model\\StandaloneType]",
+        "returnType": "[object:StubTests\\Sources\\Parsers\\Entities\\Model\\NullableType]",
         "parameters": [
             {
                 "name": "transliterator"
@@ -74223,7 +74223,7 @@
         "duplicates": [],
         "namespace": "\\",
         "isDeprecated": false,
-        "returnType": "[object:StubTests\\Sources\\Parsers\\Entities\\Model\\StandaloneType]",
+        "returnType": "[object:StubTests\\Sources\\Parsers\\Entities\\Model\\NullableType]",
         "parameters": []
     },
     {
@@ -74641,7 +74641,7 @@
         "duplicates": [],
         "namespace": "\\",
         "isDeprecated": false,
-        "returnType": "[object:StubTests\\Sources\\Parsers\\Entities\\Model\\StandaloneType]",
+        "returnType": "[object:StubTests\\Sources\\Parsers\\Entities\\Model\\NullableType]",
         "parameters": [
             {
                 "name": "mysql"
@@ -74779,7 +74779,7 @@
         "duplicates": [],
         "namespace": "\\",
         "isDeprecated": false,
-        "returnType": "[object:StubTests\\Sources\\Parsers\\Entities\\Model\\StandaloneType]",
+        "returnType": "[object:StubTests\\Sources\\Parsers\\Entities\\Model\\NullableType]",
         "parameters": [
             {
                 "name": "mysql"
@@ -75412,7 +75412,7 @@
         "duplicates": [],
         "namespace": "\\",
         "isDeprecated": false,
-        "returnType": "[object:StubTests\\Sources\\Parsers\\Entities\\Model\\StandaloneType]",
+        "returnType": "[object:StubTests\\Sources\\Parsers\\Entities\\Model\\NullableType]",
         "parameters": [
             {
                 "name": "statement"
@@ -79418,7 +79418,7 @@
         "duplicates": [],
         "namespace": "\\",
         "isDeprecated": false,
-        "returnType": "[object:StubTests\\Sources\\Parsers\\Entities\\Model\\StandaloneType]",
+        "returnType": "[object:StubTests\\Sources\\Parsers\\Entities\\Model\\NullableType]",
         "parameters": [
             {
                 "name": "level"
@@ -81617,7 +81617,7 @@
         "duplicates": [],
         "namespace": "\\",
         "isDeprecated": false,
-        "returnType": "[object:StubTests\\Sources\\Parsers\\Entities\\Model\\StandaloneType]",
+        "returnType": "[object:StubTests\\Sources\\Parsers\\Entities\\Model\\NullableType]",
         "parameters": [
             {
                 "name": "shm"
@@ -81985,7 +81985,7 @@
         "duplicates": [],
         "namespace": "\\",
         "isDeprecated": false,
-        "returnType": "[object:StubTests\\Sources\\Parsers\\Entities\\Model\\StandaloneType]",
+        "returnType": "[object:StubTests\\Sources\\Parsers\\Entities\\Model\\NullableType]",
         "parameters": [
             {
                 "name": "tidy"
@@ -82000,7 +82000,7 @@
         "duplicates": [],
         "namespace": "\\",
         "isDeprecated": false,
-        "returnType": "[object:StubTests\\Sources\\Parsers\\Entities\\Model\\StandaloneType]",
+        "returnType": "[object:StubTests\\Sources\\Parsers\\Entities\\Model\\NullableType]",
         "parameters": [
             {
                 "name": "tidy"
@@ -82015,7 +82015,7 @@
         "duplicates": [],
         "namespace": "\\",
         "isDeprecated": false,
-        "returnType": "[object:StubTests\\Sources\\Parsers\\Entities\\Model\\StandaloneType]",
+        "returnType": "[object:StubTests\\Sources\\Parsers\\Entities\\Model\\NullableType]",
         "parameters": [
             {
                 "name": "tidy"
@@ -82030,7 +82030,7 @@
         "duplicates": [],
         "namespace": "\\",
         "isDeprecated": false,
-        "returnType": "[object:StubTests\\Sources\\Parsers\\Entities\\Model\\StandaloneType]",
+        "returnType": "[object:StubTests\\Sources\\Parsers\\Entities\\Model\\NullableType]",
         "parameters": [
             {
                 "name": "tidy"
@@ -82319,7 +82319,7 @@
         "duplicates": [],
         "namespace": "\\",
         "isDeprecated": false,
-        "returnType": "[object:StubTests\\Sources\\Parsers\\Entities\\Model\\StandaloneType]",
+        "returnType": "[object:StubTests\\Sources\\Parsers\\Entities\\Model\\NullableType]",
         "parameters": []
     },
     {

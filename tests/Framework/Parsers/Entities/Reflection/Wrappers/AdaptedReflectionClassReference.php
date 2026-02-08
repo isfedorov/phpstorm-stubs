@@ -21,4 +21,20 @@ class AdaptedReflectionClassReference
     {
         return $this->name;
     }
+
+    public function getShortName()
+    {
+        $parts = explode('\\', $this->name);
+        return array_pop($parts);
+    }
+
+    public function getNamespaceName()
+    {
+        $parts = explode('\\', $this->name);
+        if (count($parts) === 1) {
+            return ''; // No namespace (global namespace)
+        }
+        array_pop($parts); // Remove class name
+        return implode('\\', $parts);
+    }
 }

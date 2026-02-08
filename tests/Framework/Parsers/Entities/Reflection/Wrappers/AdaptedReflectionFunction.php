@@ -71,6 +71,28 @@ class AdaptedReflectionFunction extends AbstractReflectionAdapter
             $parameters[] = new AdaptedReflectionParameter($parameter);
         }
         $this->setData('getParameters', $parameters);
+
+        // Extract doc comment
+        $docComment = $reflectionObject->getDocComment();
+        $this->setData('getDocComment', $docComment !== false ? $docComment : false);
+
+        // Extract attributes (PHP 8.0+)
+        if (method_exists($reflectionObject, 'getAttributes')) {
+            try {
+                $attributes = array();
+                foreach ($reflectionObject->getAttributes() as $attribute) {
+                    $attributes[] = array(
+                        'name' => $attribute->getName(),
+                        'arguments' => $attribute->getArguments()
+                    );
+                }
+                $this->setData('getAttributes', $attributes);
+            } catch (\Exception $e) {
+                $this->setData('getAttributes', array());
+            }
+        } else {
+            $this->setData('getAttributes', array());
+        }
     }
 
     // Implement ReflectionFunction interface methods explicitly for IDE support
@@ -132,5 +154,45 @@ class AdaptedReflectionFunction extends AbstractReflectionAdapter
     public function isVariadic()
     {
         return $this->getData('isVariadic', false);
+    }
+
+    public function getFileName()
+    {
+        return $this->getData('getFileName', false);
+    }
+
+    public function getStartLine()
+    {
+        return $this->getData('getStartLine', false);
+    }
+
+    public function getEndLine()
+    {
+        return $this->getData('getEndLine', false);
+    }
+
+    public function getDocComment()
+    {
+        return $this->getData('getDocComment', false);
+    }
+
+    public function getExtension()
+    {
+        return $this->getData('getExtension');
+    }
+
+    public function getExtensionName()
+    {
+        return $this->getData('getExtensionName', false);
+    }
+
+    public function getStaticVariables()
+    {
+        return $this->getData('getStaticVariables', array());
+    }
+
+    public function getAttributes()
+    {
+        return $this->getData('getAttributes', array());
     }
 }

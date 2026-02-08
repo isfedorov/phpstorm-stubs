@@ -28,7 +28,7 @@ abstract class AbstractReflectionAdapter
     protected function getExtractionConfig()
     {
         return array(
-            'methodPrefixes' => array('is', 'has', 'get'),
+            'methodPrefixes' => array('allows', 'can', 'get', 'has', 'in', 'is', 'returns'),
             'includeNameMethod' => true,
             'skipMethods' => array(),
             'customHandlers' => array()
