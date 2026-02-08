@@ -4,10 +4,11 @@ namespace StubTests\Sources\Parsers\Entities\Reflection;
 
 use ReflectionClass;
 use StubTests\Sources\Parsers\Entities\Model\PHPClass;
+use StubTests\Sources\Parsers\Entities\Reflection\Wrappers\AdaptedReflectionClass;
 use StubTests\Sources\Parsers\Parser;
 
 /**
- * @template-implements Parser<ReflectionClass>
+ * @template-implements Parser<AdaptedReflectionClass>
  */
 class ReflectionClassParser implements Parser
 {

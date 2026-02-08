@@ -12,7 +12,7 @@ class CurrentRuntimeReflectionRawDataProvider implements ReflectionDataProvider 
 
     public function getReflectionClasses()
     {
-        return array_filter(get_declared_classes(), function($class) {
+        return array_values(array_filter(get_declared_classes(), function($class) {
             try {
                 $reflection = new \ReflectionClass($class);
                 if (!$reflection->isInternal()) {
@@ -26,35 +26,35 @@ class CurrentRuntimeReflectionRawDataProvider implements ReflectionDataProvider 
             } catch (\Exception $e) {
                 return false;
             }
-        });
+        }));
     }
 
     public function getReflectionInterfaces()
     {
-        return array_filter(get_declared_interfaces(), function($interface) {
+        return array_values(array_filter(get_declared_interfaces(), function($interface) {
             try {
                 $reflection = new \ReflectionClass($interface);
                 return $reflection->isInternal();
             } catch (\Exception $e) {
                 return false;
             }
-        });
+        }));
     }
 
     public function getReflectionEnums()
     {
-        return array_filter(get_declared_classes(), function($class) {
+        return array_values(array_filter(get_declared_classes(), function ($class) {
             try {
                 $reflection = new \ReflectionClass($class);
                 // Only available in PHP 8.1+
-                if (method_exists($reflection, 'isEnum')) {
+                if (method_exists($reflection, 'isEnum') && $reflection->isInternal()) {
                     return $reflection->isEnum();
                 }
                 return false;
             } catch (\Exception $e) {
                 return false;
             }
-        });
+        }));
     }
 
     public function getReflectionConstants()

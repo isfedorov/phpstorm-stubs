@@ -1,6 +1,6 @@
 <?php
 
-namespace StubTests\Unit\Parsers\DataProviders;
+namespace StubTests\Unit\DataProviders;
 
 use PHPUnit\Framework\TestCase;
 use StubTests\Sources\DataProvider\CurrentRuntimeReflectionRawDataProvider;
@@ -130,13 +130,13 @@ enum FakeEnum {}
 PHP;
         eval($fake);
         self::assertTrue(enum_exists('FakeEnum'));
-        self::assertFalse(in_array('FakeEnum', new CurrentRuntimeReflectionRawDataProvider()->getReflectionClasses()));
+        self::assertFalse(in_array('FakeEnum', new CurrentRuntimeReflectionRawDataProvider()->getReflectionEnums()));
     }
 
     public function testItReturnsAllInternalEnums()
     {
         $reflectionEnums = new CurrentRuntimeReflectionRawDataProvider()->getReflectionEnums();
-        self::assertGreaterThan(5, sizeof($reflectionEnums));
+        self::assertGreaterThan(4, sizeof($reflectionEnums));
     }
 
     public function testItReturnsArrayOfConstants()
@@ -169,5 +169,23 @@ PHP;
     {
         $reflectionConstants = new CurrentRuntimeReflectionRawDataProvider()->getReflectionConstants();
         self::assertGreaterThan(500, sizeof($reflectionConstants));
+    }
+
+    public function testConstantsDoNotIncludeUserCategory()
+    {
+        // Define user constant
+        $fake = <<<PHP
+define('STUB_TESTS_USER_CONSTANT_2', 'TestValue');
+PHP;
+        eval($fake);
+        self::assertTrue(defined('STUB_TESTS_USER_CONSTANT_2'));
+
+        $reflectionConstants = new CurrentRuntimeReflectionRawDataProvider()->getReflectionConstants();
+
+        // User constants should not be included
+        self::assertArrayNotHasKey('STUB_TESTS_USER_CONSTANT_2', $reflectionConstants);
+
+        // Verify internal constants are included
+        self::assertArrayHasKey('PHP_VERSION', $reflectionConstants);
     }
 }
