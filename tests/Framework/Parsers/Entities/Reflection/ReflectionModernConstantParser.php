@@ -12,9 +12,9 @@ use StubTests\Sources\Parsers\Parser;
 class ReflectionModernConstantParser implements Parser
 {
 
-    public function canParseReflectionClass($object): bool
+    public function canParse($object): bool
     {
-        return false;
+        return $object instanceof \ReflectionConstant || is_array($object);
     }
 
     public function parse($object): PHPConstant

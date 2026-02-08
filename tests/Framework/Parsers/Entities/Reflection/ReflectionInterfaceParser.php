@@ -22,7 +22,7 @@ class ReflectionInterfaceParser implements Parser
         $this->constantParser = $constantParser ?? new ReflectionClassConstantParser();
     }
 
-    public function canParseReflectionClass($object): bool
+    public function canParse($object): bool
     {
         return $object->isInternal() && $object->isInterface();
     }

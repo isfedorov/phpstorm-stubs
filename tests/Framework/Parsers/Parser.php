@@ -15,7 +15,7 @@ interface Parser
      * @param T $object The object to check
      * @return bool True if this parser can parse the object
      */
-    public function canParseReflectionClass($object): bool;
+    public function canParse($object): bool;
 
     /**
      * Parse an object into a domain model

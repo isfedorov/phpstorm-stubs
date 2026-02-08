@@ -42,4 +42,34 @@ class EntityReflectionObjectParsersRegistry {
             default => null,
         };
     }
+
+    /**
+     * Find the appropriate parser for the given reflection object
+     * by calling canParseReflectionClass() on each parser.
+     *
+     * @param mixed $object The reflection object to find a parser for
+     * @return ReflectionClassParser|ReflectionInterfaceParser|ReflectionEnumParser|ReflectionFunctionParser|ReflectionModernConstantParser|null
+     */
+    public function findParserForObject($object)
+    {
+        // Try parsers in order: enum, interface, class, function, constant
+        // More specific checks should come first
+        if ($this->enumParser->canParse($object)) {
+            return $this->enumParser;
+        }
+        if ($this->interfaceParser->canParse($object)) {
+            return $this->interfaceParser;
+        }
+        if ($this->classParser->canParse($object)) {
+            return $this->classParser;
+        }
+        if ($this->functionParser->canParse($object)) {
+            return $this->functionParser;
+        }
+        if ($this->constantParser->canParse($object)) {
+            return $this->constantParser;
+        }
+
+        return null;
+    }
 }

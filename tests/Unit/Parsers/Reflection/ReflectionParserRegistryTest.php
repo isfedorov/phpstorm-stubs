@@ -10,14 +10,14 @@ class ReflectionParserRegistryTest extends TestCase
     public function testItContainsParserForClasses()
     {
         $reflectionClassParserStub = $this->createMock(ReflectionClassParser::class);
-        $reflectionClassParserStub->method('canParseReflectionClass')->with(new \ReflectionClass('stdClass'))->willReturn(true);
+        $reflectionClassParserStub->method('canParse')->with(new \ReflectionClass('stdClass'))->willReturn(true);
         self::assertNotNull(new ReflectionClassLikeParsersRegistry($reflectionClassParserStub)->findParser(new \ReflectionClass('stdClass')));
     }
 
     public function testItContainsParserForInterfaces()
     {
         $reflectionClassParserStub = $this->createMock(ReflectionClassParser::class);
-        $reflectionClassParserStub->method('canParseReflectionClass')->with(new \ReflectionClass('Traversable'))->willReturn(true);
+        $reflectionClassParserStub->method('canParse')->with(new \ReflectionClass('Traversable'))->willReturn(true);
         self::assertNotNull(new ReflectionClassLikeParsersRegistry($reflectionClassParserStub)->findParser(new \ReflectionClass('Traversable')));
     }
 
@@ -34,14 +34,14 @@ class ReflectionParserRegistryTest extends TestCase
             ->getMock();
         $reflectionClassObjectFactory->method('createReflectionClass')->willReturn($reflectionClassMock);
         $reflectionClassParserStub = $this->createMock(ReflectionClassParser::class);
-        $reflectionClassParserStub->method('canParseReflectionClass')->with($reflectionClassMock)->willReturn(true);
+        $reflectionClassParserStub->method('canParse')->with($reflectionClassMock)->willReturn(true);
         self::assertNotNull(new ReflectionClassLikeParsersRegistry($reflectionClassParserStub)->findParser($reflectionClassObjectFactory->createReflectionClass('QosClass')));
     }
 
     public function testItReturnsNullIfNoParserFoundForClass()
     {
         $reflectionClassParserStub = $this->createMock(ReflectionClassParser::class);
-        $reflectionClassParserStub->method('canParseReflectionClass')->with(new \ReflectionClass('Traversable'))->willReturn(false);
+        $reflectionClassParserStub->method('canParse')->with(new \ReflectionClass('Traversable'))->willReturn(false);
         self::assertNull(new ReflectionClassLikeParsersRegistry(new ReflectionClassParser())->findParser(new \ReflectionClass('Traversable')));
     }
 }

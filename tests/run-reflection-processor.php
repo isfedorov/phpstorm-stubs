@@ -96,7 +96,7 @@ try {
     echo "      - Parsing classes...\n";
     foreach ($extractedData['classes'] ?? [] as $wrappedClass) {
         try {
-            if ($classParser->canParseReflectionClass($wrappedClass)) {
+            if ($classParser->canParse($wrappedClass)) {
                 $phpClass = $classParser->parse($wrappedClass);
                 $storageManager->addEntity($phpClass);
             }
@@ -110,7 +110,7 @@ try {
     echo "      - Parsing interfaces...\n";
     foreach ($extractedData['interfaces'] ?? [] as $wrappedInterface) {
         try {
-            if ($interfaceParser->canParseReflectionClass($wrappedInterface)) {
+            if ($interfaceParser->canParse($wrappedInterface)) {
                 $phpInterface = $interfaceParser->parse($wrappedInterface);
                 $storageManager->addEntity($phpInterface);
             }
@@ -123,7 +123,7 @@ try {
     echo "      - Parsing enums...\n";
     foreach ($extractedData['enums'] ?? [] as $wrappedEnum) {
         try {
-            if ($enumParser->canParseReflectionClass($wrappedEnum)) {
+            if ($enumParser->canParse($wrappedEnum)) {
                 $phpEnum = $enumParser->parse($wrappedEnum);
                 $storageManager->addEntity($phpEnum);
             }

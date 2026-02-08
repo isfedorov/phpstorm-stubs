@@ -16,7 +16,7 @@ use StubTests\Sources\Parsers\Parser;
 class ReflectionMethodParser implements Parser
 {
 
-    public function canParseReflectionClass($object): bool
+    public function canParse($object): bool
     {
         return false;
     }

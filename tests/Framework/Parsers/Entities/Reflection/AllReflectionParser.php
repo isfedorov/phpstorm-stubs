@@ -34,102 +34,50 @@ class AllReflectionParser
      */
     public function parseAll(): void
     {
-        $this->parseClasses();
-        $this->parseFunctions();
-        $this->parseInterfaces();
-        $this->parseEnums();
+        // Parse class-like entities (classes, interfaces, enums)
+        $this->parseEntities(
+            array_merge(
+                $this->dataProvider->getReflectionClasses(),
+                $this->dataProvider->getReflectionInterfaces(),
+                $this->dataProvider->getReflectionEnums()
+            ),
+            function($name) {
+                return new AdaptedReflectionClass(new \ReflectionClass($name));
+            }
+        );
+
+        // Parse functions
+        $this->parseEntities(
+            $this->dataProvider->getReflectionFunctions(),
+            function($name) {
+                return new AdaptedReflectionFunction(new \ReflectionFunction($name));
+            }
+        );
+
+        // Parse constants
         $this->parseConstants();
     }
 
     /**
-     * Parse all internal classes from runtime reflection.
+     * Generic method to parse entities using a factory function.
+     * The registry dynamically determines the appropriate parser based on the reflection object.
+     *
+     * @param array $entityNames List of entity names to parse
+     * @param callable $reflectionFactory Factory function that creates reflection objects from names
      */
-    private function parseClasses(): void
+    private function parseEntities(array $entityNames, callable $reflectionFactory): void
     {
-        $reflectionClasses = $this->dataProvider->getReflectionClasses();
-        $classParser = $this->parsersRegistry->findParser(EntityType::A_CLASS);
-
-        foreach ($reflectionClasses as $className) {
+        foreach ($entityNames as $entityName) {
             try {
-                $nativeReflection = new \ReflectionClass($className);
-                $adaptedReflection = new AdaptedReflectionClass($nativeReflection);
+                $reflectionObject = $reflectionFactory($entityName);
 
-                if ($classParser->canParseReflectionClass($adaptedReflection)) {
-                    $phpClass = $classParser->parse($adaptedReflection);
-                    $this->storageManager->addEntity($phpClass);
+                $parser = $this->parsersRegistry->findParserForObject($reflectionObject);
+                if ($parser) {
+                    $entity = $parser->parse($reflectionObject);
+                    $this->storageManager->addEntity($entity);
                 }
             } catch (\Exception $e) {
-                // Skip classes that cannot be reflected
-                continue;
-            }
-        }
-    }
-
-    /**
-     * Parse all internal functions from runtime reflection.
-     */
-    private function parseFunctions(): void
-    {
-        $reflectionFunctions = $this->dataProvider->getReflectionFunctions();
-        $functionParser = $this->parsersRegistry->findParser(EntityType::FUNCTION);
-
-        foreach ($reflectionFunctions as $functionName) {
-            try {
-                $nativeReflection = new \ReflectionFunction($functionName);
-                $adaptedReflection = new AdaptedReflectionFunction($nativeReflection);
-
-                $phpFunction = $functionParser->parse($adaptedReflection);
-                $this->storageManager->addEntity($phpFunction);
-            } catch (\Exception $e) {
-                // Skip functions that cannot be reflected
-                continue;
-            }
-        }
-    }
-
-    /**
-     * Parse all internal interfaces from runtime reflection.
-     */
-    private function parseInterfaces(): void
-    {
-        $reflectionInterfaces = $this->dataProvider->getReflectionInterfaces();
-        $interfaceParser = $this->parsersRegistry->findParser(EntityType::INTERFACE);
-
-        foreach ($reflectionInterfaces as $interfaceName) {
-            try {
-                $nativeReflection = new \ReflectionClass($interfaceName);
-                $adaptedReflection = new AdaptedReflectionClass($nativeReflection);
-
-                if ($interfaceParser->canParseReflectionClass($adaptedReflection)) {
-                    $phpInterface = $interfaceParser->parse($adaptedReflection);
-                    $this->storageManager->addEntity($phpInterface);
-                }
-            } catch (\Exception $e) {
-                // Skip interfaces that cannot be reflected
-                continue;
-            }
-        }
-    }
-
-    /**
-     * Parse all internal enums from runtime reflection.
-     */
-    private function parseEnums(): void
-    {
-        $reflectionEnums = $this->dataProvider->getReflectionEnums();
-        $enumParser = $this->parsersRegistry->findParser(EntityType::ENUM);
-
-        foreach ($reflectionEnums as $enumName) {
-            try {
-                $nativeReflection = new \ReflectionClass($enumName);
-                $adaptedReflection = new AdaptedReflectionClass($nativeReflection);
-
-                if ($enumParser->canParseReflectionClass($adaptedReflection)) {
-                    $phpEnum = $enumParser->parse($adaptedReflection);
-                    $this->storageManager->addEntity($phpEnum);
-                }
-            } catch (\Exception $e) {
-                // Skip enums that cannot be reflected
+                // Skip entities that cannot be reflected
                 continue;
             }
         }
@@ -137,38 +85,42 @@ class AllReflectionParser
 
     /**
      * Parse all internal constants from runtime reflection.
+     * Handles both PHP 8.1+ (ReflectionConstant) and older versions (array format).
      */
     private function parseConstants(): void
     {
         $reflectionConstants = $this->dataProvider->getReflectionConstants();
-        $constantParser = $this->parsersRegistry->findParser(EntityType::CONSTANT);
 
         // Check if ReflectionConstant class exists (PHP 8.1+)
         if (class_exists('\ReflectionConstant')) {
-            foreach ($reflectionConstants as $constantName => $constantValue) {
-                try {
-                    // Try to create ReflectionConstant for namespaced constants
-                    if (defined($constantName)) {
-                        $reflectionConstant = new \ReflectionConstant($constantName);
-                        $phpConstant = $constantParser->parse($reflectionConstant);
-                        $this->storageManager->addEntity($phpConstant);
-                    }
-                } catch (\Exception $e) {
-                    // If ReflectionConstant fails, skip this constant
-                    continue;
+            // Filter to only defined constants and get their names
+            $constantNames = array_filter(array_keys($reflectionConstants), function($name) {
+                return defined($name);
+            });
+
+            $this->parseEntities(
+                $constantNames,
+                function($name) {
+                    return new \ReflectionConstant($name);
                 }
-            }
+            );
         } else {
-            // For PHP < 8.1, use define constant parser
-            $defineParser = new ReflectionDefineConstantParser();
-            foreach ($reflectionConstants as $constantName => $constantValue) {
-                try {
-                    $phpConstant = $defineParser->parse([$constantName => $constantValue]);
-                    $this->storageManager->addEntity($phpConstant);
-                } catch (\Exception $e) {
-                    continue;
+            // For PHP < 8.1, use array format
+            // Convert associative array to list of [name => value] entries
+            $constantEntries = array_map(
+                function($name, $value) {
+                    return [$name => $value];
+                },
+                array_keys($reflectionConstants),
+                array_values($reflectionConstants)
+            );
+
+            $this->parseEntities(
+                $constantEntries,
+                function($entry) {
+                    return $entry; // Already in array format expected by parser
                 }
-            }
+            );
         }
     }
 }

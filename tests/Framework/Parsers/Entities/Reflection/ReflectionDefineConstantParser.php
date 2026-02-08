@@ -11,7 +11,7 @@ use StubTests\Sources\Parsers\Parser;
 class ReflectionDefineConstantParser implements Parser
 {
 
-    public function canParseReflectionClass(mixed $object): bool
+    public function canParse(mixed $object): bool
     {
         return false;
     }

@@ -23,7 +23,7 @@ class ReflectionClassParserTest extends BaseTestCase
             ->disableOriginalConstructor()
             ->getMock();
         $stubReflectionClass->method('isInternal')->willReturn(true);
-        self::assertTrue(new ReflectionClassParser()->canParseReflectionClass($stubReflectionClass));
+        self::assertTrue(new ReflectionClassParser()->canParse($stubReflectionClass));
     }
 
     public function testItCanNotParseUsersClasses()
@@ -32,7 +32,7 @@ class ReflectionClassParserTest extends BaseTestCase
             ->disableOriginalConstructor()
             ->getMock();
         $stubReflectionClass->method('isInternal')->willReturn(false);
-        self::assertFalse(new ReflectionClassParser()->canParseReflectionClass($stubReflectionClass));
+        self::assertFalse(new ReflectionClassParser()->canParse($stubReflectionClass));
     }
 
     public function testItCanNotParseInternalInterface()
@@ -42,7 +42,7 @@ class ReflectionClassParserTest extends BaseTestCase
             ->getMock();
         $stubReflectionClass->method('isInternal')->willReturn(true);
         $stubReflectionClass->method('isInterface')->willReturn(true);
-        self::assertFalse(new ReflectionClassParser()->canParseReflectionClass($stubReflectionClass));
+        self::assertFalse(new ReflectionClassParser()->canParse($stubReflectionClass));
     }
 
     public function testItCanNotParseUsersInterface()
@@ -52,7 +52,7 @@ class ReflectionClassParserTest extends BaseTestCase
             ->getMock();
         $stubReflectionClass->method('isInternal')->willReturn(false);
         $stubReflectionClass->method('isInterface')->willReturn(true);
-        self::assertFalse(new ReflectionClassParser()->canParseReflectionClass($stubReflectionClass));
+        self::assertFalse(new ReflectionClassParser()->canParse($stubReflectionClass));
     }
 
     public function testItCanNotParseInternalEnums()
@@ -62,7 +62,7 @@ class ReflectionClassParserTest extends BaseTestCase
             ->getMock();
         $stubReflectionClass->method('isInternal')->willReturn(true);
         $stubReflectionClass->method('isEnum')->willReturn(true);
-        self::assertFalse(new ReflectionClassParser()->canParseReflectionClass($stubReflectionClass));
+        self::assertFalse(new ReflectionClassParser()->canParse($stubReflectionClass));
     }
 
     public function testItCanNotParseUsersEnums()
@@ -72,7 +72,7 @@ class ReflectionClassParserTest extends BaseTestCase
             ->getMock();
         $stubReflectionClass->method('isInternal')->willReturn(false);
         $stubReflectionClass->method('isEnum')->willReturn(true);
-        self::assertFalse(new ReflectionClassParser()->canParseReflectionClass($stubReflectionClass));
+        self::assertFalse(new ReflectionClassParser()->canParse($stubReflectionClass));
     }
 
     public function testItReturnsCorrectInstance()

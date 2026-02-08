@@ -26,7 +26,7 @@ class ReflectionEnumParser implements Parser
         $this->interfaceParser = $interfaceParser ?? new ReflectionImplementedInterfaceParser();
     }
 
-    public function canParseReflectionClass($object): bool
+    public function canParse($object): bool
     {
         return $object->isInternal() && $object->isEnum();
     }

@@ -12,7 +12,7 @@ use StubTests\Sources\Parsers\Parser;
  */
 class ReflectionPropertyParser implements Parser
 {
-    public function canParseReflectionClass($object): bool
+    public function canParse($object): bool
     {
         return false;
     }
