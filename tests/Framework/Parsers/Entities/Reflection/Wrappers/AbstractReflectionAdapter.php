@@ -23,16 +23,33 @@ abstract class AbstractReflectionAdapter
     /**
      * Extract configuration - override in subclasses if needed
      *
+     * Subclasses should only override this to add ADDITIONAL skip methods
+     * beyond the global patterns defined in ReflectionTypeRegistry.
+     *
      * @return array Configuration for ReflectionMethodExtractor
      */
     protected function getExtractionConfig()
     {
+        // Start with global skip patterns from the registry
+        $globalSkipPatterns = ReflectionTypeRegistry::getGlobalSkipPatterns();
+
         return array(
             'methodPrefixes' => array('allows', 'can', 'get', 'has', 'in', 'is', 'returns'),
             'includeNameMethod' => true,
-            'skipMethods' => array(),
+            'skipMethods' => $globalSkipPatterns,
             'customHandlers' => array()
         );
+    }
+
+    /**
+     * Get additional skip methods specific to this adapter
+     * Override in subclasses to add class-specific skip patterns
+     *
+     * @return array Additional method names to skip
+     */
+    protected function getAdditionalSkipMethods()
+    {
+        return array();
     }
 
     /**
@@ -43,6 +60,13 @@ abstract class AbstractReflectionAdapter
     protected function extractFromReflection($reflectionObject)
     {
         $config = $this->getExtractionConfig();
+
+        // Merge in additional skip methods from subclass
+        $additionalSkip = $this->getAdditionalSkipMethods();
+        if (!empty($additionalSkip)) {
+            $config['skipMethods'] = array_merge($config['skipMethods'], $additionalSkip);
+        }
+
         $rawData = ReflectionMethodExtractor::extractData($reflectionObject, $config);
 
         // Convert to adapted format

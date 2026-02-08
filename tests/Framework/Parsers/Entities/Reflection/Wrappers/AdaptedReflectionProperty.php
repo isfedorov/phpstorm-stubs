@@ -21,24 +21,16 @@ class AdaptedReflectionProperty extends AbstractReflectionAdapter
     }
 
     /**
-     * Configure which methods to skip
+     * Get additional skip methods specific to ReflectionProperty
+     * Most common patterns are now in ReflectionTypeRegistry::getGlobalSkipPatterns()
      */
-    protected function getExtractionConfig()
+    protected function getAdditionalSkipMethods()
     {
-        $config = parent::getExtractionConfig();
-
-        // Skip methods that return complex objects or require parameters
-        $config['skipMethods'] = array(
-            'getDeclaringClass',
+        // getValue/setValue require object instance, so handle separately
+        return array(
             'getValue',
-            'setValue',
-            'getType',
-            'getDefaultValue',
-            'getDocComment',
-            'getAttributes'
+            'setValue'
         );
-
-        return $config;
     }
 
     /**

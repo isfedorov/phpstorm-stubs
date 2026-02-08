@@ -11,12 +11,12 @@ use StubTests\Sources\Parsers\Parser;
 class ReflectionDefineConstantParser implements Parser
 {
 
-    public function canParseReflectionClass($object)
+    public function canParseReflectionClass(mixed $object): bool
     {
-        // TODO: Implement canParseReflectionClass() method.
+        return false;
     }
 
-    public function parse($object)
+    public function parse($object): PHPConstant
     {
         $parsedConstant = new PHPConstant();
         $parsedConstant->setName($object[0]);

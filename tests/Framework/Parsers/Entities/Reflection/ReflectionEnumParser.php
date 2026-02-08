@@ -4,20 +4,27 @@ namespace StubTests\Sources\Parsers\Entities\Reflection;
 
 use ReflectionEnum;
 use StubTests\Sources\Parsers\Entities\Model\PHPEnum;
+use StubTests\Sources\Parsers\Entities\Reflection\Wrappers\AdaptedReflectionClass;
 use StubTests\Sources\Parsers\Parser;
 
 /**
- * @template-implements Parser<ReflectionEnum>
+ * @template-implements Parser<AdaptedReflectionClass>
  */
 class ReflectionEnumParser implements Parser
 {
 
-    public function canParseReflectionClass($object)
+    public function canParseReflectionClass($object): bool
     {
         return $object->isInternal() && $object->isEnum();
     }
 
-    public function parse($object)
+    /**
+     * Parse an AdaptedReflectionClass (representing an enum) into a PHPEnum model
+     *
+     * @param AdaptedReflectionClass $object
+     * @return PHPEnum
+     */
+    public function parse($object): PHPEnum
     {
         $parsedEnum = new PHPEnum();
         $parsedEnum->setName($object->getShortName());

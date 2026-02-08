@@ -21,20 +21,16 @@ class AdaptedReflectionType extends AbstractReflectionAdapter
     }
 
     /**
-     * Configure which methods to skip
+     * Get additional skip methods specific to ReflectionType
+     * Most common patterns are now in ReflectionTypeRegistry::getGlobalSkipPatterns()
      */
-    protected function getExtractionConfig()
+    protected function getAdditionalSkipMethods()
     {
-        $config = parent::getExtractionConfig();
-
-        // Skip methods that return complex objects or need special handling
-        $config['skipMethods'] = array(
-            'getTypes',
-            'getName',  // We'll handle this specially based on type
-            '__toString'
+        // Skip methods that need special handling based on type variant
+        return array(
+            'getName',      // Handle specially based on union/intersection/named
+            '__toString'    // Should not be auto-extracted
         );
-
-        return $config;
     }
 
     /**

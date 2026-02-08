@@ -7,20 +7,27 @@ use StubTests\Sources\Parsers\Entities\Model\PHPMethod;
 use StubTests\Sources\Parsers\Entities\Model\PrivateAccessModifier;
 use StubTests\Sources\Parsers\Entities\Model\ProtectedAccessModifier;
 use StubTests\Sources\Parsers\Entities\Model\PublicAccessModifier;
+use StubTests\Sources\Parsers\Entities\Reflection\Wrappers\AdaptedReflectionMethod;
 use StubTests\Sources\Parsers\Parser;
 
 /**
- * @template-implements Parser<ReflectionMethod>
+ * @template-implements Parser<AdaptedReflectionMethod>
  */
 class ReflectionMethodParser implements Parser
 {
 
-    public function canParseReflectionClass($object)
+    public function canParseReflectionClass($object): bool
     {
-        // TODO: Implement canParseReflectionClass() method.
+        return false;
     }
 
-    public function parse($object)
+    /**
+     * Parse an AdaptedReflectionMethod into a PHPMethod model
+     *
+     * @param AdaptedReflectionMethod $object
+     * @return PHPMethod
+     */
+    public function parse($object): PHPMethod
     {
         $method = new PHPMethod();
         $method->setName($object->getName());

@@ -3,20 +3,27 @@
 namespace StubTests\Sources\Parsers\Entities\Reflection;
 
 use StubTests\Sources\Parsers\Entities\Model\PHPInterface;
+use StubTests\Sources\Parsers\Entities\Reflection\Wrappers\AdaptedReflectionClassReference;
 use StubTests\Sources\Parsers\Parser;
 
 /**
- * @template-implements Parser<\ReflectionClass>
+ * @template-implements Parser<AdaptedReflectionClassReference>
  */
 class ReflectionImplementedInterfaceParser implements Parser
 {
 
-    public function canParseReflectionClass($object)
+    public function canParseReflectionClass(mixed $object): bool
     {
-        // TODO: Implement canParseReflectionClass() method.
+        return false;
     }
 
-    public function parse($object)
+    /**
+     * Parse an AdaptedReflectionClassReference (interface reference) into a PHPInterface model
+     *
+     * @param AdaptedReflectionClassReference $object
+     * @return PHPInterface
+     */
+    public function parse($object): PHPInterface
     {
         $parsedInterface = new PHPInterface();
         $fqn = explode('\\', $object->getName());

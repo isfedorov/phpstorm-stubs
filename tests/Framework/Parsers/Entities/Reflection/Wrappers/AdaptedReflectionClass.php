@@ -22,38 +22,17 @@ class AdaptedReflectionClass extends AbstractReflectionAdapter
     }
 
     /**
-     * Configure which methods to skip or customize
+     * Get additional skip methods specific to ReflectionClass
+     * Most common patterns are now in ReflectionTypeRegistry::getGlobalSkipPatterns()
      */
-    protected function getExtractionConfig()
+    protected function getAdditionalSkipMethods()
     {
-        $config = parent::getExtractionConfig();
-
-        // Skip methods that return complex objects we'll handle manually
-        // Note: Methods requiring parameters (getMethod, getProperty, getStaticPropertyValue)
-        // are automatically skipped by ReflectionMethodExtractor, so no need to list them
-        $config['skipMethods'] = array(
-            'getMethods',
-            'getProperties',
-            'getReflectionConstants',
-            'getConstants',
-            'getParentClass',
-            'getInterfaces',
-            'getConstructor',
-            'getExtension',
-            'getExtensionName',
-            'getFileName',
-            'getStartLine',
-            'getEndLine',
-            'getDocComment',
-            'getStaticProperties',
-            'getTraits',
+        // Only list methods specific to ReflectionClass that aren't in global patterns
+        return array(
             'getTraitAliases',
             'getTraitNames',
-            'getInterfaceNames',
-            'getAttributes'
+            'getInterfaceNames'
         );
-
-        return $config;
     }
 
     /**

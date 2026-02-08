@@ -4,6 +4,8 @@ namespace StubTests\Sources\Parsers\Entities\Reflection;
 
 use StubTests\Sources\DataProvider\CurrentRuntimeReflectionRawDataProvider;
 use StubTests\Sources\Parsers\ParsedDataStorageManager;
+use StubTests\Sources\Parsers\Entities\Reflection\Wrappers\AdaptedReflectionClass;
+use StubTests\Sources\Parsers\Entities\Reflection\Wrappers\AdaptedReflectionFunction;
 
 /**
  * Parses all PHP reflection entities (classes, interfaces, functions, enums, constants)
@@ -55,10 +57,11 @@ class AllReflectionParser
 
         foreach ($reflectionClasses as $className) {
             try {
-                $reflectionClass = new \ReflectionClass($className);
+                $nativeReflection = new \ReflectionClass($className);
+                $adaptedReflection = new AdaptedReflectionClass($nativeReflection);
 
-                if ($this->classParser->canParseReflectionClass($reflectionClass)) {
-                    $phpClass = $this->classParser->parse($reflectionClass);
+                if ($this->classParser->canParseReflectionClass($adaptedReflection)) {
+                    $phpClass = $this->classParser->parse($adaptedReflection);
                     $this->storageManager->addEntity($phpClass);
                 }
             } catch (\Exception $e) {
@@ -77,8 +80,10 @@ class AllReflectionParser
 
         foreach ($reflectionFunctions as $functionName) {
             try {
-                $reflectionFunction = new \ReflectionFunction($functionName);
-                $phpFunction = $this->functionParser->parse($reflectionFunction);
+                $nativeReflection = new \ReflectionFunction($functionName);
+                $adaptedReflection = new AdaptedReflectionFunction($nativeReflection);
+
+                $phpFunction = $this->functionParser->parse($adaptedReflection);
                 $this->storageManager->addEntity($phpFunction);
             } catch (\Exception $e) {
                 // Skip functions that cannot be reflected
@@ -96,10 +101,11 @@ class AllReflectionParser
 
         foreach ($reflectionInterfaces as $interfaceName) {
             try {
-                $reflectionClass = new \ReflectionClass($interfaceName);
+                $nativeReflection = new \ReflectionClass($interfaceName);
+                $adaptedReflection = new AdaptedReflectionClass($nativeReflection);
 
-                if ($this->interfaceParser->canParseReflectionClass($reflectionClass)) {
-                    $phpInterface = $this->interfaceParser->parse($reflectionClass);
+                if ($this->interfaceParser->canParseReflectionClass($adaptedReflection)) {
+                    $phpInterface = $this->interfaceParser->parse($adaptedReflection);
                     $this->storageManager->addEntity($phpInterface);
                 }
             } catch (\Exception $e) {
@@ -118,10 +124,11 @@ class AllReflectionParser
 
         foreach ($reflectionEnums as $enumName) {
             try {
-                $reflectionClass = new \ReflectionClass($enumName);
+                $nativeReflection = new \ReflectionClass($enumName);
+                $adaptedReflection = new AdaptedReflectionClass($nativeReflection);
 
-                if ($this->enumParser->canParseReflectionClass($reflectionClass)) {
-                    $phpEnum = $this->enumParser->parse($reflectionClass);
+                if ($this->enumParser->canParseReflectionClass($adaptedReflection)) {
+                    $phpEnum = $this->enumParser->parse($adaptedReflection);
                     $this->storageManager->addEntity($phpEnum);
                 }
             } catch (\Exception $e) {

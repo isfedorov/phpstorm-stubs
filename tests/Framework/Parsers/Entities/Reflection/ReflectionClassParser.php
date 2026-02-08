@@ -13,12 +13,18 @@ use StubTests\Sources\Parsers\Parser;
 class ReflectionClassParser implements Parser
 {
 
-    public function canParseReflectionClass($object)
+    public function canParseReflectionClass($object): bool
     {
         return $object->isInternal() && !$object->isInterface() && !$object->isEnum();
     }
 
-    public function parse($object)
+    /**
+     * Parse an AdaptedReflectionClass into a PHPClass model
+     *
+     * @param AdaptedReflectionClass $object
+     * @return PHPClass
+     */
+    public function parse($object): PHPClass
     {
         $class = new PhpClass();
         $class->setName(!empty($object->getShortName()) ? $object->getShortName() : null);

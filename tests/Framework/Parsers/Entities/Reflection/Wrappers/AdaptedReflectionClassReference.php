@@ -8,13 +8,14 @@ namespace StubTests\Sources\Parsers\Entities\Reflection\Wrappers;
  *
  * PHP 5.6+ compatible
  */
-class AdaptedReflectionClassReference
+class AdaptedReflectionClassReference extends AbstractReflectionAdapter
 {
     private $name;
 
     public function __construct($className)
     {
         $this->name = $className;
+        // Don't call parent constructor - we don't have a native Reflection object
     }
 
     public function getName()
@@ -36,5 +37,10 @@ class AdaptedReflectionClassReference
         }
         array_pop($parts); // Remove class name
         return implode('\\', $parts);
+    }
+
+    protected function getAdditionalSkipMethods()
+    {
+        return array();
     }
 }

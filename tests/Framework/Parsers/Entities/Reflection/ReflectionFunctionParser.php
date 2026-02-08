@@ -9,19 +9,26 @@ use StubTests\Sources\Parsers\Entities\Model\PHPFunction;
 use StubTests\Sources\Parsers\Entities\Model\PHPParameter;
 use StubTests\Sources\Parsers\Entities\Model\StandaloneType;
 use StubTests\Sources\Parsers\Entities\Model\UnionType;
+use StubTests\Sources\Parsers\Entities\Reflection\Wrappers\AdaptedReflectionFunction;
 use StubTests\Sources\Parsers\Parser;
 
 /**
- * @template-implements Parser<ReflectionFunction>
+ * @template-implements Parser<AdaptedReflectionFunction>
  */
 class ReflectionFunctionParser implements Parser {
 
-    public function canParseReflectionClass($object)
+    public function canParseReflectionClass($object): bool
     {
-        // TODO: Implement canParseReflectionClass() method.
+        return false;
     }
 
-    public function parse($object)
+    /**
+     * Parse an AdaptedReflectionFunction into a PHPFunction model
+     *
+     * @param AdaptedReflectionFunction $object
+     * @return PHPFunction
+     */
+    public function parse($object): PHPFunction
     {
         $PHPFunction = new PHPFunction();
         $PHPFunction->setName(!empty($object->getName()) ? $object->getName() : null);

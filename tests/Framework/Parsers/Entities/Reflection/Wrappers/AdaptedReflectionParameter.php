@@ -21,24 +21,15 @@ class AdaptedReflectionParameter extends AbstractReflectionAdapter
     }
 
     /**
-     * Configure which methods to skip
+     * Get additional skip methods specific to ReflectionParameter
+     * Most common patterns are now in ReflectionTypeRegistry::getGlobalSkipPatterns()
      */
-    protected function getExtractionConfig()
+    protected function getAdditionalSkipMethods()
     {
-        $config = parent::getExtractionConfig();
-
-        // Skip methods that return complex objects or have side effects
-        $config['skipMethods'] = array(
-            'getClass',
-            'getDeclaringClass',
-            'getDeclaringFunction',
-            'getType',
-            'getDefaultValue',
-            'getDefaultValueConstantName',
-            'getAttributes'
+        // Only list methods specific to ReflectionParameter
+        return array(
+            'getClass'  // Deprecated in PHP 8.0, but needs special handling in older versions
         );
-
-        return $config;
     }
 
     /**

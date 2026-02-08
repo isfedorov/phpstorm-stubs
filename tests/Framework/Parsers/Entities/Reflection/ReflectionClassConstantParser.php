@@ -4,22 +4,31 @@ namespace StubTests\Sources\Parsers\Entities\Reflection;
 
 use ReflectionClassConstant;
 use StubTests\Sources\Parsers\Entities\Model\PHPClassConstant;
+use StubTests\Sources\Parsers\Entities\Reflection\Wrappers\AdaptedReflectionClassConstant;
 use StubTests\Sources\Parsers\Parser;
 
 /**
- * @template-implements Parser<ReflectionClassConstant>
+ * @template-implements Parser<AdaptedReflectionClassConstant|array>
  */
 class ReflectionClassConstantParser implements Parser
 {
 
-    public function canParseReflectionClass($object)
+    public function canParseReflectionClass($object): bool
     {
-        // TODO: Implement canParseReflectionClass() method.
+        return false;
     }
 
-    public function parse($object)
+    /**
+     * Parse a ReflectionClassConstant (adapted or array) into a PHPClassConstant model
+     *
+     * Accepts both AdaptedReflectionClassConstant objects and arrays for backward compatibility.
+     *
+     * @param \StubTests\Sources\Parsers\Entities\Reflection\Wrappers\AdaptedReflectionClassConstant|array $object
+     * @return PHPClassConstant
+     */
+    public function parse($object): PHPClassConstant
     {
-        // Accept both real ReflectionClassConstant and wrapper objects (duck typing)
+        // Accept both AdaptedReflectionClassConstant and array (duck typing)
         if (is_object($object) && method_exists($object, 'getName') && method_exists($object, 'getValue')) {
             $constant = new PhpClassConstant();
             if (!empty($object->getName())) {

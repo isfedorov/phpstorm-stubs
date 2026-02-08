@@ -12,12 +12,12 @@ use StubTests\Sources\Parsers\Parser;
 class ReflectionModernConstantParser implements Parser
 {
 
-    public function canParseReflectionClass($object)
+    public function canParseReflectionClass($object): bool
     {
-        // TODO: Implement canParseReflectionClass() method.
+        return false;
     }
 
-    public function parse($object)
+    public function parse($object): PHPConstant
     {
         $namespace = '\\';
         $parsedConstant = new PHPConstant();

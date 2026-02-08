@@ -2,18 +2,28 @@
 
 namespace StubTests\Sources\Parsers\Entities\Reflection;
 
-
 use StubTests\Sources\Parsers\Entities\Model\PHPInterface;
+use StubTests\Sources\Parsers\Entities\Reflection\Wrappers\AdaptedReflectionClass;
+use StubTests\Sources\Parsers\Parser;
 
-class ReflectionInterfaceParser
+/**
+ * @template-implements Parser<AdaptedReflectionClass>
+ */
+class ReflectionInterfaceParser implements Parser
 {
 
-    public function canParseReflectionClass($reflectionClass)
+    public function canParseReflectionClass($object): bool
     {
-        return $reflectionClass->isInternal() && $reflectionClass->isInterface();
+        return $object->isInternal() && $object->isInterface();
     }
 
-    public function parse($object)
+    /**
+     * Parse an AdaptedReflectionClass (representing an interface) into a PHPInterface model
+     *
+     * @param AdaptedReflectionClass $object
+     * @return PHPInterface
+     */
+    public function parse($object): PHPInterface
     {
         $interface = new PHPInterface();
         $interface->setName($object->getShortName());

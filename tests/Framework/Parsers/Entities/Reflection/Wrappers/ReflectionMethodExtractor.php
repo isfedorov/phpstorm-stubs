@@ -105,6 +105,10 @@ class ReflectionMethodExtractor
      * Convert extracted data to serializable format
      * Handles Reflection objects, arrays, and primitives
      *
+     * Uses ReflectionTypeRegistry for centralized type-to-adapter mapping.
+     * This eliminates hardcoded type checks and makes it easier to support
+     * new Reflection types added in future PHP versions.
+     *
      * @param mixed $value The value to convert
      * @param int $depth Current recursion depth
      * @param int $maxDepth Maximum recursion depth
@@ -131,44 +135,18 @@ class ReflectionMethodExtractor
             return $result;
         }
 
-        // Handle Reflection objects - wrap them
+        // Handle Reflection objects - wrap them using the registry
         if (is_object($value)) {
-            // Check if it's a Reflection object
-            $className = get_class($value);
-
-            // Map Reflection classes to their adapter wrappers
-            if ($className === 'ReflectionClass') {
-                return new AdaptedReflectionClass($value);
-            }
-            if ($className === 'ReflectionMethod') {
-                return new AdaptedReflectionMethod($value);
-            }
-            if ($className === 'ReflectionProperty') {
-                return new AdaptedReflectionProperty($value);
-            }
-            if ($className === 'ReflectionParameter') {
-                return new AdaptedReflectionParameter($value);
-            }
-            if ($className === 'ReflectionFunction') {
-                return new AdaptedReflectionFunction($value);
-            }
-            if ($className === 'ReflectionClassConstant') {
-                return new AdaptedReflectionClassConstant($value);
-            }
-            if ($className === 'ReflectionNamedType') {
-                return new AdaptedReflectionType($value);
-            }
-            if ($className === 'ReflectionUnionType' || $className === 'ReflectionIntersectionType') {
-                return new AdaptedReflectionType($value);
-            }
-            // Handle base ReflectionType (catch-all for any type objects)
-            if ($value instanceof \ReflectionType) {
-                return new AdaptedReflectionType($value);
-            }
-
             // For already adapted wrappers, return as-is
-            if (strpos($className, 'AdaptedReflection') === 0 || strpos($className, 'StubTests\\Sources\\Parsers\\Entities\\Reflection\\Wrappers\\AdaptedReflection') === 0) {
+            // Use instanceof for type-safe checking instead of string matching
+            if ($value instanceof AbstractReflectionAdapter) {
                 return $value;
+            }
+
+            // Try to create an adapter using the registry
+            $adapter = ReflectionTypeRegistry::createAdapter($value);
+            if ($adapter !== null) {
+                return $adapter;
             }
 
             // For other objects, try to convert to string or return class name
@@ -176,7 +154,7 @@ class ReflectionMethodExtractor
                 return (string)$value;
             }
 
-            return $className;
+            return get_class($value);
         }
 
         // Return primitives as-is

@@ -21,20 +21,13 @@ class AdaptedReflectionClassConstant extends AbstractReflectionAdapter
     }
 
     /**
-     * Configure which methods to skip
+     * Get additional skip methods specific to ReflectionClassConstant
+     * Most common patterns are now in ReflectionTypeRegistry::getGlobalSkipPatterns()
      */
-    protected function getExtractionConfig()
+    protected function getAdditionalSkipMethods()
     {
-        $config = parent::getExtractionConfig();
-
-        // Skip methods that return complex objects
-        $config['skipMethods'] = array(
-            'getDeclaringClass',
-            'getDocComment',
-            'getAttributes'
-        );
-
-        return $config;
+        // All methods are now covered by global patterns
+        return array();
     }
 
     /**
