@@ -7,6 +7,7 @@ use StubTests\Sources\Parsers\Entities\EntityType;
 use StubTests\Sources\Parsers\Entities\Reflection\ReflectionClassParser;
 use StubTests\Sources\Parsers\Entities\Reflection\ReflectionEnumParser;
 use StubTests\Sources\Parsers\Entities\Reflection\ReflectionFunctionParser;
+use StubTests\Sources\Parsers\Entities\Reflection\ReflectionModernConstantParser;
 use StubTests\Sources\Parsers\Registries\EntityReflectionObjectParsersRegistry;
 
 class ReflectionEntityParsersRegistryTest extends TestCase
@@ -33,7 +34,7 @@ class ReflectionEntityParsersRegistryTest extends TestCase
 
     public function testItContainsExactConstantParserForConstants()
     {
-        self::assertInstanceOf(\StubTests\Sources\Parsers\Entities\Reflection\ReflectionModernConstantParser::class, new EntityReflectionObjectParsersRegistry()->findParser(EntityType::CONSTANT));
+        self::assertInstanceOf(ReflectionModernConstantParser::class, new EntityReflectionObjectParsersRegistry()->findParser(EntityType::CONSTANT));
     }
 
     public function testItContainsParserForFunctions()

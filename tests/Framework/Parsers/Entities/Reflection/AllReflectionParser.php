@@ -4,8 +4,10 @@ namespace StubTests\Sources\Parsers\Entities\Reflection;
 
 use StubTests\Sources\DataProvider\CurrentRuntimeReflectionRawDataProvider;
 use StubTests\Sources\Parsers\ParsedDataStorageManager;
+use StubTests\Sources\Parsers\Entities\EntityType;
 use StubTests\Sources\Parsers\Entities\Reflection\Wrappers\AdaptedReflectionClass;
 use StubTests\Sources\Parsers\Entities\Reflection\Wrappers\AdaptedReflectionFunction;
+use StubTests\Sources\Parsers\Registries\EntityReflectionObjectParsersRegistry;
 
 /**
  * Parses all PHP reflection entities (classes, interfaces, functions, enums, constants)
@@ -15,25 +17,16 @@ class AllReflectionParser
 {
     private CurrentRuntimeReflectionRawDataProvider $dataProvider;
     private ParsedDataStorageManager $storageManager;
-    private ReflectionClassParser $classParser;
-    private ReflectionFunctionParser $functionParser;
-    private ReflectionInterfaceParser $interfaceParser;
-    private ReflectionEnumParser $enumParser;
-    private ReflectionModernConstantParser $constantParser;
+    private EntityReflectionObjectParsersRegistry $parsersRegistry;
 
     public function __construct(
         CurrentRuntimeReflectionRawDataProvider $dataProvider,
-        ParsedDataStorageManager                $storageManager
+        ParsedDataStorageManager                $storageManager,
+        ?EntityReflectionObjectParsersRegistry  $parsersRegistry = null
     ) {
         $this->dataProvider = $dataProvider;
         $this->storageManager = $storageManager;
-
-        // Initialize parsers
-        $this->classParser = new ReflectionClassParser();
-        $this->functionParser = new ReflectionFunctionParser();
-        $this->interfaceParser = new ReflectionInterfaceParser();
-        $this->enumParser = new ReflectionEnumParser();
-        $this->constantParser = new ReflectionModernConstantParser();
+        $this->parsersRegistry = $parsersRegistry ?? new EntityReflectionObjectParsersRegistry();
     }
 
     /**
@@ -54,14 +47,15 @@ class AllReflectionParser
     private function parseClasses(): void
     {
         $reflectionClasses = $this->dataProvider->getReflectionClasses();
+        $classParser = $this->parsersRegistry->findParser(EntityType::A_CLASS);
 
         foreach ($reflectionClasses as $className) {
             try {
                 $nativeReflection = new \ReflectionClass($className);
                 $adaptedReflection = new AdaptedReflectionClass($nativeReflection);
 
-                if ($this->classParser->canParseReflectionClass($adaptedReflection)) {
-                    $phpClass = $this->classParser->parse($adaptedReflection);
+                if ($classParser->canParseReflectionClass($adaptedReflection)) {
+                    $phpClass = $classParser->parse($adaptedReflection);
                     $this->storageManager->addEntity($phpClass);
                 }
             } catch (\Exception $e) {
@@ -77,13 +71,14 @@ class AllReflectionParser
     private function parseFunctions(): void
     {
         $reflectionFunctions = $this->dataProvider->getReflectionFunctions();
+        $functionParser = $this->parsersRegistry->findParser(EntityType::FUNCTION);
 
         foreach ($reflectionFunctions as $functionName) {
             try {
                 $nativeReflection = new \ReflectionFunction($functionName);
                 $adaptedReflection = new AdaptedReflectionFunction($nativeReflection);
 
-                $phpFunction = $this->functionParser->parse($adaptedReflection);
+                $phpFunction = $functionParser->parse($adaptedReflection);
                 $this->storageManager->addEntity($phpFunction);
             } catch (\Exception $e) {
                 // Skip functions that cannot be reflected
@@ -98,14 +93,15 @@ class AllReflectionParser
     private function parseInterfaces(): void
     {
         $reflectionInterfaces = $this->dataProvider->getReflectionInterfaces();
+        $interfaceParser = $this->parsersRegistry->findParser(EntityType::INTERFACE);
 
         foreach ($reflectionInterfaces as $interfaceName) {
             try {
                 $nativeReflection = new \ReflectionClass($interfaceName);
                 $adaptedReflection = new AdaptedReflectionClass($nativeReflection);
 
-                if ($this->interfaceParser->canParseReflectionClass($adaptedReflection)) {
-                    $phpInterface = $this->interfaceParser->parse($adaptedReflection);
+                if ($interfaceParser->canParseReflectionClass($adaptedReflection)) {
+                    $phpInterface = $interfaceParser->parse($adaptedReflection);
                     $this->storageManager->addEntity($phpInterface);
                 }
             } catch (\Exception $e) {
@@ -121,14 +117,15 @@ class AllReflectionParser
     private function parseEnums(): void
     {
         $reflectionEnums = $this->dataProvider->getReflectionEnums();
+        $enumParser = $this->parsersRegistry->findParser(EntityType::ENUM);
 
         foreach ($reflectionEnums as $enumName) {
             try {
                 $nativeReflection = new \ReflectionClass($enumName);
                 $adaptedReflection = new AdaptedReflectionClass($nativeReflection);
 
-                if ($this->enumParser->canParseReflectionClass($adaptedReflection)) {
-                    $phpEnum = $this->enumParser->parse($adaptedReflection);
+                if ($enumParser->canParseReflectionClass($adaptedReflection)) {
+                    $phpEnum = $enumParser->parse($adaptedReflection);
                     $this->storageManager->addEntity($phpEnum);
                 }
             } catch (\Exception $e) {
@@ -144,6 +141,7 @@ class AllReflectionParser
     private function parseConstants(): void
     {
         $reflectionConstants = $this->dataProvider->getReflectionConstants();
+        $constantParser = $this->parsersRegistry->findParser(EntityType::CONSTANT);
 
         // Check if ReflectionConstant class exists (PHP 8.1+)
         if (class_exists('\ReflectionConstant')) {
@@ -152,7 +150,7 @@ class AllReflectionParser
                     // Try to create ReflectionConstant for namespaced constants
                     if (defined($constantName)) {
                         $reflectionConstant = new \ReflectionConstant($constantName);
-                        $phpConstant = $this->constantParser->parse($reflectionConstant);
+                        $phpConstant = $constantParser->parse($reflectionConstant);
                         $this->storageManager->addEntity($phpConstant);
                     }
                 } catch (\Exception $e) {

@@ -12,6 +12,19 @@ use StubTests\Sources\Parsers\Parser;
  */
 class ReflectionEnumParser implements Parser
 {
+    private ReflectionMethodParser $methodParser;
+    private ReflectionClassConstantParser $constantParser;
+    private ReflectionImplementedInterfaceParser $interfaceParser;
+
+    public function __construct(
+        ?ReflectionMethodParser $methodParser = null,
+        ?ReflectionClassConstantParser $constantParser = null,
+        ?ReflectionImplementedInterfaceParser $interfaceParser = null
+    ) {
+        $this->methodParser = $methodParser ?? new ReflectionMethodParser();
+        $this->constantParser = $constantParser ?? new ReflectionClassConstantParser();
+        $this->interfaceParser = $interfaceParser ?? new ReflectionImplementedInterfaceParser();
+    }
 
     public function canParseReflectionClass($object): bool
     {
@@ -37,19 +50,19 @@ class ReflectionEnumParser implements Parser
         $parsedEnum->isFinal = $object->isFinal();
         $parsedEnum->isReadonly = $object->isReadOnly();
         foreach ($object->getMethods() as $method) {
-            $parsedEnum->methods []= new ReflectionMethodParser()->parse($method);
+            $parsedEnum->methods []= $this->methodParser->parse($method);
         }
         if ($object->hasMethod('getReflectionConstants')) {
             foreach ($object->getReflectionConstants() as $reflectionConstant) {
-                $parsedEnum->constants []= new ReflectionClassConstantParser()->parse($reflectionConstant);
+                $parsedEnum->constants []= $this->constantParser->parse($reflectionConstant);
             }
         } else {
             foreach ($object->getConstants() as $key => $value) {
-                $parsedEnum->constants []= new ReflectionClassConstantParser()->parse([$key => $value]);
+                $parsedEnum->constants []= $this->constantParser->parse([$key => $value]);
             }
         }
         foreach ($object->getInterfaces() as $interface) {
-            $parsedEnum->interfaces []= new ReflectionImplementedInterfaceParser()->parse($interface);
+            $parsedEnum->interfaces []= $this->interfaceParser->parse($interface);
         }
         return $parsedEnum;
     }

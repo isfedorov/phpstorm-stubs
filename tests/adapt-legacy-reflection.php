@@ -24,6 +24,7 @@ require_once __DIR__ . '/Framework/DataProvider/CurrentRuntimeReflectionRawDataP
 
 // Include base wrapper classes first
 require_once __DIR__ . '/Framework/Parsers/Entities/Reflection/Wrappers/ReflectionMethodExtractor.php';
+require_once __DIR__ . '/Framework/Parsers/Entities/Reflection/Wrappers/ReflectionTypeRegistry.php';
 require_once __DIR__ . '/Framework/Parsers/Entities/Reflection/Wrappers/AbstractReflectionAdapter.php';
 
 // Include wrapper classes

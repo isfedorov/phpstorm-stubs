@@ -2,6 +2,8 @@
 
 namespace StubTests\Sources\Parsers\Entities\Reflection\Wrappers;
 
+use StubTests\Sources\Parsers\Entities\Reflection\Wrappers\ReflectionTypeRegistry;
+
 /**
  * Abstract base class for Reflection adapter wrappers
  *

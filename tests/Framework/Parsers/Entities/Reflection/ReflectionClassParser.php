@@ -12,6 +12,25 @@ use StubTests\Sources\Parsers\Parser;
  */
 class ReflectionClassParser implements Parser
 {
+    private ReflectionMethodParser $methodParser;
+    private ReflectionPropertyParser $propertyParser;
+    private ReflectionClassConstantParser $constantParser;
+    private ReflectionParentClassParser $parentClassParser;
+    private ReflectionImplementedInterfaceParser $interfaceParser;
+
+    public function __construct(
+        ?ReflectionMethodParser $methodParser = null,
+        ?ReflectionPropertyParser $propertyParser = null,
+        ?ReflectionClassConstantParser $constantParser = null,
+        ?ReflectionParentClassParser $parentClassParser = null,
+        ?ReflectionImplementedInterfaceParser $interfaceParser = null
+    ) {
+        $this->methodParser = $methodParser ?? new ReflectionMethodParser();
+        $this->propertyParser = $propertyParser ?? new ReflectionPropertyParser();
+        $this->constantParser = $constantParser ?? new ReflectionClassConstantParser();
+        $this->parentClassParser = $parentClassParser ?? new ReflectionParentClassParser();
+        $this->interfaceParser = $interfaceParser ?? new ReflectionImplementedInterfaceParser();
+    }
 
     public function canParseReflectionClass($object): bool
     {
@@ -35,26 +54,26 @@ class ReflectionClassParser implements Parser
         $class->isFinal = $object->isFinal();
         $class->isReadonly = $object->isReadOnly();
         foreach ($object->getMethods() as $method) {
-            $class->methods []= new ReflectionMethodParser()->parse($method);
+            $class->methods []= $this->methodParser->parse($method);
         }
         foreach ($object->getProperties() as $property) {
-            $class->properties []= new ReflectionPropertyParser()->parse($property);
+            $class->properties []= $this->propertyParser->parse($property);
         }
         if ($object->hasMethod('getReflectionConstants')) {
             foreach ($object->getReflectionConstants() as $reflectionConstant) {
-                $class->constants []= new ReflectionClassConstantParser()->parse($reflectionConstant);
+                $class->constants []= $this->constantParser->parse($reflectionConstant);
             }
         } else {
             foreach ($object->getConstants() as $constantName => $constantValue) {
-                $class->constants []= new ReflectionClassConstantParser()->parse([$constantName => $constantValue]);
+                $class->constants []= $this->constantParser->parse([$constantName => $constantValue]);
             }
         }
         if ($object->getParentClass()) {
-            $class->parentClass = new ReflectionParentClassParser()->parse($object->getParentClass());
+            $class->parentClass = $this->parentClassParser->parse($object->getParentClass());
         }
         if ($object->getInterfaces()) {
             foreach ($object->getInterfaces() as $interface) {
-                $class->interfaces []= new ReflectionImplementedInterfaceParser()->parse($interface);
+                $class->interfaces []= $this->interfaceParser->parse($interface);
             }
         }
         return $class;

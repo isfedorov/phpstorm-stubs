@@ -26,10 +26,11 @@ class AdaptedReflectionProperty extends AbstractReflectionAdapter
      */
     protected function getAdditionalSkipMethods()
     {
-        // getValue/setValue require object instance, so handle separately
+        // getValue/setValue/isInitialized require object instance, so handle separately
         return array(
             'getValue',
-            'setValue'
+            'setValue',
+            'isInitialized'
         );
     }
 
