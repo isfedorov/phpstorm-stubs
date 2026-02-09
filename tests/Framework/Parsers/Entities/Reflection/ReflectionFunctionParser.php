@@ -44,9 +44,14 @@ class ReflectionFunctionParser implements Parser {
         } else {
             $PHPFunction->setId($PHPFunction->getNamespace() . '\\' . $PHPFunction->getName());
         }
-
+        $PHPFunction->setHasTentativeReturnType($object->hasTentativeReturnType());
+        if ($object->hasTentativeReturnType()) {
+            $returnType = $object->getTentativeReturnType();
+        } elseif($object->hasReturnType()) {
+            $returnType = $object->getReturnType();
+        }
         // Parse return type using ReflectionTypeParser
-        $returnTypesFromSignature = $this->typeParser->parse($object->hasReturnType() ? $object->getReturnType() : null);
+        $returnTypesFromSignature = $this->typeParser->parse($returnType ?? null);
         $PHPFunction->setReturnTypeFromSignature($returnTypesFromSignature);
         $PHPFunction->setDeprecated($object->isDeprecated());
 

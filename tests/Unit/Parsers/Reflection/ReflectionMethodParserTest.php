@@ -241,16 +241,17 @@ class ReflectionMethodParserTest extends TestCase
             ->onlyMethods([])
             ->getMock();
         $basePHPElement = new ReflectionMethodParser()->parse($reflectionMethodMock);
-        self::assertTrue(is_array($basePHPElement->returnTypesFromSignature));
+        self::assertTrue(is_array($basePHPElement->getReturnTypeFromSignature()));
     }
 
     public function testItReturnsEmtyArrayOfReturnTypesIfNoReturnTypeIsPresent()
     {
         $reflectionMethodMock = $this->getMockBuilder(AdaptedReflectionMethod::class)
             ->disableOriginalConstructor()
+            ->onlyMethods([])
             ->getMock();
         $basePHPElement = new ReflectionMethodParser()->parse($reflectionMethodMock);
-        self::assertEquals([], $basePHPElement->returnTypesFromSignature);
+        self::assertEquals([], $basePHPElement->getReturnTypeFromSignature());
     }
 
     public function testItCanParseSimpleReturnType() {
@@ -260,7 +261,7 @@ class ReflectionMethodParserTest extends TestCase
         $reflectionMethodMock->method('hasReturnType')->willReturn(true);
         $reflectionMethodMock->method('getReturnType')->willReturn($returnTypeMock);
         $basePhpElement = new ReflectionMethodParser()->parse($reflectionMethodMock);
-        self::assertEquals(['string'], $basePhpElement->returnTypesFromSignature);
+        self::assertEquals(['string'], $basePhpElement->getReturnTypeFromSignature());
     }
 
     public function testItCanParseTentativeReturnType() {
@@ -270,7 +271,7 @@ class ReflectionMethodParserTest extends TestCase
         $reflectionMethodMock->method('hasTentativeReturnType')->willReturn(true);
         $reflectionMethodMock->method('getTentativeReturnType')->willReturn($reflectionTypeMock);
         $basePHPElement = new ReflectionMethodParser()->parse($reflectionMethodMock);
-        self::assertTrue($basePHPElement->hasTentativeReturnType);
+        self::assertTrue($basePHPElement->hasTentativeReturnType());
     }
 
     public function testItCanParseNoTentativeReturnType() {
@@ -280,18 +281,21 @@ class ReflectionMethodParserTest extends TestCase
         $reflectionTypeMock->method('getName')->willReturn('string');
         $reflectionMethodMock->method('getReturnType')->willReturn($reflectionTypeMock);
         $basePHPElement = new ReflectionMethodParser()->parse($reflectionMethodMock);
-        self::assertFalse($basePHPElement->hasTentativeReturnType);
+        self::assertFalse($basePHPElement->hasTentativeReturnType());
     }
 
     public function testItCanParseReturnTypesOfTentativeReturnType() {
-        $returnTypeMock = $this->getMockBuilder(AdaptedReflectionType::class)->disableOriginalConstructor()->getMock();
+        $returnTypeMock = $this->getMockBuilder(AdaptedReflectionType::class)
+            ->disableOriginalConstructor()
+            ->onlyMethods(['__toString'])
+            ->getMock();
         $returnTypeMock->method('__toString')->willReturn('string');
         $reflectionMethodMock = $this->getMockBuilder(AdaptedReflectionMethod::class)->disableOriginalConstructor()->getMock();
         $reflectionMethodMock->method('hasReturnType')->willReturn(false);
         $reflectionMethodMock->method('hasTentativeReturnType')->willReturn(true);
         $reflectionMethodMock->method('getTentativeReturnType')->willReturn($returnTypeMock);
         $basePHPElement = new ReflectionMethodParser()->parse($reflectionMethodMock);
-        self::assertEquals(['string'], $basePHPElement->returnTypesFromSignature);
+        self::assertEquals(['string'], $basePHPElement->getReturnTypeFromSignature());
     }
 
 }

@@ -154,4 +154,14 @@ class AdaptedReflectionMethod extends AbstractReflectionAdapter
     {
         return $this->getData('getAttributes', array());
     }
+
+    public function hasTentativeReturnType()
+    {
+        return $this->getData('hasTentativeReturnType', false);
+    }
+
+    public function getTentativeReturnType()
+    {
+        return $this->getData('getTentativeReturnType');
+    }
 }

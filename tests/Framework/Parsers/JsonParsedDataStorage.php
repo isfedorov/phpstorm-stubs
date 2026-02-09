@@ -213,6 +213,7 @@ class JsonParsedDataStorage implements ParsedDataPersistentStorageProvider
 
             try {
                 $data['returnType'] = $this->toJsonSafe($entity->getReturnTypeFromSignature());
+                $data['hasTentativeReturnType'] = $this->toJsonSafe($entity->hasTentativeReturnType());
             } catch (\Error $e) {
                 $data['returnType'] = null;
             }
@@ -377,7 +378,7 @@ class JsonParsedDataStorage implements ParsedDataPersistentStorageProvider
                 }
                 $function->setParameters($parameters);
             }
-
+            $function->setHasTentativeReturnType($data['hasTentativeReturnType'] ?? false);
             return $function;
         }
 
@@ -489,7 +490,7 @@ class JsonParsedDataStorage implements ParsedDataPersistentStorageProvider
             // Primitive value (shouldn't normally happen, but handle it)
             $data['returnType'] = $type;
         }
-
+        $data['hasTentativeReturnType'] = $this->toJsonSafe($method->hasTentativeReturnType());
         return $data;
     }
 
@@ -523,7 +524,7 @@ class JsonParsedDataStorage implements ParsedDataPersistentStorageProvider
             }
             $method->setParameters($parameters);
         }
-
+        $method->setHasTentativeReturnType($data['hasTentativeReturnType'] ?? false);
         $method->setReturnTypeFromSignature($data['returnType'] ?? null);
 
         return $method;

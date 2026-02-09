@@ -8,6 +8,7 @@ class PHPFunction extends PHPNamespacedElement
     protected $returnTypesFromSignature;
     protected bool $isDeprecated;
     protected array $parameters;
+    protected bool $hasTentativeReturnType;
 
     public function getReturnTypeFromSignature()
     {
@@ -37,5 +38,15 @@ class PHPFunction extends PHPNamespacedElement
     public function setParameters(array $parameters)
     {
         $this->parameters = $parameters;
+    }
+
+    public function setHasTentativeReturnType($hasTentativeReturnType)
+    {
+        $this->hasTentativeReturnType = $hasTentativeReturnType;
+    }
+
+    public function hasTentativeReturnType()
+    {
+        return $this->hasTentativeReturnType ?? false;
     }
 }
