@@ -20,7 +20,7 @@ abstract class AbstractReflectionAdapter
      * Extracted data from the reflection object
      * @var array
      */
-    protected $data;
+    protected $data = array();
 
     /**
      * Extract configuration - override in subclasses if needed

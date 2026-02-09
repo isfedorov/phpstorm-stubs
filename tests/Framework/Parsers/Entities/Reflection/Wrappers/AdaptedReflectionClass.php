@@ -163,7 +163,7 @@ class AdaptedReflectionClass extends AbstractReflectionAdapter
 
     public function isFinal()
     {
-        return $this->getData('isFinal');
+        return $this->getData('isFinal', false);
     }
 
     public function isReadOnly()
@@ -173,12 +173,12 @@ class AdaptedReflectionClass extends AbstractReflectionAdapter
 
     public function isInternal()
     {
-        return $this->getData('isInternal');
+        return $this->getData('isInternal', false);
     }
 
     public function isInterface()
     {
-        return $this->getData('isInterface');
+        return $this->getData('isInterface', false);
     }
 
     public function isEnum()
@@ -188,7 +188,7 @@ class AdaptedReflectionClass extends AbstractReflectionAdapter
 
     public function isAbstract()
     {
-        return $this->getData('isAbstract');
+        return $this->getData('isAbstract', false);
     }
 
     public function getMethods()

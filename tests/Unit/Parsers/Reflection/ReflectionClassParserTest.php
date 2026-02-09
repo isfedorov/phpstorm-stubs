@@ -29,7 +29,7 @@ class ReflectionClassParserTest extends BaseTestCase
 
     public function testItCanNotParseUsersClasses()
     {
-        $stubReflectionClass = $this->getMockBuilder(ReflectionClass::class)
+        $stubReflectionClass = $this->getMockBuilder(AdaptedReflectionClass::class)
             ->disableOriginalConstructor()
             ->getMock();
         $stubReflectionClass->method('isInternal')->willReturn(false);
@@ -38,7 +38,7 @@ class ReflectionClassParserTest extends BaseTestCase
 
     public function testItCanNotParseInternalInterface()
     {
-        $stubReflectionClass = $this->getMockBuilder(ReflectionClass::class)
+        $stubReflectionClass = $this->getMockBuilder(AdaptedReflectionClass::class)
             ->disableOriginalConstructor()
             ->getMock();
         $stubReflectionClass->method('isInternal')->willReturn(true);
@@ -48,7 +48,7 @@ class ReflectionClassParserTest extends BaseTestCase
 
     public function testItCanNotParseUsersInterface()
     {
-        $stubReflectionClass = $this->getMockBuilder(ReflectionClass::class)
+        $stubReflectionClass = $this->getMockBuilder(AdaptedReflectionClass::class)
             ->disableOriginalConstructor()
             ->getMock();
         $stubReflectionClass->method('isInternal')->willReturn(false);
@@ -58,7 +58,7 @@ class ReflectionClassParserTest extends BaseTestCase
 
     public function testItCanNotParseInternalEnums()
     {
-        $stubReflectionClass = $this->getMockBuilder(ReflectionClass::class)
+        $stubReflectionClass = $this->getMockBuilder(AdaptedReflectionClass::class)
             ->disableOriginalConstructor()
             ->getMock();
         $stubReflectionClass->method('isInternal')->willReturn(true);
@@ -68,7 +68,7 @@ class ReflectionClassParserTest extends BaseTestCase
 
     public function testItCanNotParseUsersEnums()
     {
-        $stubReflectionClass = $this->getMockBuilder(ReflectionClass::class)
+        $stubReflectionClass = $this->getMockBuilder(AdaptedReflectionClass::class)
             ->disableOriginalConstructor()
             ->getMock();
         $stubReflectionClass->method('isInternal')->willReturn(false);
@@ -78,21 +78,21 @@ class ReflectionClassParserTest extends BaseTestCase
 
     public function testItReturnsCorrectInstance()
     {
-        $reflectionMock = $this->getMockBuilder(ReflectionClass::class)->disableOriginalConstructor()->getMock();
+        $reflectionMock = $this->getMockBuilder(AdaptedReflectionClass::class)->disableOriginalConstructor()->getMock();
         $basePHPElement = new ReflectionClassParser()->parse($reflectionMock);
         self::assertTrue($basePHPElement instanceof PHPClass);
     }
 
     public function testItSetsNullToNameIfNameNotAvailable()
     {
-        $reflectionMock = $this->getMockBuilder(ReflectionClass::class)->disableOriginalConstructor()->getMock();
+        $reflectionMock = $this->getMockBuilder(AdaptedReflectionClass::class)->disableOriginalConstructor()->getMock();
         $basePHPElement = new ReflectionClassParser()->parse($reflectionMock);
         self::assertNull($basePHPElement->getName());
     }
 
     public function testItCanParseName()
     {
-        $reflectionMock = $this->getMockBuilder(ReflectionClass::class)->disableOriginalConstructor()->getMock();
+        $reflectionMock = $this->getMockBuilder(AdaptedReflectionClass::class)->disableOriginalConstructor()->getMock();
         $reflectionMock->method('getShortName')->willReturn('Foo');
         $basePHPElement = new ReflectionClassParser()->parse($reflectionMock);
         self::assertEquals('Foo', $basePHPElement->getName());
@@ -100,14 +100,14 @@ class ReflectionClassParserTest extends BaseTestCase
 
     public function testItSetsRootNamespaceIfNoNamespaceAvailable()
     {
-        $reflectionMock = $this->getMockBuilder(ReflectionClass::class)->disableOriginalConstructor()->getMock();
+        $reflectionMock = $this->getMockBuilder(AdaptedReflectionClass::class)->disableOriginalConstructor()->getMock();
         $basePHPElement = new ReflectionClassParser()->parse($reflectionMock);
         self::assertEquals('\\', $basePHPElement->getNamespace());
     }
 
     public function testItCanParseNamespace()
     {
-        $reflectionMock = $this->getMockBuilder(ReflectionClass::class)->disableOriginalConstructor()->getMock();
+        $reflectionMock = $this->getMockBuilder(AdaptedReflectionClass::class)->disableOriginalConstructor()->getMock();
         $reflectionMock->method('getNamespaceName')->willReturn('MyNameSpace\SubNameSpace');
         $basePHPElement = new ReflectionClassParser()->parse($reflectionMock);
         self::assertEquals('\MyNameSpace\SubNameSpace', $basePHPElement->getNamespace());
@@ -115,7 +115,7 @@ class ReflectionClassParserTest extends BaseTestCase
 
     public function testItCanParseRootNamespace()
     {
-        $reflectionMock = $this->getMockBuilder(ReflectionClass::class)->disableOriginalConstructor()->getMock();
+        $reflectionMock = $this->getMockBuilder(AdaptedReflectionClass::class)->disableOriginalConstructor()->getMock();
         $reflectionMock->method('getNamespaceName')->willReturn('');
         $basePHPElement = new ReflectionClassParser()->parse($reflectionMock);
         self::assertEquals('\\', $basePHPElement->getNamespace());
@@ -123,14 +123,14 @@ class ReflectionClassParserTest extends BaseTestCase
 
     public function testItSetsNullAsDefaultId()
     {
-        $reflectionMock = $this->getMockBuilder(ReflectionClass::class)->disableOriginalConstructor()->getMock();
+        $reflectionMock = $this->getMockBuilder(AdaptedReflectionClass::class)->disableOriginalConstructor()->getMock();
         $basePHPElement = new ReflectionClassParser()->parse($reflectionMock);
         self::assertNull($basePHPElement->getId());
     }
 
     public function testItCanParseId()
     {
-        $reflectionMock = $this->getMockBuilder(ReflectionClass::class)->disableOriginalConstructor()->getMock();
+        $reflectionMock = $this->getMockBuilder(AdaptedReflectionClass::class)->disableOriginalConstructor()->getMock();
         $reflectionMock->method('getShortName')->willReturn('SomeFooClass');
         $reflectionMock->method('getName')->willReturn('SomeNamespace\SubNamespace\SomeFooClass');
         $reflectionMock->method('getNamespaceName')->willReturn('SomeNamespace\SubNamespace');
@@ -140,7 +140,7 @@ class ReflectionClassParserTest extends BaseTestCase
 
     public function testItCanParseIdWithRootNamespace()
     {
-        $reflectionMock = $this->getMockBuilder(ReflectionClass::class)->disableOriginalConstructor()->getMock();
+        $reflectionMock = $this->getMockBuilder(AdaptedReflectionClass::class)->disableOriginalConstructor()->getMock();
         $reflectionMock->method('getShortName')->willReturn('SomeFooClass');
         $reflectionMock->method('getName')->willReturn('SomeFooClass');
         $reflectionMock->method('getNamespaceName')->willReturn('');
@@ -150,14 +150,17 @@ class ReflectionClassParserTest extends BaseTestCase
 
     public function testItSetFinalAsFalseByDefault()
     {
-        $reflectionMock = $this->getMockBuilder(ReflectionClass::class)->disableOriginalConstructor()->getMock();
+        $reflectionMock = $this->getMockBuilder(AdaptedReflectionClass::class)
+            ->disableOriginalConstructor()
+            ->onlyMethods([])
+            ->getMock();
         $basePHPElement = new ReflectionClassParser()->parse($reflectionMock);
         self::assertFalse($basePHPElement->isFinal);
     }
 
     public function testItCanParseFinalClass()
     {
-        $reflectionMock = $this->getMockBuilder(ReflectionClass::class)->disableOriginalConstructor()->getMock();
+        $reflectionMock = $this->getMockBuilder(AdaptedReflectionClass::class)->disableOriginalConstructor()->getMock();
         $reflectionMock->method('isFinal')->willReturn(true);
         $basePHPElement = new ReflectionClassParser()->parse($reflectionMock);
         self::assertTrue($basePHPElement->isFinal);
@@ -165,7 +168,7 @@ class ReflectionClassParserTest extends BaseTestCase
 
     public function testItCanParseNonFinalClass()
     {
-        $reflectionMock = $this->getMockBuilder(ReflectionClass::class)->disableOriginalConstructor()->getMock();
+        $reflectionMock = $this->getMockBuilder(AdaptedReflectionClass::class)->disableOriginalConstructor()->getMock();
         $reflectionMock->method('isFinal')->willReturn(false);
         $basePHPElement = new ReflectionClassParser()->parse($reflectionMock);
         self::assertFalse($basePHPElement->isFinal);
@@ -173,14 +176,17 @@ class ReflectionClassParserTest extends BaseTestCase
 
     public function testItSetsFalseIfNoReadonlyAvailable()
     {
-        $reflectionMock = $this->getMockBuilder(ReflectionClass::class)->disableOriginalConstructor()->getMock();
+        $reflectionMock = $this->getMockBuilder(AdaptedReflectionClass::class)
+            ->disableOriginalConstructor()
+            ->onlyMethods([])
+            ->getMock();
         $basePHPElement = new ReflectionClassParser()->parse($reflectionMock);
         self::assertFalse($basePHPElement->isReadonly);
     }
 
     public function testItCanParseReadonlyClass()
     {
-        $reflectionMock = $this->getMockBuilder(ReflectionClass::class)->disableOriginalConstructor()->getMock();
+        $reflectionMock = $this->getMockBuilder(AdaptedReflectionClass::class)->disableOriginalConstructor()->getMock();
         $reflectionMock->method('isReadOnly')->willReturn(true);
         $basePHPElement = new ReflectionClassParser()->parse($reflectionMock);
         self::assertTrue($basePHPElement->isReadonly);
@@ -188,7 +194,7 @@ class ReflectionClassParserTest extends BaseTestCase
 
     public function testItCanParseNonReadonlyClass()
     {
-        $reflectionMock = $this->getMockBuilder(ReflectionClass::class)->disableOriginalConstructor()->getMock();
+        $reflectionMock = $this->getMockBuilder(AdaptedReflectionClass::class)->disableOriginalConstructor()->getMock();
         $reflectionMock->method('isReadOnly')->willReturn(false);
         $basePHPElement = new ReflectionClassParser()->parse($reflectionMock);
         self::assertFalse($basePHPElement->isReadonly);
@@ -196,7 +202,7 @@ class ReflectionClassParserTest extends BaseTestCase
 
     public function testItSetsEmptyArrayIfMethodsCanNotBeReadInClass()
     {
-        $reflectionMock = $this->getMockBuilder(ReflectionClass::class)->disableOriginalConstructor()->getMock();
+        $reflectionMock = $this->getMockBuilder(AdaptedReflectionClass::class)->disableOriginalConstructor()->getMock();
         $basePHPElement = new ReflectionClassParser()->parse($reflectionMock);
         self::assertTrue(is_array($basePHPElement->getMethods()));
         self::assertNotNull($basePHPElement->getMethods());
@@ -205,7 +211,7 @@ class ReflectionClassParserTest extends BaseTestCase
 
     public function testItSetsEmptyArrayIfNoMethodsInClass()
     {
-        $reflectionMock = $this->getMockBuilder(ReflectionClass::class)->disableOriginalConstructor()->getMock();
+        $reflectionMock = $this->getMockBuilder(AdaptedReflectionClass::class)->disableOriginalConstructor()->getMock();
         $reflectionMock->method('getMethods')->willReturn([]);
         $basePHPElement = new ReflectionClassParser()->parse($reflectionMock);
         self::assertTrue(is_array($basePHPElement->getMethods()));
@@ -215,7 +221,7 @@ class ReflectionClassParserTest extends BaseTestCase
 
     public function testItCanParseClassWithMethods()
     {
-        $reflectionClassMock = $this->getMockBuilder(ReflectionClass::class)->disableOriginalConstructor()->getMock();
+        $reflectionClassMock = $this->getMockBuilder(AdaptedReflectionClass::class)->disableOriginalConstructor()->getMock();
         $reflectionMethodMock = $this->getMockBuilder(ReflectionMethod::class)->disableOriginalConstructor()->getMock();
         $reflectionMethodMock->method('getName')->willReturn('foo');
         $reflectionClassMock->method('getMethods')->willReturn([$reflectionMethodMock]);
@@ -226,7 +232,7 @@ class ReflectionClassParserTest extends BaseTestCase
 
     public function testItReturnsCorrectInstanceForMethod()
     {
-        $reflectionClassMock = $this->getMockBuilder(ReflectionClass::class)->disableOriginalConstructor()->getMock();
+        $reflectionClassMock = $this->getMockBuilder(AdaptedReflectionClass::class)->disableOriginalConstructor()->getMock();
         $reflectionMethodMock = $this->getMockBuilder(ReflectionMethod::class)->disableOriginalConstructor()->getMock();
         $reflectionMethodMock->method('getName')->willReturn('foo');
         $reflectionClassMock->method('getMethods')->willReturn([$reflectionMethodMock]);
@@ -238,7 +244,7 @@ class ReflectionClassParserTest extends BaseTestCase
 
     public function testItReturnsCorrectInstancesForAllMethods()
     {
-        $reflectionClassMock = $this->getMockBuilder(ReflectionClass::class)->disableOriginalConstructor()->getMock();
+        $reflectionClassMock = $this->getMockBuilder(AdaptedReflectionClass::class)->disableOriginalConstructor()->getMock();
         $reflectionMethodMock1 = $this->getMockBuilder(ReflectionMethod::class)->disableOriginalConstructor()->getMock();
         $reflectionMethodMock2 = $this->getMockBuilder(ReflectionMethod::class)->disableOriginalConstructor()->getMock();
         $reflectionMethodMock3 = $this->getMockBuilder(ReflectionMethod::class)->disableOriginalConstructor()->getMock();
@@ -256,7 +262,7 @@ class ReflectionClassParserTest extends BaseTestCase
 
     public function testItReturnsActuallyParsedMethods()
     {
-        $reflectionClassMock = $this->getMockBuilder(ReflectionClass::class)->disableOriginalConstructor()->getMock();
+        $reflectionClassMock = $this->getMockBuilder(AdaptedReflectionClass::class)->disableOriginalConstructor()->getMock();
         $reflectionMethodMock1 = $this->getMockBuilder(ReflectionMethod::class)->disableOriginalConstructor()->getMock();
         $reflectionMethodMock2 = $this->getMockBuilder(ReflectionMethod::class)->disableOriginalConstructor()->getMock();
         $reflectionMethodMock3 = $this->getMockBuilder(ReflectionMethod::class)->disableOriginalConstructor()->getMock();
@@ -273,7 +279,7 @@ class ReflectionClassParserTest extends BaseTestCase
 
     public function testItCanParseClassWithOneMethod()
     {
-        $reflectionClassMock = $this->getMockBuilder(ReflectionClass::class)->disableOriginalConstructor()->getMock();
+        $reflectionClassMock = $this->getMockBuilder(AdaptedReflectionClass::class)->disableOriginalConstructor()->getMock();
         $reflectionMethodMock = $this->getMockBuilder(ReflectionMethod::class)->disableOriginalConstructor()->getMock();
         $reflectionMethodMock->method('getName')->willReturn('foo');
         $reflectionClassMock->method('getMethods')->willReturn([$reflectionMethodMock]);
@@ -285,7 +291,7 @@ class ReflectionClassParserTest extends BaseTestCase
 
     public function testItCanParseClassWithSomeMethods()
     {
-        $reflectionClassMock = $this->getMockBuilder(ReflectionClass::class)->disableOriginalConstructor()->getMock();
+        $reflectionClassMock = $this->getMockBuilder(AdaptedReflectionClass::class)->disableOriginalConstructor()->getMock();
         $reflectionMethodMock1 = $this->getMockBuilder(ReflectionMethod::class)->disableOriginalConstructor()->getMock();
         $reflectionMethodMock2 = $this->getMockBuilder(ReflectionMethod::class)->disableOriginalConstructor()->getMock();
         $reflectionMethodMock3 = $this->getMockBuilder(ReflectionMethod::class)->disableOriginalConstructor()->getMock();
@@ -300,7 +306,7 @@ class ReflectionClassParserTest extends BaseTestCase
     }
 
     public function testItSetsEmptyArrayIfPropertiesCanNotBeReadInClass() {
-        $reflectionClassMock = $this->getMockBuilder(ReflectionClass::class)->disableOriginalConstructor()->getMock();
+        $reflectionClassMock = $this->getMockBuilder(AdaptedReflectionClass::class)->disableOriginalConstructor()->getMock();
         $basePHPElement = new ReflectionClassParser()->parse($reflectionClassMock);
         self::assertIsArray($basePHPElement->getProperties());
 
@@ -309,7 +315,7 @@ class ReflectionClassParserTest extends BaseTestCase
 
     public function testItSetsEmptyArrayIfNoPropertiesInClass()
     {
-        $reflectionClassMock = $this->getMockBuilder(ReflectionClass::class)->disableOriginalConstructor()->getMock();
+        $reflectionClassMock = $this->getMockBuilder(AdaptedReflectionClass::class)->disableOriginalConstructor()->getMock();
         $reflectionClassMock->method('getProperties')->willReturn([]);
         $basePHPElement = new ReflectionClassParser()->parse($reflectionClassMock);
         self::assertIsArray($basePHPElement->getProperties());
@@ -319,7 +325,7 @@ class ReflectionClassParserTest extends BaseTestCase
 
     public function testItCanParseProperties()
     {
-        $reflectionClassMock = $this->getMockBuilder(ReflectionClass::class)->disableOriginalConstructor()->getMock();
+        $reflectionClassMock = $this->getMockBuilder(AdaptedReflectionClass::class)->disableOriginalConstructor()->getMock();
         $reflectionPropertyMock = $this->getMockBuilder(ReflectionProperty::class)->disableOriginalConstructor()->getMock();
         $reflectionPropertyMock->method('getName')->willReturn('prop');
         $reflectionClassMock->method('getProperties')->willReturn([$reflectionPropertyMock]);
@@ -330,7 +336,7 @@ class ReflectionClassParserTest extends BaseTestCase
 
     public function testItReturnsCorrectInstanceForProperty()
     {
-        $reflectionClassMock = $this->getMockBuilder(ReflectionClass::class)->disableOriginalConstructor()->getMock();
+        $reflectionClassMock = $this->getMockBuilder(AdaptedReflectionClass::class)->disableOriginalConstructor()->getMock();
         $reflectionPropertyMock = $this->getMockBuilder(ReflectionProperty::class)->disableOriginalConstructor()->getMock();
         $reflectionPropertyMock->method('getName')->willReturn('prop');
         $reflectionClassMock->method('getProperties')->willReturn([$reflectionPropertyMock]);
@@ -341,7 +347,7 @@ class ReflectionClassParserTest extends BaseTestCase
     }
 
     public function testItReturnsCorrectInstancesForAllProperties() {
-        $reflectionClassMock = $this->getMockBuilder(ReflectionClass::class)->disableOriginalConstructor()->getMock();
+        $reflectionClassMock = $this->getMockBuilder(AdaptedReflectionClass::class)->disableOriginalConstructor()->getMock();
         $reflectionPropertyMock1 = $this->getMockBuilder(ReflectionProperty::class)->disableOriginalConstructor()->getMock();
         $reflectionPropertyMock2 = $this->getMockBuilder(ReflectionProperty::class)->disableOriginalConstructor()->getMock();
         $reflectionPropertyMock3 = $this->getMockBuilder(ReflectionProperty::class)->disableOriginalConstructor()->getMock();
@@ -359,7 +365,7 @@ class ReflectionClassParserTest extends BaseTestCase
 
     public function testItReturnsActuallyParsedProperties()
     {
-        $reflectionClassMock = $this->getMockBuilder(ReflectionClass::class)->disableOriginalConstructor()->getMock();
+        $reflectionClassMock = $this->getMockBuilder(AdaptedReflectionClass::class)->disableOriginalConstructor()->getMock();
         $reflectionPropertyMock1 = $this->getMockBuilder(ReflectionProperty::class)->disableOriginalConstructor()->getMock();
         $reflectionPropertyMock2 = $this->getMockBuilder(ReflectionProperty::class)->disableOriginalConstructor()->getMock();
         $reflectionPropertyMock3 = $this->getMockBuilder(ReflectionProperty::class)->disableOriginalConstructor()->getMock();
@@ -376,7 +382,7 @@ class ReflectionClassParserTest extends BaseTestCase
 
     public function testItCanParseOneProperty()
     {
-        $reflectionClassMock = $this->getMockBuilder(ReflectionClass::class)->disableOriginalConstructor()->getMock();
+        $reflectionClassMock = $this->getMockBuilder(AdaptedReflectionClass::class)->disableOriginalConstructor()->getMock();
         $reflectionPropertyMock = $this->getMockBuilder(ReflectionProperty::class)->disableOriginalConstructor()->getMock();
         $reflectionPropertyMock->method('getName')->willReturn('prop');
         $reflectionClassMock->method('getProperties')->willReturn([$reflectionPropertyMock]);
@@ -385,7 +391,7 @@ class ReflectionClassParserTest extends BaseTestCase
     }
 
     public function testItCanParseSomeProperties() {
-        $reflectionClassMock = $this->getMockBuilder(ReflectionClass::class)->disableOriginalConstructor()->getMock();
+        $reflectionClassMock = $this->getMockBuilder(AdaptedReflectionClass::class)->disableOriginalConstructor()->getMock();
         $reflectionPropertyMock1 = $this->getMockBuilder(ReflectionProperty::class)->disableOriginalConstructor()->getMock();
         $reflectionPropertyMock2 = $this->getMockBuilder(ReflectionProperty::class)->disableOriginalConstructor()->getMock();
         $reflectionPropertyMock3 = $this->getMockBuilder(ReflectionProperty::class)->disableOriginalConstructor()->getMock();
@@ -398,7 +404,7 @@ class ReflectionClassParserTest extends BaseTestCase
     }
 
     public function testItSetsEmptyArrayIfConstantsCanNotBeReadInClass() {
-        $reflectionClassMock = $this->getMockBuilder(ReflectionClass::class)->disableOriginalConstructor()->getMock();
+        $reflectionClassMock = $this->getMockBuilder(AdaptedReflectionClass::class)->disableOriginalConstructor()->getMock();
         $basePHPElement = new ReflectionClassParser()->parse($reflectionClassMock);
         self::assertNotNull($basePHPElement->getConstants());
         self::assertIsArray($basePHPElement->getConstants());
@@ -407,7 +413,7 @@ class ReflectionClassParserTest extends BaseTestCase
 
     public function testItSetsEmptyArrayIfNoConstantsInClassPhp56()
     {
-        $reflectionClassMock = $this->getMockBuilder(ReflectionClass::class)->disableOriginalConstructor()->getMock();
+        $reflectionClassMock = $this->getMockBuilder(AdaptedReflectionClass::class)->disableOriginalConstructor()->getMock();
         $reflectionClassMock->method('hasMethod')->with('getReflectionConstants')->willReturn(false);
         $reflectionClassMock->method('getConstants')->willReturn([]);
         $basePHPElement = new ReflectionClassParser()->parse($reflectionClassMock);
@@ -418,7 +424,7 @@ class ReflectionClassParserTest extends BaseTestCase
 
     public function testItSetsEmptyArrayIfNoConstantsInClassPhp71()
     {
-        $reflectionClassMock = $this->getMockBuilder(ReflectionClass::class)->disableOriginalConstructor()->getMock();
+        $reflectionClassMock = $this->getMockBuilder(AdaptedReflectionClass::class)->disableOriginalConstructor()->getMock();
         $reflectionClassMock->method('hasMethod')->with('getReflectionConstants')->willReturn(true);
         $reflectionClassMock->method('getReflectionConstants')->willReturn([]);
         $basePHPElement = new ReflectionClassParser()->parse($reflectionClassMock);
@@ -429,7 +435,7 @@ class ReflectionClassParserTest extends BaseTestCase
 
     public function testItCanParseClassConstantsPhp56()
     {
-        $reflectionClassMock = $this->getMockBuilder(ReflectionClass::class)->disableOriginalConstructor()->getMock();
+        $reflectionClassMock = $this->getMockBuilder(AdaptedReflectionClass::class)->disableOriginalConstructor()->getMock();
         $reflectionClassMock->method('hasMethod')->with('getReflectionConstants')->willReturn(false);
         $reflectionClassMock->method('getConstants')->willReturn(['FOO' => 'BAR']);
         $basePHPElement = new ReflectionClassParser()->parse($reflectionClassMock);
@@ -440,7 +446,7 @@ class ReflectionClassParserTest extends BaseTestCase
 
     public function testItCanParseSeveralConstantsPhp56()
     {
-        $reflectionClassMock = $this->getMockBuilder(ReflectionClass::class)->disableOriginalConstructor()->getMock();
+        $reflectionClassMock = $this->getMockBuilder(AdaptedReflectionClass::class)->disableOriginalConstructor()->getMock();
         $reflectionClassMock->method('hasMethod')->with('getReflectionConstants')->willReturn(false);
         $reflectionClassMock->method('getConstants')->willReturn(['FOO' => 'BAR', 'BAR' => 'FOO']);
         $basePHPElement = new ReflectionClassParser()->parse($reflectionClassMock);
@@ -452,7 +458,7 @@ class ReflectionClassParserTest extends BaseTestCase
 
     public function testItCanParseClassConstantsPhp71()
     {
-        $reflectionClassMock = $this->getMockBuilder(ReflectionClass::class)->disableOriginalConstructor()->getMock();
+        $reflectionClassMock = $this->getMockBuilder(AdaptedReflectionClass::class)->disableOriginalConstructor()->getMock();
         $reflectionClassConstantMock = $this->getMockBuilder(ReflectionClassConstant::class)->disableOriginalConstructor()->getMock();
         $reflectionClassConstantMock->method('getName')->willReturn('FOO');
         $reflectionClassConstantMock->method('getValue')->willReturn('BAR');
@@ -465,7 +471,7 @@ class ReflectionClassParserTest extends BaseTestCase
     }
 
     public function testItCanParseSeveralConstantsPhp71() {
-        $reflectionClassMock = $this->getMockBuilder(ReflectionClass::class)->disableOriginalConstructor()->getMock();
+        $reflectionClassMock = $this->getMockBuilder(AdaptedReflectionClass::class)->disableOriginalConstructor()->getMock();
         $reflectionClassConstantMock1 = $this->getMockBuilder(ReflectionClassConstant::class)->disableOriginalConstructor()->getMock();
         $reflectionClassConstantMock2 = $this->getMockBuilder(ReflectionClassConstant::class)->disableOriginalConstructor()->getMock();
         $reflectionClassConstantMock3 = $this->getMockBuilder(ReflectionClassConstant::class)->disableOriginalConstructor()->getMock();
@@ -486,7 +492,7 @@ class ReflectionClassParserTest extends BaseTestCase
 
     public function testItReturnsCorrectInstanceForConstantPhp71()
     {
-        $reflectionClassMock = $this->getMockBuilder(ReflectionClass::class)->disableOriginalConstructor()->getMock();
+        $reflectionClassMock = $this->getMockBuilder(AdaptedReflectionClass::class)->disableOriginalConstructor()->getMock();
         $reflectionClassConstantMock = $this->getMockBuilder(ReflectionClassConstant::class)->disableOriginalConstructor()->getMock();
         $reflectionClassConstantMock->method('getName')->willReturn('FOO');
         $reflectionClassConstantMock->method('getValue')->willReturn('BAR');
@@ -499,7 +505,7 @@ class ReflectionClassParserTest extends BaseTestCase
 
     public function testItReturnsCorrectInstancesForAllConstantsPhp56()
     {
-        $reflectionClassMock = $this->getMockBuilder(ReflectionClass::class)->disableOriginalConstructor()->getMock();
+        $reflectionClassMock = $this->getMockBuilder(AdaptedReflectionClass::class)->disableOriginalConstructor()->getMock();
         $reflectionClassMock->method('hasMethod')->with('getReflectionConstants')->willReturn(false);
         $reflectionClassMock->method('getConstants')->willReturn(['FOO' => 'BAR', 'BAR' => 'FOO']);
         $basePHPElement = new ReflectionClassParser()->parse($reflectionClassMock);
@@ -512,7 +518,7 @@ class ReflectionClassParserTest extends BaseTestCase
 
     public function testItReturnsActuallyParsedConstantsPhp56()
     {
-        $reflectionClassMock = $this->getMockBuilder(ReflectionClass::class)->disableOriginalConstructor()->getMock();
+        $reflectionClassMock = $this->getMockBuilder(AdaptedReflectionClass::class)->disableOriginalConstructor()->getMock();
         $reflectionClassMock->method('hasMethod')->with('getReflectionConstants')->willReturn(false);
         $reflectionClassMock->method('getConstants')->willReturn(['FOO' => 'BAR', 'BAR' => 'FOO']);
         $basePHPElement = new ReflectionClassParser()->parse($reflectionClassMock);
@@ -523,7 +529,7 @@ class ReflectionClassParserTest extends BaseTestCase
 
     public function testItReturnsActuallyParsedConstantsPhp71()
     {
-        $reflectionClassMock = $this->getMockBuilder(ReflectionClass::class)->disableOriginalConstructor()->getMock();
+        $reflectionClassMock = $this->getMockBuilder(AdaptedReflectionClass::class)->disableOriginalConstructor()->getMock();
         $reflectionClassConstantMock1 = $this->getMockBuilder(ReflectionClassConstant::class)->disableOriginalConstructor()->getMock();
         $reflectionClassConstantMock2 = $this->getMockBuilder(ReflectionClassConstant::class)->disableOriginalConstructor()->getMock();
         $reflectionClassConstantMock3 = $this->getMockBuilder(ReflectionClassConstant::class)->disableOriginalConstructor()->getMock();
@@ -547,15 +553,15 @@ class ReflectionClassParserTest extends BaseTestCase
 
     public function testItSetsNullAsDefaultParentClass()
     {
-        $reflectionClassMock = $this->getMockBuilder(ReflectionClass::class)->disableOriginalConstructor()->getMock();
+        $reflectionClassMock = $this->getMockBuilder(AdaptedReflectionClass::class)->disableOriginalConstructor()->getMock();
         $basePHPElement = new ReflectionClassParser()->parse($reflectionClassMock);
         self::assertNull($basePHPElement->getParentClass());
     }
 
     public function testItCanParseParentClass()
     {
-        $reflectionClassMock = $this->getMockBuilder(ReflectionClass::class)->disableOriginalConstructor()->getMock();
-        $parentClassMock = $this->getMockBuilder(ReflectionClass::class)->disableOriginalConstructor()->getMock();
+        $reflectionClassMock = $this->getMockBuilder(AdaptedReflectionClass::class)->disableOriginalConstructor()->getMock();
+        $parentClassMock = $this->getMockBuilder(AdaptedReflectionClass::class)->disableOriginalConstructor()->getMock();
         $reflectionClassMock->method('getParentClass')->willReturn($parentClassMock);
         $basePHPElement = new ReflectionClassParser()->parse($reflectionClassMock);
         self::assertNotNull($basePHPElement->getParentClass());
@@ -563,8 +569,8 @@ class ReflectionClassParserTest extends BaseTestCase
 
     public function testItReturnsCorrectInstanceForParentClass()
     {
-        $reflectionClassMock = $this->getMockBuilder(ReflectionClass::class)->disableOriginalConstructor()->getMock();
-        $parentClassMock = $this->getMockBuilder(ReflectionClass::class)->disableOriginalConstructor()->getMock();
+        $reflectionClassMock = $this->getMockBuilder(AdaptedReflectionClass::class)->disableOriginalConstructor()->getMock();
+        $parentClassMock = $this->getMockBuilder(AdaptedReflectionClass::class)->disableOriginalConstructor()->getMock();
         $reflectionClassMock->method('getParentClass')->willReturn($parentClassMock);
         $class = new ReflectionClassParser()->parse($reflectionClassMock);
         $parentClass = $class->getParentClass();
@@ -573,8 +579,8 @@ class ReflectionClassParserTest extends BaseTestCase
 
     public function testItReturnsActuallyParsedParentClass()
     {
-        $reflectionClassMock = $this->getMockBuilder(ReflectionClass::class)->disableOriginalConstructor()->getMock();
-        $parentClassMock = $this->getMockBuilder(ReflectionClass::class)->disableOriginalConstructor()->getMock();
+        $reflectionClassMock = $this->getMockBuilder(AdaptedReflectionClass::class)->disableOriginalConstructor()->getMock();
+        $parentClassMock = $this->getMockBuilder(AdaptedReflectionClass::class)->disableOriginalConstructor()->getMock();
         $parentClassMock->method('getName')->willReturn('ParentClass');
         $reflectionClassMock->method('getParentClass')->willReturn($parentClassMock);
         $basePHPElement = new ReflectionClassParser()->parse($reflectionClassMock);
@@ -583,7 +589,7 @@ class ReflectionClassParserTest extends BaseTestCase
 
     public function testItSetsEmptyArraysForImplementedInterfacesIfTheyCanNotBeRead()
     {
-        $reflectionClassMock = $this->getMockBuilder(ReflectionClass::class)->disableOriginalConstructor()->getMock();
+        $reflectionClassMock = $this->getMockBuilder(AdaptedReflectionClass::class)->disableOriginalConstructor()->getMock();
         $basePHPElement = new ReflectionClassParser()->parse($reflectionClassMock);
         self::assertNotNull($basePHPElement->getImplementedInterfaces());
         self::assertIsArray($basePHPElement->getImplementedInterfaces());
@@ -592,7 +598,7 @@ class ReflectionClassParserTest extends BaseTestCase
 
     public function testItSetsEmptyArraysForImplementedInterfacesIfNoAny()
     {
-        $reflectionClassMock = $this->getMockBuilder(ReflectionClass::class)->disableOriginalConstructor()->getMock();
+        $reflectionClassMock = $this->getMockBuilder(AdaptedReflectionClass::class)->disableOriginalConstructor()->getMock();
         $basePHPElement = new ReflectionClassParser()->parse($reflectionClassMock);
         $reflectionClassMock->method('getInterfaces')->willReturn([]);
         self::assertNotNull($basePHPElement->getImplementedInterfaces());
@@ -602,8 +608,8 @@ class ReflectionClassParserTest extends BaseTestCase
 
     public function testItCanParseImplementedInterfaces()
     {
-        $reflectionClassMock = $this->getMockBuilder(ReflectionClass::class)->disableOriginalConstructor()->getMock();
-        $reflectionInterfaceMock = $this->getMockBuilder(ReflectionClass::class)->disableOriginalConstructor()->getMock();
+        $reflectionClassMock = $this->getMockBuilder(AdaptedReflectionClass::class)->disableOriginalConstructor()->getMock();
+        $reflectionInterfaceMock = $this->getMockBuilder(AdaptedReflectionClass::class)->disableOriginalConstructor()->getMock();
         $reflectionClassMock->method('getInterfaces')->willReturn([$reflectionInterfaceMock]);;
         $basePHPElement = new ReflectionClassParser()->parse($reflectionClassMock);
         self::assertNotNull($basePHPElement->getImplementedInterfaces());
@@ -612,16 +618,16 @@ class ReflectionClassParserTest extends BaseTestCase
 
     public function testItReturnsCorrectInstanceForImplementedInterface()
     {
-        $reflectionClassMock = $this->getMockBuilder(ReflectionClass::class)->disableOriginalConstructor()->getMock();
-        $reflectionInterfaceMock = $this->getMockBuilder(ReflectionClass::class)->disableOriginalConstructor()->getMock();
+        $reflectionClassMock = $this->getMockBuilder(AdaptedReflectionClass::class)->disableOriginalConstructor()->getMock();
+        $reflectionInterfaceMock = $this->getMockBuilder(AdaptedReflectionClass::class)->disableOriginalConstructor()->getMock();
         $reflectionClassMock->method('getInterfaces')->willReturn([$reflectionInterfaceMock]);
         $basePHPElement = new ReflectionClassParser()->parse($reflectionClassMock);
         self::assertInstanceOf(PHPInterface::class, $basePHPElement->getImplementedInterfaces()[0]);
     }
 
     public function testItReturnsImplementedInterfacesWithCorrectName() {
-        $reflectionClassMock = $this->getMockBuilder(ReflectionClass::class)->disableOriginalConstructor()->getMock();
-        $reflectionInterfaceMock = $this->getMockBuilder(ReflectionClass::class)->disableOriginalConstructor()->getMock();
+        $reflectionClassMock = $this->getMockBuilder(AdaptedReflectionClass::class)->disableOriginalConstructor()->getMock();
+        $reflectionInterfaceMock = $this->getMockBuilder(AdaptedReflectionClass::class)->disableOriginalConstructor()->getMock();
         $reflectionInterfaceMock->method('getName')->willReturn('\Interface');
         $reflectionClassMock->method('getInterfaces')->willReturn([$reflectionInterfaceMock]);
         $basePHPElement = new ReflectionClassParser()->parse($reflectionClassMock);
@@ -630,8 +636,8 @@ class ReflectionClassParserTest extends BaseTestCase
 
     public function testItReturnsImplementedInterfacesWithCorrectNamespace()
     {
-        $reflectionClassMock = $this->getMockBuilder(ReflectionClass::class)->disableOriginalConstructor()->getMock();
-        $reflectionInterfaceMock = $this->getMockBuilder(ReflectionClass::class)->disableOriginalConstructor()->getMock();
+        $reflectionClassMock = $this->getMockBuilder(AdaptedReflectionClass::class)->disableOriginalConstructor()->getMock();
+        $reflectionInterfaceMock = $this->getMockBuilder(AdaptedReflectionClass::class)->disableOriginalConstructor()->getMock();
         $reflectionInterfaceMock->method('getShortName')->willReturn('Interface');
         $reflectionInterfaceMock->method('getNamespaceName')->willReturn('\My\Namespace');
         $reflectionClassMock->method('getInterfaces')->willReturn([$reflectionInterfaceMock]);
@@ -642,10 +648,10 @@ class ReflectionClassParserTest extends BaseTestCase
 
     public function testItReturnsAllActuallyParsedImplementedInterfaces()
     {
-        $reflectionClassMock = $this->getMockBuilder(ReflectionClass::class)->disableOriginalConstructor()->getMock();
-        $reflectionInterfaceMock1 = $this->getMockBuilder(ReflectionClass::class)->disableOriginalConstructor()->getMock();
-        $reflectionInterfaceMock2 = $this->getMockBuilder(ReflectionClass::class)->disableOriginalConstructor()->getMock();
-        $reflectionInterfaceMock3 = $this->getMockBuilder(ReflectionClass::class)->disableOriginalConstructor()->getMock();
+        $reflectionClassMock = $this->getMockBuilder(AdaptedReflectionClass::class)->disableOriginalConstructor()->getMock();
+        $reflectionInterfaceMock1 = $this->getMockBuilder(AdaptedReflectionClass::class)->disableOriginalConstructor()->getMock();
+        $reflectionInterfaceMock2 = $this->getMockBuilder(AdaptedReflectionClass::class)->disableOriginalConstructor()->getMock();
+        $reflectionInterfaceMock3 = $this->getMockBuilder(AdaptedReflectionClass::class)->disableOriginalConstructor()->getMock();
         $reflectionInterfaceMock1->method('getName')->willReturn('\Interface1');
         $reflectionInterfaceMock2->method('getName')->willReturn('\Interface2');
         $reflectionInterfaceMock3->method('getName')->willReturn('\Interface3');
@@ -662,14 +668,14 @@ class ReflectionClassParserTest extends BaseTestCase
 
 //    public function testItCanNotParsePhpDoc()
 //    {
-//        $reflectionClassMock = $this->getMockBuilder(ReflectionClass::class)->disableOriginalConstructor()->getMock();
+//        $reflectionClassMock = $this->getMockBuilder(AdaptedReflectionClass::class)->disableOriginalConstructor()->getMock();
 //        $basePHPElement = new ReflectionObjectClassParser()->parse($reflectionClassMock);
 //        self::assertNull($basePHPElement->getAdditionalManager(AdditionalManagerType::PhpDocManager));
 //    }
 //
 //    public function testItCanNotParseStubsSpecificProperties()
 //    {
-//        $reflectionClassMock = $this->getMockBuilder(ReflectionClass::class)->disableOriginalConstructor()->getMock();
+//        $reflectionClassMock = $this->getMockBuilder(AdaptedReflectionClass::class)->disableOriginalConstructor()->getMock();
 //        $basePHPElement = new ReflectionObjectClassParser()->parse($reflectionClassMock);
 //        self::assertNull($basePHPElement->getAdditionalManager(AdditionalManagerType::StubsSpecificPropertiesManager));
 //    }

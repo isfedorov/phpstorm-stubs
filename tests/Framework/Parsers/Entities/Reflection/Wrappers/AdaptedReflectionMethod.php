@@ -97,37 +97,37 @@ class AdaptedReflectionMethod extends AbstractReflectionAdapter
 
     public function isPublic()
     {
-        return $this->getData('isPublic');
+        return $this->getData('isPublic', false);
     }
 
     public function isProtected()
     {
-        return $this->getData('isProtected');
+        return $this->getData('isProtected', false);
     }
 
     public function isPrivate()
     {
-        return $this->getData('isPrivate');
+        return $this->getData('isPrivate', false);
     }
 
     public function isStatic()
     {
-        return $this->getData('isStatic');
+        return $this->getData('isStatic', false);
     }
 
     public function isFinal()
     {
-        return $this->getData('isFinal');
+        return $this->getData('isFinal', false);
     }
 
     public function isAbstract()
     {
-        return $this->getData('isAbstract');
+        return $this->getData('isAbstract', false);
     }
 
     public function isDeprecated()
     {
-        return $this->getData('isDeprecated');
+        return $this->getData('isDeprecated', false);
     }
 
     public function getParameters()

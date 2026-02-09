@@ -27,7 +27,7 @@ class ReflectionEnumParserTest extends TestCase
 
     public function testItCanNotParseUserEnums()
     {
-        $stubReflectionClass = $this->getMockBuilder(ReflectionClass::class)
+        $stubReflectionClass = $this->getMockBuilder(AdaptedReflectionClass::class)
             ->disableOriginalConstructor()
             ->getMock();
         $stubReflectionClass->method('isInternal')->willReturn(false);
@@ -37,7 +37,7 @@ class ReflectionEnumParserTest extends TestCase
 
     public function testItCanNotParseInternalNonEnum()
     {
-        $stubReflectionClass = $this->getMockBuilder(ReflectionClass::class)
+        $stubReflectionClass = $this->getMockBuilder(AdaptedReflectionClass::class)
             ->disableOriginalConstructor()
             ->getMock();
         $stubReflectionClass->method('isInternal')->willReturn(true);
@@ -47,7 +47,7 @@ class ReflectionEnumParserTest extends TestCase
 
     public function testItCanNotParseUsersNonEnum()
     {
-        $stubReflectionClass = $this->getMockBuilder(ReflectionClass::class)
+        $stubReflectionClass = $this->getMockBuilder(AdaptedReflectionClass::class)
             ->disableOriginalConstructor()
             ->getMock();
         $stubReflectionClass->method('isInternal')->willReturn(false);
@@ -57,14 +57,14 @@ class ReflectionEnumParserTest extends TestCase
 
     public function testItReturnsCorrectInstanceOfEnum()
     {
-        $reflectionMock = $this->getMockBuilder(ReflectionEnum::class)->disableOriginalConstructor()->getMock();
+        $reflectionMock = $this->getMockBuilder(AdaptedReflectionClass::class)->disableOriginalConstructor()->getMock();
         $basePHPElement = new ReflectionEnumParser()->parse($reflectionMock);
         self::assertTrue($basePHPElement instanceof PHPEnum);
     }
 
     public function testItCanParseName()
     {
-        $reflectionMock = $this->getMockBuilder(ReflectionEnum::class)->disableOriginalConstructor()->getMock();
+        $reflectionMock = $this->getMockBuilder(AdaptedReflectionClass::class)->disableOriginalConstructor()->getMock();
         $reflectionMock->method('getShortName')->willReturn('Foo');
         $basePHPElement = new ReflectionEnumParser()->parse($reflectionMock);
         self::assertEquals('Foo', $basePHPElement->getName());
@@ -72,7 +72,7 @@ class ReflectionEnumParserTest extends TestCase
 
     public function testItCanParseNamespace()
     {
-        $reflectionMock = $this->getMockBuilder(ReflectionEnum::class)->disableOriginalConstructor()->getMock();
+        $reflectionMock = $this->getMockBuilder(AdaptedReflectionClass::class)->disableOriginalConstructor()->getMock();
         $reflectionMock->method('getNamespaceName')->willReturn('MyNameSpace\SubNameSpace');
         $basePHPElement = new ReflectionEnumParser()->parse($reflectionMock);
         self::assertEquals('\MyNameSpace\SubNameSpace', $basePHPElement->getNamespace());
@@ -80,7 +80,7 @@ class ReflectionEnumParserTest extends TestCase
 
     public function testItCanParseRootNamespace()
     {
-        $reflectionMock = $this->getMockBuilder(ReflectionEnum::class)->disableOriginalConstructor()->getMock();
+        $reflectionMock = $this->getMockBuilder(AdaptedReflectionClass::class)->disableOriginalConstructor()->getMock();
         $reflectionMock->method('getNamespaceName')->willReturn('');
         $basePHPElement = new ReflectionEnumParser()->parse($reflectionMock);
         self::assertEquals('\\', $basePHPElement->getNamespace());
@@ -88,7 +88,7 @@ class ReflectionEnumParserTest extends TestCase
 
     public function testItCanParseId()
     {
-        $reflectionMock = $this->getMockBuilder(ReflectionEnum::class)->disableOriginalConstructor()->getMock();
+        $reflectionMock = $this->getMockBuilder(AdaptedReflectionClass::class)->disableOriginalConstructor()->getMock();
         $reflectionMock->method('getShortName')->willReturn('SomeFooClass');
         $reflectionMock->method('getName')->willReturn('SomeNamespace\SubNamespace\SomeFooClass');
         $reflectionMock->method('getNamespaceName')->willReturn('SomeNamespace\SubNamespace');
@@ -98,7 +98,7 @@ class ReflectionEnumParserTest extends TestCase
 
     public function testItCanParseIdWithRootNamespace()
     {
-        $reflectionMock = $this->getMockBuilder(ReflectionEnum::class)->disableOriginalConstructor()->getMock();
+        $reflectionMock = $this->getMockBuilder(AdaptedReflectionClass::class)->disableOriginalConstructor()->getMock();
         $reflectionMock->method('getShortName')->willReturn('SomeFooClass');
         $reflectionMock->method('getName')->willReturn('SomeFooClass');
         $reflectionMock->method('getNamespaceName')->willReturn('');
@@ -108,7 +108,7 @@ class ReflectionEnumParserTest extends TestCase
 
     public function testItCanParseFinalEnum()
     {
-        $reflectionMock = $this->getMockBuilder(ReflectionEnum::class)->disableOriginalConstructor()->getMock();
+        $reflectionMock = $this->getMockBuilder(AdaptedReflectionClass::class)->disableOriginalConstructor()->getMock();
         $reflectionMock->method('isFinal')->willReturn(true);
         $basePHPElement = new ReflectionEnumParser()->parse($reflectionMock);
         self::assertTrue($basePHPElement->isFinal);
@@ -116,7 +116,7 @@ class ReflectionEnumParserTest extends TestCase
 
     public function testItCanParseNonFinalEnum()
     {
-        $reflectionMock = $this->getMockBuilder(ReflectionEnum::class)->disableOriginalConstructor()->getMock();
+        $reflectionMock = $this->getMockBuilder(AdaptedReflectionClass::class)->disableOriginalConstructor()->getMock();
         $reflectionMock->method('isFinal')->willReturn(false);
         $basePHPElement = new ReflectionEnumParser()->parse($reflectionMock);
         self::assertFalse($basePHPElement->isFinal);
@@ -124,7 +124,7 @@ class ReflectionEnumParserTest extends TestCase
 
     public function testItCanParseReadonlyEnum()
     {
-        $reflectionMock = $this->getMockBuilder(ReflectionEnum::class)->disableOriginalConstructor()->getMock();
+        $reflectionMock = $this->getMockBuilder(AdaptedReflectionClass::class)->disableOriginalConstructor()->getMock();
         $reflectionMock->method('isReadOnly')->willReturn(true);
         $basePHPElement = new ReflectionEnumParser()->parse($reflectionMock);
         self::assertTrue($basePHPElement->isReadonly);
@@ -132,7 +132,7 @@ class ReflectionEnumParserTest extends TestCase
 
     public function testItCanParseNonReadonlyEnum()
     {
-        $reflectionMock = $this->getMockBuilder(ReflectionEnum::class)->disableOriginalConstructor()->getMock();
+        $reflectionMock = $this->getMockBuilder(AdaptedReflectionClass::class)->disableOriginalConstructor()->getMock();
         $reflectionMock->method('isReadOnly')->willReturn(false);
         $basePHPElement = new ReflectionEnumParser()->parse($reflectionMock);
         self::assertFalse($basePHPElement->isReadonly);
@@ -140,7 +140,7 @@ class ReflectionEnumParserTest extends TestCase
 
     public function testItReturnsEmptyArrayIfMethodsCanNotBeRead()
     {
-        $reflectionMock = $this->getMockBuilder(ReflectionEnum::class)->disableOriginalConstructor()->getMock();
+        $reflectionMock = $this->getMockBuilder(AdaptedReflectionClass::class)->disableOriginalConstructor()->getMock();
         $basePhpElement = new ReflectionEnumParser()->parse($reflectionMock);
         self::assertIsArray($basePhpElement->getMethods());
         self::assertEmpty($basePhpElement->getMethods());
@@ -148,7 +148,7 @@ class ReflectionEnumParserTest extends TestCase
 
     public function testItReturnsEmptyArrayIfThereAreNoMethods()
     {
-        $reflectionMock = $this->getMockBuilder(ReflectionEnum::class)->disableOriginalConstructor()->getMock();
+        $reflectionMock = $this->getMockBuilder(AdaptedReflectionClass::class)->disableOriginalConstructor()->getMock();
         $basePhpElement = new ReflectionEnumParser()->parse($reflectionMock);
         self::assertIsArray($basePhpElement->getMethods());
         self::assertEmpty($basePhpElement->getMethods());
@@ -156,7 +156,7 @@ class ReflectionEnumParserTest extends TestCase
 
     public function testItCanParseMethods()
     {
-        $reflectionClassMock = $this->getMockBuilder(ReflectionEnum::class)->disableOriginalConstructor()->getMock();
+        $reflectionClassMock = $this->getMockBuilder(AdaptedReflectionClass::class)->disableOriginalConstructor()->getMock();
         $reflectionMethodMock = $this->getMockBuilder(ReflectionMethod::class)->disableOriginalConstructor()->getMock();
         $reflectionMethodMock->method('getName')->willReturn('someMethod');
         $reflectionClassMock->method('getMethods')->willReturn([$reflectionMethodMock]);
@@ -168,7 +168,7 @@ class ReflectionEnumParserTest extends TestCase
 
     public function testItReturnsCorrectInstanceOfMethods()
     {
-        $reflectionClassMock = $this->getMockBuilder(ReflectionEnum::class)->disableOriginalConstructor()->getMock();
+        $reflectionClassMock = $this->getMockBuilder(AdaptedReflectionClass::class)->disableOriginalConstructor()->getMock();
         $reflectionMethodMock = $this->getMockBuilder(ReflectionMethod::class)->disableOriginalConstructor()->getMock();
         $reflectionMethodMock->method('getName')->willReturn('someMethod');
         $reflectionClassMock->method('getMethods')->willReturn([$reflectionMethodMock]);
@@ -178,7 +178,7 @@ class ReflectionEnumParserTest extends TestCase
 
     public function testItReturnsActuallyParsedMethods()
     {
-        $reflectionClassMock = $this->getMockBuilder(ReflectionEnum::class)->disableOriginalConstructor()->getMock();
+        $reflectionClassMock = $this->getMockBuilder(AdaptedReflectionClass::class)->disableOriginalConstructor()->getMock();
         $reflectionMethodMock1 = $this->getMockBuilder(ReflectionMethod::class)->disableOriginalConstructor()->getMock();
         $reflectionMethodMock2 = $this->getMockBuilder(ReflectionMethod::class)->disableOriginalConstructor()->getMock();
         $reflectionMethodMock3 = $this->getMockBuilder(ReflectionMethod::class)->disableOriginalConstructor()->getMock();
@@ -200,7 +200,7 @@ class ReflectionEnumParserTest extends TestCase
 
     public function testItReturnsEmptyArrayIfConstantsCanNotBeRead()
     {
-        $reflectionClassMock = $this->getMockBuilder(ReflectionEnum::class)->disableOriginalConstructor()->getMock();
+        $reflectionClassMock = $this->getMockBuilder(AdaptedReflectionClass::class)->disableOriginalConstructor()->getMock();
         $basePhpElement = new ReflectionEnumParser()->parse($reflectionClassMock);
         self::assertIsArray($basePhpElement->getConstants());
         self::assertEmpty($basePhpElement->getConstants());
@@ -208,7 +208,7 @@ class ReflectionEnumParserTest extends TestCase
 
     public function testItReturnsEmptyArrayIfThereAreNoConstants()
     {
-        $reflectionClassMock = $this->getMockBuilder(ReflectionEnum::class)->disableOriginalConstructor()->getMock();
+        $reflectionClassMock = $this->getMockBuilder(AdaptedReflectionClass::class)->disableOriginalConstructor()->getMock();
         $reflectionClassMock->method('getConstants')->willReturn([]);
         $basePHPElement = new ReflectionEnumParser()->parse($reflectionClassMock);
         self::assertIsArray($basePHPElement->getConstants());
@@ -217,7 +217,7 @@ class ReflectionEnumParserTest extends TestCase
 
     public function testItCanParseEnumConstantsPhp56()
     {
-        $reflectionClassMock = $this->getMockBuilder(ReflectionEnum::class)->disableOriginalConstructor()->getMock();
+        $reflectionClassMock = $this->getMockBuilder(AdaptedReflectionClass::class)->disableOriginalConstructor()->getMock();
         $reflectionClassMock->method('hasMethod')->with('getReflectionConstants')->willReturn(false);
         $reflectionClassMock->method('getConstants')->willReturn(['FOO' => 'BAR']);
         $basePHPElement = new ReflectionEnumParser()->parse($reflectionClassMock);
@@ -228,7 +228,7 @@ class ReflectionEnumParserTest extends TestCase
 
     public function testItCanParseClassConstantsPhp71()
     {
-        $reflectionClassMock = $this->getMockBuilder(ReflectionEnum::class)->disableOriginalConstructor()->getMock();
+        $reflectionClassMock = $this->getMockBuilder(AdaptedReflectionClass::class)->disableOriginalConstructor()->getMock();
         $reflectionClassConstantMock = $this->getMockBuilder(ReflectionClassConstant::class)->disableOriginalConstructor()->getMock();
         $reflectionClassConstantMock->method('getName')->willReturn('FOO');
         $reflectionClassConstantMock->method('getValue')->willReturn('BAR');
@@ -242,7 +242,7 @@ class ReflectionEnumParserTest extends TestCase
 
     public function testItReturnsEmptyArrayIfImplementedInterfacesCanNotBeRead()
     {
-        $reflectionClassMock = $this->getMockBuilder(ReflectionEnum::class)->disableOriginalConstructor()->getMock();
+        $reflectionClassMock = $this->getMockBuilder(AdaptedReflectionClass::class)->disableOriginalConstructor()->getMock();
         $basePHPElement = new ReflectionEnumParser()->parse($reflectionClassMock);
         self::assertNotNull($basePHPElement->getImplementedInterfaces());
         self::assertIsArray($basePHPElement->getImplementedInterfaces());
@@ -251,7 +251,7 @@ class ReflectionEnumParserTest extends TestCase
 
     public function testItReturnsEmptyArrayIfThereAreNoImplementedInterfaces()
     {
-        $reflectionClassMock = $this->getMockBuilder(ReflectionEnum::class)->disableOriginalConstructor()->getMock();
+        $reflectionClassMock = $this->getMockBuilder(AdaptedReflectionClass::class)->disableOriginalConstructor()->getMock();
         $reflectionClassMock->method('getInterfaces')->willReturn([]);
         $basePHPElement = new ReflectionEnumParser()->parse($reflectionClassMock);
         self::assertNotNull($basePHPElement->getImplementedInterfaces());
@@ -261,8 +261,8 @@ class ReflectionEnumParserTest extends TestCase
 
     public function testItCanParseImplementedInterfaces()
     {
-        $reflectionClassMock = $this->getMockBuilder(ReflectionEnum::class)->disableOriginalConstructor()->getMock();
-        $implementedInterfaceMock = $this->getMockBuilder(ReflectionClass::class)->disableOriginalConstructor()->getMock();
+        $reflectionClassMock = $this->getMockBuilder(AdaptedReflectionClass::class)->disableOriginalConstructor()->getMock();
+        $implementedInterfaceMock = $this->getMockBuilder(AdaptedReflectionClass::class)->disableOriginalConstructor()->getMock();
         $implementedInterfaceMock->method('getName')->willReturn('Foo');
         $reflectionClassMock->method('getInterfaces')->willReturn([$implementedInterfaceMock]);
         $basePHPElement = new ReflectionEnumParser()->parse($reflectionClassMock);
@@ -272,8 +272,8 @@ class ReflectionEnumParserTest extends TestCase
 
     public function testItReturnsCorrectInstanceOfImplementedInterfaces()
     {
-        $reflectionClassMock = $this->getMockBuilder(ReflectionEnum::class)->disableOriginalConstructor()->getMock();
-        $implementedInterfaceMock = $this->getMockBuilder(ReflectionClass::class)->disableOriginalConstructor()->getMock();
+        $reflectionClassMock = $this->getMockBuilder(AdaptedReflectionClass::class)->disableOriginalConstructor()->getMock();
+        $implementedInterfaceMock = $this->getMockBuilder(AdaptedReflectionClass::class)->disableOriginalConstructor()->getMock();
         $implementedInterfaceMock->method('getName')->willReturn('Foo');
         $reflectionClassMock->method('getInterfaces')->willReturn([$implementedInterfaceMock]);
         $basePHPElement = new ReflectionEnumParser()->parse($reflectionClassMock);
@@ -282,10 +282,10 @@ class ReflectionEnumParserTest extends TestCase
 
     public function testItReturnsAllParsedImplementedInterfaces()
     {
-        $reflectionClassMock = $this->getMockBuilder(ReflectionEnum::class)->disableOriginalConstructor()->getMock();
-        $implementedInterfaceMock1 = $this->getMockBuilder(ReflectionClass::class)->disableOriginalConstructor()->getMock();
-        $implementedInterfaceMock2 = $this->getMockBuilder(ReflectionClass::class)->disableOriginalConstructor()->getMock();
-        $implementedInterfaceMock3 = $this->getMockBuilder(ReflectionClass::class)->disableOriginalConstructor()->getMock();
+        $reflectionClassMock = $this->getMockBuilder(AdaptedReflectionClass::class)->disableOriginalConstructor()->getMock();
+        $implementedInterfaceMock1 = $this->getMockBuilder(AdaptedReflectionClass::class)->disableOriginalConstructor()->getMock();
+        $implementedInterfaceMock2 = $this->getMockBuilder(AdaptedReflectionClass::class)->disableOriginalConstructor()->getMock();
+        $implementedInterfaceMock3 = $this->getMockBuilder(AdaptedReflectionClass::class)->disableOriginalConstructor()->getMock();
         $implementedInterfaceMock1->method('getName')->willReturn('Foo1');
         $implementedInterfaceMock2->method('getName')->willReturn('Foo2');
         $implementedInterfaceMock2->method('getName')->willReturn('Foo3');
@@ -297,9 +297,9 @@ class ReflectionEnumParserTest extends TestCase
 
     public function testItReturnsImplementedInterfacesWithCorrentName()
     {
-        $reflectionClassMock = $this->getMockBuilder(ReflectionEnum::class)->disableOriginalConstructor()->getMock();
-        $implementedInterfaceMock1 = $this->getMockBuilder(ReflectionClass::class)->disableOriginalConstructor()->getMock();
-        $implementedInterfaceMock2 = $this->getMockBuilder(ReflectionClass::class)->disableOriginalConstructor()->getMock();
+        $reflectionClassMock = $this->getMockBuilder(AdaptedReflectionClass::class)->disableOriginalConstructor()->getMock();
+        $implementedInterfaceMock1 = $this->getMockBuilder(AdaptedReflectionClass::class)->disableOriginalConstructor()->getMock();
+        $implementedInterfaceMock2 = $this->getMockBuilder(AdaptedReflectionClass::class)->disableOriginalConstructor()->getMock();
         $implementedInterfaceMock1->method('getName')->willReturn('\Foo1');
         $implementedInterfaceMock2->method('getName')->willReturn('\Foo2');
         $reflectionClassMock->method('getInterfaces')->willReturn([$implementedInterfaceMock1, $implementedInterfaceMock2]);
@@ -310,9 +310,9 @@ class ReflectionEnumParserTest extends TestCase
 
     public function testItReturnsImplementedInterfacesWithCorrentNamespace()
     {
-        $reflectionClassMock = $this->getMockBuilder(ReflectionEnum::class)->disableOriginalConstructor()->getMock();
-        $implementedInterfaceMock1 = $this->getMockBuilder(ReflectionClass::class)->disableOriginalConstructor()->getMock();
-        $implementedInterfaceMock2 = $this->getMockBuilder(ReflectionClass::class)->disableOriginalConstructor()->getMock();
+        $reflectionClassMock = $this->getMockBuilder(AdaptedReflectionClass::class)->disableOriginalConstructor()->getMock();
+        $implementedInterfaceMock1 = $this->getMockBuilder(AdaptedReflectionClass::class)->disableOriginalConstructor()->getMock();
+        $implementedInterfaceMock2 = $this->getMockBuilder(AdaptedReflectionClass::class)->disableOriginalConstructor()->getMock();
         $implementedInterfaceMock1->method('getName')->willReturn('\Foo1');
         $implementedInterfaceMock1->method('getNamespaceName')->willReturn('\MyNameSpace');
         $implementedInterfaceMock2->method('getName')->willReturn('\Foo2');
@@ -325,21 +325,21 @@ class ReflectionEnumParserTest extends TestCase
 
     /*public function testItDoesNotContainPhpDocManager()
     {
-        $reflectionClassMock = $this->getMockBuilder(ReflectionEnum::class)->disableOriginalConstructor()->getMock();
+        $reflectionClassMock = $this->getMockBuilder(AdaptedReflectionClass::class)->disableOriginalConstructor()->getMock();
         $basePHPElement = new ReflectionEnumParser()->parse($reflectionClassMock);
         self::assertFalse($basePHPElement->canGetDataFromPhpDoc());
     }
 
     public function testItDoesNotContainStubsSpecificManager()
     {
-        $reflectionClassMock = $this->getMockBuilder(ReflectionEnum::class)->disableOriginalConstructor()->getMock();
+        $reflectionClassMock = $this->getMockBuilder(AdaptedReflectionClass::class)->disableOriginalConstructor()->getMock();
         $basePHPElement = new ReflectionObjectEnumParser()->parse($reflectionClassMock);
         self::assertNull($basePHPElement->getAdditionalManager(AdditionalManagerType::StubsSpecificPropertiesManager));
     }
 
     public function testItDoesNotReturnNullIfNoCases()
     {
-        $reflectionClassMock = $this->getMockBuilder(ReflectionEnum::class)->disableOriginalConstructor()->getMock();
+        $reflectionClassMock = $this->getMockBuilder(AdaptedReflectionClass::class)->disableOriginalConstructor()->getMock();
         $reflectionClassMock->method('getCases')->willReturn([]);
         $basePHPElement = new ReflectionObjectEnumParser()->parse($reflectionClassMock);
         self::assertNotNull($basePHPElement->getCases());
@@ -347,7 +347,7 @@ class ReflectionEnumParserTest extends TestCase
 
     public function testItReturnsEmptyArrayIfNoCases()
     {
-        $reflectionClassMock = $this->getMockBuilder(ReflectionEnum::class)->disableOriginalConstructor()->getMock();
+        $reflectionClassMock = $this->getMockBuilder(AdaptedReflectionClass::class)->disableOriginalConstructor()->getMock();
         $reflectionClassMock->method('getCases')->willReturn([]);
         $basePHPElement = new ReflectionObjectEnumParser()->parse($reflectionClassMock);
         self::assertTrue(is_array($basePHPElement->getCases()));;

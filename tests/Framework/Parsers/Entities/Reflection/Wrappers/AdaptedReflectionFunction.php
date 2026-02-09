@@ -88,7 +88,7 @@ class AdaptedReflectionFunction extends AbstractReflectionAdapter
 
     public function isDeprecated()
     {
-        return $this->getData('isDeprecated');
+        return $this->getData('isDeprecated', false);
     }
 
     public function hasReturnType()
