@@ -3,15 +3,13 @@
 namespace StubTests\Unit\Parsers\Reflection;
 
 use PHPUnit\Framework\TestCase;
-use ReflectionClass;
-use ReflectionClassConstant;
-use ReflectionEnum;
-use ReflectionMethod;
 use StubTests\Sources\Parsers\Entities\Model\PHPEnum;
 use StubTests\Sources\Parsers\Entities\Model\PHPInterface;
 use StubTests\Sources\Parsers\Entities\Model\PHPMethod;
 use StubTests\Sources\Parsers\Entities\Reflection\ReflectionEnumParser;
 use StubTests\Sources\Parsers\Entities\Reflection\Wrappers\AdaptedReflectionClass;
+use StubTests\Sources\Parsers\Entities\Reflection\Wrappers\AdaptedReflectionClassConstant;
+use StubTests\Sources\Parsers\Entities\Reflection\Wrappers\AdaptedReflectionMethod;
 
 class ReflectionEnumParserTest extends TestCase
 {
@@ -157,7 +155,10 @@ class ReflectionEnumParserTest extends TestCase
     public function testItCanParseMethods()
     {
         $reflectionClassMock = $this->getMockBuilder(AdaptedReflectionClass::class)->disableOriginalConstructor()->getMock();
-        $reflectionMethodMock = $this->getMockBuilder(ReflectionMethod::class)->disableOriginalConstructor()->getMock();
+        $reflectionMethodMock = $this->getMockBuilder(AdaptedReflectionMethod::class)
+            ->disableOriginalConstructor()
+            ->onlyMethods(['getName'])
+            ->getMock();
         $reflectionMethodMock->method('getName')->willReturn('someMethod');
         $reflectionClassMock->method('getMethods')->willReturn([$reflectionMethodMock]);
         $basePHPElement = new ReflectionEnumParser()->parse($reflectionClassMock);
@@ -169,7 +170,10 @@ class ReflectionEnumParserTest extends TestCase
     public function testItReturnsCorrectInstanceOfMethods()
     {
         $reflectionClassMock = $this->getMockBuilder(AdaptedReflectionClass::class)->disableOriginalConstructor()->getMock();
-        $reflectionMethodMock = $this->getMockBuilder(ReflectionMethod::class)->disableOriginalConstructor()->getMock();
+        $reflectionMethodMock = $this->getMockBuilder(AdaptedReflectionMethod::class)
+            ->disableOriginalConstructor()
+            ->onlyMethods(['getName'])
+            ->getMock();
         $reflectionMethodMock->method('getName')->willReturn('someMethod');
         $reflectionClassMock->method('getMethods')->willReturn([$reflectionMethodMock]);
         $basePHPElement = new ReflectionEnumParser()->parse($reflectionClassMock);
@@ -178,10 +182,22 @@ class ReflectionEnumParserTest extends TestCase
 
     public function testItReturnsActuallyParsedMethods()
     {
-        $reflectionClassMock = $this->getMockBuilder(AdaptedReflectionClass::class)->disableOriginalConstructor()->getMock();
-        $reflectionMethodMock1 = $this->getMockBuilder(ReflectionMethod::class)->disableOriginalConstructor()->getMock();
-        $reflectionMethodMock2 = $this->getMockBuilder(ReflectionMethod::class)->disableOriginalConstructor()->getMock();
-        $reflectionMethodMock3 = $this->getMockBuilder(ReflectionMethod::class)->disableOriginalConstructor()->getMock();
+        $reflectionClassMock = $this->getMockBuilder(AdaptedReflectionClass::class)
+            ->disableOriginalConstructor()
+            ->onlyMethods(['getMethods'])
+            ->getMock();
+        $reflectionMethodMock1 = $this->getMockBuilder(AdaptedReflectionMethod::class)
+            ->disableOriginalConstructor()
+            ->onlyMethods(['getName'])
+            ->getMock();
+        $reflectionMethodMock2 = $this->getMockBuilder(AdaptedReflectionMethod::class)
+            ->disableOriginalConstructor()
+            ->onlyMethods(['getName'])
+            ->getMock();
+        $reflectionMethodMock3 = $this->getMockBuilder(AdaptedReflectionMethod::class)
+            ->disableOriginalConstructor()
+            ->onlyMethods(['getName'])
+            ->getMock();
         $reflectionMethodMock1->method('getName')->willReturn('someMethod1');
         $reflectionMethodMock2->method('getName')->willReturn('someMethod2');
         $reflectionMethodMock3->method('getName')->willReturn('someMethod3');
@@ -228,8 +244,14 @@ class ReflectionEnumParserTest extends TestCase
 
     public function testItCanParseClassConstantsPhp71()
     {
-        $reflectionClassMock = $this->getMockBuilder(AdaptedReflectionClass::class)->disableOriginalConstructor()->getMock();
-        $reflectionClassConstantMock = $this->getMockBuilder(ReflectionClassConstant::class)->disableOriginalConstructor()->getMock();
+        $reflectionClassMock = $this->getMockBuilder(AdaptedReflectionClass::class)
+            ->disableOriginalConstructor()
+            ->onlyMethods(['hasMethod', 'getReflectionConstants'])
+            ->getMock();
+        $reflectionClassConstantMock = $this->getMockBuilder(AdaptedReflectionClassConstant::class)
+            ->disableOriginalConstructor()
+            ->onlyMethods(['getName', 'getValue'])
+            ->getMock();
         $reflectionClassConstantMock->method('getName')->willReturn('FOO');
         $reflectionClassConstantMock->method('getValue')->willReturn('BAR');
         $reflectionClassMock->method('hasMethod')->with('getReflectionConstants')->willReturn(true);
