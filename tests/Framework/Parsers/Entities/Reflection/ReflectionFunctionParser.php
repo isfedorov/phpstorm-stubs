@@ -3,12 +3,7 @@
 namespace StubTests\Sources\Parsers\Entities\Reflection;
 
 use ReflectionFunction;
-use StubTests\Sources\Parsers\Entities\Model\NoType;
-use StubTests\Sources\Parsers\Entities\Model\NullableType;
 use StubTests\Sources\Parsers\Entities\Model\PHPFunction;
-use StubTests\Sources\Parsers\Entities\Model\PHPParameter;
-use StubTests\Sources\Parsers\Entities\Model\StandaloneType;
-use StubTests\Sources\Parsers\Entities\Model\UnionType;
 use StubTests\Sources\Parsers\Entities\Reflection\Wrappers\AdaptedReflectionFunction;
 use StubTests\Sources\Parsers\Parser;
 
@@ -16,6 +11,15 @@ use StubTests\Sources\Parsers\Parser;
  * @template-implements Parser<AdaptedReflectionFunction>
  */
 class ReflectionFunctionParser implements Parser {
+
+    private ReflectionParameterParser $parameterParser;
+    private ReflectionTypeParser $typeParser;
+
+    public function __construct(?ReflectionParameterParser $parameterParser = null, ?ReflectionTypeParser $typeParser = null)
+    {
+        $this->parameterParser = $parameterParser ?? new ReflectionParameterParser();
+        $this->typeParser = $typeParser ?? new ReflectionTypeParser();
+    }
 
     public function canParse($object): bool
     {
@@ -40,48 +44,17 @@ class ReflectionFunctionParser implements Parser {
         } else {
             $PHPFunction->setId($PHPFunction->getNamespace() . '\\' . $PHPFunction->getName());
         }
-        $returnTypesFromSignature = new NoType();
-        if ($object->hasReturnType() && $object->getReturnType()) {
-            $returnType = $object->getReturnType();
 
-            // Use duck typing to check for union types (supports both real Reflection and wrappers)
-            $isUnion = ($returnType instanceof \ReflectionUnionType) ||
-                       (method_exists($returnType, 'isUnionType') && $returnType->isUnionType());
-            $isIntersection = (class_exists('\ReflectionIntersectionType') && $returnType instanceof \ReflectionIntersectionType) ||
-                             (method_exists($returnType, 'isIntersectionType') && $returnType->isIntersectionType());
-
-            if ($isUnion) {
-                $returnTypesFromSignature = new UnionType();
-                foreach ($returnType->getTypes() as $item) {
-                    if ($item instanceof \ReflectionNamedType || method_exists($item, 'getName')) {
-                        $returnTypesFromSignature->addType(new StandaloneType($item->getName()));
-                    }
-                }
-            } elseif($isIntersection) {
-              foreach ($returnType->getTypes() as $item) {
-                  $returnTypesFromSignature []= $item->getName();
-              }
-            } elseif($returnType->allowsNull()) {
-                $typeName = $returnType->getName();
-                if ($typeName !== null) {
-                    $returnTypesFromSignature = new NullableType();
-                    $returnTypesFromSignature->addBasicType(new StandaloneType($typeName));
-                }
-            } else {
-                $typeName = $returnType->getName();
-                if ($typeName !== null) {
-                    $returnTypesFromSignature = new StandaloneType($typeName);
-                }
-            }
-        }
+        // Parse return type using ReflectionTypeParser
+        $returnTypesFromSignature = $this->typeParser->parse($object->hasReturnType() ? $object->getReturnType() : null);
         $PHPFunction->setReturnTypeFromSignature($returnTypesFromSignature);
         $PHPFunction->setDeprecated($object->isDeprecated());
 
-        // Convert ReflectionParameter objects to PHPParameter objects
-        $parameters = array_map(
-            function($parameter) { return new PHPParameter($parameter->getName()); },
-            $object->getParameters()
-        );
+        // Parse parameters using ReflectionParameterParser
+        $parameters = [];
+        foreach ($object->getParameters() as $parameter) {
+            $parameters[] = $this->parameterParser->parse($parameter);
+        }
         $PHPFunction->setParameters($parameters);
 
         return $PHPFunction;

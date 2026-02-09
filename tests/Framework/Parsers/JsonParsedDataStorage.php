@@ -136,128 +136,6 @@ class JsonParsedDataStorage implements ParsedDataPersistentStorageProvider
         return $value;
     }
 
-    /**
-     * Serialize a PHPMethod to array
-     */
-    private function serializeMethod(PHPMethod $method): array
-    {
-        $data = [
-            'name' => $method->getName(),
-            'isStatic' => $method->isStatic(),
-            'isFinal' => $method->isFinal(),
-            'isAbstract' => $method->isAbstract(),
-            'isDeprecated' => $method->isDeprecated(),
-        ];
-
-        // Serialize access modifier
-        $access = $method->getAccess();
-        if ($access !== null && method_exists($access, 'toString')) {
-            $data['accessModifier'] = $access->toString();
-        } else {
-            $data['accessModifier'] = 'public';
-        }
-
-        return $data;
-    }
-
-    /**
-     * Serialize a PHPProperty to array
-     */
-    private function serializeProperty(PHPProperty $property): array
-    {
-        $data = [
-            'name' => $property->getName(),
-            'isStatic' => $property->isStatic(),
-            'isReadonly' => $property->isReadonly(),
-            'type' => $property->getType(),
-        ];
-
-        // Serialize access modifier
-        $access = $property->getAccess();
-        if ($access !== null && method_exists($access, 'toString')) {
-            $data['accessModifier'] = $access->toString();
-        } else {
-            $data['accessModifier'] = 'public';
-        }
-
-        return $data;
-    }
-
-    /**
-     * Serialize a PHPClassConstant to array
-     */
-    private function serializeClassConstant(PHPClassConstant $constant): array
-    {
-        return [
-            'name' => $constant->getName(),
-            'value' => $this->toJsonSafe($constant->getValue()),
-            'visibility' => $constant->visibility ?? 'public',
-            'isFinal' => $constant->isFinal(),
-        ];
-    }
-
-    /**
-     * Deserialize a PHPMethod from array
-     */
-    private function deserializeMethod(array $data): PHPMethod
-    {
-        $method = new PHPMethod();
-        $method->setName($data['name'] ?? '');
-        $method->setIsStatic($data['isStatic'] ?? false);
-        $method->setIsFinal($data['isFinal'] ?? false);
-        $method->setIsAbstract($data['isAbstract'] ?? false);
-        $method->setIsDeprecated($data['isDeprecated'] ?? false);
-
-        // Deserialize access modifier
-        $accessModifier = $data['accessModifier'] ?? 'public';
-        if ($accessModifier === 'private') {
-            $method->setAccess(new PrivateAccessModifier());
-        } elseif ($accessModifier === 'protected') {
-            $method->setAccess(new ProtectedAccessModifier());
-        } else {
-            $method->setAccess(new PublicAccessModifier());
-        }
-
-        return $method;
-    }
-
-    /**
-     * Deserialize a PHPProperty from array
-     */
-    private function deserializeProperty(array $data): PHPProperty
-    {
-        $property = new PHPProperty();
-        $property->setName($data['name'] ?? '');
-        $property->setIsStatic($data['isStatic'] ?? false);
-        $property->setIsReadonly($data['isReadonly'] ?? false);
-        $property->setTypeFromSignature($data['type'] ?? null);
-
-        // Deserialize access modifier
-        $accessModifier = $data['accessModifier'] ?? 'public';
-        if ($accessModifier === 'private') {
-            $property->setAccess(new PrivateAccessModifier());
-        } elseif ($accessModifier === 'protected') {
-            $property->setAccess(new ProtectedAccessModifier());
-        } else {
-            $property->setAccess(new PublicAccessModifier());
-        }
-
-        return $property;
-    }
-
-    /**
-     * Deserialize a PHPClassConstant from array
-     */
-    private function deserializeClassConstant(array $data): PHPClassConstant
-    {
-        $constant = new PHPClassConstant();
-        $constant->setName($data['name'] ?? '');
-        $constant->value = $data['value'] ?? null;
-        $constant->visibility = $data['visibility'] ?? 'public';
-        $constant->isFinal = $data['isFinal'] ?? false;
-        return $constant;
-    }
-
     private function serializeEntity($entity): array
     {
         if ($entity instanceof PHPClass) {
@@ -342,9 +220,10 @@ class JsonParsedDataStorage implements ParsedDataPersistentStorageProvider
             // Serialize parameters
             try {
                 $parameters = $entity->getParameters();
-                $data['parameters'] = array_map(function ($param) {
-                    return ['name' => $this->toJsonSafe($param->getName())];
-                }, $parameters ?? []);
+                $data['parameters'] = [];
+                foreach ($parameters ?? [] as $param) {
+                    $data['parameters'][] = $this->serializeParameter($param);
+                }
             } catch (\Error $e) {
                 $data['parameters'] = [];
             }
@@ -492,9 +371,10 @@ class JsonParsedDataStorage implements ParsedDataPersistentStorageProvider
 
             // Deserialize parameters
             if (isset($data['parameters']) && is_array($data['parameters'])) {
-                $parameters = array_map(function ($paramData) {
-                    return new PHPParameter($paramData['name'] ?? '');
-                }, $data['parameters']);
+                $parameters = [];
+                foreach ($data['parameters'] as $paramData) {
+                    $parameters[] = $this->deserializeParameter($paramData);
+                }
                 $function->setParameters($parameters);
             }
 
@@ -565,5 +445,243 @@ class JsonParsedDataStorage implements ParsedDataPersistentStorageProvider
         }
 
         return null;
+    }
+
+
+    /**
+     * Serialize a PHPMethod to array
+     */
+    private function serializeMethod(PHPMethod $method): array
+    {
+        $data = [
+            'name' => $method->getName(),
+            'isStatic' => $method->isStatic(),
+            'isFinal' => $method->isFinal(),
+            'isAbstract' => $method->isAbstract(),
+            'isDeprecated' => $method->isDeprecated(),
+        ];
+
+        // Serialize access modifier
+        $access = $method->getAccess();
+        if ($access !== null && method_exists($access, 'toString')) {
+            $data['accessModifier'] = $access->toString();
+        } else {
+            $data['accessModifier'] = 'public';
+        }
+
+        // Serialize parameters
+        $data['parameters'] = [];
+        foreach ($method->getParameters() as $parameter) {
+            $data['parameters'][] = $this->serializeParameter($parameter);
+        }
+
+        $type = $method->getReturnTypeFromSignature();
+        if (is_array($type)) {
+            // Intersection type stored as array - format as Type1&Type2&Type3
+            $data['returnType'] = implode('&', $type);
+        } elseif (is_object($type) && method_exists($type, 'toString')) {
+            // Call toString() on type objects to get human-readable representation
+            $data['returnType'] = $type->toString();
+        } elseif (is_object($type)) {
+            // Fallback for objects without toString()
+            $data['returnType'] = null;
+        } else {
+            // Primitive value (shouldn't normally happen, but handle it)
+            $data['returnType'] = $type;
+        }
+
+        return $data;
+    }
+
+    /**
+     * Deserialize a PHPMethod from array
+     */
+    private function deserializeMethod(array $data): PHPMethod
+    {
+        $method = new PHPMethod();
+        $method->setName($data['name'] ?? '');
+        $method->setIsStatic($data['isStatic'] ?? false);
+        $method->setIsFinal($data['isFinal'] ?? false);
+        $method->setIsAbstract($data['isAbstract'] ?? false);
+        $method->setDeprecated($data['isDeprecated'] ?? false);
+
+        // Deserialize access modifier
+        $accessModifier = $data['accessModifier'] ?? 'public';
+        if ($accessModifier === 'private') {
+            $method->setAccess(new PrivateAccessModifier());
+        } elseif ($accessModifier === 'protected') {
+            $method->setAccess(new ProtectedAccessModifier());
+        } else {
+            $method->setAccess(new PublicAccessModifier());
+        }
+
+        // Deserialize parameters
+        if (isset($data['parameters']) && is_array($data['parameters'])) {
+            $parameters = [];
+            foreach ($data['parameters'] as $paramData) {
+                $parameters[] = $this->deserializeParameter($paramData);
+            }
+            $method->setParameters($parameters);
+        }
+
+        $method->setReturnTypeFromSignature($data['returnType'] ?? null);
+
+        return $method;
+    }
+
+    /**
+     * Serialize a PHPParameter to array
+     */
+    private function serializeParameter(PHPParameter $parameter): array
+    {
+        $data = [
+            'name' => $parameter->getName(),
+            'position' => $parameter->getPosition(),
+            'isOptional' => $parameter->isOptional(),
+            'isVariadic' => $parameter->isVariadic(),
+            'isPassedByReference' => $parameter->isPassedByReference(),
+            'hasDefaultValue' => $parameter->hasDefaultValue(),
+        ];
+
+        // Serialize type
+        $type = $parameter->getDeclaredType();
+        if (is_array($type)) {
+            // Intersection type stored as array - format as Type1&Type2&Type3
+            $data['type'] = implode('&', $type);
+        } elseif (is_object($type) && method_exists($type, 'toString')) {
+            // Call toString() on type objects to get human-readable representation
+            $data['type'] = $type->toString();
+        } elseif (is_object($type)) {
+            // Fallback for objects without toString()
+            $data['type'] = null;
+        } else {
+            // Primitive value (shouldn't normally happen, but handle it)
+            $data['type'] = $type;
+        }
+
+        // Serialize default value if available
+        if ($parameter->hasDefaultValue()) {
+            $data['defaultValue'] = $this->toJsonSafe($parameter->getDefaultValue());
+        } else {
+            $data['defaultValue'] = null;
+        }
+
+        return $data;
+    }
+
+    /**
+     * Deserialize a PHPParameter from array
+     */
+    private function deserializeParameter(array $data): PHPParameter
+    {
+        $parameter = new PHPParameter($data['name'] ?? '');
+        $parameter->setPosition($data['position'] ?? 0);
+        $parameter->setIsOptional($data['isOptional'] ?? false);
+        $parameter->setIsVariadic($data['isVariadic'] ?? false);
+        $parameter->setIsPassedByReference($data['isPassedByReference'] ?? false);
+        $parameter->setHasDefaultValue($data['hasDefaultValue'] ?? false);
+
+        // Note: Type deserialization is simplified - we store the serialized representation
+        // Full type reconstruction would require parsing the type strings
+        if (isset($data['type'])) {
+            $parameter->setType($data['type']);
+        }
+
+        if (isset($data['defaultValue'])) {
+            $parameter->setDefaultValue($data['defaultValue']);
+        }
+
+        return $parameter;
+    }
+
+    /**
+     * Serialize a PHPProperty to array
+     */
+    private function serializeProperty(PHPProperty $property): array
+    {
+        $data = [
+            'name' => $property->getName(),
+            'isStatic' => $property->isStatic(),
+            'isReadonly' => $property->isReadonly()
+        ];
+
+        // Serialize access modifier
+        $access = $property->getAccess();
+        if ($access !== null && method_exists($access, 'toString')) {
+            $data['accessModifier'] = $access->toString();
+        } else {
+            $data['accessModifier'] = 'public';
+        }
+
+        $type = $property->getType();
+        if (is_array($type)) {
+            // Intersection type stored as array - format as Type1&Type2&Type3
+            $data['type'] = implode('&', $type);
+        } elseif (is_object($type) && method_exists($type, 'toString')) {
+            // Call toString() on type objects to get human-readable representation
+            $data['type'] = $type->toString();
+        } elseif (is_object($type)) {
+            // Fallback for objects without toString()
+            $data['type'] = null;
+        } else {
+            // Primitive value (shouldn't normally happen, but handle it)
+            $data['type'] = $type;
+        }
+
+        return $data;
+    }
+
+    /**
+     * Deserialize a PHPProperty from array
+     */
+    private function deserializeProperty(array $data): PHPProperty
+    {
+        $property = new PHPProperty();
+        $property->setName($data['name'] ?? '');
+        $property->setIsStatic($data['isStatic'] ?? false);
+        $property->setIsReadonly($data['isReadonly'] ?? false);
+        $property->setTypeFromSignature($data['type'] ?? null);
+
+        // Deserialize access modifier
+        $accessModifier = $data['accessModifier'] ?? 'public';
+        if ($accessModifier === 'private') {
+            $property->setAccess(new PrivateAccessModifier());
+        } elseif ($accessModifier === 'protected') {
+            $property->setAccess(new ProtectedAccessModifier());
+        } else {
+            $property->setAccess(new PublicAccessModifier());
+        }
+
+        if (isset($data['type'])) {
+            $property->setTypeFromSignature($data['type']);
+        }
+
+        return $property;
+    }
+
+    /**
+     * Serialize a PHPClassConstant to array
+     */
+    private function serializeClassConstant(PHPClassConstant $constant): array
+    {
+        return [
+            'name' => $constant->getName(),
+            'value' => $this->toJsonSafe($constant->getValue()),
+            'visibility' => $constant->visibility ?? 'public',
+            'isFinal' => $constant->isFinal(),
+        ];
+    }
+
+    /**
+     * Deserialize a PHPClassConstant from array
+     */
+    private function deserializeClassConstant(array $data): PHPClassConstant
+    {
+        $constant = new PHPClassConstant();
+        $constant->setName($data['name'] ?? '');
+        $constant->value = $data['value'] ?? null;
+        $constant->visibility = $data['visibility'] ?? 'public';
+        $constant->isFinal = $data['isFinal'] ?? false;
+        return $constant;
     }
 }

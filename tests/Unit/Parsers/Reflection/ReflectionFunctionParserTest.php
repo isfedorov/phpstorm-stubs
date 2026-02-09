@@ -354,9 +354,15 @@ class ReflectionFunctionParserTest extends TestCase
             ->getMock();
         $parameterMock = $this->getMockBuilder(AdaptedReflectionParameter::class)
             ->disableOriginalConstructor()
-            ->onlyMethods(['getName'])
+            ->onlyMethods(['getName', 'getPosition', 'isOptional', 'isVariadic', 'isPassedByReference', 'hasType', 'isDefaultValueAvailable'])
             ->getMock();
         $parameterMock->method('getName')->willReturn('param');
+        $parameterMock->method('getPosition')->willReturn(0);
+        $parameterMock->method('isOptional')->willReturn(false);
+        $parameterMock->method('isVariadic')->willReturn(false);
+        $parameterMock->method('isPassedByReference')->willReturn(false);
+        $parameterMock->method('hasType')->willReturn(false);
+        $parameterMock->method('isDefaultValueAvailable')->willReturn(false);
         $functionMock->method('getParameters')->willReturn([$parameterMock]);
         $basePHPElement = new ReflectionFunctionParser()->parse($functionMock);
         self::assertInstanceOf(PHPParameter::class, $basePHPElement->getParameters()[0]);
@@ -371,9 +377,11 @@ class ReflectionFunctionParserTest extends TestCase
             ->getMock();
         $parameterMock = $this->getMockBuilder(AdaptedReflectionParameter::class)
             ->disableOriginalConstructor()
-            ->onlyMethods(['getName', 'hasType', 'getType', 'isOptional', 'getDefaultValue', 'isPassedByReference', 'isVariadic'])
+            ->onlyMethods(['getName', 'getPosition', 'hasType', 'getType', 'isOptional', 'getDefaultValue', 'isDefaultValueAvailable', 'isPassedByReference', 'isVariadic'])
             ->getMock();
         $parameterMock->method('getName')->willReturn('foo');
+        $parameterMock->method('getPosition')->willReturn(0);
+        $parameterMock->method('hasType')->willReturn(true);
         $parameterMock->method('getType')->willReturn(new class extends \ReflectionNamedType
         {
             public function getName()
@@ -381,8 +389,13 @@ class ReflectionFunctionParserTest extends TestCase
                 return 'int';
             }
 
+            public function allowsNull()
+            {
+                return false;
+            }
         });
         $parameterMock->method('isOptional')->willReturn(true);
+        $parameterMock->method('isDefaultValueAvailable')->willReturn(true);
         $parameterMock->method('getDefaultValue')->willReturn(1);
         $parameterMock->method('isPassedByReference')->willReturn(false);
         $parameterMock->method('isVariadic')->willReturn(false);
@@ -401,12 +414,14 @@ class ReflectionFunctionParserTest extends TestCase
             ->getMock();
         $parameterMock = $this->getMockBuilder(AdaptedReflectionParameter::class)
             ->disableOriginalConstructor()
-            ->onlyMethods(['getName', 'hasType', 'getType', 'isOptional', 'isPassedByReference', 'isVariadic'])
+            ->onlyMethods(['getName', 'getPosition', 'hasType', 'getType', 'isOptional', 'isDefaultValueAvailable', 'isPassedByReference', 'isVariadic'])
             ->getMock();
         $parameterMock->method('getName')->willReturn('foo');
+        $parameterMock->method('getPosition')->willReturn(0);
         $parameterMock->method('hasType')->willReturn(false);
         $parameterMock->method('getType')->willReturn(null);
         $parameterMock->method('isOptional')->willReturn(false);
+        $parameterMock->method('isDefaultValueAvailable')->willReturn(false);
         $parameterMock->method('isPassedByReference')->willReturn(false);
         $parameterMock->method('isVariadic')->willReturn(false);
         $functionMock->method('getParameters')->willReturn([$parameterMock]);

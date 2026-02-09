@@ -5,9 +5,9 @@ namespace StubTests\Sources\Parsers\Entities\Model;
 class PHPFunction extends PHPNamespacedElement
 {
 
-    private $returnTypesFromSignature;
-    private bool $isDeprecated;
-    private array $parameters;
+    protected $returnTypesFromSignature;
+    protected bool $isDeprecated;
+    protected array $parameters;
 
     public function getReturnTypeFromSignature()
     {

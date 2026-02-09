@@ -43,9 +43,9 @@ class StubMethodParser
         $docComment = $node->getDocComment();
         if ($docComment) {
             $isDeprecated = str_contains($docComment->getText(), '@deprecated');
-            $method->setIsDeprecated($isDeprecated);
+            $method->setDeprecated($isDeprecated);
         } else {
-            $method->setIsDeprecated(false);
+            $method->setDeprecated(false);
         }
 
         // TODO: Parse parameters and return type in future enhancement

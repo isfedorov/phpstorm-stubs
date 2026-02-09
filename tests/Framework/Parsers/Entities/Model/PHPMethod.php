@@ -2,13 +2,12 @@
 
 namespace StubTests\Sources\Parsers\Entities\Model;
 
-class PHPMethod extends BasePHPElement
+class PHPMethod extends PHPFunction
 {
     private $accessModifier;
     private bool $isStatic;
     private bool $isFinal;
     private bool $isAbstract;
-    private bool $isDeprecated;
 
     public function getAccess()
     {
@@ -48,15 +47,5 @@ class PHPMethod extends BasePHPElement
     public function setIsAbstract(bool $isAbstract)
     {
         $this->isAbstract = $isAbstract;
-    }
-
-    public function isDeprecated()
-    {
-        return $this->isDeprecated;
-    }
-
-    public function setIsDeprecated(bool $isDeprecated)
-    {
-        $this->isDeprecated = $isDeprecated;
     }
 }

@@ -15,6 +15,14 @@ use StubTests\Sources\Parsers\Parser;
  */
 class ReflectionMethodParser implements Parser
 {
+    private ReflectionParameterParser $parameterParser;
+    private ReflectionTypeParser $typeParser;
+
+    public function __construct(?ReflectionParameterParser $parameterParser = null, ?ReflectionTypeParser $typeParser = null)
+    {
+        $this->parameterParser = $parameterParser ?? new ReflectionParameterParser();
+        $this->typeParser = $typeParser ?? new ReflectionTypeParser();
+    }
 
     public function canParse($object): bool
     {
@@ -42,7 +50,18 @@ class ReflectionMethodParser implements Parser
         $method->setIsStatic($object->isStatic());
         $method->setIsFinal($object->isFinal());
         $method->setIsAbstract($object->isAbstract());
-        $method->setIsDeprecated($object->isDeprecated());
+        $method->setDeprecated($object->isDeprecated());
+
+        $returnTypesFromSignature = $this->typeParser->parse($object->hasReturnType() ? $object->getReturnType() : null);
+        $method->setReturnTypeFromSignature($returnTypesFromSignature);
+
+        // Parse parameters
+        $parameters = [];
+        foreach ($object->getParameters() as $parameter) {
+            $parameters[] = $this->parameterParser->parse($parameter);
+        }
+        $method->setParameters($parameters);
+
         return $method;
     }
 }

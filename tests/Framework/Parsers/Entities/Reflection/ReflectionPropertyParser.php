@@ -12,6 +12,14 @@ use StubTests\Sources\Parsers\Parser;
  */
 class ReflectionPropertyParser implements Parser
 {
+
+    private ReflectionTypeParser $typeParser;
+
+    public function __construct(?ReflectionTypeParser $typeParser = null)
+    {
+        $this->typeParser = $typeParser ?? new ReflectionTypeParser();
+    }
+
     public function canParse($object): bool
     {
         return false;
@@ -27,6 +35,7 @@ class ReflectionPropertyParser implements Parser
     {
         $property = new PHPProperty();
         $property->setName($object->getName());
+        $property->setTypeFromSignature($this->typeParser->parse($object->hasType() ? $object->getType() : null));
         return $property;
     }
 }
