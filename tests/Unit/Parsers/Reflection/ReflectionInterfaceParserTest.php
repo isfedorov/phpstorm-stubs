@@ -172,7 +172,10 @@ class ReflectionInterfaceParserTest extends TestCase
     public function testItReturnsActualParsedMethods()
     {
         $reflectionClassMock = $this->getMockBuilder(AdaptedReflectionClass::class)->disableOriginalConstructor()->getMock();
-        $reflectionMethodMock = $this->getMockBuilder(\ReflectionMethod::class)->disableOriginalConstructor()->getMock();
+        $reflectionMethodMock = $this->getMockBuilder(AdaptedReflectionMethod::class)
+            ->disableOriginalConstructor()
+            ->onlyMethods(['getName'])
+            ->getMock();
         $reflectionMethodMock->method('getName')->willReturn('foo');
         $reflectionClassMock->method('getMethods')->willReturn([$reflectionMethodMock]);
         $basePHPElement = new ReflectionInterfaceParser()->parse($reflectionClassMock);
@@ -208,7 +211,10 @@ class ReflectionInterfaceParserTest extends TestCase
     {
         $reflectionClassMock = $this->getMockBuilder(AdaptedReflectionClass::class)->disableOriginalConstructor()->getMock();
         $reflectionClassMock->method('hasMethod')->with('getReflectionConstants')->willReturn(true);
-        $reflectionClassConstantsMock = $this->getMockBuilder(\ReflectionClassConstant::class)->disableOriginalConstructor()->getMock();
+        $reflectionClassConstantsMock = $this->getMockBuilder(AdaptedReflectionClassConstant::class)
+            ->disableOriginalConstructor()
+            ->onlyMethods(['getName', 'getValue'])
+            ->getMock();
         $reflectionClassConstantsMock->method('getName')->willReturn('FOO');
         $reflectionClassConstantsMock->method('getValue')->willReturn('BAR');
         $reflectionClassMock->method('getReflectionConstants')->willReturn([$reflectionClassConstantsMock]);

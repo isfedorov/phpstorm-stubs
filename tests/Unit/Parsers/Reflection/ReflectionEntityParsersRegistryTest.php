@@ -3,6 +3,8 @@
 namespace StubTests\Unit\Parsers\Reflection;
 
 use PHPUnit\Framework\TestCase;
+use ReflectionConstant;
+use stdClass;
 use StubTests\Sources\Parsers\Entities\Reflection\ReflectionClassParser;
 use StubTests\Sources\Parsers\Entities\Reflection\ReflectionEnumParser;
 use StubTests\Sources\Parsers\Entities\Reflection\ReflectionFunctionParser;
@@ -68,7 +70,7 @@ class ReflectionEntityParsersRegistryTest extends TestCase
             define('TEST_CONSTANT_FOR_PARSER_REGISTRY', 'test_value');
         }
 
-        $reflectionConstant = new \ReflectionConstant('TEST_CONSTANT_FOR_PARSER_REGISTRY');
+        $reflectionConstant = new ReflectionConstant('TEST_CONSTANT_FOR_PARSER_REGISTRY');
 
         $parser = (new EntityReflectionObjectParsersRegistry())->findParserForObject($reflectionConstant);
 
@@ -86,7 +88,7 @@ class ReflectionEntityParsersRegistryTest extends TestCase
 
     public function testItReturnsNullForUnknownObject()
     {
-        $unknownObject = new \stdClass();
+        $unknownObject = new stdClass();
 
         $parser = (new EntityReflectionObjectParsersRegistry())->findParserForObject($unknownObject);
 

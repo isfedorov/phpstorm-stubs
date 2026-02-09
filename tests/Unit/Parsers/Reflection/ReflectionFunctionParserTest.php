@@ -7,6 +7,8 @@ use StubTests\Sources\Parsers\Entities\Model\PHPFunction;
 use StubTests\Sources\Parsers\Entities\Model\PHPParameter;
 use StubTests\Sources\Parsers\Entities\Reflection\ReflectionFunctionParser;
 use StubTests\Sources\Parsers\Entities\Reflection\Wrappers\AdaptedReflectionFunction;
+use StubTests\Sources\Parsers\Entities\Reflection\Wrappers\AdaptedReflectionParameter;
+use StubTests\Sources\Parsers\Entities\Reflection\Wrappers\AdaptedReflectionType;
 
 class ReflectionFunctionParserTest extends TestCase
 {
@@ -147,7 +149,10 @@ class ReflectionFunctionParserTest extends TestCase
             ->disableOriginalConstructor()
             ->onlyMethods(['getReturnType', 'hasReturnType'])
             ->getMock();
-        $returnTypeMock = $this->getMockBuilder(\ReflectionNamedType::class)->disableOriginalConstructor()->getMock();
+        $returnTypeMock = $this->getMockBuilder(AdaptedReflectionType::class)
+            ->disableOriginalConstructor()
+            ->onlyMethods(['getName'])
+            ->getMock();
         $returnTypeMock->method('getName')->willReturn('string');
         $functionMock->method('getReturnType')->willReturn($returnTypeMock);
         $functionMock->method('hasReturnType')->willReturn(true);
@@ -161,7 +166,10 @@ class ReflectionFunctionParserTest extends TestCase
             ->disableOriginalConstructor()
             ->onlyMethods(['getReturnType', 'hasReturnType'])
             ->getMock();
-        $returnTypeMock = $this->getMockBuilder(\ReflectionNamedType::class)->disableOriginalConstructor()->getMock();
+        $returnTypeMock = $this->getMockBuilder(AdaptedReflectionType::class)
+            ->disableOriginalConstructor()
+            ->onlyMethods(['getName', 'allowsNull'])
+            ->getMock();
         $returnTypeMock->method('getName')->willReturn('string');
         $returnTypeMock->method('allowsNull')->willReturn(true);
         $functionMock->method('getReturnType')->willReturn($returnTypeMock);
@@ -177,7 +185,10 @@ class ReflectionFunctionParserTest extends TestCase
             ->disableOriginalConstructor()
             ->onlyMethods(['getReturnType', 'hasReturnType'])
             ->getMock();
-        $returnTypeMock = $this->getMockBuilder(\ReflectionNamedType::class)->disableOriginalConstructor()->getMock();
+        $returnTypeMock = $this->getMockBuilder(AdaptedReflectionType::class)
+            ->disableOriginalConstructor()
+            ->onlyMethods(['getName', 'allowsNull'])
+            ->getMock();
         $returnTypeMock->method('getName')->willReturn('false');
         $returnTypeMock->method('allowsNull')->willReturn(true);
         $functionMock->method('getReturnType')->willReturn($returnTypeMock);
@@ -193,12 +204,22 @@ class ReflectionFunctionParserTest extends TestCase
             ->disableOriginalConstructor()
             ->onlyMethods(['getReturnType', 'hasReturnType'])
             ->getMock();
-        $returnTypeMock = $this->getMockBuilder(\ReflectionUnionType::class)->disableOriginalConstructor()->getMock();
-        $returnSubTypeMock = $this->getMockBuilder(\ReflectionNamedType::class)->disableOriginalConstructor()->getMock();
+        $returnTypeMock = $this->getMockBuilder(AdaptedReflectionType::class)
+            ->disableOriginalConstructor()
+            ->onlyMethods(['getTypes', 'isUnionType'])
+            ->getMock();
+        $returnSubTypeMock = $this->getMockBuilder(AdaptedReflectionType::class)
+            ->disableOriginalConstructor()
+            ->onlyMethods(['getName'])
+            ->getMock();
         $returnSubTypeMock->method('getName')->willReturn('string');
-        $returnSubTypeMock2 = $this->getMockBuilder(\ReflectionNamedType::class)->disableOriginalConstructor()->getMock();
+        $returnSubTypeMock2 = $this->getMockBuilder(AdaptedReflectionType::class)
+            ->disableOriginalConstructor()
+            ->onlyMethods(['getName'])
+            ->getMock();
         $returnSubTypeMock2->method('getName')->willReturn('int');
         $returnTypeMock->method('getTypes')->willReturn([$returnSubTypeMock, $returnSubTypeMock2]);
+        $returnTypeMock->method('isUnionType')->willReturn(true);
         $functionMock->method('getReturnType')->willReturn($returnTypeMock);
         $functionMock->method('hasReturnType')->willReturn(true);
         $basePHPElement = new ReflectionFunctionParser()->parse($functionMock);
@@ -211,12 +232,22 @@ class ReflectionFunctionParserTest extends TestCase
             ->disableOriginalConstructor()
             ->onlyMethods(['getReturnType', 'hasReturnType'])
             ->getMock();
-        $returnTypeMock = $this->getMockBuilder(\ReflectionUnionType::class)->disableOriginalConstructor()->getMock();
-        $returnSubTypeMock = $this->getMockBuilder(\ReflectionNamedType::class)->disableOriginalConstructor()->getMock();
+        $returnTypeMock = $this->getMockBuilder(AdaptedReflectionType::class)
+            ->disableOriginalConstructor()
+            ->onlyMethods(['getTypes', 'isUnionType'])
+            ->getMock();
+        $returnSubTypeMock = $this->getMockBuilder(AdaptedReflectionType::class)
+            ->disableOriginalConstructor()
+            ->onlyMethods(['getName'])
+            ->getMock();
         $returnSubTypeMock->method('getName')->willReturn('stdClass');
-        $returnSubTypeMock2 = $this->getMockBuilder(\ReflectionNamedType::class)->disableOriginalConstructor()->getMock();
+        $returnSubTypeMock2 = $this->getMockBuilder(AdaptedReflectionType::class)
+            ->disableOriginalConstructor()
+            ->onlyMethods(['getName'])
+            ->getMock();
         $returnSubTypeMock2->method('getName')->willReturn('int');
         $returnTypeMock->method('getTypes')->willReturn([$returnSubTypeMock, $returnSubTypeMock2]);
+        $returnTypeMock->method('isUnionType')->willReturn(true);
         $functionMock->method('getReturnType')->willReturn($returnTypeMock);
         $functionMock->method('hasReturnType')->willReturn(true);
         $basePHPElement = new ReflectionFunctionParser()->parse($functionMock);
@@ -230,14 +261,27 @@ class ReflectionFunctionParserTest extends TestCase
             ->disableOriginalConstructor()
             ->onlyMethods(['getReturnType', 'hasReturnType'])
             ->getMock();
-        $returnTypeMock = $this->getMockBuilder(\ReflectionUnionType::class)->disableOriginalConstructor()->getMock();
-        $returnSubTypeMock = $this->getMockBuilder(\ReflectionNamedType::class)->disableOriginalConstructor()->getMock();
+        $returnTypeMock = $this->getMockBuilder(AdaptedReflectionType::class)
+            ->disableOriginalConstructor()
+            ->onlyMethods(['getTypes', 'isUnionType'])
+            ->getMock();
+        $returnSubTypeMock = $this->getMockBuilder(AdaptedReflectionType::class)
+            ->disableOriginalConstructor()
+            ->onlyMethods(['getName'])
+            ->getMock();
         $returnSubTypeMock->method('getName')->willReturn('string');
-        $returnSubTypeMock2 = $this->getMockBuilder(\ReflectionNamedType::class)->disableOriginalConstructor()->getMock();
+        $returnSubTypeMock2 = $this->getMockBuilder(AdaptedReflectionType::class)
+            ->disableOriginalConstructor()
+            ->onlyMethods(['getName'])
+            ->getMock();
         $returnSubTypeMock2->method('getName')->willReturn('int');
-        $returnSubTypeMock3 = $this->getMockBuilder(\ReflectionNamedType::class)->disableOriginalConstructor()->getMock();
+        $returnSubTypeMock3 = $this->getMockBuilder(AdaptedReflectionType::class)
+            ->disableOriginalConstructor()
+            ->onlyMethods(['getName'])
+            ->getMock();
         $returnSubTypeMock3->method('getName')->willReturn('null');
         $returnTypeMock->method('getTypes')->willReturn([$returnSubTypeMock, $returnSubTypeMock2, $returnSubTypeMock3]);
+        $returnTypeMock->method('isUnionType')->willReturn(true);
         $functionMock->method('getReturnType')->willReturn($returnTypeMock);
         $functionMock->method('hasReturnType')->willReturn(true);
         $basePHPElement = new ReflectionFunctionParser()->parse($functionMock);
@@ -308,7 +352,10 @@ class ReflectionFunctionParserTest extends TestCase
             ->disableOriginalConstructor()
             ->onlyMethods(['getParameters'])
             ->getMock();
-        $parameterMock = $this->getMockBuilder(\ReflectionParameter::class)->disableOriginalConstructor()->getMock();
+        $parameterMock = $this->getMockBuilder(AdaptedReflectionParameter::class)
+            ->disableOriginalConstructor()
+            ->onlyMethods(['getName'])
+            ->getMock();
         $parameterMock->method('getName')->willReturn('param');
         $functionMock->method('getParameters')->willReturn([$parameterMock]);
         $basePHPElement = new ReflectionFunctionParser()->parse($functionMock);
@@ -322,7 +369,10 @@ class ReflectionFunctionParserTest extends TestCase
             ->disableOriginalConstructor()
             ->onlyMethods(['getParameters'])
             ->getMock();
-        $parameterMock = $this->getMockBuilder(\ReflectionParameter::class)->disableOriginalConstructor()->getMock();
+        $parameterMock = $this->getMockBuilder(AdaptedReflectionParameter::class)
+            ->disableOriginalConstructor()
+            ->onlyMethods(['getName', 'hasType', 'getType', 'isOptional', 'getDefaultValue', 'isPassedByReference', 'isVariadic'])
+            ->getMock();
         $parameterMock->method('getName')->willReturn('foo');
         $parameterMock->method('getType')->willReturn(new class extends \ReflectionNamedType
         {
@@ -349,7 +399,10 @@ class ReflectionFunctionParserTest extends TestCase
             ->disableOriginalConstructor()
             ->onlyMethods(['getParameters'])
             ->getMock();
-        $parameterMock = $this->getMockBuilder(\ReflectionParameter::class)->disableOriginalConstructor()->getMock();
+        $parameterMock = $this->getMockBuilder(AdaptedReflectionParameter::class)
+            ->disableOriginalConstructor()
+            ->onlyMethods(['getName', 'hasType', 'getType', 'isOptional', 'isPassedByReference', 'isVariadic'])
+            ->getMock();
         $parameterMock->method('getName')->willReturn('foo');
         $parameterMock->method('hasType')->willReturn(false);
         $parameterMock->method('getType')->willReturn(null);
