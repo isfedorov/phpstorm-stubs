@@ -7,6 +7,7 @@ use PHPUnit\Framework\Attributes\DataProviderExternal;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
+use StubTests\Sources\Parsers\Entities\Model\PHPClass;
 use StubTests\Sources\Runner\PhpVersionRange;
 use StubTests\Sources\Runner\Runner;
 use StubTests\Sources\Validator\ClassExistsCheck;
@@ -16,7 +17,6 @@ class ClassesTest extends TestCase
     public static function phpVersionProvider(): iterable
     {
         $reflector = new ReflectionClass(static::class);
-
         foreach ($reflector->getMethods() as $method) {
             $attrs = $method->getAttributes(PhpVersionRange::class);
             foreach ($attrs as $attr) {
@@ -24,7 +24,11 @@ class ClassesTest extends TestCase
                 $allVersions = ['5.6','7.0','7.1','7.2','7.3','7.4','8.0','8.1','8.2','8.3','8.4'];
                 foreach ($allVersions as $v) {
                     if ($range->includes($v)) {
-                        yield [$method->getName(), $v];
+                        $reflection = Runner::getReflection($v);
+                        /** @var PHPClass $class */
+                        foreach ($reflection->getClasses() as $class) {
+                            yield "{$method->getName()}_{$class->getId()}_$v" => [$method->getName(), $class->getId(), $v];
+                        }
                     }
                 }
             }
@@ -33,16 +37,15 @@ class ClassesTest extends TestCase
 
     #[DataProvider('phpVersionProvider')]
     #[Test]
-    public function runCheck(string $methodName, string $phpVersion): void
+    public function runCheck(string $methodName, string $classId, string $phpVersion): void
     {
-        $this->$methodName($phpVersion);
+        $this->$methodName($classId, $phpVersion);
     }
 
     #[PhpVersionRange('5.6','8.4')]
-    public function checkClassExistsInStubs(string $phpVersion): void
+    public function checkClassExistsInStubs(string $classId, string $phpVersion): void
     {
-        $reflection = Runner::getReflection($phpVersion);
-        $stubs = Runner::getStubs($phpVersion);
+        $stubs = Runner::getStubs();
 
         // В реальной системе можно зарегистрировать несколько Check’ов
         $checks = [
@@ -50,11 +53,8 @@ class ClassesTest extends TestCase
         ];
 
         foreach ($checks as $check) {
-            if (!$check->supports($phpVersion)) {
-                continue;
-            }
 
-            $results = $check->run($reflection, $stubs, $phpVersion);
+            $results = $check->run($stubs, $classId, $phpVersion);
 
             // Ассерты — можно в отдельном методе
             $failures = $results->getFailures();

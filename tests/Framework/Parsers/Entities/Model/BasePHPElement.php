@@ -9,6 +9,9 @@ class BasePHPElement
     private ?string $id = null;
     private ?string $sourcePath = null;
     private array $duplicates = [];
+    protected ?string $phpDoc = null;
+    protected ?string $sinceVersion = null;
+    protected ?string $removedVersion = null;
 
     public function getName(): ?string
     {
@@ -55,5 +58,35 @@ class BasePHPElement
         if (!in_array($sourcePath, $this->duplicates, true)) {
             $this->duplicates[] = $sourcePath;
         }
+    }
+
+    public function getPhpDoc(): ?string
+    {
+        return $this->phpDoc;
+    }
+
+    public function setPhpDoc(?string $phpDoc): void
+    {
+        $this->phpDoc = $phpDoc;
+    }
+
+    public function getSinceVersion(): ?string
+    {
+        return $this->sinceVersion;
+    }
+
+    public function setSinceVersion(?string $sinceVersion): void
+    {
+        $this->sinceVersion = $sinceVersion;
+    }
+
+    public function getRemovedVersion(): ?string
+    {
+        return $this->removedVersion;
+    }
+
+    public function setRemovedVersion(?string $removedVersion): void
+    {
+        $this->removedVersion = $removedVersion;
     }
 }

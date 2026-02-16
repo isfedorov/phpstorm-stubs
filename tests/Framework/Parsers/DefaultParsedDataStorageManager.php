@@ -192,11 +192,11 @@ class DefaultParsedDataStorageManager implements ParsedDataStorageManager
         });
     }
 
-    public function hasClass(string $name): bool
+    public function hasClass(string $id): bool
     {
         $classes = $this->getClasses();
         foreach ($classes as $class) {
-            if ($class->getName() === $name) {
+            if ($class->getId() === $id) {
                 return true;
             }
         }

@@ -42,7 +42,7 @@ class Runner
         }
     }
 
-    public static function getStubs(string $phpVersion): ParsedDataStorageManager
+    public static function getStubs(): ParsedDataStorageManager
     {
         $cacheFilePath = __DIR__ . "/../../cache/Stubs.json";
 

@@ -211,6 +211,23 @@ class NikicNodeExtractor implements NodeExtractorInterface
         return $constants;
     }
 
+    public function extractAllModernConstants(string $stubCode): array {
+        $ast = $this->parser->parse($stubCode);
+        $constants = [];
+        $currentNamespace = '\\';
+
+        foreach ($ast as $node) {
+            if ($node instanceof Namespace_) {
+                $currentNamespace = $node->name ? '\\' . $node->name->toString() : '\\';
+                $this->extractConstFromStatements($node->stmts, $currentNamespace, $constants);
+            } else {
+                $this->extractConstFromStatements([$node], $currentNamespace, $constants);
+            }
+        }
+
+        return $constants;
+    }
+
     private function extractDefinesFromStatements(array $stmts, string $namespace, array &$constants): void
     {
         foreach ($stmts as $stmt) {
@@ -222,6 +239,20 @@ class NikicNodeExtractor implements NodeExtractorInterface
                 $constantNode = new NikicConstantDefinitionNode($stmt->expr);
                 $constantNode->setNamespace($namespace);
                 $constants[] = $constantNode;
+            }
+        }
+    }
+
+    private function extractConstFromStatements(array $stmts, string $namespace, array &$constants): void
+    {
+        foreach ($stmts as $stmt) {
+            if ($stmt instanceof \PhpParser\Node\Stmt\Const_) {
+                // Handle multiple constants in single statement: const A = 1, B = 2, C = 3
+                foreach ($stmt->consts as $const) {
+                    $constantNode = new NikicGlobalConstantNode($const);
+                    $constantNode->setNamespace($namespace);
+                    $constants[] = $constantNode;
+                }
             }
         }
     }

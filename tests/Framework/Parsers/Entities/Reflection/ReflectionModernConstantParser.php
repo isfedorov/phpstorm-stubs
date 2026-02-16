@@ -35,6 +35,7 @@ class ReflectionModernConstantParser implements Parser
             $parsedConstant->value = is_resource($object[1]) ? 'PHPSTORM_RESOURCE' : $object[1];
         }
 
+        $parsedConstant->setNamespace($namespace);
         $parsedConstant->setId($namespace . $parsedConstant->getName());
         return $parsedConstant;
     }

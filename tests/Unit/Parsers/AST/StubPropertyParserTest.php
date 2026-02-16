@@ -90,22 +90,23 @@ class StubPropertyParserTest extends BaseTestCase
         $properties = $this->getPropertiesFromClass('complete_property.txt');
 
         $stringTypedProperty = $properties[0];
-        self::assertEquals('string', $stringTypedProperty->getType());
+        self::assertEquals('string', $stringTypedProperty->getType()->toString());
 
         $intTypedProperty = $properties[1];
-        self::assertEquals('int', $intTypedProperty->getType());
+        self::assertEquals('int', $intTypedProperty->getType()->toString());
 
         $boolTypedProperty = $properties[2];
-        self::assertEquals('bool', $boolTypedProperty->getType());
+        self::assertEquals('bool', $boolTypedProperty->getType()->toString());
 
         $arrayTypedProperty = $properties[3];
-        self::assertEquals('array', $arrayTypedProperty->getType());
+        self::assertEquals('array', $arrayTypedProperty->getType()->toString());
     }
 
     public function testItParsesPropertyWithoutType()
     {
         $properties = $this->getPropertiesFromClass('simple_property.txt');
-        self::assertNull($properties[0]->getType());
+        // Properties without type have NoType which returns empty string
+        self::assertEquals('', $properties[0]->getType()->toString());
     }
 
     public function testItCanParseStaticReadonlyProperty()
@@ -116,7 +117,7 @@ class StubPropertyParserTest extends BaseTestCase
         self::assertEquals('public', $staticReadonlyProperty->getAccess()->toString());
         self::assertTrue($staticReadonlyProperty->isStatic());
         self::assertTrue($staticReadonlyProperty->isReadonly());
-        self::assertEquals('array', $staticReadonlyProperty->getType());
+        self::assertEquals('array', $staticReadonlyProperty->getType()->toString());
     }
 
     public function testItParsesAllPropertiesFromClass()
@@ -143,5 +144,35 @@ class StubPropertyParserTest extends BaseTestCase
 
         self::assertEquals('privateProperty', $properties[2]->getName());
         self::assertEquals('private', $properties[2]->getAccess()->toString());
+    }
+
+    public function testItCanParseLanguageLevelTypeAware()
+    {
+        $properties = $this->getPropertiesFromClass('language_level_type_aware.txt');
+        self::assertCount(1, $properties);
+
+        $property = $properties[0];
+        self::assertEquals('name', $property->getName());
+        self::assertNotNull($property->getLanguageLevelTypes());
+        self::assertEquals(['8.1' => 'string'], $property->getLanguageLevelTypes());
+        self::assertEquals('', $property->getDefaultType());
+    }
+
+    public function testPropertyWithoutLanguageLevelTypeAware()
+    {
+        $properties = $this->getPropertiesFromClass('simple_property.txt');
+        self::assertNull($properties[0]->getLanguageLevelTypes());
+        self::assertNull($properties[0]->getDefaultType());
+    }
+
+    public function testLanguageLevelTypeAwareWithMultipleVersions()
+    {
+        $properties = $this->getPropertiesFromClass('multiple_versions.txt');
+        self::assertCount(1, $properties);
+
+        $property = $properties[0];
+        $expectedTypes = ['8.0' => 'string|null', '8.1' => 'string'];
+        self::assertEquals($expectedTypes, $property->getLanguageLevelTypes());
+        self::assertEquals('', $property->getDefaultType());
     }
 }

@@ -3,6 +3,7 @@
 namespace StubTests\Sources\Parsers\Entities\Stubs\Adapters\Nikic;
 
 use PhpParser\Node\Stmt\Function_;
+use StubTests\Sources\Parsers\Entities\Stubs\Nodes\AttributeNode;
 use StubTests\Sources\Parsers\Entities\Stubs\Nodes\DocCommentNode;
 use StubTests\Sources\Parsers\Entities\Stubs\Nodes\FunctionNode;
 use StubTests\Sources\Parsers\Entities\Stubs\Nodes\ParameterNode;
@@ -62,5 +63,16 @@ class NikicFunctionNode implements FunctionNode
     public function getNamespace(): string
     {
         return $this->namespace;
+    }
+
+    public function getAttributes(): array
+    {
+        $attributes = [];
+        foreach ($this->function->attrGroups as $attrGroup) {
+            foreach ($attrGroup->attrs as $attr) {
+                $attributes[] = new NikicAttributeNode($attr);
+            }
+        }
+        return $attributes;
     }
 }

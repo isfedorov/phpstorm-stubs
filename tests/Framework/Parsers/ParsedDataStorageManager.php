@@ -32,7 +32,7 @@ interface ParsedDataStorageManager
 
     // Query operations
     public function getClasses();
-    public function hasClass(string $name): bool;
+    public function hasClass(string $id): bool;
     public function getFunctions();
     public function getInterfaces();
     public function getEnums();

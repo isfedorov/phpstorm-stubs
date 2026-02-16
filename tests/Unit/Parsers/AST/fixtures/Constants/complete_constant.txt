@@ -9,4 +9,6 @@ class TestClass
     private const PRIVATE_CONST = 'private';
 
     final public const FINAL_CONST = 'final';
+
+    public const FIRST_CONST = 'first', SECOND_CONST = 'second', THIRD_CONST = 'third';
 }

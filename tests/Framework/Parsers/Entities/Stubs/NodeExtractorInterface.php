@@ -4,6 +4,7 @@ namespace StubTests\Sources\Parsers\Entities\Stubs;
 
 use StubTests\Sources\Parsers\Entities\Stubs\Nodes\ClassNode;
 use StubTests\Sources\Parsers\Entities\Stubs\Nodes\ConstantDefinitionNode;
+use StubTests\Sources\Parsers\Entities\Stubs\Nodes\ConstantNode;
 use StubTests\Sources\Parsers\Entities\Stubs\Nodes\EnumNode;
 use StubTests\Sources\Parsers\Entities\Stubs\Nodes\FunctionNode;
 use StubTests\Sources\Parsers\Entities\Stubs\Nodes\InterfaceNode;
@@ -78,4 +79,13 @@ interface NodeExtractorInterface
      * @return ConstantDefinitionNode[] Array of constant nodes with namespace set
      */
     public function extractAllDefineConstants(string $stubCode): array;
+
+    /**
+     * Extracts all const A = 1; constant nodes from stub code.
+     * The namespace is set on each returned node.
+     *
+     * @param string $stubCode The PHP stub code to parse
+     * @return ConstantNode[] Array of constant nodes with namespace set
+     */
+    public function extractAllModernConstants(string $stubCode): array;
 }

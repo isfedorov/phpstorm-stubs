@@ -80,4 +80,15 @@ class NikicInterfaceNode implements InterfaceNode
         }
         return new NikicDocCommentNode($docComment);
     }
+
+    public function getAttributes(): array
+    {
+        $attributes = [];
+        foreach ($this->interface->attrGroups as $attrGroup) {
+            foreach ($attrGroup->attrs as $attr) {
+                $attributes[] = new NikicAttributeNode($attr);
+            }
+        }
+        return $attributes;
+    }
 }

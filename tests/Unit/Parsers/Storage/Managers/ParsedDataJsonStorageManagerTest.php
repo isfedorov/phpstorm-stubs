@@ -6,6 +6,7 @@ use PHPUnit\Framework\TestCase;
 use StubTests\Sources\Parsers\DefaultParsedDataStorageManager;
 use StubTests\Sources\Parsers\Entities\Model\PHPClass;
 use StubTests\Sources\Parsers\JsonParsedDataStorage;
+use StubTests\Sources\Parsers\StubsEntitySerializer;
 
 class ParsedDataJsonStorageManagerTest extends TestCase
 {
@@ -48,7 +49,7 @@ class ParsedDataJsonStorageManagerTest extends TestCase
         $jsonFilePath = $this->getTempFilePath('reflection_test');
 
         // Create manager with JSON storage
-        $jsonStorage = new JsonParsedDataStorage($jsonFilePath);
+        $jsonStorage = new JsonParsedDataStorage($jsonFilePath, new StubsEntitySerializer(), false);
         $manager = new DefaultParsedDataStorageManager($jsonStorage);
 
         // Add a class entity
@@ -65,7 +66,7 @@ class ParsedDataJsonStorageManagerTest extends TestCase
         self::assertFileExists($jsonFilePath);
 
         // Create a new manager/storage to read from the file
-        $newJsonStorage = new JsonParsedDataStorage($jsonFilePath);
+        $newJsonStorage = new JsonParsedDataStorage($jsonFilePath, new StubsEntitySerializer());
         $newManager = new DefaultParsedDataStorageManager($newJsonStorage);
 
         // Verify entities were loaded
@@ -86,7 +87,7 @@ class ParsedDataJsonStorageManagerTest extends TestCase
         $jsonFilePath = $this->getTempFilePath('stubs_test');
 
         // Create manager with JSON storage (same manager works for both stubs and reflection)
-        $jsonStorage = new JsonParsedDataStorage($jsonFilePath);
+        $jsonStorage = new JsonParsedDataStorage($jsonFilePath, new StubsEntitySerializer(), false);
         $manager = new DefaultParsedDataStorageManager($jsonStorage);
 
         // Add multiple class entities
@@ -104,7 +105,7 @@ class ParsedDataJsonStorageManagerTest extends TestCase
         $manager->save();
 
         // Read back and verify
-        $newJsonStorage = new JsonParsedDataStorage($jsonFilePath);
+        $newJsonStorage = new JsonParsedDataStorage($jsonFilePath, new StubsEntitySerializer());
         $newManager = new DefaultParsedDataStorageManager($newJsonStorage);
 
         $classes = $newManager->getClasses();
@@ -128,13 +129,13 @@ class ParsedDataJsonStorageManagerTest extends TestCase
         $originalClass->isReadonly = false;
 
         // Write to JSON
-        $jsonStorage = new JsonParsedDataStorage($jsonFilePath);
+        $jsonStorage = new JsonParsedDataStorage($jsonFilePath, new StubsEntitySerializer(), false);
         $manager = new DefaultParsedDataStorageManager($jsonStorage);
         $manager->addClass($originalClass);
         $manager->save();
 
         // Read back
-        $newJsonStorage = new JsonParsedDataStorage($jsonFilePath);
+        $newJsonStorage = new JsonParsedDataStorage($jsonFilePath, new StubsEntitySerializer());
         $newManager = new DefaultParsedDataStorageManager($newJsonStorage);
         $entities = $newManager->getAllEntities();
 
@@ -154,7 +155,7 @@ class ParsedDataJsonStorageManagerTest extends TestCase
         $jsonFilePath = $this->getTempFilePath('empty_test');
 
         // Create storage with non-existent file
-        $jsonStorage = new JsonParsedDataStorage($jsonFilePath);
+        $jsonStorage = new JsonParsedDataStorage($jsonFilePath, new StubsEntitySerializer());
         $manager = new DefaultParsedDataStorageManager($jsonStorage);
 
         // Verify empty array is returned
@@ -168,21 +169,22 @@ class ParsedDataJsonStorageManagerTest extends TestCase
         $jsonFilePath = $this->getTempFilePath('hasclass_test');
 
         // Add a class
-        $jsonStorage = new JsonParsedDataStorage($jsonFilePath);
+        $jsonStorage = new JsonParsedDataStorage($jsonFilePath, new StubsEntitySerializer(), false);
         $manager = new DefaultParsedDataStorageManager($jsonStorage);
 
         $class = new PHPClass();
         $class->setName('SearchableClass');
         $class->setNamespace('Search');
+        $class->setId('\\Search\\SearchableClass');
         $manager->addClass($class);
         $manager->save();
 
         // Load and test hasClass
-        $newJsonStorage = new JsonParsedDataStorage($jsonFilePath);
+        $newJsonStorage = new JsonParsedDataStorage($jsonFilePath, new StubsEntitySerializer());
         $newManager = new DefaultParsedDataStorageManager($newJsonStorage);
 
-        self::assertTrue($newManager->hasClass('SearchableClass'));
-        self::assertFalse($newManager->hasClass('NonExistentClass'));
+        self::assertTrue($newManager->hasClass('\\Search\\SearchableClass'));
+        self::assertFalse($newManager->hasClass('\\NonExistent\\NonExistentClass'));
     }
 
     public function testMultipleWritesAndReads()
@@ -190,7 +192,7 @@ class ParsedDataJsonStorageManagerTest extends TestCase
         $jsonFilePath = $this->getTempFilePath('multiple_test');
 
         // First write
-        $jsonStorage1 = new JsonParsedDataStorage($jsonFilePath);
+        $jsonStorage1 = new JsonParsedDataStorage($jsonFilePath, new StubsEntitySerializer(), false);
         $manager1 = new DefaultParsedDataStorageManager($jsonStorage1);
 
         $class1 = new PHPClass();
@@ -199,7 +201,7 @@ class ParsedDataJsonStorageManagerTest extends TestCase
         $manager1->save();
 
         // Second write (should append to existing)
-        $jsonStorage2 = new JsonParsedDataStorage($jsonFilePath);
+        $jsonStorage2 = new JsonParsedDataStorage($jsonFilePath, new StubsEntitySerializer());
         $manager2 = new DefaultParsedDataStorageManager($jsonStorage2);
 
         $class2 = new PHPClass();
@@ -208,7 +210,7 @@ class ParsedDataJsonStorageManagerTest extends TestCase
         $manager2->save();
 
         // Read back - should have both classes
-        $jsonStorage3 = new JsonParsedDataStorage($jsonFilePath);
+        $jsonStorage3 = new JsonParsedDataStorage($jsonFilePath, new StubsEntitySerializer());
         $manager3 = new DefaultParsedDataStorageManager($jsonStorage3);
 
         $classes = $manager3->getClasses();

@@ -48,4 +48,11 @@ interface InterfaceNode
      * Get the doc comment, or null if no doc comment.
      */
     public function getDocComment(): ?DocCommentNode;
+
+    /**
+     * Get the attributes for this interface.
+     *
+     * @return AttributeNode[]
+     */
+    public function getAttributes(): array;
 }

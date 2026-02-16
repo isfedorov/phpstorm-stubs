@@ -15,15 +15,25 @@ use StubTests\Sources\Parsers\Entities\Stubs\Nodes\ClassNode;
 class StubClassParser
 {
     public NodeExtractorInterface $nodeExtractor;
+    private PhpDocParserInterface $phpDocParser;
+    private TypeParserInterface $typeParser;
+    private AvailableVersionParserInterface $versionParser;
     private StubMethodParser $methodParser;
     private StubPropertyParser $propertyParser;
     private StubConstantParser $constantParser;
 
-    public function __construct(?NodeExtractorInterface $nodeExtractor = null)
-    {
+    public function __construct(
+        ?NodeExtractorInterface $nodeExtractor = null,
+        ?PhpDocParserInterface $phpDocParser = null,
+        ?TypeParserInterface $typeParser = null,
+        ?AvailableVersionParserInterface $versionParser = null
+    ) {
         $this->nodeExtractor = $nodeExtractor ?? new NikicNodeExtractor();
-        $this->methodParser = new StubMethodParser();
-        $this->propertyParser = new StubPropertyParser();
+        $this->phpDocParser = $phpDocParser ?? new PhpDocumentorParser();
+        $this->typeParser = $typeParser ?? new DefaultTypeParser();
+        $this->versionParser = $versionParser ?? new DefaultAvailableVersionParser();
+        $this->methodParser = new StubMethodParser($phpDocParser, $typeParser, $versionParser);
+        $this->propertyParser = new StubPropertyParser($phpDocParser, $typeParser, $versionParser);
         $this->constantParser = new StubConstantParser();
     }
 
@@ -63,6 +73,20 @@ class StubClassParser
 
         $phpClass->isFinal = $node->isFinal();
         $phpClass->isReadonly = $node->isReadonly();
+
+        // Parse PhpDoc using injected parser
+        $parsedPhpDoc = $this->phpDocParser->parseElementPhpDoc(
+            $node->getDocComment(),
+            $node->getAttributes()
+        );
+
+        // Apply parsed PhpDoc data to class
+        $phpClass->setPhpDoc($parsedPhpDoc->rawPhpDoc);
+
+        // Parse and apply available version (from PhpDoc + attributes)
+        $versions = $this->versionParser->parseAvailableVersion($parsedPhpDoc, $node->getAttributes());
+        $phpClass->setSinceVersion($versions['sinceVersion']);
+        $phpClass->setRemovedVersion($versions['removedVersion']);
 
         // Parent class
         $parentClassName = $node->getParentClassName();

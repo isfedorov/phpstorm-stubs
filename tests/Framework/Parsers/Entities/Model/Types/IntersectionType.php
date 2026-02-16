@@ -1,18 +1,19 @@
 <?php
 
-namespace StubTests\Sources\Parsers\Entities\Model;
+namespace StubTests\Sources\Parsers\Entities\Model\Types;
 
-class UnionType
+class IntersectionType
 {
-    private array $types;
+    private array $types = [];
+
     public function addType(StandaloneType $type)
     {
-        $this->types []= $type;
+        $this->types[] = $type;
     }
 
     public function toString()
     {
-        return implode('|', array_map(fn(StandaloneType $type) => $type->toString(), $this->types));
+        return implode('&', array_map(fn(StandaloneType $type) => $type->toString(), $this->types));
     }
 
     public function containsTypes(string ...$types)

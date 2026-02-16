@@ -247,7 +247,7 @@ class AllStubsParserTest extends BaseTestCase
         }
 
         self::assertNotNull($validateEmailFunc, 'validateEmail function should be parsed');
-        self::assertEquals('bool', $validateEmailFunc->getReturnTypeFromSignature());
+        self::assertEquals('bool', $validateEmailFunc->getReturnTypeFromSignature()->toString());
 
         // Find the processData function with union return type
         $processDataFunc = null;
@@ -259,7 +259,7 @@ class AllStubsParserTest extends BaseTestCase
         }
 
         self::assertNotNull($processDataFunc, 'processData function should be parsed');
-        self::assertEquals('array|string|null', $processDataFunc->getReturnTypeFromSignature());
+        self::assertEquals('array|string|null', $processDataFunc->getReturnTypeFromSignature()->toString());
     }
 
     public function testItParsesDeprecationForEachFunctionInMultipleFunctionsFile()

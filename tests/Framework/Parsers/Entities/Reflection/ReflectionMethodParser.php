@@ -2,11 +2,10 @@
 
 namespace StubTests\Sources\Parsers\Entities\Reflection;
 
-use ReflectionMethod;
+use StubTests\Framework\Parsers\Entities\Model\Access\PrivateAccessModifier;
+use StubTests\Framework\Parsers\Entities\Model\Access\ProtectedAccessModifier;
+use StubTests\Framework\Parsers\Entities\Model\Access\PublicAccessModifier;
 use StubTests\Sources\Parsers\Entities\Model\PHPMethod;
-use StubTests\Sources\Parsers\Entities\Model\PrivateAccessModifier;
-use StubTests\Sources\Parsers\Entities\Model\ProtectedAccessModifier;
-use StubTests\Sources\Parsers\Entities\Model\PublicAccessModifier;
 use StubTests\Sources\Parsers\Entities\Reflection\Wrappers\AdaptedReflectionMethod;
 use StubTests\Sources\Parsers\Parser;
 

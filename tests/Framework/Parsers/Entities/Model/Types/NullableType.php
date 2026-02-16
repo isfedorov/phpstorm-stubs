@@ -1,6 +1,6 @@
 <?php
 
-namespace StubTests\Sources\Parsers\Entities\Model;
+namespace StubTests\Sources\Parsers\Entities\Model\Types;
 
 class NullableType
 {
@@ -8,7 +8,7 @@ class NullableType
 
     public function toString()
     {
-        return "{$this->basicType->toString()}|null";
+        return $this->basicType->toString() != 'mixed' ? "{$this->basicType->toString()}|null" : $this->basicType->toString();
     }
 
     public function toArray()

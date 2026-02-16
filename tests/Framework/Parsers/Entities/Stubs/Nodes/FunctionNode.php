@@ -39,4 +39,11 @@ interface FunctionNode
      * Get the namespace for this function.
      */
     public function getNamespace(): string;
+
+    /**
+     * Get the function attributes (PHP 8.0+).
+     *
+     * @return AttributeNode[]
+     */
+    public function getAttributes(): array;
 }

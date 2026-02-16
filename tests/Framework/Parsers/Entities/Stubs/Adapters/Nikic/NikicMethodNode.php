@@ -3,6 +3,7 @@
 namespace StubTests\Sources\Parsers\Entities\Stubs\Adapters\Nikic;
 
 use PhpParser\Node\Stmt\ClassMethod;
+use StubTests\Sources\Parsers\Entities\Stubs\Nodes\AttributeNode;
 use StubTests\Sources\Parsers\Entities\Stubs\Nodes\DocCommentNode;
 use StubTests\Sources\Parsers\Entities\Stubs\Nodes\MethodNode;
 use StubTests\Sources\Parsers\Entities\Stubs\Nodes\ParameterNode;
@@ -83,5 +84,16 @@ class NikicMethodNode implements MethodNode
             return null;
         }
         return new NikicDocCommentNode($docComment);
+    }
+
+    public function getAttributes(): array
+    {
+        $attributes = [];
+        foreach ($this->method->attrGroups as $attrGroup) {
+            foreach ($attrGroup->attrs as $attr) {
+                $attributes[] = new NikicAttributeNode($attr);
+            }
+        }
+        return $attributes;
     }
 }

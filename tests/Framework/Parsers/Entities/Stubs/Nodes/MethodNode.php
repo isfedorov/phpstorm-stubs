@@ -59,4 +59,11 @@ interface MethodNode
      * Get the doc comment, or null if no doc comment.
      */
     public function getDocComment(): ?DocCommentNode;
+
+    /**
+     * Get the method attributes (PHP 8.0+).
+     *
+     * @return AttributeNode[]
+     */
+    public function getAttributes(): array;
 }

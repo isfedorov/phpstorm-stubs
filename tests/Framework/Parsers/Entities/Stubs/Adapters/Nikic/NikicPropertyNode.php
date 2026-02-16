@@ -4,6 +4,7 @@ namespace StubTests\Sources\Parsers\Entities\Stubs\Adapters\Nikic;
 
 use PhpParser\Node\Stmt\Property;
 use PhpParser\Node\Stmt\PropertyProperty;
+use StubTests\Sources\Parsers\Entities\Stubs\Nodes\AttributeNode;
 use StubTests\Sources\Parsers\Entities\Stubs\Nodes\DocCommentNode;
 use StubTests\Sources\Parsers\Entities\Stubs\Nodes\PropertyNode;
 use StubTests\Sources\Parsers\Entities\Stubs\Nodes\TypeNode;
@@ -69,5 +70,16 @@ class NikicPropertyNode implements PropertyNode
             return null;
         }
         return new NikicDocCommentNode($docComment);
+    }
+
+    public function getAttributes(): array
+    {
+        $attributes = [];
+        foreach ($this->propertyStmt->attrGroups as $attrGroup) {
+            foreach ($attrGroup->attrs as $attr) {
+                $attributes[] = new NikicAttributeNode($attr);
+            }
+        }
+        return $attributes;
     }
 }

@@ -3,10 +3,10 @@
 namespace StubTests\Unit\Parsers\Reflection;
 
 use PHPUnit\Framework\TestCase;
-use StubTests\Sources\Parsers\Entities\Model\NoType;
-use StubTests\Sources\Parsers\Entities\Model\NullableType;
-use StubTests\Sources\Parsers\Entities\Model\StandaloneType;
-use StubTests\Sources\Parsers\Entities\Model\UnionType;
+use StubTests\Sources\Parsers\Entities\Model\Types\NoType;
+use StubTests\Sources\Parsers\Entities\Model\Types\NullableType;
+use StubTests\Sources\Parsers\Entities\Model\Types\StandaloneType;
+use StubTests\Sources\Parsers\Entities\Model\Types\UnionType;
 use StubTests\Sources\Parsers\Entities\Reflection\ReflectionTypeParser;
 
 class ReflectionTypeParserTest extends TestCase
@@ -85,6 +85,18 @@ class ReflectionTypeParserTest extends TestCase
         self::assertEquals('object|null', $result->toString());
     }
 
+    public function testItParsesNullableMixedType()
+    {
+        $typeMock = $this->createMock(\ReflectionNamedType::class);
+        $typeMock->method('getName')->willReturn('mixed');
+        $typeMock->method('allowsNull')->willReturn(true);
+
+        $result = $this->parser->parse($typeMock);
+
+        self::assertInstanceOf(NullableType::class, $result);
+        self::assertEquals('mixed', $result->toString());
+    }
+
     public function testItParsesUnionType()
     {
         $namedType1 = $this->createMock(\ReflectionNamedType::class);
@@ -147,8 +159,8 @@ class ReflectionTypeParserTest extends TestCase
 
         $result = $this->parser->parse($intersectionTypeMock);
 
-        self::assertIsArray($result);
-        self::assertEquals(['Countable', 'ArrayAccess'], $result);
+        self::assertInstanceOf(\StubTests\Sources\Parsers\Entities\Model\Types\IntersectionType::class, $result);
+        self::assertEquals('Countable&ArrayAccess', $result->toString());
     }
 
     public function testItParsesIntersectionTypeWithDuckTyping()
@@ -172,8 +184,8 @@ class ReflectionTypeParserTest extends TestCase
 
         $result = $this->parser->parse($intersectionTypeMock);
 
-        self::assertIsArray($result);
-        self::assertEquals(['Foo', 'Bar'], $result);
+        self::assertInstanceOf(\StubTests\Sources\Parsers\Entities\Model\Types\IntersectionType::class, $result);
+        self::assertEquals('Foo&Bar', $result->toString());
     }
 
 }

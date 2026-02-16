@@ -2,7 +2,9 @@
 
 namespace StubTests\Sources\Parsers\Entities\Reflection;
 
-use ReflectionProperty;
+use StubTests\Framework\Parsers\Entities\Model\Access\PrivateAccessModifier;
+use StubTests\Framework\Parsers\Entities\Model\Access\ProtectedAccessModifier;
+use StubTests\Framework\Parsers\Entities\Model\Access\PublicAccessModifier;
 use StubTests\Sources\Parsers\Entities\Model\PHPProperty;
 use StubTests\Sources\Parsers\Entities\Reflection\Wrappers\AdaptedReflectionProperty;
 use StubTests\Sources\Parsers\Parser;
@@ -35,7 +37,20 @@ class ReflectionPropertyParser implements Parser
     {
         $property = new PHPProperty();
         $property->setName($object->getName());
-        $property->setTypeFromSignature($this->typeParser->parse($object->hasType() ? $object->getType() : null));
+        if ($object->isProtected()) {
+            $property->setAccess(new ProtectedAccessModifier());
+        } elseif ($object->isPrivate()) {
+            $property->setAccess(new PrivateAccessModifier());
+        } else {
+            $property->setAccess(new PublicAccessModifier());
+        }
+        $property->setTypeFromSignature($this->typeParser->parse($object->getType() ?? null));
+
+        // Parse default value if available
+        if (method_exists($object, 'hasDefaultValue') && $object->hasDefaultValue()) {
+            $property->setDefaultValue($object->getDefaultValue());
+        }
+
         return $property;
     }
 }

@@ -64,6 +64,14 @@ class AllStubsParser
                             $entity->setSourcePath($filePath);
                             $this->storageManager->addEntityRaw($entity);
                         }
+                    } elseif ($parser instanceof StubModernConstantParser) {
+                        // Handle StubModernConstantParser specially to support multiple const declarations per file
+                        $constantNodes = $parser->nodeExtractor->extractAllModernConstants($content);
+                        foreach ($constantNodes as $constantNode) {
+                            $entity = $parser->parseNode($constantNode);
+                            $entity->setSourcePath($filePath);
+                            $this->storageManager->addEntityRaw($entity);
+                        }
                     } else {
                         // For other parsers, use the standard parse method
                         $result = $parser->parse($content);

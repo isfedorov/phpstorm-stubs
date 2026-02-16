@@ -2,17 +2,28 @@
 
 namespace StubTests\Sources\Parsers\Entities\Model;
 
+use StubTests\Sources\Parsers\Entities\Model\Types\IntersectionType;
+use StubTests\Sources\Parsers\Entities\Model\Types\NoType;
+use StubTests\Sources\Parsers\Entities\Model\Types\NullableType;
+use StubTests\Sources\Parsers\Entities\Model\Types\StandaloneType;
+use StubTests\Sources\Parsers\Entities\Model\Types\UnionType;
+
 class PHPParameter
 {
 
     private string $name;
-    private $type;
+    private StandaloneType|UnionType|NullableType|NoType|IntersectionType $type;
     private int $position;
     private bool $isOptional;
     private bool $isVariadic;
     private bool $isPassedByReference;
     private $defaultValue;
     private bool $hasDefaultValue;
+    private ?array $languageLevelTypes = null;
+    private ?string $defaultType = null;
+    private ?string $typeFromPhpDoc = null;
+    private ?string $sinceVersion = null;
+    private ?string $removedVersion = null;
 
     public function __construct(?string $name)
     {
@@ -36,12 +47,12 @@ class PHPParameter
         $this->name = $name;
     }
 
-    public function getDeclaredType()
+    public function getDeclaredType(): StandaloneType|UnionType|NullableType|NoType|IntersectionType
     {
         return $this->type;
     }
 
-    public function setType($type): void
+    public function setType(StandaloneType|UnionType|NullableType|NoType|IntersectionType $type): void
     {
         $this->type = $type;
     }
@@ -104,5 +115,55 @@ class PHPParameter
     public function setHasDefaultValue(bool $hasDefaultValue): void
     {
         $this->hasDefaultValue = $hasDefaultValue;
+    }
+
+    public function getLanguageLevelTypes(): ?array
+    {
+        return $this->languageLevelTypes;
+    }
+
+    public function setLanguageLevelTypes(?array $languageLevelTypes): void
+    {
+        $this->languageLevelTypes = $languageLevelTypes;
+    }
+
+    public function getDefaultType(): ?string
+    {
+        return $this->defaultType;
+    }
+
+    public function setDefaultType(?string $defaultType): void
+    {
+        $this->defaultType = $defaultType;
+    }
+
+    public function getTypeFromPhpDoc(): ?string
+    {
+        return $this->typeFromPhpDoc;
+    }
+
+    public function setTypeFromPhpDoc(?string $typeFromPhpDoc): void
+    {
+        $this->typeFromPhpDoc = $typeFromPhpDoc;
+    }
+
+    public function getSinceVersion(): ?string
+    {
+        return $this->sinceVersion;
+    }
+
+    public function setSinceVersion(?string $sinceVersion): void
+    {
+        $this->sinceVersion = $sinceVersion;
+    }
+
+    public function getRemovedVersion(): ?string
+    {
+        return $this->removedVersion;
+    }
+
+    public function setRemovedVersion(?string $removedVersion): void
+    {
+        $this->removedVersion = $removedVersion;
     }
 }

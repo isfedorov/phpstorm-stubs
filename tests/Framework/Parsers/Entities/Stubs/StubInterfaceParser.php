@@ -14,13 +14,23 @@ use StubTests\Sources\Parsers\Entities\Stubs\Nodes\InterfaceNode;
 class StubInterfaceParser
 {
     public NodeExtractorInterface $nodeExtractor;
+    private PhpDocParserInterface $phpDocParser;
+    private TypeParserInterface $typeParser;
+    private AvailableVersionParserInterface $versionParser;
     private StubMethodParser $methodParser;
     private StubConstantParser $constantParser;
 
-    public function __construct(?NodeExtractorInterface $nodeExtractor = null)
-    {
+    public function __construct(
+        ?NodeExtractorInterface $nodeExtractor = null,
+        ?PhpDocParserInterface $phpDocParser = null,
+        ?TypeParserInterface $typeParser = null,
+        ?AvailableVersionParserInterface $versionParser = null
+    ) {
         $this->nodeExtractor = $nodeExtractor ?? new NikicNodeExtractor();
-        $this->methodParser = new StubMethodParser();
+        $this->phpDocParser = $phpDocParser ?? new PhpDocumentorParser();
+        $this->typeParser = $typeParser ?? new DefaultTypeParser();
+        $this->versionParser = $versionParser ?? new DefaultAvailableVersionParser();
+        $this->methodParser = new StubMethodParser($phpDocParser, $typeParser, $versionParser);
         $this->constantParser = new StubConstantParser();
     }
 
@@ -58,10 +68,30 @@ class StubInterfaceParser
             $phpInterface->setId($phpInterface->getNamespace() . '\\' . $phpInterface->getName());
         }
 
+        // Parse PhpDoc using injected parser
+        $parsedPhpDoc = $this->phpDocParser->parseElementPhpDoc(
+            $node->getDocComment(),
+            $node->getAttributes()
+        );
+
+        // Apply parsed PhpDoc data to interface
+        $phpInterface->setPhpDoc($parsedPhpDoc->rawPhpDoc);
+
+        // Parse and apply available version (from PhpDoc + attributes)
+        $versions = $this->versionParser->parseAvailableVersion($parsedPhpDoc, $node->getAttributes());
+        $phpInterface->setSinceVersion($versions['sinceVersion']);
+        $phpInterface->setRemovedVersion($versions['removedVersion']);
+
         // Parent interfaces (extends)
-        // Note: PHPInterface doesn't have a parent property structure, interfaces can extend multiple
-        // The parent interfaces are stored as names in getParentInterfaceNames()
-        // For now we don't persist this relationship in the model
+        foreach ($node->getParentInterfaceNames() as $parentInterfaceName) {
+            $parentInterface = new PHPInterface();
+            $parentInterface->setName($parentInterfaceName);
+            $parentInterface->setNamespace($node->getNamespace());
+            $parentInterface->setId($node->getNamespace() === '\\'
+                ? '\\' . $parentInterfaceName
+                : $node->getNamespace() . '\\' . $parentInterfaceName);
+            $phpInterface->addParentInterface($parentInterface);
+        }
 
         // Methods
         foreach ($node->getMethods() as $methodNode) {

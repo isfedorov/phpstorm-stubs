@@ -30,7 +30,7 @@ class StubConstantParser
         } elseif ($node->isPrivate()) {
             $constant->visibility = 'private';
         }
-
+        $constant->setValue($node->getValue());
         // Final flag (PHP 8.1+)
         $constant->isFinal = $node->isFinal();
 

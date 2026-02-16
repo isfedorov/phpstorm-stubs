@@ -42,14 +42,17 @@ echo "========================================\n\n";
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
+use StubTests\Framework\Parsers\Processors\EntityProcessingPipeline;
 use StubTests\Sources\Parsers\DefaultParsedDataStorageManager;
 use StubTests\Sources\Parsers\JsonParsedDataStorage;
+use StubTests\Sources\Parsers\ReflectionEntitySerializer;
 use StubTests\Sources\Parsers\Entities\Reflection\ReflectionClassParser;
 use StubTests\Sources\Parsers\Entities\Reflection\ReflectionFunctionParser;
 use StubTests\Sources\Parsers\Entities\Reflection\ReflectionInterfaceParser;
 use StubTests\Sources\Parsers\Entities\Reflection\ReflectionEnumParser;
 use StubTests\Sources\Parsers\Entities\Reflection\ReflectionModernConstantParser;
 use StubTests\Sources\Parsers\Entities\Reflection\ReflectionDefineConstantParser;
+use StubTests\Sources\Parsers\Processors\ReflectionDeduplicationProcessor;
 
 try {
     // Load extracted data
@@ -74,11 +77,13 @@ try {
     echo "      - Functions:  " . count($extractedData['functions'] ?? []) . "\n";
     echo "      - Constants:  " . count($extractedData['constants'] ?? []) . "\n\n";
 
-    // Create storage manager
-    echo "[2/4] Creating storage manager...\n";
-    $storage = new JsonParsedDataStorage($outputFile, false);
-    $storageManager = new DefaultParsedDataStorageManager($storage);
-    echo "      ✓ Storage manager created\n\n";
+    // Create storage manager with deduplication pipeline
+    echo "[2/4] Creating storage manager with deduplication pipeline...\n";
+    $storage = new JsonParsedDataStorage($outputFile, new ReflectionEntitySerializer(), false);
+    $pipeline = new EntityProcessingPipeline();
+    $pipeline->addProcessor(new ReflectionDeduplicationProcessor());
+    $storageManager = new DefaultParsedDataStorageManager($storage, $pipeline);
+    echo "      ✓ Storage manager created with deduplication enabled\n\n";
 
     // Create parsers
     $classParser = new ReflectionClassParser();

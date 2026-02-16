@@ -16,5 +16,5 @@ interface CheckInterface
      * @param string $phpVersion - версия языка
      * @return CheckResultSet
      */
-    public function run(ParsedDataStorageManager $reflection, ParsedDataStorageManager $stubs, string $phpVersion): CheckResultSet;
+    public function run(ParsedDataStorageManager $stubs, string $classClassId, string $phpVersion): CheckResultSet;
 }

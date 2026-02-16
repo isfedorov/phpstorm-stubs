@@ -2,10 +2,10 @@
 
 namespace StubTests\Sources\Parsers\Entities\Stubs;
 
+use StubTests\Framework\Parsers\Entities\Model\Access\PrivateAccessModifier;
+use StubTests\Framework\Parsers\Entities\Model\Access\ProtectedAccessModifier;
+use StubTests\Framework\Parsers\Entities\Model\Access\PublicAccessModifier;
 use StubTests\Sources\Parsers\Entities\Model\PHPProperty;
-use StubTests\Sources\Parsers\Entities\Model\PrivateAccessModifier;
-use StubTests\Sources\Parsers\Entities\Model\ProtectedAccessModifier;
-use StubTests\Sources\Parsers\Entities\Model\PublicAccessModifier;
 use StubTests\Sources\Parsers\Entities\Stubs\Nodes\PropertyNode;
 
 /**
@@ -14,6 +14,20 @@ use StubTests\Sources\Parsers\Entities\Stubs\Nodes\PropertyNode;
  */
 class StubPropertyParser
 {
+    private PhpDocParserInterface $phpDocParser;
+    private TypeParserInterface $typeParser;
+    private AvailableVersionParserInterface $versionParser;
+
+    public function __construct(
+        ?PhpDocParserInterface $phpDocParser = null,
+        ?TypeParserInterface $typeParser = null,
+        ?AvailableVersionParserInterface $versionParser = null
+    ) {
+        $this->phpDocParser = $phpDocParser ?? new PhpDocumentorParser();
+        $this->typeParser = $typeParser ?? new DefaultTypeParser();
+        $this->versionParser = $versionParser ?? new DefaultAvailableVersionParser();
+    }
+
     /**
      * Parses a property AST node into PHPProperty domain object.
      *
@@ -38,11 +52,33 @@ class StubPropertyParser
         $property->setIsStatic($node->isStatic());
         $property->setIsReadonly($node->isReadonly());
 
-        // Parse type hint
-        $type = $node->getType();
-        if ($type) {
-            $property->setTypeFromSignature($type->toString());
-        }
+        // Parse PhpDoc using injected parser
+        $parsedPhpDoc = $this->phpDocParser->parseElementPhpDoc(
+            $node->getDocComment(),
+            $node->getAttributes()
+        );
+
+        // Parse type using injected type parser
+        $parsedType = $this->typeParser->parseType(
+            $node->getType(),
+            $parsedPhpDoc->varType,
+            $node->getAttributes()
+        );
+
+        // Apply parsed PhpDoc data to property
+        $property->setPhpDoc($parsedPhpDoc->rawPhpDoc);
+
+        // Parse and apply available version (from PhpDoc + attributes)
+        $versions = $this->versionParser->parseAvailableVersion($parsedPhpDoc, $node->getAttributes());
+        $property->setSinceVersion($versions['sinceVersion']);
+        $property->setRemovedVersion($versions['removedVersion']);
+
+        // Apply parsed type data to property
+        // typeFromSignature is always set (NoType if no type)
+        $property->setTypeFromSignature($parsedType->typeFromSignature);
+        $property->setTypeFromPhpDoc($parsedType->typeFromPhpDoc);
+        $property->setLanguageLevelTypes($parsedType->languageLevelTypes);
+        $property->setDefaultType($parsedType->defaultType);
 
         return $property;
     }

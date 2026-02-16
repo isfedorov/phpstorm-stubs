@@ -7,7 +7,12 @@ use StubTests\Sources\Parsers\Entities\Model\PHPClassConstant;
 use StubTests\Sources\Parsers\Entities\Stubs\StubClassParser;
 use StubTests\Unit\Parsers\AST\fixtures\FixtureStubsDataProvider;
 
-class StubConstantParserTest extends BaseTestCase
+/**
+ * Tests for parsing class constants (not global constants).
+ * Tests visibility modifiers (public/protected/private) and final flag.
+ * Uses StubClassParser which internally uses StubConstantParser.
+ */
+class StubClassConstantParserTest extends BaseTestCase
 {
     private FixtureStubsDataProvider $filesProvider;
     private StubClassParser $classParser;
@@ -81,12 +86,36 @@ class StubConstantParserTest extends BaseTestCase
     public function testItParsesAllConstantsFromClass()
     {
         $constants = $this->getConstantsFromClass('complete_constant.txt');
-        self::assertCount(4, $constants);
+        self::assertCount(7, $constants);
 
         self::assertEquals('PUBLIC_CONST', $constants[0]->getName());
         self::assertEquals('PROTECTED_CONST', $constants[1]->getName());
         self::assertEquals('PRIVATE_CONST', $constants[2]->getName());
         self::assertEquals('FINAL_CONST', $constants[3]->getName());
+        self::assertEquals('FIRST_CONST', $constants[4]->getName());
+        self::assertEquals('SECOND_CONST', $constants[5]->getName());
+        self::assertEquals('THIRD_CONST', $constants[6]->getName());
+    }
+
+    public function testItParsesAllConstantsValuesFromClass()
+    {
+        $constants = $this->getConstantsFromClass('complete_constant.txt');
+        self::assertCount(7, $constants);
+
+        self::assertEquals('public', array_find($constants,
+            fn(PHPClassConstant $constant) => $constant->getName() == 'PUBLIC_CONST')->getValue());
+        self::assertEquals('protected', array_find($constants,
+            fn(PHPClassConstant $constant) => $constant->getName() == 'PROTECTED_CONST')->getValue());
+        self::assertEquals('private', array_find($constants,
+            fn(PHPClassConstant $constant) => $constant->getName() == 'PRIVATE_CONST')->getValue());
+        self::assertEquals('final', array_find($constants,
+            fn(PHPClassConstant $constant) => $constant->getName() == 'FINAL_CONST')->getValue());
+        self::assertEquals('first', array_find($constants,
+            fn(PHPClassConstant $constant) => $constant->getName() == 'FIRST_CONST')->getValue());
+        self::assertEquals('second', array_find($constants,
+            fn(PHPClassConstant $constant) => $constant->getName() == 'SECOND_CONST')->getValue());
+        self::assertEquals('third', array_find($constants,
+            fn(PHPClassConstant $constant) => $constant->getName() == 'THIRD_CONST')->getValue());
     }
 
     public function testItParsesVisibilityCorrectly()
@@ -112,5 +141,29 @@ class StubConstantParserTest extends BaseTestCase
         self::assertEquals('FINAL_CONST', $finalConstant->getName());
         self::assertEquals('public', $finalConstant->visibility);
         self::assertTrue($finalConstant->isFinal());
+    }
+
+    public function testItParsesNumericConstantValues()
+    {
+        $constants = $this->getConstantsFromClass('numeric_constants.txt');
+        self::assertCount(6, $constants);
+
+        self::assertEquals('POSITIVE_INT', $constants[0]->getName());
+        self::assertEquals(42, $constants[0]->getValue());
+
+        self::assertEquals('NEGATIVE_INT', $constants[1]->getName());
+        self::assertEquals(-42, $constants[1]->getValue());
+
+        self::assertEquals('POSITIVE_FLOAT', $constants[2]->getName());
+        self::assertEquals(3.14, $constants[2]->getValue());
+
+        self::assertEquals('NEGATIVE_FLOAT', $constants[3]->getName());
+        self::assertEquals(-3.14, $constants[3]->getValue());
+
+        self::assertEquals('ZERO', $constants[4]->getName());
+        self::assertEquals(0, $constants[4]->getValue());
+
+        self::assertEquals('EXPLICIT_POSITIVE', $constants[5]->getName());
+        self::assertEquals(123, $constants[5]->getValue());
     }
 }

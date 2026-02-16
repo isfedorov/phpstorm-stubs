@@ -28,6 +28,11 @@ class NikicConstantNode implements ConstantNode
         return $this->constant->name->toString();
     }
 
+    public function getValue()
+    {
+        return $this->constant->value;
+    }
+
     public function isPublic(): bool
     {
         return $this->classConst->isPublic();

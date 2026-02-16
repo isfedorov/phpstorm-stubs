@@ -65,4 +65,18 @@ interface ClassNode
      * Get the namespace for this class.
      */
     public function getNamespace(): string;
+
+    /**
+     * Get the DocComment for this class.
+     *
+     * @return DocCommentNode|null
+     */
+    public function getDocComment(): ?DocCommentNode;
+
+    /**
+     * Get the attributes for this class.
+     *
+     * @return AttributeNode[]
+     */
+    public function getAttributes(): array;
 }

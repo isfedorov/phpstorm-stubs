@@ -124,7 +124,7 @@ class StubsFunctionParserTest extends BaseTestCase
         $stubCode = $this->filesProvider->getStubFileContent('simple_function.txt');
         $function = $this->parser->parse($stubCode);
         self::assertNotNull($function->getReturnTypeFromSignature());
-        self::assertEquals('int', $function->getReturnTypeFromSignature());
+        self::assertEquals('int', $function->getReturnTypeFromSignature()->toString());
     }
 
     public function testItCanParseUnionReturnType()
@@ -132,7 +132,7 @@ class StubsFunctionParserTest extends BaseTestCase
         $stubCode = $this->filesProvider->getStubFileContent('complete_function.txt');
         $function = $this->parser->parse($stubCode);
         self::assertNotNull($function->getReturnTypeFromSignature());
-        self::assertEquals('string|int|null', $function->getReturnTypeFromSignature());
+        self::assertEquals('string|int|null', $function->getReturnTypeFromSignature()->toString());
     }
 
     public function testItCanParseFunctionWithSingleParameter()
@@ -141,5 +141,38 @@ class StubsFunctionParserTest extends BaseTestCase
         $function = $this->parser->parse($stubCode);
         self::assertEquals(1, sizeof($function->getParameters()));
         self::assertEquals('string', $function->getParameters()[0]->getName());
+    }
+
+    public function testItCanParseLanguageLevelTypeAwareOnReturnType()
+    {
+        $stubCode = $this->filesProvider->getStubFileContent('language_level_function.txt');
+        $function = $this->parser->parse($stubCode);
+
+        self::assertNotNull($function->getLanguageLevelTypes());
+        self::assertEquals(['8.0' => 'CurlHandle|false'], $function->getLanguageLevelTypes());
+        self::assertEquals('resource|false', $function->getDefaultType());
+    }
+
+    public function testFunctionWithoutLanguageLevelTypeAware()
+    {
+        $stubCode = $this->filesProvider->getStubFileContent('simple_function.txt');
+        $function = $this->parser->parse($stubCode);
+
+        self::assertNull($function->getLanguageLevelTypes());
+        self::assertNull($function->getDefaultType());
+    }
+
+    public function testItCanParseLanguageLevelTypeAwareOnParameter()
+    {
+        $stubCode = $this->filesProvider->getStubFileContent('language_level_parameter.txt');
+        $function = $this->parser->parse($stubCode);
+
+        $params = $function->getParameters();
+        self::assertCount(1, $params);
+
+        $param = $params[0];
+        self::assertNotNull($param->getLanguageLevelTypes());
+        self::assertEquals(['8.0' => 'string'], $param->getLanguageLevelTypes());
+        self::assertEquals('', $param->getDefaultType());
     }
 }

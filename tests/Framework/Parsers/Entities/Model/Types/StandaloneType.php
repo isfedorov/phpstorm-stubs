@@ -1,6 +1,6 @@
 <?php
 
-namespace StubTests\Sources\Parsers\Entities\Model;
+namespace StubTests\Sources\Parsers\Entities\Model\Types;
 
 class StandaloneType
 {

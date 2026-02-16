@@ -2,10 +2,11 @@
 
 namespace StubTests\Sources\Parsers\Entities\Reflection;
 
-use StubTests\Sources\Parsers\Entities\Model\NoType;
-use StubTests\Sources\Parsers\Entities\Model\NullableType;
-use StubTests\Sources\Parsers\Entities\Model\StandaloneType;
-use StubTests\Sources\Parsers\Entities\Model\UnionType;
+use StubTests\Sources\Parsers\Entities\Model\Types\IntersectionType;
+use StubTests\Sources\Parsers\Entities\Model\Types\NoType;
+use StubTests\Sources\Parsers\Entities\Model\Types\NullableType;
+use StubTests\Sources\Parsers\Entities\Model\Types\StandaloneType;
+use StubTests\Sources\Parsers\Entities\Model\Types\UnionType;
 
 /**
  * Parser for ReflectionType objects
@@ -23,7 +24,7 @@ class ReflectionTypeParser
      * Parse a ReflectionType (or AdaptedReflectionType) into our type model
      *
      * @param \ReflectionType|object|null $reflectionType The reflection type object to parse
-     * @return StandaloneType|UnionType|NullableType|NoType|array Returns our type model representation
+     * @return StandaloneType|UnionType|NullableType|NoType|IntersectionType Returns our type model representation
      */
     public function parse($reflectionType)
     {
@@ -72,18 +73,18 @@ class ReflectionTypeParser
     /**
      * Parse an intersection type (e.g., Foo&Bar)
      *
-     * Returns an array of type names since we don't have a dedicated IntersectionType model
-     *
      * @param \ReflectionIntersectionType|object $reflectionType
-     * @return array Array of type names
+     * @return IntersectionType
      */
-    private function parseIntersectionType($reflectionType): array
+    private function parseIntersectionType($reflectionType): IntersectionType
     {
-        $types = [];
+        $intersectionType = new IntersectionType();
         foreach ($reflectionType->getTypes() as $item) {
-            $types[] = $item->getName();
+            if ($item instanceof \ReflectionNamedType || method_exists($item, 'getName')) {
+                $intersectionType->addType(new StandaloneType($item->getName()));
+            }
         }
-        return $types;
+        return $intersectionType;
     }
 
     /**

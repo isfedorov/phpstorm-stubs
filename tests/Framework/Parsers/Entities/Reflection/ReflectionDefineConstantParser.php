@@ -25,6 +25,7 @@ class ReflectionDefineConstantParser implements Parser
         } else {
             $parsedConstant->value = $object[1];
         }
+        $parsedConstant->setNamespace('\\');
         $parsedConstant->setId('\\' . $parsedConstant->getName());
         return $parsedConstant;
     }

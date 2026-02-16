@@ -3,6 +3,7 @@
 namespace StubTests\Unit\Parsers\Reflection;
 
 use PHPUnit\Framework\TestCase;
+use StubTests\Sources\Parsers\Entities\Model\Types\NoType;
 use StubTests\Sources\Parsers\Entities\Model\PHPMethod;
 use StubTests\Sources\Parsers\Entities\Reflection\ReflectionMethodParser;
 use StubTests\Sources\Parsers\Entities\Reflection\Wrappers\AdaptedReflectionClass;
@@ -234,38 +235,57 @@ class ReflectionMethodParserTest extends TestCase
         self::assertFalse($basePHPElement->isDeprecated());
     }
 
-    public function testItReturnsArrayOfReturnTypes()
+    public function testItReturnsNoTypeAsDefaultReturnType()
     {
         $reflectionMethodMock = $this->getMockBuilder(AdaptedReflectionMethod::class)
             ->disableOriginalConstructor()
             ->onlyMethods([])
             ->getMock();
         $basePHPElement = new ReflectionMethodParser()->parse($reflectionMethodMock);
-        self::assertTrue(is_array($basePHPElement->getReturnTypeFromSignature()));
-    }
-
-    public function testItReturnsEmtyArrayOfReturnTypesIfNoReturnTypeIsPresent()
-    {
-        $reflectionMethodMock = $this->getMockBuilder(AdaptedReflectionMethod::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods([])
-            ->getMock();
-        $basePHPElement = new ReflectionMethodParser()->parse($reflectionMethodMock);
-        self::assertEquals([], $basePHPElement->getReturnTypeFromSignature());
+        self::assertInstanceOf(NoType::class, $basePHPElement->getReturnTypeFromSignature());
     }
 
     public function testItCanParseSimpleReturnType() {
+        $declaringClassMock = $this->getMockBuilder(AdaptedReflectionClass::class)->disableOriginalConstructor()->getMock();
+        $declaringClassMock->method('getName')->willReturn('TestClass');
         $reflectionMethodMock = $this->getMockBuilder(AdaptedReflectionMethod::class)->disableOriginalConstructor()->getMock();
-        $returnTypeMock = $this->getMockBuilder(AdaptedReflectionType::class)->disableOriginalConstructor()->getMock();
-        $returnTypeMock->method('__toString')->willReturn('string');
+        $reflectionMethodMock->method('getDeclaringClass')->willReturn($declaringClassMock);
+        $reflectionMethodMock->method('getName')->willReturn('testMethod');
+        $reflectionMethodMock->method('getParameters')->willReturn([]);
+        $reflectionMethodMock->method('isProtected')->willReturn(false);
+        $reflectionMethodMock->method('isPrivate')->willReturn(false);
+        $reflectionMethodMock->method('isStatic')->willReturn(false);
+        $reflectionMethodMock->method('isFinal')->willReturn(false);
+        $reflectionMethodMock->method('isAbstract')->willReturn(false);
+        $reflectionMethodMock->method('isDeprecated')->willReturn(false);
+        $reflectionMethodMock->method('hasTentativeReturnType')->willReturn(false);
+        $returnTypeMock = $this->getMockBuilder(AdaptedReflectionType::class)
+            ->disableOriginalConstructor()
+            ->onlyMethods(['getName', 'allowsNull', 'isUnionType', 'isIntersectionType'])
+            ->getMock();
+        $returnTypeMock->method('getName')->willReturn('string');
+        $returnTypeMock->method('allowsNull')->willReturn(false);
+        $returnTypeMock->method('isUnionType')->willReturn(false);
+        $returnTypeMock->method('isIntersectionType')->willReturn(false);
         $reflectionMethodMock->method('hasReturnType')->willReturn(true);
         $reflectionMethodMock->method('getReturnType')->willReturn($returnTypeMock);
         $basePhpElement = new ReflectionMethodParser()->parse($reflectionMethodMock);
-        self::assertEquals(['string'], $basePhpElement->getReturnTypeFromSignature());
+        self::assertEquals('string', $basePhpElement->getReturnTypeFromSignature()->toString());
     }
 
     public function testItCanParseTentativeReturnType() {
+        $declaringClassMock = $this->getMockBuilder(AdaptedReflectionClass::class)->disableOriginalConstructor()->getMock();
+        $declaringClassMock->method('getName')->willReturn('TestClass');
         $reflectionMethodMock = $this->getMockBuilder(AdaptedReflectionMethod::class)->disableOriginalConstructor()->getMock();
+        $reflectionMethodMock->method('getDeclaringClass')->willReturn($declaringClassMock);
+        $reflectionMethodMock->method('getName')->willReturn('testMethod');
+        $reflectionMethodMock->method('getParameters')->willReturn([]);
+        $reflectionMethodMock->method('isProtected')->willReturn(false);
+        $reflectionMethodMock->method('isPrivate')->willReturn(false);
+        $reflectionMethodMock->method('isStatic')->willReturn(false);
+        $reflectionMethodMock->method('isFinal')->willReturn(false);
+        $reflectionMethodMock->method('isAbstract')->willReturn(false);
+        $reflectionMethodMock->method('isDeprecated')->willReturn(false);
         $reflectionTypeMock = $this->getMockBuilder(AdaptedReflectionType::class)->disableOriginalConstructor()->getMock();
         $reflectionTypeMock->method('getName')->willReturn('string');
         $reflectionMethodMock->method('hasTentativeReturnType')->willReturn(true);
@@ -275,7 +295,19 @@ class ReflectionMethodParserTest extends TestCase
     }
 
     public function testItCanParseNoTentativeReturnType() {
+        $declaringClassMock = $this->getMockBuilder(AdaptedReflectionClass::class)->disableOriginalConstructor()->getMock();
+        $declaringClassMock->method('getName')->willReturn('TestClass');
         $reflectionMethodMock = $this->getMockBuilder(AdaptedReflectionMethod::class)->disableOriginalConstructor()->getMock();
+        $reflectionMethodMock->method('getDeclaringClass')->willReturn($declaringClassMock);
+        $reflectionMethodMock->method('getName')->willReturn('testMethod');
+        $reflectionMethodMock->method('getParameters')->willReturn([]);
+        $reflectionMethodMock->method('isProtected')->willReturn(false);
+        $reflectionMethodMock->method('isPrivate')->willReturn(false);
+        $reflectionMethodMock->method('isStatic')->willReturn(false);
+        $reflectionMethodMock->method('isFinal')->willReturn(false);
+        $reflectionMethodMock->method('isAbstract')->willReturn(false);
+        $reflectionMethodMock->method('isDeprecated')->willReturn(false);
+        $reflectionMethodMock->method('hasTentativeReturnType')->willReturn(false);
         $reflectionTypeMock = $this->getMockBuilder(AdaptedReflectionType::class)->disableOriginalConstructor()->getMock();
 
         $reflectionTypeMock->method('getName')->willReturn('string');
@@ -285,17 +317,31 @@ class ReflectionMethodParserTest extends TestCase
     }
 
     public function testItCanParseReturnTypesOfTentativeReturnType() {
+        $declaringClassMock = $this->getMockBuilder(AdaptedReflectionClass::class)->disableOriginalConstructor()->getMock();
+        $reflectionMethodMock = $this->getMockBuilder(AdaptedReflectionMethod::class)->disableOriginalConstructor()->getMock();
         $returnTypeMock = $this->getMockBuilder(AdaptedReflectionType::class)
             ->disableOriginalConstructor()
-            ->onlyMethods(['__toString'])
+            ->onlyMethods(['getName', 'allowsNull', 'isUnionType', 'isIntersectionType'])
             ->getMock();
-        $returnTypeMock->method('__toString')->willReturn('string');
-        $reflectionMethodMock = $this->getMockBuilder(AdaptedReflectionMethod::class)->disableOriginalConstructor()->getMock();
+        $returnTypeMock->method('getName')->willReturn('string');
+        $returnTypeMock->method('allowsNull')->willReturn(false);
+        $returnTypeMock->method('isUnionType')->willReturn(false);
+        $returnTypeMock->method('isIntersectionType')->willReturn(false);
+        $declaringClassMock->method('getName')->willReturn('TestClass');
+        $reflectionMethodMock->method('getDeclaringClass')->willReturn($declaringClassMock);
+        $reflectionMethodMock->method('getName')->willReturn('testMethod');
+        $reflectionMethodMock->method('getParameters')->willReturn([]);
+        $reflectionMethodMock->method('isProtected')->willReturn(false);
+        $reflectionMethodMock->method('isPrivate')->willReturn(false);
+        $reflectionMethodMock->method('isStatic')->willReturn(false);
+        $reflectionMethodMock->method('isFinal')->willReturn(false);
+        $reflectionMethodMock->method('isAbstract')->willReturn(false);
+        $reflectionMethodMock->method('isDeprecated')->willReturn(false);
         $reflectionMethodMock->method('hasReturnType')->willReturn(false);
         $reflectionMethodMock->method('hasTentativeReturnType')->willReturn(true);
         $reflectionMethodMock->method('getTentativeReturnType')->willReturn($returnTypeMock);
         $basePHPElement = new ReflectionMethodParser()->parse($reflectionMethodMock);
-        self::assertEquals(['string'], $basePHPElement->getReturnTypeFromSignature());
+        self::assertEquals('string', $basePHPElement->getReturnTypeFromSignature()->toString());
     }
 
 }

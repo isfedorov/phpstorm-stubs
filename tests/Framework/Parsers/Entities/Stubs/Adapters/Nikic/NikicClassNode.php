@@ -102,4 +102,21 @@ class NikicClassNode implements ClassNode
     {
         return $this->namespace;
     }
+
+    public function getDocComment(): ?NikicDocCommentNode
+    {
+        $docComment = $this->class->getDocComment();
+        return $docComment ? new NikicDocCommentNode($docComment) : null;
+    }
+
+    public function getAttributes(): array
+    {
+        $attributes = [];
+        foreach ($this->class->attrGroups as $attrGroup) {
+            foreach ($attrGroup->attrs as $attr) {
+                $attributes[] = new NikicAttributeNode($attr);
+            }
+        }
+        return $attributes;
+    }
 }

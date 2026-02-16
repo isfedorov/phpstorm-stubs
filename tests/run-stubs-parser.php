@@ -21,8 +21,10 @@ use StubTests\Sources\Parsers\Entities\Stubs\StubDefineConstantParser;
 use StubTests\Sources\Parsers\Entities\Stubs\StubEnumParser;
 use StubTests\Sources\Parsers\Entities\Stubs\StubFunctionParser;
 use StubTests\Sources\Parsers\Entities\Stubs\StubInterfaceParser;
+use StubTests\Sources\Parsers\Entities\Stubs\StubModernConstantParser;
 use StubTests\Sources\Parsers\JsonParsedDataStorage;
 use StubTests\Sources\Parsers\Processors\DeduplicationProcessor;
+use StubTests\Sources\Parsers\StubsEntitySerializer;
 
 echo "========================================\n";
 echo "PHP Stubs Parser Runner\n";
@@ -45,7 +47,7 @@ try {
 
     // Create storage manager with JSON storage and deduplication pipeline
     echo "[2/5] Creating storage manager with deduplication pipeline...\n";
-    $storage = new JsonParsedDataStorage($cacheFilePath, false); // Start fresh, don't load existing
+    $storage = new JsonParsedDataStorage($cacheFilePath, new StubsEntitySerializer(), false); // Start fresh, don't load existing
     $pipeline = new EntityProcessingPipeline();
     $pipeline->addProcessor(new DeduplicationProcessor());
     $storageManager = new DefaultParsedDataStorageManager($storage, $pipeline);
@@ -59,6 +61,7 @@ try {
         new StubInterfaceParser(),
         new StubEnumParser(),
         new StubDefineConstantParser(),
+        new StubModernConstantParser(),
     ];
     echo "      ✓ " . count($parsers) . " parsers ready (Classes, Functions, Interfaces, Enums, Constants)\n\n";
 

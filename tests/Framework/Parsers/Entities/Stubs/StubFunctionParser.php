@@ -14,12 +14,22 @@ use StubTests\Sources\Parsers\Entities\Stubs\Nodes\FunctionNode;
 class StubFunctionParser
 {
     public NodeExtractorInterface $nodeExtractor;
+    private PhpDocParserInterface $phpDocParser;
+    private TypeParserInterface $typeParser;
+    private AvailableVersionParserInterface $versionParser;
     private StubParameterParser $parameterParser;
 
-    public function __construct(?NodeExtractorInterface $nodeExtractor = null)
-    {
+    public function __construct(
+        ?NodeExtractorInterface $nodeExtractor = null,
+        ?PhpDocParserInterface $phpDocParser = null,
+        ?TypeParserInterface $typeParser = null,
+        ?AvailableVersionParserInterface $versionParser = null
+    ) {
         $this->nodeExtractor = $nodeExtractor ?? new NikicNodeExtractor();
-        $this->parameterParser = new StubParameterParser();
+        $this->phpDocParser = $phpDocParser ?? new PhpDocumentorParser();
+        $this->typeParser = $typeParser ?? new DefaultTypeParser();
+        $this->versionParser = $versionParser ?? new DefaultAvailableVersionParser();
+        $this->parameterParser = new StubParameterParser($typeParser, $versionParser);
     }
 
     /**
@@ -56,27 +66,41 @@ class StubFunctionParser
             $phpFunction->setId($phpFunction->getNamespace() . '\\' . $phpFunction->getName());
         }
 
-        // Check deprecation from docblock
-        $isDeprecated = false;
-        $docComment = $node->getDocComment();
-        if ($docComment) {
-            $docText = $docComment->getText();
-            $isDeprecated = str_contains($docText, '@deprecated');
-        }
-        $phpFunction->setDeprecated($isDeprecated);
+        // Parse PhpDoc using injected parser
+        $parsedPhpDoc = $this->phpDocParser->parseElementPhpDoc(
+            $node->getDocComment(),
+            $node->getAttributes()
+        );
 
-        // Parse parameters
+        // Parse return type using injected type parser
+        $parsedReturnType = $this->typeParser->parseType(
+            $node->getReturnType(),
+            $parsedPhpDoc->returnType,
+            $node->getAttributes()
+        );
+
+        // Apply parsed PhpDoc data to function
+        $phpFunction->setPhpDoc($parsedPhpDoc->rawPhpDoc);
+        $phpFunction->setDeprecated($parsedPhpDoc->isDeprecated);
+
+        // Parse and apply available version (from PhpDoc + attributes)
+        $versions = $this->versionParser->parseAvailableVersion($parsedPhpDoc, $node->getAttributes());
+        $phpFunction->setSinceVersion($versions['sinceVersion']);
+        $phpFunction->setRemovedVersion($versions['removedVersion']);
+
+        // Apply parsed return type data to function
+        // typeFromSignature is always set (NoType if no type)
+        $phpFunction->setReturnTypeFromSignature($parsedReturnType->typeFromSignature);
+        $phpFunction->setReturnTypeFromPhpDoc($parsedReturnType->typeFromPhpDoc);
+        $phpFunction->setLanguageLevelTypes($parsedReturnType->languageLevelTypes);
+        $phpFunction->setDefaultType($parsedReturnType->defaultType);
+
+        // Parse parameters with @param types from PhpDoc
         $parameters = [];
         foreach ($node->getParameters() as $param) {
-            $parameters[] = $this->parameterParser->parseNode($param);
+            $parameters[] = $this->parameterParser->parseNode($param, $parsedPhpDoc->paramTypes);
         }
         $phpFunction->setParameters($parameters);
-
-        // Parse return type
-        $returnType = $node->getReturnType();
-        if ($returnType) {
-            $phpFunction->setReturnTypeFromSignature($returnType->toString());
-        }
 
         return $phpFunction;
     }
