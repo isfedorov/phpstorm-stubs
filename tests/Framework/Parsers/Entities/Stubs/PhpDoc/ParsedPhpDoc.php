@@ -1,6 +1,6 @@
 <?php
 
-namespace StubTests\Sources\Parsers\Entities\Stubs;
+namespace StubTests\Framework\Parsers\Entities\Stubs\PhpDoc;
 
 /**
  * Value object representing parsed PhpDoc information.

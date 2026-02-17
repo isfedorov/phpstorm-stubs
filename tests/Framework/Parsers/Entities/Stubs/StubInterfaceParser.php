@@ -2,6 +2,12 @@
 
 namespace StubTests\Sources\Parsers\Entities\Stubs;
 
+use StubTests\Framework\Parsers\Entities\Stubs\PhpDoc\PhpDocParserInterface;
+use StubTests\Framework\Parsers\Entities\Stubs\PhpDoc\PhpDocumentorParser;
+use StubTests\Framework\Parsers\Entities\Stubs\Types\DefaultTypeParser;
+use StubTests\Framework\Parsers\Entities\Stubs\Types\TypeParserInterface;
+use StubTests\Framework\Parsers\Entities\Stubs\Versions\AvailableVersionParserInterface;
+use StubTests\Framework\Parsers\Entities\Stubs\Versions\DefaultAvailableVersionParser;
 use StubTests\Sources\Parsers\Entities\Model\PHPInterface;
 use StubTests\Sources\Parsers\Entities\Stubs\Adapters\Nikic\NikicNodeExtractor;
 use StubTests\Sources\Parsers\Entities\Stubs\Nodes\InterfaceNode;
@@ -11,14 +17,14 @@ use StubTests\Sources\Parsers\Entities\Stubs\Nodes\InterfaceNode;
  * Parser-agnostic: works with any AST node implementing InterfaceNode interface.
  * Uses dedicated parsers for child entities (methods, constants).
  */
-class StubInterfaceParser
+class StubInterfaceParser implements MultiEntityStubParserInterface
 {
     public NodeExtractorInterface $nodeExtractor;
     private PhpDocParserInterface $phpDocParser;
     private TypeParserInterface $typeParser;
     private AvailableVersionParserInterface $versionParser;
     private StubMethodParser $methodParser;
-    private StubConstantParser $constantParser;
+    private StubClassConstantParser $constantParser;
 
     public function __construct(
         ?NodeExtractorInterface $nodeExtractor = null,
@@ -31,7 +37,7 @@ class StubInterfaceParser
         $this->typeParser = $typeParser ?? new DefaultTypeParser();
         $this->versionParser = $versionParser ?? new DefaultAvailableVersionParser();
         $this->methodParser = new StubMethodParser($phpDocParser, $typeParser, $versionParser);
-        $this->constantParser = new StubConstantParser();
+        $this->constantParser = new StubClassConstantParser();
     }
 
     /**
@@ -69,10 +75,7 @@ class StubInterfaceParser
         }
 
         // Parse PhpDoc using injected parser
-        $parsedPhpDoc = $this->phpDocParser->parseElementPhpDoc(
-            $node->getDocComment(),
-            $node->getAttributes()
-        );
+        $parsedPhpDoc = $this->phpDocParser->parseElementPhpDoc($node->getDocComment());
 
         // Apply parsed PhpDoc data to interface
         $phpInterface->setPhpDoc($parsedPhpDoc->rawPhpDoc);
@@ -104,5 +107,23 @@ class StubInterfaceParser
         }
 
         return $phpInterface;
+    }
+
+    /**
+     * Extract and parse all interfaces from stub content.
+     *
+     * @param string $stubContent The PHP stub file content to parse
+     * @return array Array of PHPInterface objects
+     */
+    public function extractAndParseAll(string $stubContent): array
+    {
+        $interfaceNodes = $this->nodeExtractor->extractAllInterfaces($stubContent);
+        $interfaces = [];
+
+        foreach ($interfaceNodes as $interfaceNode) {
+            $interfaces[] = $this->parseNode($interfaceNode);
+        }
+
+        return $interfaces;
     }
 }

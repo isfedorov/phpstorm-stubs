@@ -23,7 +23,7 @@ use StubTests\Sources\Parsers\Entities\Stubs\StubFunctionParser;
 use StubTests\Sources\Parsers\Entities\Stubs\StubInterfaceParser;
 use StubTests\Sources\Parsers\Entities\Stubs\StubModernConstantParser;
 use StubTests\Sources\Parsers\JsonParsedDataStorage;
-use StubTests\Sources\Parsers\Processors\DeduplicationProcessor;
+use StubTests\Sources\Parsers\Processors\StubsDeduplicationProcessor;
 use StubTests\Sources\Parsers\StubsEntitySerializer;
 
 echo "========================================\n";
@@ -49,7 +49,7 @@ try {
     echo "[2/5] Creating storage manager with deduplication pipeline...\n";
     $storage = new JsonParsedDataStorage($cacheFilePath, new StubsEntitySerializer(), false); // Start fresh, don't load existing
     $pipeline = new EntityProcessingPipeline();
-    $pipeline->addProcessor(new DeduplicationProcessor());
+    $pipeline->addProcessor(new StubsDeduplicationProcessor());
     $storageManager = new DefaultParsedDataStorageManager($storage, $pipeline);
     echo "      ✓ Storage manager created with deduplication enabled\n\n";
 

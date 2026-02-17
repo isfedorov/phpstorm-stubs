@@ -2,6 +2,12 @@
 
 namespace StubTests\Sources\Parsers\Entities\Stubs;
 
+use StubTests\Framework\Parsers\Entities\Stubs\PhpDoc\PhpDocParserInterface;
+use StubTests\Framework\Parsers\Entities\Stubs\PhpDoc\PhpDocumentorParser;
+use StubTests\Framework\Parsers\Entities\Stubs\Types\DefaultTypeParser;
+use StubTests\Framework\Parsers\Entities\Stubs\Types\TypeParserInterface;
+use StubTests\Framework\Parsers\Entities\Stubs\Versions\AvailableVersionParserInterface;
+use StubTests\Framework\Parsers\Entities\Stubs\Versions\DefaultAvailableVersionParser;
 use StubTests\Sources\Parsers\Entities\Model\PHPClass;
 use StubTests\Sources\Parsers\Entities\Model\PHPInterface;
 use StubTests\Sources\Parsers\Entities\Stubs\Adapters\Nikic\NikicNodeExtractor;
@@ -12,7 +18,7 @@ use StubTests\Sources\Parsers\Entities\Stubs\Nodes\ClassNode;
  * Parser-agnostic: works with any AST node implementing ClassNode interface.
  * Uses dedicated parsers for child entities (methods, properties, constants).
  */
-class StubClassParser
+class StubClassParser implements MultiEntityStubParserInterface
 {
     public NodeExtractorInterface $nodeExtractor;
     private PhpDocParserInterface $phpDocParser;
@@ -20,7 +26,7 @@ class StubClassParser
     private AvailableVersionParserInterface $versionParser;
     private StubMethodParser $methodParser;
     private StubPropertyParser $propertyParser;
-    private StubConstantParser $constantParser;
+    private StubClassConstantParser $constantParser;
 
     public function __construct(
         ?NodeExtractorInterface $nodeExtractor = null,
@@ -34,7 +40,7 @@ class StubClassParser
         $this->versionParser = $versionParser ?? new DefaultAvailableVersionParser();
         $this->methodParser = new StubMethodParser($phpDocParser, $typeParser, $versionParser);
         $this->propertyParser = new StubPropertyParser($phpDocParser, $typeParser, $versionParser);
-        $this->constantParser = new StubConstantParser();
+        $this->constantParser = new StubClassConstantParser();
     }
 
     /**
@@ -75,10 +81,7 @@ class StubClassParser
         $phpClass->isReadonly = $node->isReadonly();
 
         // Parse PhpDoc using injected parser
-        $parsedPhpDoc = $this->phpDocParser->parseElementPhpDoc(
-            $node->getDocComment(),
-            $node->getAttributes()
-        );
+        $parsedPhpDoc = $this->phpDocParser->parseElementPhpDoc($node->getDocComment());
 
         // Apply parsed PhpDoc data to class
         $phpClass->setPhpDoc($parsedPhpDoc->rawPhpDoc);
@@ -119,5 +122,23 @@ class StubClassParser
         }
 
         return $phpClass;
+    }
+
+    /**
+     * Extract and parse all classes from stub content.
+     *
+     * @param string $stubContent The PHP stub file content to parse
+     * @return array Array of PHPClass objects
+     */
+    public function extractAndParseAll(string $stubContent): array
+    {
+        $classNodes = $this->nodeExtractor->extractAllClasses($stubContent);
+        $classes = [];
+
+        foreach ($classNodes as $classNode) {
+            $classes[] = $this->parseNode($classNode);
+        }
+
+        return $classes;
     }
 }

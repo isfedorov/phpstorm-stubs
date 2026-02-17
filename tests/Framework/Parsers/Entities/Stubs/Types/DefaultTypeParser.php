@@ -1,6 +1,6 @@
 <?php
 
-namespace StubTests\Sources\Parsers\Entities\Stubs;
+namespace StubTests\Framework\Parsers\Entities\Stubs\Types;
 
 use StubTests\Sources\Parsers\Entities\Stubs\Nodes\TypeNode;
 

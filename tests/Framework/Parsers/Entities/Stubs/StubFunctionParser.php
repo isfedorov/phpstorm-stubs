@@ -2,6 +2,12 @@
 
 namespace StubTests\Sources\Parsers\Entities\Stubs;
 
+use StubTests\Framework\Parsers\Entities\Stubs\PhpDoc\PhpDocParserInterface;
+use StubTests\Framework\Parsers\Entities\Stubs\PhpDoc\PhpDocumentorParser;
+use StubTests\Framework\Parsers\Entities\Stubs\Types\DefaultTypeParser;
+use StubTests\Framework\Parsers\Entities\Stubs\Types\TypeParserInterface;
+use StubTests\Framework\Parsers\Entities\Stubs\Versions\AvailableVersionParserInterface;
+use StubTests\Framework\Parsers\Entities\Stubs\Versions\DefaultAvailableVersionParser;
 use StubTests\Sources\Parsers\Entities\Model\PHPFunction;
 use StubTests\Sources\Parsers\Entities\Stubs\Adapters\Nikic\NikicNodeExtractor;
 use StubTests\Sources\Parsers\Entities\Stubs\Nodes\FunctionNode;
@@ -11,7 +17,7 @@ use StubTests\Sources\Parsers\Entities\Stubs\Nodes\FunctionNode;
  * Parser-agnostic: works with any AST node implementing FunctionNode interface.
  * Uses dedicated parser for child entities (parameters).
  */
-class StubFunctionParser
+class StubFunctionParser implements MultiEntityStubParserInterface
 {
     public NodeExtractorInterface $nodeExtractor;
     private PhpDocParserInterface $phpDocParser;
@@ -67,10 +73,7 @@ class StubFunctionParser
         }
 
         // Parse PhpDoc using injected parser
-        $parsedPhpDoc = $this->phpDocParser->parseElementPhpDoc(
-            $node->getDocComment(),
-            $node->getAttributes()
-        );
+        $parsedPhpDoc = $this->phpDocParser->parseElementPhpDoc($node->getDocComment());
 
         // Parse return type using injected type parser
         $parsedReturnType = $this->typeParser->parseType(
@@ -103,5 +106,23 @@ class StubFunctionParser
         $phpFunction->setParameters($parameters);
 
         return $phpFunction;
+    }
+
+    /**
+     * Extract and parse all functions from stub content.
+     *
+     * @param string $stubContent The PHP stub file content to parse
+     * @return array Array of PHPFunction objects
+     */
+    public function extractAndParseAll(string $stubContent): array
+    {
+        $functionNodes = $this->nodeExtractor->extractAllFunctions($stubContent);
+        $functions = [];
+
+        foreach ($functionNodes as $functionNode) {
+            $functions[] = $this->parseNode($functionNode);
+        }
+
+        return $functions;
     }
 }

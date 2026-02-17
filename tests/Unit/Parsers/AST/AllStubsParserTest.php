@@ -10,7 +10,7 @@ use StubTests\Sources\Parsers\Entities\Stubs\AllStubsParser;
 use StubTests\Sources\Parsers\Entities\Stubs\StubClassParser;
 use StubTests\Sources\Parsers\Entities\Stubs\StubFunctionParser;
 use StubTests\Sources\Parsers\InMemoryParsedDataStorage;
-use StubTests\Sources\Parsers\Processors\DeduplicationProcessor;
+use StubTests\Sources\Parsers\Processors\StubsDeduplicationProcessor;
 use StubTests\Unit\Parsers\AST\fixtures\FixtureStubsDataProvider;
 
 class AllStubsParserTest extends BaseTestCase
@@ -314,7 +314,7 @@ class AllStubsParserTest extends BaseTestCase
 
         $storage = new InMemoryParsedDataStorage();
         $pipeline = new EntityProcessingPipeline();
-        $pipeline->addProcessor(new DeduplicationProcessor());
+        $pipeline->addProcessor(new StubsDeduplicationProcessor());
         $storageManager = new DefaultParsedDataStorageManager($storage, $pipeline);
 
         $parsers = [
@@ -357,7 +357,7 @@ class AllStubsParserTest extends BaseTestCase
 
         $storage = new InMemoryParsedDataStorage();
         $pipeline = new EntityProcessingPipeline();
-        $pipeline->addProcessor(new DeduplicationProcessor());
+        $pipeline->addProcessor(new StubsDeduplicationProcessor());
         $storageManager = new DefaultParsedDataStorageManager($storage, $pipeline);
 
         $parsers = [
@@ -400,7 +400,7 @@ class AllStubsParserTest extends BaseTestCase
 
         $storage = new InMemoryParsedDataStorage();
         $pipeline = new EntityProcessingPipeline();
-        $pipeline->addProcessor(new DeduplicationProcessor());
+        $pipeline->addProcessor(new StubsDeduplicationProcessor());
         $storageManager = new DefaultParsedDataStorageManager($storage, $pipeline);
 
         $parsers = [

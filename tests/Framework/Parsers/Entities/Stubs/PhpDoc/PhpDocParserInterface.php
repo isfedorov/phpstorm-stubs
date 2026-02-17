@@ -1,6 +1,6 @@
 <?php
 
-namespace StubTests\Sources\Parsers\Entities\Stubs;
+namespace StubTests\Framework\Parsers\Entities\Stubs\PhpDoc;
 
 use StubTests\Sources\Parsers\Entities\Stubs\Nodes\DocCommentNode;
 
@@ -25,8 +25,7 @@ interface PhpDocParserInterface
      * with attributes taking precedence over PhpDoc tags.
      *
      * @param DocCommentNode|null $docComment The doc comment node from AST
-     * @param array $attributes Array of AttributeNode objects from the element
      * @return ParsedPhpDoc Parsed and merged PhpDoc data
      */
-    public function parseElementPhpDoc(?DocCommentNode $docComment, array $attributes): ParsedPhpDoc;
+    public function parseElementPhpDoc(?DocCommentNode $docComment): ParsedPhpDoc;
 }

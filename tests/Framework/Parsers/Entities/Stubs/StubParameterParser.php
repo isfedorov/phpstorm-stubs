@@ -2,6 +2,11 @@
 
 namespace StubTests\Sources\Parsers\Entities\Stubs;
 
+use StubTests\Framework\Parsers\Entities\Stubs\PhpDoc\ParsedPhpDoc;
+use StubTests\Framework\Parsers\Entities\Stubs\Types\DefaultTypeParser;
+use StubTests\Framework\Parsers\Entities\Stubs\Types\TypeParserInterface;
+use StubTests\Framework\Parsers\Entities\Stubs\Versions\AvailableVersionParserInterface;
+use StubTests\Framework\Parsers\Entities\Stubs\Versions\DefaultAvailableVersionParser;
 use StubTests\Sources\Parsers\Entities\Model\PHPParameter;
 use StubTests\Sources\Parsers\Entities\Stubs\Nodes\ParameterNode;
 

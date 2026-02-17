@@ -24,4 +24,5 @@ class UnionType
         }
         return true;
     }
+    //TODO: add support for union+intersection type type1|(type2&type3)
 }

@@ -12,7 +12,7 @@ use StubTests\Sources\Parsers\Entities\Stubs\Nodes\EnumNode;
  * Parser-agnostic: works with any AST node implementing EnumNode interface.
  * Uses dedicated parsers for child entities (methods).
  */
-class StubEnumParser
+class StubEnumParser implements MultiEntityStubParserInterface
 {
     public NodeExtractorInterface $nodeExtractor;
     private StubMethodParser $methodParser;
@@ -78,5 +78,23 @@ class StubEnumParser
         // Case names can be retrieved via $node->getCaseNames() if needed in future
 
         return $phpEnum;
+    }
+
+    /**
+     * Extract and parse all enums from stub content.
+     *
+     * @param string $stubContent The PHP stub file content to parse
+     * @return array Array of PHPEnum objects
+     */
+    public function extractAndParseAll(string $stubContent): array
+    {
+        $enumNodes = $this->nodeExtractor->extractAllEnums($stubContent);
+        $enums = [];
+
+        foreach ($enumNodes as $enumNode) {
+            $enums[] = $this->parseNode($enumNode);
+        }
+
+        return $enums;
     }
 }

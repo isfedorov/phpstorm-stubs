@@ -14,7 +14,7 @@ use StubTests\Sources\Parsers\Entities\Stubs\Nodes\ConstantDefinitionNode;
  * Handles const statements like: const A = 1; const int B = 2, C = 3;
  * Parser-agnostic: works with any AST node implementing ConstantDefinitionNode interface.
  */
-class StubModernConstantParser
+class StubModernConstantParser implements MultiEntityStubParserInterface
 {
     public NodeExtractorInterface $nodeExtractor;
 
@@ -76,5 +76,16 @@ class StubModernConstantParser
         }
 
         return $phpConstant;
+    }
+
+    /**
+     * Extract and parse all modern const declarations from stub content.
+     *
+     * @param string $stubContent The PHP stub file content to parse
+     * @return array Array of PHPConstant objects
+     */
+    public function extractAndParseAll(string $stubContent): array
+    {
+        return $this->parse($stubContent);
     }
 }

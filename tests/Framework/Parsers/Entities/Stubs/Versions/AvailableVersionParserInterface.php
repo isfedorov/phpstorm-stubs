@@ -1,6 +1,8 @@
 <?php
 
-namespace StubTests\Sources\Parsers\Entities\Stubs;
+namespace StubTests\Framework\Parsers\Entities\Stubs\Versions;
+
+use StubTests\Framework\Parsers\Entities\Stubs\PhpDoc\ParsedPhpDoc;
 
 /**
  * Interface for parsing available version information from PhpDoc and attributes.

@@ -5,6 +5,12 @@ namespace StubTests\Sources\Parsers\Entities\Stubs;
 use StubTests\Framework\Parsers\Entities\Model\Access\PrivateAccessModifier;
 use StubTests\Framework\Parsers\Entities\Model\Access\ProtectedAccessModifier;
 use StubTests\Framework\Parsers\Entities\Model\Access\PublicAccessModifier;
+use StubTests\Framework\Parsers\Entities\Stubs\PhpDoc\PhpDocParserInterface;
+use StubTests\Framework\Parsers\Entities\Stubs\PhpDoc\PhpDocumentorParser;
+use StubTests\Framework\Parsers\Entities\Stubs\Types\DefaultTypeParser;
+use StubTests\Framework\Parsers\Entities\Stubs\Types\TypeParserInterface;
+use StubTests\Framework\Parsers\Entities\Stubs\Versions\AvailableVersionParserInterface;
+use StubTests\Framework\Parsers\Entities\Stubs\Versions\DefaultAvailableVersionParser;
 use StubTests\Sources\Parsers\Entities\Model\PHPProperty;
 use StubTests\Sources\Parsers\Entities\Stubs\Nodes\PropertyNode;
 
@@ -53,10 +59,7 @@ class StubPropertyParser
         $property->setIsReadonly($node->isReadonly());
 
         // Parse PhpDoc using injected parser
-        $parsedPhpDoc = $this->phpDocParser->parseElementPhpDoc(
-            $node->getDocComment(),
-            $node->getAttributes()
-        );
+        $parsedPhpDoc = $this->phpDocParser->parseElementPhpDoc($node->getDocComment());
 
         // Parse type using injected type parser
         $parsedType = $this->typeParser->parseType(

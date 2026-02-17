@@ -1,6 +1,6 @@
 <?php
 
-namespace StubTests\Sources\Parsers\Entities\Stubs;
+namespace StubTests\Framework\Parsers\Entities\Stubs\PhpDoc;
 
 use phpDocumentor\Reflection\DocBlock;
 use phpDocumentor\Reflection\DocBlock\Tags\Generic;
@@ -9,7 +9,6 @@ use phpDocumentor\Reflection\DocBlock\Tags\Return_;
 use phpDocumentor\Reflection\DocBlock\Tags\Since;
 use phpDocumentor\Reflection\DocBlock\Tags\Var_;
 use phpDocumentor\Reflection\DocBlockFactory;
-use StubTests\Sources\Parsers\Entities\Stubs\Nodes\AttributeNode;
 use StubTests\Sources\Parsers\Entities\Stubs\Nodes\DocCommentNode;
 
 /**
@@ -64,16 +63,12 @@ class PhpDocumentorParser implements PhpDocParserInterface
     /**
      * @inheritDoc
      */
-    public function parseElementPhpDoc(?DocCommentNode $docComment, array $attributes): ParsedPhpDoc
+    public function parseElementPhpDoc(?DocCommentNode $docComment): ParsedPhpDoc
     {
-        // Parse PhpDoc only - version merging is handled by AvailableVersionParser
         $docText = $docComment?->getText();
         return $this->parseDocComment($docText);
     }
 
-    /**
-     * Extract the @return type from a DocBlock.
-     */
     private function extractReturnType(DocBlock $docBlock): ?string
     {
         $returnTags = $docBlock->getTagsByName('return');
@@ -90,10 +85,6 @@ class PhpDocumentorParser implements PhpDocParserInterface
         return null;
     }
 
-    /**
-     * Extract all @param types from a DocBlock as a map of parameter name => type.
-     * Parameter names are returned without the $ prefix.
-     */
     private function extractParamTypes(DocBlock $docBlock): array
     {
         $paramTypesMap = [];
@@ -115,9 +106,6 @@ class PhpDocumentorParser implements PhpDocParserInterface
         return $paramTypesMap;
     }
 
-    /**
-     * Extract the @var type from a DocBlock (typically used for properties).
-     */
     private function extractVarType(DocBlock $docBlock): ?string
     {
         $varTags = $docBlock->getTagsByName('var');
@@ -134,9 +122,6 @@ class PhpDocumentorParser implements PhpDocParserInterface
         return null;
     }
 
-    /**
-     * Extract the @since version from a DocBlock.
-     */
     private function extractSinceVersion(DocBlock $docBlock): ?string
     {
         $sinceTags = $docBlock->getTagsByName('since');
@@ -152,10 +137,6 @@ class PhpDocumentorParser implements PhpDocParserInterface
         return null;
     }
 
-    /**
-     * Extract the @removed version from a DocBlock.
-     * @removed is typically a Generic tag in phpDocumentor.
-     */
     private function extractRemovedVersion(DocBlock $docBlock): ?string
     {
         $removedTags = $docBlock->getTagsByName('removed');
@@ -171,9 +152,6 @@ class PhpDocumentorParser implements PhpDocParserInterface
         return null;
     }
 
-    /**
-     * Check if a DocBlock has a @deprecated tag.
-     */
     private function hasDeprecatedTag(DocBlock $docBlock): bool
     {
         $deprecatedTags = $docBlock->getTagsByName('deprecated');

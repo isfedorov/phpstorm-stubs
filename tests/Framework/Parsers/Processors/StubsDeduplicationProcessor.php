@@ -9,7 +9,7 @@ use StubTests\Sources\Parsers\Entities\Model\PHPEnum;
 use StubTests\Sources\Parsers\Entities\Model\PHPFunction;
 use StubTests\Sources\Parsers\Entities\Model\PHPInterface;
 
-class DeduplicationProcessor implements EntityProcessor
+class StubsDeduplicationProcessor implements EntityProcessor
 {
     private array $seenEntities = [];
 

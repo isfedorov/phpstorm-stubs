@@ -13,7 +13,7 @@ use StubTests\Sources\Parsers\Entities\Stubs\Nodes\ConstantDefinitionNode;
  * Parses global define() constant nodes from AST into PHPConstant domain objects.
  * Parser-agnostic: works with any AST node implementing ConstantDefinitionNode interface.
  */
-class StubDefineConstantParser
+class StubDefineConstantParser implements MultiEntityStubParserInterface
 {
     public NodeExtractorInterface $nodeExtractor;
 
@@ -75,5 +75,16 @@ class StubDefineConstantParser
         }
 
         return $phpConstant;
+    }
+
+    /**
+     * Extract and parse all define() constants from stub content.
+     *
+     * @param string $stubContent The PHP stub file content to parse
+     * @return array Array of PHPConstant objects
+     */
+    public function extractAndParseAll(string $stubContent): array
+    {
+        return $this->parse($stubContent);
     }
 }

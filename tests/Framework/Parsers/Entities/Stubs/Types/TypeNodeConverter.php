@@ -1,6 +1,6 @@
 <?php
 
-namespace StubTests\Sources\Parsers\Entities\Stubs;
+namespace StubTests\Framework\Parsers\Entities\Stubs\Types;
 
 use StubTests\Sources\Parsers\Entities\Model\Types\NoType;
 use StubTests\Sources\Parsers\Entities\Model\Types\NullableType;
@@ -73,6 +73,8 @@ class TypeNodeConverter
             $nullableType->addBasicType(new StandaloneType($nonNullType));
             return $nullableType;
         }
+
+        //TODO: add support for union+intersection type type1|(type2&type3)
 
         // General union type
         $unionType = new UnionType();

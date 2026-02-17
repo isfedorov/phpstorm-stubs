@@ -9,7 +9,7 @@ use StubTests\Sources\Parsers\Entities\Stubs\Nodes\ConstantNode;
  * Parses ConstantNode AST nodes into PHPClassConstant domain objects.
  * Extracts all constant metadata: name, visibility modifiers (PHP 7.1+), final flag (PHP 8.1+).
  */
-class StubConstantParser
+class StubClassConstantParser
 {
     /**
      * Parses a constant AST node into PHPClassConstant domain object.

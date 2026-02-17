@@ -3,9 +3,9 @@
 namespace StubTests\Unit\Parsers\AST;
 
 use PHPUnit\Framework\TestCase as BaseTestCase;
+use StubTests\Framework\Parsers\Entities\Stubs\Types\DefaultTypeParser;
+use StubTests\Framework\Parsers\Entities\Stubs\Types\ParsedType;
 use StubTests\Sources\Parsers\Entities\Model\PHPProperty;
-use StubTests\Sources\Parsers\Entities\Stubs\DefaultTypeParser;
-use StubTests\Sources\Parsers\Entities\Stubs\ParsedType;
 use StubTests\Sources\Parsers\Entities\Stubs\StubClassParser;
 use StubTests\Sources\Parsers\Entities\Stubs\StubFunctionParser;
 use StubTests\Unit\Parsers\AST\fixtures\FixtureStubsDataProvider;
