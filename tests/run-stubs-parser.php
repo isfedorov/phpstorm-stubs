@@ -23,6 +23,7 @@ use StubTests\Sources\Parsers\Entities\Stubs\StubFunctionParser;
 use StubTests\Sources\Parsers\Entities\Stubs\StubInterfaceParser;
 use StubTests\Sources\Parsers\Entities\Stubs\StubModernConstantParser;
 use StubTests\Sources\Parsers\JsonParsedDataStorage;
+use StubTests\Sources\Parsers\MultiFileJsonStorage;
 use StubTests\Sources\Parsers\PhpDocStorage;
 use StubTests\Sources\Parsers\Processors\StubsDeduplicationProcessor;
 use StubTests\Sources\Parsers\StubsEntitySerializer;
@@ -48,15 +49,15 @@ try {
     $dataProvider = new AllStubsDataProvider($stubsRootPath);
     echo "      ✓ Data provider created\n\n";
 
-    // Create storage manager with JSON storage and deduplication pipeline
-    echo "[2/5] Creating storage manager with separate PhpDoc storage and deduplication pipeline...\n";
+    // Create storage manager with multi-file JSON storage and deduplication pipeline
+    echo "[2/5] Creating storage manager with multi-file storage and deduplication pipeline...\n";
     $phpDocStorage = new PhpDocStorage($phpDocCacheFilePath, false); // Start fresh
     $serializer = new StubsEntitySerializer($phpDocStorage);
-    $storage = new JsonParsedDataStorage($cacheFilePath, $serializer, false, $phpDocStorage); // Start fresh, don't load existing
+    $storage = new MultiFileJsonStorage($cacheFilePath, $serializer, false, $phpDocStorage); // Multi-file storage
     $pipeline = new EntityProcessingPipeline();
     $pipeline->addProcessor(new StubsDeduplicationProcessor());
     $storageManager = new DefaultParsedDataStorageManager($storage, $pipeline);
-    echo "      ✓ Storage manager created with separate PhpDoc storage and deduplication enabled\n\n";
+    echo "      ✓ Storage manager created with multi-file storage and deduplication enabled\n\n";
 
     // Create parsers
     echo "[3/5] Creating parsers...\n";
@@ -107,17 +108,34 @@ try {
     echo "  - Constants:  " . count($constants) . "\n";
     echo "========================================\n";
 
-    $fileSize = filesize($cacheFilePath);
-    $fileSizeFormatted = number_format($fileSize / 1024 / 1024, 2);
-    $phpDocFileSize = filesize($phpDocCacheFilePath);
-    $phpDocFileSizeFormatted = number_format($phpDocFileSize / 1024 / 1024, 2);
-    echo "Output File Size:     {$fileSizeFormatted} MB\n";
-    echo "PhpDoc File Size:     {$phpDocFileSizeFormatted} MB\n";
-    echo "Total Size:           " . number_format(($fileSize + $phpDocFileSize) / 1024 / 1024, 2) . " MB\n";
+    // Calculate file sizes for all output files
+    $dir = dirname($cacheFilePath);
+    $basename = basename($cacheFilePath, '.json');
+    $fileTypes = ['Classes', 'Functions', 'Interfaces', 'Enums', 'Constants'];
+    $totalSize = 0;
+
+    echo "File Sizes:\n";
+    foreach ($fileTypes as $type) {
+        $filePath = $dir . '/' . $basename . $type . '.json';
+        if (file_exists($filePath)) {
+            $size = filesize($filePath);
+            $totalSize += $size;
+            echo "  - {$type}:       " . str_pad(number_format($size / 1024 / 1024, 2) . " MB", 10) . "\n";
+        }
+    }
+
+    if (file_exists($phpDocCacheFilePath)) {
+        $phpDocFileSize = filesize($phpDocCacheFilePath);
+        $totalSize += $phpDocFileSize;
+        echo "  - PhpDoc:      " . number_format($phpDocFileSize / 1024 / 1024, 2) . " MB\n";
+    }
+
+    echo "  ---\n";
+    echo "  Total:         " . number_format($totalSize / 1024 / 1024, 2) . " MB\n";
     echo "========================================\n\n";
 
     echo "✓ SUCCESS: Parsing completed successfully!\n";
-    echo "          Stubs output saved to: {$cacheFilePath}\n";
+    echo "          Stubs output saved to multiple files in: {$dir}/\n";
     echo "          PhpDoc output saved to: {$phpDocCacheFilePath}\n\n";
 
     exit(0);

@@ -47,6 +47,11 @@ class JsonParsedDataStorage implements ParsedDataPersistentStorageProvider
         $this->entities[] = $entity;
     }
 
+    public function clearEntities(): void
+    {
+        $this->entities = [];
+    }
+
     public function save(): void
     {
         $serializedData = [];
