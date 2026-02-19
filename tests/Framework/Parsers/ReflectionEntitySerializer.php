@@ -45,6 +45,10 @@ class ReflectionEntitySerializer implements EntitySerializerInterface
         }
 
         if (is_object($value) && !($value instanceof \stdClass) && !($value instanceof \DateTimeInterface)) {
+            // Check if object has toString() method (e.g., type objects)
+            if (method_exists($value, 'toString')) {
+                return $value->toString();
+            }
             return '[object:' . get_class($value) . ']';
         }
 
