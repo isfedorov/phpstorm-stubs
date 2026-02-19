@@ -14,6 +14,7 @@ use StubTests\Sources\Parsers\Entities\Model\PHPInterface;
 use StubTests\Sources\Parsers\Entities\Model\PHPMethod;
 use StubTests\Sources\Parsers\Entities\Model\PHPParameter;
 use StubTests\Sources\Parsers\Entities\Model\PHPProperty;
+use StubTests\Sources\Parsers\Entities\Model\Types\StandaloneType;
 
 /**
  * Serializer for reflection entities that only includes data available via PHP Reflection API.
@@ -417,7 +418,13 @@ class ReflectionEntitySerializer implements EntitySerializerInterface
         $function->setNamespace($data['namespace'] ?? null);
         $function->setId($data['id'] ?? null);
         $function->setDeprecated($data['isDeprecated'] ?? false);
-        $function->setReturnTypeFromSignature($data['returnType'] ?? null);
+
+        // Only set return type if provided and not null
+        if (isset($data['returnType']) && $data['returnType'] !== null) {
+            // For now, we only support string type names that can be converted to StandaloneType
+            $function->setReturnTypeFromSignature(new StandaloneType($data['returnType']));
+        }
+
         $function->setSourcePath($data['sourcePath'] ?? null);
         $function->setDuplicates($data['duplicates'] ?? []);
         $function->setHasTentativeReturnType($data['hasTentativeReturnType'] ?? false);
@@ -523,7 +530,11 @@ class ReflectionEntitySerializer implements EntitySerializerInterface
         }
 
         $method->setHasTentativeReturnType($data['hasTentativeReturnType'] ?? false);
-        $method->setReturnTypeFromSignature($data['returnType'] ?? null);
+
+        // Only set return type if provided and not null
+        if (isset($data['returnType']) && $data['returnType'] !== null) {
+            $method->setReturnTypeFromSignature(new StandaloneType($data['returnType']));
+        }
 
         return $method;
     }
@@ -537,8 +548,9 @@ class ReflectionEntitySerializer implements EntitySerializerInterface
         $parameter->setIsPassedByReference($data['isPassedByReference'] ?? false);
         $parameter->setHasDefaultValue($data['hasDefaultValue'] ?? false);
 
-        if (isset($data['type'])) {
-            $parameter->setType($data['type']);
+        // Only set type if provided and not null
+        if (isset($data['type']) && $data['type'] !== null) {
+            $parameter->setType(new StandaloneType($data['type']));
         }
 
         if (isset($data['defaultValue'])) {
@@ -554,7 +566,6 @@ class ReflectionEntitySerializer implements EntitySerializerInterface
         $property->setName($data['name'] ?? '');
         $property->setIsStatic($data['isStatic'] ?? false);
         $property->setIsReadonly($data['isReadonly'] ?? false);
-        $property->setTypeFromSignature($data['type'] ?? null);
 
         // Deserialize access modifier
         $accessModifier = $data['accessModifier'] ?? 'public';
@@ -566,8 +577,9 @@ class ReflectionEntitySerializer implements EntitySerializerInterface
             $property->setAccess(new PublicAccessModifier());
         }
 
-        if (isset($data['type'])) {
-            $property->setTypeFromSignature($data['type']);
+        // Only set type if provided and not null
+        if (isset($data['type']) && $data['type'] !== null) {
+            $property->setTypeFromSignature(new StandaloneType($data['type']));
         }
 
         return $property;
