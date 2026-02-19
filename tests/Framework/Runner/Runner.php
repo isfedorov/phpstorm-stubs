@@ -13,6 +13,8 @@ use StubTests\Sources\Parsers\DefaultParsedDataStorageManager;
 use StubTests\Sources\Parsers\InMemoryParsedDataStorage;
 use StubTests\Sources\Parsers\JsonParsedDataStorage;
 use StubTests\Sources\Parsers\ParsedDataStorageManager;
+use StubTests\Sources\Parsers\PhpDocStorage;
+use StubTests\Sources\Parsers\StubsEntitySerializer;
 
 class Runner
 {
@@ -45,15 +47,20 @@ class Runner
     public static function getStubs(): ParsedDataStorageManager
     {
         $cacheFilePath = __DIR__ . "/../../cache/Stubs.json";
+        $phpDocCacheFilePath = __DIR__ . "/../../cache/StubsPhpDoc.json";
 
         if (file_exists($cacheFilePath)) {
-            // Load from cache
-            return new DefaultParsedDataStorageManager(new JsonParsedDataStorage($cacheFilePath));
+            // Load from cache with PhpDoc storage
+            $phpDocStorage = new PhpDocStorage($phpDocCacheFilePath);
+            $serializer = new StubsEntitySerializer($phpDocStorage);
+            $storage = new JsonParsedDataStorage($cacheFilePath, $serializer, true, $phpDocStorage);
+            return new DefaultParsedDataStorageManager($storage);
         } else {
             // Parse stubs and save to cache
-            $parsedStubsDataStorageManager = new DefaultParsedDataStorageManager(
-                new JsonParsedDataStorage($cacheFilePath)
-            );
+            $phpDocStorage = new PhpDocStorage($phpDocCacheFilePath, false);
+            $serializer = new StubsEntitySerializer($phpDocStorage);
+            $storage = new JsonParsedDataStorage($cacheFilePath, $serializer, false, $phpDocStorage);
+            $parsedStubsDataStorageManager = new DefaultParsedDataStorageManager($storage);
             $parser = new AllStubsParser(
                 new AllStubsDataProvider(),
                 $parsedStubsDataStorageManager,

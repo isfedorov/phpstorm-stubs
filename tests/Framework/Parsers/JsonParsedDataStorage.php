@@ -5,11 +5,13 @@ namespace StubTests\Sources\Parsers;
 /**
  * JSON storage for parsed entities.
  * Handles file I/O operations while delegating serialization to a pluggable serializer.
+ * Optionally coordinates with PhpDocStorage for separated PhpDoc storage.
  */
 class JsonParsedDataStorage implements ParsedDataPersistentStorageProvider
 {
     private string $pathToJsonFile;
     private EntitySerializerInterface $serializer;
+    private ?PhpDocStorage $phpDocStorage = null;
     private array $entities = [];
     private bool $loaded = false;
 
@@ -17,14 +19,17 @@ class JsonParsedDataStorage implements ParsedDataPersistentStorageProvider
      * @param string $pathToJsonFile Path to JSON file
      * @param EntitySerializerInterface $serializer Serializer to use (StubsEntitySerializer or ReflectionEntitySerializer)
      * @param bool $loadExisting Whether to load existing file
+     * @param PhpDocStorage|null $phpDocStorage Optional PhpDoc storage for separated PhpDoc
      */
     public function __construct(
         string $pathToJsonFile,
         EntitySerializerInterface $serializer,
-        bool $loadExisting = true
+        bool $loadExisting = true,
+        ?PhpDocStorage $phpDocStorage = null
     ) {
         $this->pathToJsonFile = $pathToJsonFile;
         $this->serializer = $serializer;
+        $this->phpDocStorage = $phpDocStorage;
         if ($loadExisting) {
             $this->load();
         } else {
@@ -74,6 +79,11 @@ class JsonParsedDataStorage implements ParsedDataPersistentStorageProvider
 
         if ($bytes === false) {
             throw new \RuntimeException('Failed to write to file: ' . $this->pathToJsonFile);
+        }
+
+        // Save PhpDocStorage if present
+        if ($this->phpDocStorage !== null) {
+            $this->phpDocStorage->save();
         }
     }
 

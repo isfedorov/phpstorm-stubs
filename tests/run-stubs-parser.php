@@ -23,6 +23,7 @@ use StubTests\Sources\Parsers\Entities\Stubs\StubFunctionParser;
 use StubTests\Sources\Parsers\Entities\Stubs\StubInterfaceParser;
 use StubTests\Sources\Parsers\Entities\Stubs\StubModernConstantParser;
 use StubTests\Sources\Parsers\JsonParsedDataStorage;
+use StubTests\Sources\Parsers\PhpDocStorage;
 use StubTests\Sources\Parsers\Processors\StubsDeduplicationProcessor;
 use StubTests\Sources\Parsers\StubsEntitySerializer;
 
@@ -35,9 +36,11 @@ echo "========================================\n\n";
 // Setup paths
 $stubsRootPath = dirname(__DIR__);
 $cacheFilePath = __DIR__ . "/cache/Stubs.json";
+$phpDocCacheFilePath = __DIR__ . "/cache/StubsPhpDoc.json";
 
 echo "Stubs Root: {$stubsRootPath}\n";
-echo "Output File: {$cacheFilePath}\n\n";
+echo "Output File: {$cacheFilePath}\n";
+echo "PhpDoc File: {$phpDocCacheFilePath}\n\n";
 
 try {
     // Create data provider
@@ -46,12 +49,14 @@ try {
     echo "      ✓ Data provider created\n\n";
 
     // Create storage manager with JSON storage and deduplication pipeline
-    echo "[2/5] Creating storage manager with deduplication pipeline...\n";
-    $storage = new JsonParsedDataStorage($cacheFilePath, new StubsEntitySerializer(), false); // Start fresh, don't load existing
+    echo "[2/5] Creating storage manager with separate PhpDoc storage and deduplication pipeline...\n";
+    $phpDocStorage = new PhpDocStorage($phpDocCacheFilePath, false); // Start fresh
+    $serializer = new StubsEntitySerializer($phpDocStorage);
+    $storage = new JsonParsedDataStorage($cacheFilePath, $serializer, false, $phpDocStorage); // Start fresh, don't load existing
     $pipeline = new EntityProcessingPipeline();
     $pipeline->addProcessor(new StubsDeduplicationProcessor());
     $storageManager = new DefaultParsedDataStorageManager($storage, $pipeline);
-    echo "      ✓ Storage manager created with deduplication enabled\n\n";
+    echo "      ✓ Storage manager created with separate PhpDoc storage and deduplication enabled\n\n";
 
     // Create parsers
     echo "[3/5] Creating parsers...\n";
@@ -104,11 +109,16 @@ try {
 
     $fileSize = filesize($cacheFilePath);
     $fileSizeFormatted = number_format($fileSize / 1024 / 1024, 2);
-    echo "Output File Size: {$fileSizeFormatted} MB\n";
+    $phpDocFileSize = filesize($phpDocCacheFilePath);
+    $phpDocFileSizeFormatted = number_format($phpDocFileSize / 1024 / 1024, 2);
+    echo "Output File Size:     {$fileSizeFormatted} MB\n";
+    echo "PhpDoc File Size:     {$phpDocFileSizeFormatted} MB\n";
+    echo "Total Size:           " . number_format(($fileSize + $phpDocFileSize) / 1024 / 1024, 2) . " MB\n";
     echo "========================================\n\n";
 
     echo "✓ SUCCESS: Parsing completed successfully!\n";
-    echo "          Output saved to: {$cacheFilePath}\n\n";
+    echo "          Stubs output saved to: {$cacheFilePath}\n";
+    echo "          PhpDoc output saved to: {$phpDocCacheFilePath}\n\n";
 
     exit(0);
 
