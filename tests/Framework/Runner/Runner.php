@@ -15,6 +15,7 @@ use StubTests\Sources\Parsers\JsonParsedDataStorage;
 use StubTests\Sources\Parsers\MultiFileJsonStorage;
 use StubTests\Sources\Parsers\ParsedDataStorageManager;
 use StubTests\Sources\Parsers\PhpDocStorage;
+use StubTests\Sources\Parsers\ReflectionEntitySerializer;
 use StubTests\Sources\Parsers\StubsEntitySerializer;
 
 class Runner
@@ -23,14 +24,17 @@ class Runner
     public static function getReflection(string $phpVersion): ParsedDataStorageManager
     {
         $cacheFilePath = __DIR__ . "/../../cache/Reflection$phpVersion.json";
+        $serializer = new ReflectionEntitySerializer();
 
         if (file_exists($cacheFilePath)) {
             // Load from cache
-            return new DefaultParsedDataStorageManager(new JsonParsedDataStorage($cacheFilePath));
+            return new DefaultParsedDataStorageManager(
+                new JsonParsedDataStorage($cacheFilePath, $serializer, true)
+            );
         } else {
             // Parse reflection data and save to cache
             $parsedReflectionDataStorageManager = new DefaultParsedDataStorageManager(
-                new JsonParsedDataStorage($cacheFilePath)
+                new JsonParsedDataStorage($cacheFilePath, $serializer, false)
             );
             $parser = new AllReflectionParser(
                 new CurrentRuntimeReflectionRawDataProvider(),
