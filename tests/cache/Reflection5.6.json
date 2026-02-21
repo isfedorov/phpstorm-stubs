@@ -118094,7 +118094,7 @@
         "_type": "PHPConstant",
         "name": "CHAR_MAX",
         "id": "\\CHAR_MAX",
-        "value": 127,
+        "value": 255,
         "sourcePath": null,
         "duplicates": [],
         "namespace": "\\"
