@@ -17,29 +17,29 @@ class ReturnTypesCheck implements CheckInterface
         return version_compare($phpVersion, '7.0', '>=');
     }
 
-    public function run(ParsedDataStorageManager $stubs, string $functionOrMethodId, string $phpVersion): CheckResultSet
+    public function run(ParsedDataStorageManager $stubs, string $entityId, string $phpVersion): CheckResultSet
     {
         $results = new CheckResultSet();
 
         // Get the function/method from reflection
         $reflection = \StubTests\Sources\Runner\Runner::getReflection($phpVersion);
-        $reflectionCallable = $this->findCallable($reflection, $functionOrMethodId);
+        $reflectionCallable = $this->findCallable($reflection, $entityId);
 
         if ($reflectionCallable === null) {
             $results->addFailure(
-                $functionOrMethodId,
-                "Function/method {$functionOrMethodId} not found in reflection data"
+				$entityId,
+	            "Function/method {$entityId} not found in reflection data"
             );
             return $results;
         }
 
         // Get the function/method from stubs
-        $stubCallable = $this->findCallable($stubs, $functionOrMethodId);
+        $stubCallable = $this->findCallable($stubs, $entityId);
 
         if ($stubCallable === null) {
             $results->addFailure(
-                $functionOrMethodId,
-                "Function/method {$functionOrMethodId} not found in stubs"
+				$entityId,
+	            "Function/method {$entityId} not found in stubs"
             );
             return $results;
         }
@@ -51,12 +51,12 @@ class ReturnTypesCheck implements CheckInterface
         // Compare return types
         if ($reflectionReturnType !== $stubReturnType) {
             $results->addFailure(
-                $functionOrMethodId,
-                "Return type mismatch: reflection has '{$reflectionReturnType}', " .
+				$entityId,
+	            "Return type mismatch: reflection has '{$reflectionReturnType}', " .
                 "stubs have '{$stubReturnType}'"
             );
         } else {
-            $results->addSuccess($functionOrMethodId);
+            $results->addSuccess($entityId);
         }
 
         return $results;

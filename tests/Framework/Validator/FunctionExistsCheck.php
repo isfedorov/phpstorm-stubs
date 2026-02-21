@@ -15,7 +15,7 @@ class FunctionExistsCheck implements CheckInterface
         return true;
     }
 
-    public function run(ParsedDataStorageManager $stubs, string $functionId, string $phpVersion): CheckResultSet
+    public function run(ParsedDataStorageManager $stubs, string $entityId, string $phpVersion): CheckResultSet
     {
         $results = new CheckResultSet();
 
@@ -24,10 +24,10 @@ class FunctionExistsCheck implements CheckInterface
         $found = false;
 
         foreach ($stubFunctions as $stubFunction) {
-            if (method_exists($stubFunction, 'getId') && $stubFunction->getId() === $functionId) {
+            if (method_exists($stubFunction, 'getId') && $stubFunction->getId() === $entityId) {
                 $found = true;
                 break;
-            } elseif (method_exists($stubFunction, 'getName') && $stubFunction->getName() === $functionId) {
+            } elseif (method_exists($stubFunction, 'getName') && $stubFunction->getName() === $entityId) {
                 $found = true;
                 break;
             }
@@ -35,11 +35,11 @@ class FunctionExistsCheck implements CheckInterface
 
         if (!$found) {
             $results->addFailure(
-                $functionId,
-                "Function {$functionId} exists in PHP {$phpVersion} but not in stubs"
+				$entityId,
+	            "Function {$entityId} exists in PHP {$phpVersion} but not in stubs"
             );
         } else {
-            $results->addSuccess($functionId);
+            $results->addSuccess($entityId);
         }
 
         return $results;

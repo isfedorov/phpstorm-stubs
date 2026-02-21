@@ -21,29 +21,29 @@ class ParameterTypesCheck implements CheckInterface
         return version_compare($phpVersion, '7.0', '>=');
     }
 
-    public function run(ParsedDataStorageManager $stubs, string $functionOrMethodId, string $phpVersion): CheckResultSet
+    public function run(ParsedDataStorageManager $stubs, string $entityId, string $phpVersion): CheckResultSet
     {
         $results = new CheckResultSet();
 
         // Get the function/method from reflection
         $reflection = \StubTests\Sources\Runner\Runner::getReflection($phpVersion);
-        $reflectionCallable = $this->findCallable($reflection, $functionOrMethodId);
+        $reflectionCallable = $this->findCallable($reflection, $entityId);
 
         if ($reflectionCallable === null) {
             $results->addFailure(
-                $functionOrMethodId,
-                "Function/method {$functionOrMethodId} not found in reflection data"
+				$entityId,
+	            "Function/method {$entityId} not found in reflection data"
             );
             return $results;
         }
 
         // Get the function/method from stubs
-        $stubCallable = $this->findCallable($stubs, $functionOrMethodId);
+        $stubCallable = $this->findCallable($stubs, $entityId);
 
         if ($stubCallable === null) {
             $results->addFailure(
-                $functionOrMethodId,
-                "Function/method {$functionOrMethodId} not found in stubs"
+				$entityId,
+	            "Function/method {$entityId} not found in stubs"
             );
             return $results;
         }
@@ -59,8 +59,8 @@ class ParameterTypesCheck implements CheckInterface
         // Check parameter count matches
         if (count($reflectionParams) !== count($stubParams)) {
             $results->addFailure(
-                $functionOrMethodId,
-                "Parameter count mismatch: reflection has " . count($reflectionParams) .
+				$entityId,
+	            "Parameter count mismatch: reflection has " . count($reflectionParams) .
                 " parameters, stubs have " . count($stubParams) . " parameters"
             );
             return $results;
@@ -72,8 +72,8 @@ class ParameterTypesCheck implements CheckInterface
 
             if ($stubParam === null) {
                 $results->addFailure(
-                    $functionOrMethodId,
-                    "Parameter #{$index} missing in stubs"
+					$entityId,
+	                "Parameter #{$index} missing in stubs"
                 );
                 continue;
             }
@@ -84,15 +84,15 @@ class ParameterTypesCheck implements CheckInterface
             if ($reflectionType !== $stubType) {
                 $paramName = method_exists($reflectionParam, 'getName') ? $reflectionParam->getName() : "#{$index}";
                 $results->addFailure(
-                    $functionOrMethodId,
-                    "Parameter '{$paramName}' type mismatch: reflection has '{$reflectionType}', " .
+					$entityId,
+	                "Parameter '{$paramName}' type mismatch: reflection has '{$reflectionType}', " .
                     "stubs have '{$stubType}'"
                 );
             }
         }
 
         if (!$results->hasFailures()) {
-            $results->addSuccess($functionOrMethodId);
+            $results->addSuccess($entityId);
         }
 
         return $results;

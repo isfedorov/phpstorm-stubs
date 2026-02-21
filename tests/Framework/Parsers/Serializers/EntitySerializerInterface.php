@@ -1,6 +1,6 @@
 <?php
 
-namespace StubTests\Sources\Parsers;
+namespace StubTests\Sources\Parsers\Serializers;
 
 /**
  * Interface for entity serialization strategies.

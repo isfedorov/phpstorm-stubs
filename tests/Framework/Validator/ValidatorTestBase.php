@@ -2,6 +2,7 @@
 
 namespace StubTests\Framework\Validator;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 use StubTests\Sources\Runner\PhpVersionRange;
@@ -65,11 +66,7 @@ abstract class ValidatorTestBase extends TestCase
         }
     }
 
-    /**
-     * Single test method that executes the appropriate validation method.
-     *
-     * @dataProvider entityProvider
-     */
+    #[DataProvider('entityProvider')]
     public function testEntity(string $methodName, string $entityId, string $phpVersion): void
     {
         if (!method_exists($this, $methodName)) {

@@ -17,17 +17,17 @@ class MethodExistsCheck implements CheckInterface
         return true;
     }
 
-    public function run(ParsedDataStorageManager $stubs, string $methodId, string $phpVersion): CheckResultSet
+    public function run(ParsedDataStorageManager $stubs, string $entityId, string $phpVersion): CheckResultSet
     {
         $results = new CheckResultSet();
 
         // Parse method ID (format: ClassName::methodName or \Namespace\ClassName::methodName)
-        if (!str_contains($methodId, '::')) {
-            $results->addFailure($methodId, "Invalid method ID format. Expected 'ClassName::methodName'");
+        if (!str_contains($entityId, '::')) {
+            $results->addFailure($entityId, "Invalid method ID format. Expected 'ClassName::methodName'");
             return $results;
         }
 
-        [$className, $methodName] = explode('::', $methodId, 2);
+        [$className, $methodName] = explode('::', $entityId, 2);
 
         // Get the class from stubs
         $stubClasses = $stubs->getClasses();
@@ -45,8 +45,8 @@ class MethodExistsCheck implements CheckInterface
 
         if ($stubClass === null) {
             $results->addFailure(
-                $methodId,
-                "Class {$className} not found in stubs (required to check method {$methodName})"
+				$entityId,
+	            "Class {$className} not found in stubs (required to check method {$methodName})"
             );
             return $results;
         }
@@ -66,11 +66,11 @@ class MethodExistsCheck implements CheckInterface
 
         if (!$found) {
             $results->addFailure(
-                $methodId,
-                "Method {$methodId} exists in PHP {$phpVersion} but not in stubs"
+				$entityId,
+	            "Method {$entityId} exists in PHP {$phpVersion} but not in stubs"
             );
         } else {
-            $results->addSuccess($methodId);
+            $results->addSuccess($entityId);
         }
 
         return $results;

@@ -1,6 +1,6 @@
 <?php
 
-namespace StubTests\Sources\Parsers;
+namespace StubTests\Sources\Parsers\Serializers;
 
 use StubTests\Framework\Parsers\Entities\Model\Access\PrivateAccessModifier;
 use StubTests\Framework\Parsers\Entities\Model\Access\ProtectedAccessModifier;
@@ -17,21 +17,21 @@ use StubTests\Sources\Parsers\Entities\Model\PHPProperty;
 use StubTests\Sources\Parsers\Entities\Model\Types\StandaloneType;
 
 /**
- * Serializer for stub entities that includes all stub-specific metadata:
- * - PhpDoc comments (raw text)
- * - Version information (sinceVersion, removedVersion)
- * - Type information from multiple sources (signature, PhpDoc, LanguageLevelTypeAware)
- * - LanguageLevelTypeAware attribute data (version-specific types)
+ * Serializer for reflection entities that only includes data available via PHP Reflection API.
+ *
+ * EXPLICITLY EXCLUDES stub-specific metadata:
+ * - NO PhpDoc comments (not available via Reflection API)
+ * - NO sinceVersion/removedVersion (stubs-only metadata)
+ * - NO typeFromPhpDoc (PhpDoc not available)
+ * - NO LanguageLevelTypeAware data (stubs-only attribute)
+ *
+ * INCLUDES reflection-specific data:
+ * - Signature types (actual PHP types from runtime)
+ * - Tentative return types (PHP 8.1+ feature)
+ * - Method/property visibility and modifiers
  */
-class StubsEntitySerializer implements EntitySerializerInterface
+class ReflectionEntitySerializer implements EntitySerializerInterface
 {
-    private ?PhpDocStorage $phpDocStorage = null;
-
-    public function __construct(?PhpDocStorage $phpDocStorage = null)
-    {
-        $this->phpDocStorage = $phpDocStorage;
-    }
-
     /**
      * Convert value to JSON-safe format, filtering out resources and closures
      */
@@ -50,7 +50,6 @@ class StubsEntitySerializer implements EntitySerializerInterface
             if (method_exists($value, 'toString')) {
                 return $value->toString();
             }
-            // Skip complex objects that aren't basic types
             return '[object:' . get_class($value) . ']';
         }
 
@@ -59,20 +58,6 @@ class StubsEntitySerializer implements EntitySerializerInterface
         }
 
         return $value;
-    }
-
-    /**
-     * Handle PhpDoc serialization - either store in separate file or inline
-     */
-    private function serializePhpDoc(?string $entityId, ?string $phpDoc): ?string
-    {
-        if ($this->phpDocStorage !== null && $entityId !== null) {
-            // Store in separate PhpDoc storage
-            $this->phpDocStorage->setPhpDoc($entityId, $phpDoc);
-            return null; // Return null to indicate it's stored externally
-        }
-        // Store inline
-        return $this->toJsonSafe($phpDoc);
     }
 
     public function serialize($entity): array
@@ -131,28 +116,22 @@ class StubsEntitySerializer implements EntitySerializerInterface
             'duplicates' => $this->toJsonSafe($entity->getDuplicates()),
         ];
 
-        // Safely get namespace
         try {
             $data['namespace'] = $this->toJsonSafe($entity->getNamespace());
         } catch (\Error $e) {
             $data['namespace'] = null;
         }
 
-        // Stub-specific metadata
-        $data['phpDoc'] = $this->serializePhpDoc($entity->getId(), $entity->getPhpDoc());
-        $data['sinceVersion'] = $this->toJsonSafe($entity->getSinceVersion());
-        $data['removedVersion'] = $this->toJsonSafe($entity->getRemovedVersion());
-
         // Serialize methods
         $data['methods'] = [];
         foreach ($entity->methods as $method) {
-            $data['methods'][] = $this->serializeMethod($method, $entity->getId());
+            $data['methods'][] = $this->serializeMethod($method);
         }
 
         // Serialize properties
         $data['properties'] = [];
         foreach ($entity->properties as $property) {
-            $data['properties'][] = $this->serializeProperty($property, $entity->getId());
+            $data['properties'][] = $this->serializeProperty($property);
         }
 
         // Serialize constants
@@ -209,14 +188,6 @@ class StubsEntitySerializer implements EntitySerializerInterface
             $data['hasTentativeReturnType'] = false;
         }
 
-        // Stub-specific metadata
-        $data['phpDoc'] = $this->serializePhpDoc($entity->getId(), $entity->getPhpDoc());
-        $data['sinceVersion'] = $this->toJsonSafe($entity->getSinceVersion());
-        $data['removedVersion'] = $this->toJsonSafe($entity->getRemovedVersion());
-        $data['returnTypeFromPhpDoc'] = $this->toJsonSafe($entity->getReturnTypeFromPhpDoc());
-        $data['languageLevelTypes'] = $this->toJsonSafe($entity->getLanguageLevelTypes());
-        $data['defaultType'] = $this->toJsonSafe($entity->getDefaultType());
-
         // Serialize parameters
         try {
             $parameters = $entity->getParameters();
@@ -247,15 +218,10 @@ class StubsEntitySerializer implements EntitySerializerInterface
             $data['namespace'] = null;
         }
 
-        // Stub-specific metadata
-        $data['phpDoc'] = $this->serializePhpDoc($entity->getId(), $entity->getPhpDoc());
-        $data['sinceVersion'] = $this->toJsonSafe($entity->getSinceVersion());
-        $data['removedVersion'] = $this->toJsonSafe($entity->getRemovedVersion());
-
         // Serialize methods
         $data['methods'] = [];
         foreach ($entity->methods as $method) {
-            $data['methods'][] = $this->serializeMethod($method, $entity->getId());
+            $data['methods'][] = $this->serializeMethod($method);
         }
 
         // Serialize constants
@@ -285,15 +251,10 @@ class StubsEntitySerializer implements EntitySerializerInterface
             $data['namespace'] = null;
         }
 
-        // Stub-specific metadata
-        $data['phpDoc'] = $this->serializePhpDoc($entity->getId(), $entity->getPhpDoc());
-        $data['sinceVersion'] = $this->toJsonSafe($entity->getSinceVersion());
-        $data['removedVersion'] = $this->toJsonSafe($entity->getRemovedVersion());
-
         // Serialize methods
         $data['methods'] = [];
         foreach ($entity->methods as $method) {
-            $data['methods'][] = $this->serializeMethod($method, $entity->getId());
+            $data['methods'][] = $this->serializeMethod($method);
         }
 
         // Serialize interfaces (just store the names)
@@ -322,15 +283,10 @@ class StubsEntitySerializer implements EntitySerializerInterface
             $data['namespace'] = null;
         }
 
-        // Stub-specific metadata
-        $data['phpDoc'] = $this->serializePhpDoc($entity->getId(), $entity->getPhpDoc());
-        $data['sinceVersion'] = $this->toJsonSafe($entity->getSinceVersion());
-        $data['removedVersion'] = $this->toJsonSafe($entity->getRemovedVersion());
-
         return $data;
     }
 
-    private function serializeMethod(PHPMethod $method, ?string $parentId = null): array
+    private function serializeMethod(PHPMethod $method): array
     {
         $data = [
             'name' => $method->getName(),
@@ -357,17 +313,7 @@ class StubsEntitySerializer implements EntitySerializerInterface
         // Serialize return type (always a type object)
         $type = $method->getReturnTypeFromSignature();
         $data['returnType'] = $type?->toString() ?? null;
-
         $data['hasTentativeReturnType'] = $this->toJsonSafe($method->hasTentativeReturnType());
-
-        // Stub-specific metadata - use parent ID + method name for PhpDoc storage
-        $methodId = $parentId ? $parentId . '::' . $method->getName() : null;
-        $data['phpDoc'] = $this->serializePhpDoc($methodId, $method->getPhpDoc());
-        $data['sinceVersion'] = $this->toJsonSafe($method->getSinceVersion());
-        $data['removedVersion'] = $this->toJsonSafe($method->getRemovedVersion());
-        $data['returnTypeFromPhpDoc'] = $this->toJsonSafe($method->getReturnTypeFromPhpDoc());
-        $data['languageLevelTypes'] = $this->toJsonSafe($method->getLanguageLevelTypes());
-        $data['defaultType'] = $this->toJsonSafe($method->getDefaultType());
 
         return $data;
     }
@@ -393,17 +339,10 @@ class StubsEntitySerializer implements EntitySerializerInterface
             $data['defaultValue'] = null;
         }
 
-        // Stub-specific metadata
-        $data['typeFromPhpDoc'] = $this->toJsonSafe($parameter->getTypeFromPhpDoc());
-        $data['languageLevelTypes'] = $this->toJsonSafe($parameter->getLanguageLevelTypes());
-        $data['defaultType'] = $this->toJsonSafe($parameter->getDefaultType());
-        $data['sinceVersion'] = $this->toJsonSafe($parameter->getSinceVersion());
-        $data['removedVersion'] = $this->toJsonSafe($parameter->getRemovedVersion());
-
         return $data;
     }
 
-    private function serializeProperty(PHPProperty $property, ?string $parentId = null): array
+    private function serializeProperty(PHPProperty $property): array
     {
         $data = [
             'name' => $property->getName(),
@@ -423,15 +362,6 @@ class StubsEntitySerializer implements EntitySerializerInterface
         $type = $property->getType();
         $data['type'] = $type?->toString() ?? null;
 
-        // Stub-specific metadata - use parent ID + property name for PhpDoc storage
-        $propertyId = $parentId ? $parentId . '::$' . $property->getName() : null;
-        $data['phpDoc'] = $this->serializePhpDoc($propertyId, $property->getPhpDoc());
-        $data['sinceVersion'] = $this->toJsonSafe($property->getSinceVersion());
-        $data['removedVersion'] = $this->toJsonSafe($property->getRemovedVersion());
-        $data['typeFromPhpDoc'] = $this->toJsonSafe($property->getTypeFromPhpDoc());
-        $data['languageLevelTypes'] = $this->toJsonSafe($property->getLanguageLevelTypes());
-        $data['defaultType'] = $this->toJsonSafe($property->getDefaultType());
-
         return $data;
     }
 
@@ -445,25 +375,7 @@ class StubsEntitySerializer implements EntitySerializerInterface
         ];
     }
 
-    /**
-     * Deserialize PhpDoc - either from inline data or external storage
-     */
-    private function deserializePhpDoc(?string $entityId, ?string $inlinePhpDoc): ?string
-    {
-        // If inline PhpDoc is present, use it
-        if ($inlinePhpDoc !== null) {
-            return $inlinePhpDoc;
-        }
-
-        // Otherwise, try to load from external storage
-        if ($this->phpDocStorage !== null && $entityId !== null) {
-            return $this->phpDocStorage->getPhpDoc($entityId);
-        }
-
-        return null;
-    }
-
-    // Deserialization methods...
+    // Deserialization methods (same as before - no stub metadata)
     private function deserializeClass(array $data): PHPClass
     {
         $class = new PHPClass();
@@ -475,23 +387,17 @@ class StubsEntitySerializer implements EntitySerializerInterface
         $class->setSourcePath($data['sourcePath'] ?? null);
         $class->setDuplicates($data['duplicates'] ?? []);
 
-        // Stub-specific metadata
-        $classId = $data['id'] ?? null;
-        $class->setPhpDoc($this->deserializePhpDoc($classId, $data['phpDoc'] ?? null));
-        $class->setSinceVersion($data['sinceVersion'] ?? null);
-        $class->setRemovedVersion($data['removedVersion'] ?? null);
-
         // Deserialize methods
         if (isset($data['methods']) && is_array($data['methods'])) {
             foreach ($data['methods'] as $methodData) {
-                $class->methods[] = $this->deserializeMethod($methodData, $classId);
+                $class->methods[] = $this->deserializeMethod($methodData);
             }
         }
 
         // Deserialize properties
         if (isset($data['properties']) && is_array($data['properties'])) {
             foreach ($data['properties'] as $propertyData) {
-                $class->properties[] = $this->deserializeProperty($propertyData, $classId);
+                $class->properties[] = $this->deserializeProperty($propertyData);
             }
         }
 
@@ -515,21 +421,13 @@ class StubsEntitySerializer implements EntitySerializerInterface
 
         // Only set return type if provided and not null
         if (isset($data['returnType']) && $data['returnType'] !== null) {
+            // For now, we only support string type names that can be converted to StandaloneType
             $function->setReturnTypeFromSignature(new StandaloneType($data['returnType']));
         }
 
         $function->setSourcePath($data['sourcePath'] ?? null);
         $function->setDuplicates($data['duplicates'] ?? []);
         $function->setHasTentativeReturnType($data['hasTentativeReturnType'] ?? false);
-
-        // Stub-specific metadata
-        $functionId = $data['id'] ?? null;
-        $function->setPhpDoc($this->deserializePhpDoc($functionId, $data['phpDoc'] ?? null));
-        $function->setSinceVersion($data['sinceVersion'] ?? null);
-        $function->setRemovedVersion($data['removedVersion'] ?? null);
-        $function->setReturnTypeFromPhpDoc($data['returnTypeFromPhpDoc'] ?? null);
-        $function->setLanguageLevelTypes($data['languageLevelTypes'] ?? null);
-        $function->setDefaultType($data['defaultType'] ?? null);
 
         // Deserialize parameters
         if (isset($data['parameters']) && is_array($data['parameters'])) {
@@ -552,16 +450,10 @@ class StubsEntitySerializer implements EntitySerializerInterface
         $interface->setSourcePath($data['sourcePath'] ?? null);
         $interface->setDuplicates($data['duplicates'] ?? []);
 
-        // Stub-specific metadata
-        $interfaceId = $data['id'] ?? null;
-        $interface->setPhpDoc($this->deserializePhpDoc($interfaceId, $data['phpDoc'] ?? null));
-        $interface->setSinceVersion($data['sinceVersion'] ?? null);
-        $interface->setRemovedVersion($data['removedVersion'] ?? null);
-
         // Deserialize methods
         if (isset($data['methods']) && is_array($data['methods'])) {
             foreach ($data['methods'] as $methodData) {
-                $interface->methods[] = $this->deserializeMethod($methodData, $interfaceId);
+                $interface->methods[] = $this->deserializeMethod($methodData);
             }
         }
 
@@ -586,16 +478,10 @@ class StubsEntitySerializer implements EntitySerializerInterface
         $enum->setSourcePath($data['sourcePath'] ?? null);
         $enum->setDuplicates($data['duplicates'] ?? []);
 
-        // Stub-specific metadata
-        $enumId = $data['id'] ?? null;
-        $enum->setPhpDoc($this->deserializePhpDoc($enumId, $data['phpDoc'] ?? null));
-        $enum->setSinceVersion($data['sinceVersion'] ?? null);
-        $enum->setRemovedVersion($data['removedVersion'] ?? null);
-
         // Deserialize methods
         if (isset($data['methods']) && is_array($data['methods'])) {
             foreach ($data['methods'] as $methodData) {
-                $enum->methods[] = $this->deserializeMethod($methodData, $enumId);
+                $enum->methods[] = $this->deserializeMethod($methodData);
             }
         }
 
@@ -612,16 +498,10 @@ class StubsEntitySerializer implements EntitySerializerInterface
         $constant->setSourcePath($data['sourcePath'] ?? null);
         $constant->setDuplicates($data['duplicates'] ?? []);
 
-        // Stub-specific metadata
-        $constantId = $data['id'] ?? null;
-        $constant->setPhpDoc($this->deserializePhpDoc($constantId, $data['phpDoc'] ?? null));
-        $constant->setSinceVersion($data['sinceVersion'] ?? null);
-        $constant->setRemovedVersion($data['removedVersion'] ?? null);
-
         return $constant;
     }
 
-    private function deserializeMethod(array $data, ?string $parentId = null): PHPMethod
+    private function deserializeMethod(array $data): PHPMethod
     {
         $method = new PHPMethod();
         $method->setName($data['name'] ?? '');
@@ -656,16 +536,6 @@ class StubsEntitySerializer implements EntitySerializerInterface
             $method->setReturnTypeFromSignature(new StandaloneType($data['returnType']));
         }
 
-        // Stub-specific metadata
-        $methodName = $data['name'] ?? '';
-        $methodId = $parentId ? $parentId . '::' . $methodName : null;
-        $method->setPhpDoc($this->deserializePhpDoc($methodId, $data['phpDoc'] ?? null));
-        $method->setSinceVersion($data['sinceVersion'] ?? null);
-        $method->setRemovedVersion($data['removedVersion'] ?? null);
-        $method->setReturnTypeFromPhpDoc($data['returnTypeFromPhpDoc'] ?? null);
-        $method->setLanguageLevelTypes($data['languageLevelTypes'] ?? null);
-        $method->setDefaultType($data['defaultType'] ?? null);
-
         return $method;
     }
 
@@ -687,17 +557,10 @@ class StubsEntitySerializer implements EntitySerializerInterface
             $parameter->setDefaultValue($data['defaultValue']);
         }
 
-        // Stub-specific metadata
-        $parameter->setTypeFromPhpDoc($data['typeFromPhpDoc'] ?? null);
-        $parameter->setLanguageLevelTypes($data['languageLevelTypes'] ?? null);
-        $parameter->setDefaultType($data['defaultType'] ?? null);
-        $parameter->setSinceVersion($data['sinceVersion'] ?? null);
-        $parameter->setRemovedVersion($data['removedVersion'] ?? null);
-
         return $parameter;
     }
 
-    private function deserializeProperty(array $data, ?string $parentId = null): PHPProperty
+    private function deserializeProperty(array $data): PHPProperty
     {
         $property = new PHPProperty();
         $property->setName($data['name'] ?? '');
@@ -718,16 +581,6 @@ class StubsEntitySerializer implements EntitySerializerInterface
         if (isset($data['type']) && $data['type'] !== null) {
             $property->setTypeFromSignature(new StandaloneType($data['type']));
         }
-
-        // Stub-specific metadata
-        $propertyName = $data['name'] ?? '';
-        $propertyId = $parentId ? $parentId . '::$' . $propertyName : null;
-        $property->setPhpDoc($this->deserializePhpDoc($propertyId, $data['phpDoc'] ?? null));
-        $property->setSinceVersion($data['sinceVersion'] ?? null);
-        $property->setRemovedVersion($data['removedVersion'] ?? null);
-        $property->setTypeFromPhpDoc($data['typeFromPhpDoc'] ?? null);
-        $property->setLanguageLevelTypes($data['languageLevelTypes'] ?? null);
-        $property->setDefaultType($data['defaultType'] ?? null);
 
         return $property;
     }

@@ -12,14 +12,14 @@ class ClassExistsCheck implements CheckInterface
         return true;
     }
 
-    public function run(ParsedDataStorageManager $stubs, string $classId, string $phpVersion): CheckResultSet
+    public function run(ParsedDataStorageManager $stubs, string $entityId, string $phpVersion): CheckResultSet
     {
         $results = new CheckResultSet();
 
-        if (!$stubs->hasClass($classId)) {
-            $results->addFailure($classId, "Class {$classId} exists in PHP {$phpVersion} but not in stubs");
+        if (!$stubs->hasClass($entityId)) {
+            $results->addFailure($entityId, "Class {$entityId} exists in PHP {$phpVersion} but not in stubs");
         } else {
-            $results->addSuccess($classId);
+            $results->addSuccess($entityId);
         }
 
         return $results;

@@ -2,21 +2,19 @@
 
 namespace StubTests\Sources\Runner;
 
-use ReflectionClass;
+use StubTests\Sources\Parsers\Serializers\ReflectionEntitySerializer;
+use StubTests\Sources\Parsers\Serializers\StubsEntitySerializer;
 use StubTests\Sources\DataProvider\AllStubsDataProvider;
 use StubTests\Sources\DataProvider\CurrentRuntimeReflectionRawDataProvider;
+use StubTests\Sources\Parsers\DefaultParsedDataStorageManager;
 use StubTests\Sources\Parsers\Entities\Reflection\AllReflectionParser;
 use StubTests\Sources\Parsers\Entities\Stubs\AllStubsParser;
 use StubTests\Sources\Parsers\Entities\Stubs\StubClassParser;
 use StubTests\Sources\Parsers\Entities\Stubs\StubFunctionParser;
-use StubTests\Sources\Parsers\DefaultParsedDataStorageManager;
-use StubTests\Sources\Parsers\InMemoryParsedDataStorage;
 use StubTests\Sources\Parsers\JsonParsedDataStorage;
 use StubTests\Sources\Parsers\MultiFileJsonStorage;
 use StubTests\Sources\Parsers\ParsedDataStorageManager;
 use StubTests\Sources\Parsers\PhpDocStorage;
-use StubTests\Sources\Parsers\ReflectionEntitySerializer;
-use StubTests\Sources\Parsers\StubsEntitySerializer;
 
 class Runner
 {

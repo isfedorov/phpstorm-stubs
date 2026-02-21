@@ -2,6 +2,8 @@
 
 namespace StubTests\Sources\Parsers;
 
+use StubTests\Sources\Parsers\Serializers\EntitySerializerInterface;
+
 /**
  * JSON storage for parsed entities.
  * Handles file I/O operations while delegating serialization to a pluggable serializer.

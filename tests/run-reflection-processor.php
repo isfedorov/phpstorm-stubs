@@ -42,16 +42,16 @@ echo "========================================\n\n";
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
+use StubTests\Sources\Parsers\Serializers\ReflectionEntitySerializer;
 use StubTests\Framework\Parsers\Processors\EntityProcessingPipeline;
 use StubTests\Sources\Parsers\DefaultParsedDataStorageManager;
-use StubTests\Sources\Parsers\JsonParsedDataStorage;
-use StubTests\Sources\Parsers\ReflectionEntitySerializer;
 use StubTests\Sources\Parsers\Entities\Reflection\ReflectionClassParser;
+use StubTests\Sources\Parsers\Entities\Reflection\ReflectionDefineConstantParser;
+use StubTests\Sources\Parsers\Entities\Reflection\ReflectionEnumParser;
 use StubTests\Sources\Parsers\Entities\Reflection\ReflectionFunctionParser;
 use StubTests\Sources\Parsers\Entities\Reflection\ReflectionInterfaceParser;
-use StubTests\Sources\Parsers\Entities\Reflection\ReflectionEnumParser;
 use StubTests\Sources\Parsers\Entities\Reflection\ReflectionModernConstantParser;
-use StubTests\Sources\Parsers\Entities\Reflection\ReflectionDefineConstantParser;
+use StubTests\Sources\Parsers\JsonParsedDataStorage;
 use StubTests\Sources\Parsers\Processors\ReflectionDeduplicationProcessor;
 
 try {

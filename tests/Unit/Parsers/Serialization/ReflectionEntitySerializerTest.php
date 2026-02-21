@@ -2,6 +2,7 @@
 
 namespace StubTests\Unit\Parsers\Serialization;
 
+use StubTests\Sources\Parsers\Serializers\ReflectionEntitySerializer;
 use PHPUnit\Framework\TestCase;
 use StubTests\Framework\Parsers\Entities\Model\Access\PrivateAccessModifier;
 use StubTests\Framework\Parsers\Entities\Model\Access\ProtectedAccessModifier;
@@ -17,7 +18,6 @@ use StubTests\Sources\Parsers\Entities\Model\PHPParameter;
 use StubTests\Sources\Parsers\Entities\Model\PHPProperty;
 use StubTests\Sources\Parsers\Entities\Model\Types\NoType;
 use StubTests\Sources\Parsers\Entities\Model\Types\StandaloneType;
-use StubTests\Sources\Parsers\ReflectionEntitySerializer;
 
 class ReflectionEntitySerializerTest extends TestCase
 {

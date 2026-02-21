@@ -2,6 +2,8 @@
 
 namespace StubTests\Sources\Parsers;
 
+use StubTests\Sources\Parsers\Serializers\EntitySerializerInterface;
+
 /**
  * Multi-file JSON storage that splits entities by type into separate files.
  * Improves performance by allowing selective loading of entity types.

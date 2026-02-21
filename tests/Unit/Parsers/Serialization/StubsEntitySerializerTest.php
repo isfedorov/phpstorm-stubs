@@ -2,12 +2,11 @@
 
 namespace StubTests\Unit\Parsers\Serialization;
 
+use StubTests\Sources\Parsers\Serializers\StubsEntitySerializer;
 use PHPUnit\Framework\TestCase;
-use StubTests\Framework\Parsers\Entities\Model\Access\PrivateAccessModifier;
 use StubTests\Framework\Parsers\Entities\Model\Access\ProtectedAccessModifier;
 use StubTests\Framework\Parsers\Entities\Model\Access\PublicAccessModifier;
 use StubTests\Sources\Parsers\Entities\Model\PHPClass;
-use StubTests\Sources\Parsers\Entities\Model\PHPClassConstant;
 use StubTests\Sources\Parsers\Entities\Model\PHPConstant;
 use StubTests\Sources\Parsers\Entities\Model\PHPEnum;
 use StubTests\Sources\Parsers\Entities\Model\PHPFunction;
@@ -17,7 +16,6 @@ use StubTests\Sources\Parsers\Entities\Model\PHPParameter;
 use StubTests\Sources\Parsers\Entities\Model\PHPProperty;
 use StubTests\Sources\Parsers\Entities\Model\Types\NoType;
 use StubTests\Sources\Parsers\Entities\Model\Types\StandaloneType;
-use StubTests\Sources\Parsers\StubsEntitySerializer;
 
 class StubsEntitySerializerTest extends TestCase
 {

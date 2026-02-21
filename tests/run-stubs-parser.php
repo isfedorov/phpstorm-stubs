@@ -12,6 +12,7 @@
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
+use StubTests\Sources\Parsers\Serializers\StubsEntitySerializer;
 use StubTests\Framework\Parsers\Processors\EntityProcessingPipeline;
 use StubTests\Sources\DataProvider\AllStubsDataProvider;
 use StubTests\Sources\Parsers\DefaultParsedDataStorageManager;
@@ -22,11 +23,9 @@ use StubTests\Sources\Parsers\Entities\Stubs\StubEnumParser;
 use StubTests\Sources\Parsers\Entities\Stubs\StubFunctionParser;
 use StubTests\Sources\Parsers\Entities\Stubs\StubInterfaceParser;
 use StubTests\Sources\Parsers\Entities\Stubs\StubModernConstantParser;
-use StubTests\Sources\Parsers\JsonParsedDataStorage;
 use StubTests\Sources\Parsers\MultiFileJsonStorage;
 use StubTests\Sources\Parsers\PhpDocStorage;
 use StubTests\Sources\Parsers\Processors\StubsDeduplicationProcessor;
-use StubTests\Sources\Parsers\StubsEntitySerializer;
 
 echo "========================================\n";
 echo "PHP Stubs Parser Runner\n";
