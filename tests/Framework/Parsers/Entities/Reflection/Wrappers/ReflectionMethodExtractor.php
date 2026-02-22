@@ -149,12 +149,27 @@ class ReflectionMethodExtractor
                 return $adapter;
             }
 
-            // For other objects, try to convert to string or return class name
+            // For other objects, convert to string representation to avoid serialization issues
+            // This prevents problems with built-in classes (like Uri\UriComparisonMode in PHP 8.4+)
+            // that may not exist when deserializing in a different PHP environment
+            $className = get_class($value);
+
+            // Try __toString first for better representation
             if (method_exists($value, '__toString')) {
                 return (string)$value;
             }
 
-            return get_class($value);
+            // For enum instances, return the enum case name
+            if (method_exists($value, 'name')) {
+                try {
+                    return $className . '::' . $value->name;
+                } catch (\Throwable $e) {
+                    // Fall through to class name
+                }
+            }
+
+            // Return just the class name as a safe fallback
+            return $className;
         }
 
         // Return primitives as-is

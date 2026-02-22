@@ -333,9 +333,9 @@ trait SerializerHelperTrait
     {
         $constant = new PHPClassConstant();
         $constant->setName($data['name'] ?? null);
-        $constant->setValue($data['value'] ?? null);
+        $constant->value = $data['value'] ?? null;
         $constant->visibility = $data['visibility'] ?? 'public';
-        $constant->setFinal($data['isFinal'] ?? false);
+        $constant->isFinal = $data['isFinal'] ?? false;
 
         return $constant;
     }

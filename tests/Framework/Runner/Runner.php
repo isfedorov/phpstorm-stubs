@@ -18,15 +18,33 @@ use StubTests\Sources\Parsers\PhpDocStorage;
 
 class Runner
 {
+    /**
+     * In-memory cache for reflection data by PHP version.
+     * Prevents repeated loading/parsing of the same reflection data during test runs.
+     * @var array<string, ParsedDataStorageManager>
+     */
+    private static array $reflectionCache = [];
+
+    /**
+     * In-memory cache for stubs data.
+     * Prevents repeated loading/parsing of stubs during test runs.
+     * @var ParsedDataStorageManager|null
+     */
+    private static ?ParsedDataStorageManager $stubsCache = null;
 
     public static function getReflection(string $phpVersion): ParsedDataStorageManager
     {
+        // Return from in-memory cache if already loaded
+        if (isset(self::$reflectionCache[$phpVersion])) {
+            return self::$reflectionCache[$phpVersion];
+        }
+
         $cacheFilePath = __DIR__ . "/../../cache/Reflection$phpVersion.json";
         $serializer = new ReflectionEntitySerializer();
 
         if (file_exists($cacheFilePath)) {
             // Load from cache
-            return new DefaultParsedDataStorageManager(
+            $manager = new DefaultParsedDataStorageManager(
                 new JsonParsedDataStorage($cacheFilePath, $serializer, true)
             );
         } else {
@@ -43,12 +61,22 @@ class Runner
             // Save parsed data to JSON cache for future use
             $parsedReflectionDataStorageManager->save();
 
-            return $parsedReflectionDataStorageManager;
+            $manager = $parsedReflectionDataStorageManager;
         }
+
+        // Store in in-memory cache
+        self::$reflectionCache[$phpVersion] = $manager;
+
+        return $manager;
     }
 
     public static function getStubs(): ParsedDataStorageManager
     {
+        // Return from in-memory cache if already loaded
+        if (self::$stubsCache !== null) {
+            return self::$stubsCache;
+        }
+
         $cacheFilePath = __DIR__ . "/../../cache/Stubs.json";
         $phpDocCacheFilePath = __DIR__ . "/../../cache/StubsPhpDoc.json";
 
@@ -61,7 +89,7 @@ class Runner
             $phpDocStorage = new PhpDocStorage($phpDocCacheFilePath);
             $serializer = new StubsEntitySerializer($phpDocStorage);
             $storage = new MultiFileJsonStorage($cacheFilePath, $serializer, true, $phpDocStorage);
-            return new DefaultParsedDataStorageManager($storage);
+            $manager = new DefaultParsedDataStorageManager($storage);
         } else {
             // Parse stubs and save to cache
             $phpDocStorage = new PhpDocStorage($phpDocCacheFilePath, false);
@@ -78,7 +106,12 @@ class Runner
             // Save parsed data to JSON cache for future use
             $parsedStubsDataStorageManager->save();
 
-            return $parsedStubsDataStorageManager;
+            $manager = $parsedStubsDataStorageManager;
         }
+
+        // Store in in-memory cache
+        self::$stubsCache = $manager;
+
+        return $manager;
     }
 }

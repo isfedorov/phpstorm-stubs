@@ -55,6 +55,18 @@ declare -a SUCCESS_VERSIONS
 # Create cache directory if it doesn't exist
 mkdir -p "$SCRIPT_DIR/cache"
 
+# Build test_runner image once (used for Stage 2 processing with modern PHP)
+if [ "$SKIP_BUILD" = false ]; then
+    echo -e "${BLUE}Building test_runner image (modern PHP for processing)...${NC}"
+    if docker compose -f "$PROJECT_ROOT/docker-compose.yml" build test_runner; then
+        echo -e "${GREEN}✓ test_runner image built successfully${NC}\n"
+    else
+        echo -e "${RED}✗ Failed to build test_runner image${NC}"
+        echo -e "${RED}Cannot continue without test_runner. Exiting.${NC}"
+        exit 1
+    fi
+fi
+
 # Process each PHP version
 for VERSION in "${PHP_VERSIONS[@]}"; do
     echo -e "\n${YELLOW}========================================${NC}"
@@ -69,10 +81,11 @@ for VERSION in "${PHP_VERSIONS[@]}"; do
         continue
     fi
 
-    # Build Docker image
+    # Build Docker image for this specific PHP version
     if [ "$SKIP_BUILD" = false ]; then
         echo -e "${BLUE}[1/4] Building Docker image for PHP $VERSION...${NC}"
-        if PHP_VERSION=$VERSION docker compose -f "$PROJECT_ROOT/docker-compose.yml" build 2>&1 | grep -v "WARNING"; then
+        # Build only php_under_test service (test_runner was built once before the loop)
+        if PHP_VERSION=$VERSION docker compose -f "$PROJECT_ROOT/docker-compose.yml" build php_under_test; then
             echo -e "${GREEN}      ✓ Docker image built successfully${NC}"
         else
             echo -e "${RED}✗ Failed to build Docker image for PHP $VERSION${NC}"
