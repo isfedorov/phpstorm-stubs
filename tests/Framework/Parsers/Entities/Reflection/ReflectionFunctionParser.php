@@ -35,7 +35,7 @@ class ReflectionFunctionParser implements Parser {
     public function parse($object): PHPFunction
     {
         $PHPFunction = new PHPFunction();
-        $PHPFunction->setName(!empty($object->getName()) ? $object->getName() : null);
+        $PHPFunction->setName(!empty($object->getShortName()) ? $object->getShortName() : null);
         $PHPFunction->setNamespace($object->getNamespaceName() ? '\\' . $object->getNamespaceName() : '\\');
         if (!$PHPFunction->getName()){
             $PHPFunction->setId(null);

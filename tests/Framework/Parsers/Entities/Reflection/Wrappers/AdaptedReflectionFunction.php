@@ -81,6 +81,11 @@ class AdaptedReflectionFunction extends AbstractReflectionAdapter
         return $this->getData('getName');
     }
 
+    public function getShortName()
+    {
+        return $this->getData('getShortName');
+    }
+
     public function getNamespaceName()
     {
         return $this->getData('getNamespaceName');

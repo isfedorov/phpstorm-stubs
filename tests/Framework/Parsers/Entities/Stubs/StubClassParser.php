@@ -60,9 +60,10 @@ class StubClassParser implements MultiEntityStubParserInterface
      * Works with any ClassNode implementation (parser-agnostic).
      *
      * @param ClassNode $node The class AST node with namespace set
+     * @param array $imports Map of import aliases to fully qualified names
      * @return PHPClass
      */
-    public function parseNode(ClassNode $node): PHPClass
+    public function parseNode(ClassNode $node, array $imports = []): PHPClass
     {
         $phpClass = new PHPClass();
 
@@ -87,7 +88,7 @@ class StubClassParser implements MultiEntityStubParserInterface
         $phpClass->setPhpDoc($parsedPhpDoc->rawPhpDoc);
 
         // Parse and apply available version (from PhpDoc + attributes)
-        $versions = $this->versionParser->parseAvailableVersion($parsedPhpDoc, $node->getAttributes());
+        $versions = $this->versionParser->parseAvailableVersion($parsedPhpDoc, $node->getAttributes(), $imports);
         $phpClass->setSinceVersion($versions['sinceVersion']);
         $phpClass->setRemovedVersion($versions['removedVersion']);
 
@@ -106,14 +107,14 @@ class StubClassParser implements MultiEntityStubParserInterface
             $phpClass->interfaces[] = $phpInterface;
         }
 
-        // Methods
+        // Methods - pass namespace context for type resolution
         foreach ($node->getMethods() as $methodNode) {
-            $phpClass->methods[] = $this->methodParser->parseNode($methodNode);
+            $phpClass->methods[] = $this->methodParser->parseNode($methodNode, $imports, $phpClass->getNamespace());
         }
 
-        // Properties
+        // Properties - pass namespace context for type resolution
         foreach ($node->getProperties() as $propertyNode) {
-            $phpClass->properties[] = $this->propertyParser->parseNode($propertyNode);
+            $phpClass->properties[] = $this->propertyParser->parseNode($propertyNode, $imports, $phpClass->getNamespace());
         }
 
         // Constants
@@ -132,11 +133,12 @@ class StubClassParser implements MultiEntityStubParserInterface
      */
     public function extractAndParseAll(string $stubContent): array
     {
-        $classNodes = $this->nodeExtractor->extractAllClasses($stubContent);
+        // Extract class nodes and imports from stub content
+        $result = $this->nodeExtractor->extractAllClassesWithImports($stubContent);
         $classes = [];
 
-        foreach ($classNodes as $classNode) {
-            $classes[] = $this->parseNode($classNode);
+        foreach ($result as $item) {
+            $classes[] = $this->parseNode($item['node'], $item['imports']);
         }
 
         return $classes;

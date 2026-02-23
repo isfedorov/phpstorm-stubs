@@ -75,11 +75,16 @@ class StubFunctionParser implements MultiEntityStubParserInterface
         // Parse PhpDoc using injected parser
         $parsedPhpDoc = $this->phpDocParser->parseElementPhpDoc($node->getDocComment());
 
-        // Parse return type using injected type parser
+        // Get imports for resolving attribute aliases
+        $imports = $node->getImports();
+
+        // Parse return type using injected type parser with namespace context
         $parsedReturnType = $this->typeParser->parseType(
             $node->getReturnType(),
             $parsedPhpDoc->returnType,
-            $node->getAttributes()
+            $node->getAttributes(),
+            $imports,
+            $phpFunction->getNamespace()
         );
 
         // Apply parsed PhpDoc data to function
@@ -87,7 +92,7 @@ class StubFunctionParser implements MultiEntityStubParserInterface
         $phpFunction->setDeprecated($parsedPhpDoc->isDeprecated);
 
         // Parse and apply available version (from PhpDoc + attributes)
-        $versions = $this->versionParser->parseAvailableVersion($parsedPhpDoc, $node->getAttributes());
+        $versions = $this->versionParser->parseAvailableVersion($parsedPhpDoc, $node->getAttributes(), $imports);
         $phpFunction->setSinceVersion($versions['sinceVersion']);
         $phpFunction->setRemovedVersion($versions['removedVersion']);
 
@@ -98,10 +103,10 @@ class StubFunctionParser implements MultiEntityStubParserInterface
         $phpFunction->setLanguageLevelTypes($parsedReturnType->languageLevelTypes);
         $phpFunction->setDefaultType($parsedReturnType->defaultType);
 
-        // Parse parameters with @param types from PhpDoc
+        // Parse parameters with @param types from PhpDoc, imports, and namespace context
         $parameters = [];
         foreach ($node->getParameters() as $param) {
-            $parameters[] = $this->parameterParser->parseNode($param, $parsedPhpDoc->paramTypes);
+            $parameters[] = $this->parameterParser->parseNode($param, $parsedPhpDoc->paramTypes, $imports, $phpFunction->getNamespace());
         }
         $phpFunction->setParameters($parameters);
 

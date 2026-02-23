@@ -45,6 +45,15 @@ interface NodeExtractorInterface
     public function extractAllClasses(string $stubCode): array;
 
     /**
+     * Extracts all class nodes with their import context from stub code.
+     * Returns array of ['node' => ClassNode, 'imports' => array] for each class.
+     *
+     * @param string $stubCode The PHP stub code to parse
+     * @return array Array of ['node' => ClassNode, 'imports' => array]
+     */
+    public function extractAllClassesWithImports(string $stubCode): array;
+
+    /**
      * Extracts all function nodes from stub code.
      * The namespace is set on each returned node.
      *
@@ -63,6 +72,15 @@ interface NodeExtractorInterface
     public function extractAllInterfaces(string $stubCode): array;
 
     /**
+     * Extracts all interface nodes with their import context from stub code.
+     * Returns array of ['node' => InterfaceNode, 'imports' => array] for each interface.
+     *
+     * @param string $stubCode The PHP stub code to parse
+     * @return array Array of ['node' => InterfaceNode, 'imports' => array]
+     */
+    public function extractAllInterfacesWithImports(string $stubCode): array;
+
+    /**
      * Extracts all enum nodes from stub code.
      * The namespace is set on each returned node.
      *
@@ -70,6 +88,15 @@ interface NodeExtractorInterface
      * @return EnumNode[] Array of enum nodes with namespace set
      */
     public function extractAllEnums(string $stubCode): array;
+
+    /**
+     * Extracts all enum nodes with their import context from stub code.
+     * Returns array of ['node' => EnumNode, 'imports' => array] for each enum.
+     *
+     * @param string $stubCode The PHP stub code to parse
+     * @return array Array of ['node' => EnumNode, 'imports' => array]
+     */
+    public function extractAllEnumsWithImports(string $stubCode): array;
 
     /**
      * Extracts all define() constant nodes from stub code.

@@ -57,9 +57,10 @@ class StubInterfaceParser implements MultiEntityStubParserInterface
      * Works with any InterfaceNode implementation (parser-agnostic).
      *
      * @param InterfaceNode $node The interface AST node with namespace set
+     * @param array $imports Map of import aliases to fully qualified names
      * @return PHPInterface
      */
-    public function parseNode(InterfaceNode $node): PHPInterface
+    public function parseNode(InterfaceNode $node, array $imports = []): PHPInterface
     {
         $phpInterface = new PHPInterface();
 
@@ -81,7 +82,7 @@ class StubInterfaceParser implements MultiEntityStubParserInterface
         $phpInterface->setPhpDoc($parsedPhpDoc->rawPhpDoc);
 
         // Parse and apply available version (from PhpDoc + attributes)
-        $versions = $this->versionParser->parseAvailableVersion($parsedPhpDoc, $node->getAttributes());
+        $versions = $this->versionParser->parseAvailableVersion($parsedPhpDoc, $node->getAttributes(), $imports);
         $phpInterface->setSinceVersion($versions['sinceVersion']);
         $phpInterface->setRemovedVersion($versions['removedVersion']);
 
@@ -96,9 +97,9 @@ class StubInterfaceParser implements MultiEntityStubParserInterface
             $phpInterface->addParentInterface($parentInterface);
         }
 
-        // Methods
+        // Methods - pass namespace context for type resolution
         foreach ($node->getMethods() as $methodNode) {
-            $phpInterface->methods[] = $this->methodParser->parseNode($methodNode);
+            $phpInterface->methods[] = $this->methodParser->parseNode($methodNode, $imports, $phpInterface->getNamespace());
         }
 
         // Constants
@@ -117,11 +118,12 @@ class StubInterfaceParser implements MultiEntityStubParserInterface
      */
     public function extractAndParseAll(string $stubContent): array
     {
-        $interfaceNodes = $this->nodeExtractor->extractAllInterfaces($stubContent);
+        // Extract interface nodes and imports from stub content
+        $result = $this->nodeExtractor->extractAllInterfacesWithImports($stubContent);
         $interfaces = [];
 
-        foreach ($interfaceNodes as $interfaceNode) {
-            $interfaces[] = $this->parseNode($interfaceNode);
+        foreach ($result as $item) {
+            $interfaces[] = $this->parseNode($item['node'], $item['imports']);
         }
 
         return $interfaces;

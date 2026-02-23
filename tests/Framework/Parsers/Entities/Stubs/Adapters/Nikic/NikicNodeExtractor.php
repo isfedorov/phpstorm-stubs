@@ -9,6 +9,7 @@ use PhpParser\Node\Stmt\Enum_;
 use PhpParser\Node\Stmt\Function_;
 use PhpParser\Node\Stmt\Interface_;
 use PhpParser\Node\Stmt\Namespace_;
+use PhpParser\Node\Stmt\Use_;
 use PhpParser\ParserFactory;
 use StubTests\Sources\Parsers\Entities\Stubs\NodeExtractorInterface;
 use StubTests\Sources\Parsers\Entities\Stubs\Nodes\ClassNode;
@@ -115,25 +116,74 @@ class NikicNodeExtractor implements NodeExtractorInterface
         return $classes;
     }
 
+    /**
+     * Extract all classes with their import context from stub code.
+     * Returns array of ['node' => ClassNode, 'imports' => array].
+     */
+    public function extractAllClassesWithImports(string $stubCode): array
+    {
+        $ast = $this->parser->parse($stubCode);
+        $classes = [];
+        $currentNamespace = '\\';
+        $currentImports = [];
+
+        // First, extract imports from root level (for files without namespace)
+        $rootImports = $this->extractImports($ast);
+
+        foreach ($ast as $node) {
+            if ($node instanceof Namespace_) {
+                $currentNamespace = $node->name ? '\\' . $node->name->toString() : '\\';
+                $currentImports = $this->extractImports($node->stmts);
+                
+                foreach ($node->stmts as $stmt) {
+                    if ($stmt instanceof Class_) {
+                        $classNode = new NikicClassNode($stmt);
+                        $classNode->setNamespace($currentNamespace);
+                        $classes[] = [
+                            'node' => $classNode,
+                            'imports' => $currentImports
+                        ];
+                    }
+                }
+            } elseif ($node instanceof Class_) {
+                $classNode = new NikicClassNode($node);
+                $classNode->setNamespace('\\');
+                $classes[] = [
+                    'node' => $classNode,
+                    'imports' => $rootImports
+                ];
+            }
+        }
+
+        return $classes;
+    }
+
     public function extractAllFunctions(string $stubCode): array
     {
         $ast = $this->parser->parse($stubCode);
         $functions = [];
         $currentNamespace = '\\';
+        $currentImports = [];
+
+        // First, extract imports from root level (for files without namespace)
+        $rootImports = $this->extractImports($ast);
 
         foreach ($ast as $node) {
             if ($node instanceof Namespace_) {
                 $currentNamespace = $node->name ? '\\' . $node->name->toString() : '\\';
+                $currentImports = $this->extractImports($node->stmts);
                 foreach ($node->stmts as $stmt) {
                     if ($stmt instanceof Function_) {
                         $functionNode = new NikicFunctionNode($stmt);
                         $functionNode->setNamespace($currentNamespace);
+                        $functionNode->setImports($currentImports);
                         $functions[] = $functionNode;
                     }
                 }
             } elseif ($node instanceof Function_) {
                 $functionNode = new NikicFunctionNode($node);
                 $functionNode->setNamespace('\\');
+                $functionNode->setImports($rootImports);
                 $functions[] = $functionNode;
             }
         }
@@ -167,6 +217,48 @@ class NikicNodeExtractor implements NodeExtractorInterface
         return $interfaces;
     }
 
+    /**
+     * Extract all interfaces with their import context from stub code.
+     * Returns array of ['node' => InterfaceNode, 'imports' => array].
+     */
+    public function extractAllInterfacesWithImports(string $stubCode): array
+    {
+        $ast = $this->parser->parse($stubCode);
+        $interfaces = [];
+        $currentNamespace = '\\';
+        $currentImports = [];
+
+        // First, extract imports from root level (for files without namespace)
+        $rootImports = $this->extractImports($ast);
+
+        foreach ($ast as $node) {
+            if ($node instanceof Namespace_) {
+                $currentNamespace = $node->name ? '\\' . $node->name->toString() : '\\';
+                $currentImports = $this->extractImports($node->stmts);
+
+                foreach ($node->stmts as $stmt) {
+                    if ($stmt instanceof Interface_) {
+                        $interfaceNode = new NikicInterfaceNode($stmt);
+                        $interfaceNode->setNamespace($currentNamespace);
+                        $interfaces[] = [
+                            'node' => $interfaceNode,
+                            'imports' => $currentImports
+                        ];
+                    }
+                }
+            } elseif ($node instanceof Interface_) {
+                $interfaceNode = new NikicInterfaceNode($node);
+                $interfaceNode->setNamespace('\\');
+                $interfaces[] = [
+                    'node' => $interfaceNode,
+                    'imports' => $rootImports
+                ];
+            }
+        }
+
+        return $interfaces;
+    }
+
     public function extractAllEnums(string $stubCode): array
     {
         $ast = $this->parser->parse($stubCode);
@@ -187,6 +279,48 @@ class NikicNodeExtractor implements NodeExtractorInterface
                 $enumNode = new NikicEnumNode($node);
                 $enumNode->setNamespace('\\');
                 $enums[] = $enumNode;
+            }
+        }
+
+        return $enums;
+    }
+
+    /**
+     * Extract all enums with their import context from stub code.
+     * Returns array of ['node' => EnumNode, 'imports' => array].
+     */
+    public function extractAllEnumsWithImports(string $stubCode): array
+    {
+        $ast = $this->parser->parse($stubCode);
+        $enums = [];
+        $currentNamespace = '\\';
+        $currentImports = [];
+
+        // First, extract imports from root level (for files without namespace)
+        $rootImports = $this->extractImports($ast);
+
+        foreach ($ast as $node) {
+            if ($node instanceof Namespace_) {
+                $currentNamespace = $node->name ? '\\' . $node->name->toString() : '\\';
+                $currentImports = $this->extractImports($node->stmts);
+
+                foreach ($node->stmts as $stmt) {
+                    if ($stmt instanceof Enum_) {
+                        $enumNode = new NikicEnumNode($stmt);
+                        $enumNode->setNamespace($currentNamespace);
+                        $enums[] = [
+                            'node' => $enumNode,
+                            'imports' => $currentImports
+                        ];
+                    }
+                }
+            } elseif ($node instanceof Enum_) {
+                $enumNode = new NikicEnumNode($node);
+                $enumNode->setNamespace('\\');
+                $enums[] = [
+                    'node' => $enumNode,
+                    'imports' => $rootImports
+                ];
             }
         }
 
@@ -255,5 +389,27 @@ class NikicNodeExtractor implements NodeExtractorInterface
                 }
             }
         }
+    }
+
+    /**
+     * Extract use/import statements from namespace statements.
+     * Returns a map of alias => fully qualified name.
+     *
+     * @param array $stmts Array of statements from a namespace
+     * @return array Map of ['Alias' => 'Fully\\Qualified\\Name']
+     */
+    private function extractImports(array $stmts): array
+    {
+        $imports = [];
+        foreach ($stmts as $stmt) {
+            if ($stmt instanceof Use_) {
+                foreach ($stmt->uses as $use) {
+                    $alias = $use->getAlias()->toString();
+                    $fullName = $use->name->toString();
+                    $imports[$alias] = $fullName;
+                }
+            }
+        }
+        return $imports;
     }
 }

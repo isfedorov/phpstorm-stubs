@@ -16,6 +16,7 @@ class NikicFunctionNode implements FunctionNode
 {
     private Function_ $function;
     private string $namespace;
+    private array $imports = [];
 
     public function __construct(Function_ $function)
     {
@@ -74,5 +75,15 @@ class NikicFunctionNode implements FunctionNode
             }
         }
         return $attributes;
+    }
+
+    public function setImports(array $imports): void
+    {
+        $this->imports = $imports;
+    }
+
+    public function getImports(): array
+    {
+        return $this->imports;
     }
 }

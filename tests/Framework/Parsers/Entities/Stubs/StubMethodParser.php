@@ -40,9 +40,11 @@ class StubMethodParser
      * Parses a method AST node into PHPMethod domain object.
      *
      * @param MethodNode $node The method AST node
+     * @param array $imports Map of import aliases to fully qualified names
+     * @param string $namespace Current namespace context (e.g., '\Dom' or '\\' for global)
      * @return PHPMethod
      */
-    public function parseNode(MethodNode $node): PHPMethod
+    public function parseNode(MethodNode $node, array $imports = [], string $namespace = '\\'): PHPMethod
     {
         $method = new PHPMethod();
         $method->setName($node->getName());
@@ -64,11 +66,13 @@ class StubMethodParser
         // Parse PhpDoc using injected parser
         $parsedPhpDoc = $this->phpDocParser->parseElementPhpDoc($node->getDocComment());
 
-        // Parse return type using injected type parser
+        // Parse return type using injected type parser with namespace context
         $parsedReturnType = $this->typeParser->parseType(
             $node->getReturnType(),
             $parsedPhpDoc->returnType,
-            $node->getAttributes()
+            $node->getAttributes(),
+            $imports,
+            $namespace
         );
 
         // Apply parsed PhpDoc data to method
@@ -76,7 +80,7 @@ class StubMethodParser
         $method->setDeprecated($parsedPhpDoc->isDeprecated);
 
         // Parse and apply available version (from PhpDoc + attributes)
-        $versions = $this->versionParser->parseAvailableVersion($parsedPhpDoc, $node->getAttributes());
+        $versions = $this->versionParser->parseAvailableVersion($parsedPhpDoc, $node->getAttributes(), $imports);
         $method->setSinceVersion($versions['sinceVersion']);
         $method->setRemovedVersion($versions['removedVersion']);
 
@@ -87,10 +91,10 @@ class StubMethodParser
         $method->setLanguageLevelTypes($parsedReturnType->languageLevelTypes);
         $method->setDefaultType($parsedReturnType->defaultType);
 
-        // Parse parameters with @param types from PhpDoc
+        // Parse parameters with @param types from PhpDoc, imports, and namespace context
         $parameters = [];
         foreach ($node->getParameters() as $param) {
-            $parameters[] = $this->parameterParser->parseNode($param, $parsedPhpDoc->paramTypes);
+            $parameters[] = $this->parameterParser->parseNode($param, $parsedPhpDoc->paramTypes, $imports, $namespace);
         }
         $method->setParameters($parameters);
 

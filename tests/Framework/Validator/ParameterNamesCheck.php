@@ -12,6 +12,23 @@ use StubTests\Sources\Parsers\ParsedDataStorageManager;
  */
 class ParameterNamesCheck implements CheckInterface
 {
+    private ReflectionProviderInterface $reflectionProvider;
+    private KnownProblemsRegistry $knownProblemsRegistry;
+
+    /**
+     * @param ReflectionProviderInterface|null $reflectionProvider Optional reflection provider for dependency injection.
+     *                                                              Defaults to RunnerReflectionProvider for production use.
+     * @param KnownProblemsRegistry|null $knownProblemsRegistry Optional registry for known problems.
+     *                                                            Defaults to singleton instance.
+     */
+    public function __construct(
+        ?ReflectionProviderInterface $reflectionProvider = null,
+        ?KnownProblemsRegistry $knownProblemsRegistry = null
+    ) {
+        $this->reflectionProvider = $reflectionProvider ?? new RunnerReflectionProvider();
+        $this->knownProblemsRegistry = $knownProblemsRegistry ?? KnownProblemsRegistry::getInstance();
+    }
+
     public function supports(string $phpVersion): bool
     {
         // Named parameters were introduced in PHP 8.0
@@ -22,8 +39,27 @@ class ParameterNamesCheck implements CheckInterface
     {
         $results = new CheckResultSet();
 
+        // Check if this entity has a known problem that should skip validation
+        $entityType = str_contains($entityId, '::') ? 'methods' : 'functions';
+        if ($this->knownProblemsRegistry->shouldSkipValidation(
+            $entityType,
+            $entityId,
+            'ParameterNamesCheck',
+            $phpVersion
+        )) {
+            $reason = $this->knownProblemsRegistry->getSkipReason(
+                $entityType,
+                $entityId,
+                'ParameterNamesCheck',
+                $phpVersion
+            );
+            // Mark as success with note that validation was skipped
+            $results->addSuccess($entityId . ' (skipped: ' . $reason . ')');
+            return $results;
+        }
+
         // Get the function/method from reflection
-        $reflection = \StubTests\Sources\Runner\Runner::getReflection($phpVersion);
+        $reflection = $this->reflectionProvider->getReflection($phpVersion);
         $reflectionCallable = $this->findCallable($reflection, $entityId);
 
         if ($reflectionCallable === null) {
@@ -52,6 +88,9 @@ class ParameterNamesCheck implements CheckInterface
         $stubParams = method_exists($stubCallable, 'getParameters')
             ? $stubCallable->getParameters()
             : [];
+
+        // Filter stub parameters by version availability
+        $stubParams = $this->filterParametersByVersion($stubParams, $phpVersion);
 
         // Compare parameter names
         $reflectionParamNames = [];
@@ -96,6 +135,39 @@ class ParameterNamesCheck implements CheckInterface
         }
 
         return $results;
+    }
+
+    /**
+     * Filter parameters by their version availability.
+     *
+     * Parameters with PhpStormStubsElementAvailable attributes may have sinceVersion and removedVersion.
+     * This method filters out parameters that are not available in the target PHP version.
+     *
+     * @param array $parameters Array of parameter objects
+     * @param string $phpVersion Target PHP version (e.g., '8.0', '8.1')
+     * @return array Filtered array of parameters available in the target version
+     */
+    private function filterParametersByVersion(array $parameters, string $phpVersion): array
+    {
+        $filtered = [];
+
+        foreach ($parameters as $param) {
+            // Check if parameter has version constraints
+            $sinceVersion = method_exists($param, 'getSinceVersion') ? $param->getSinceVersion() : null;
+            $removedVersion = method_exists($param, 'getRemovedVersion') ? $param->getRemovedVersion() : null;
+
+            // Parameter is available if:
+            // - sinceVersion is null OR target version >= sinceVersion
+            // - AND removedVersion is null OR target version <= removedVersion
+            $isAvailableSince = $sinceVersion === null || version_compare($phpVersion, $sinceVersion, '>=');
+            $isNotRemoved = $removedVersion === null || version_compare($phpVersion, $removedVersion, '<=');
+
+            if ($isAvailableSince && $isNotRemoved) {
+                $filtered[] = $param;
+            }
+        }
+
+        return $filtered;
     }
 
     /**

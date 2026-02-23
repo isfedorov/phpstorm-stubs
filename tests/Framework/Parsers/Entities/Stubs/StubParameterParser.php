@@ -32,9 +32,11 @@ class StubParameterParser
      *
      * @param ParameterNode $node The parameter AST node
      * @param array $paramTypesFromPhpDoc Map of parameter name => type from @param tags
+     * @param array $imports Map of import aliases to fully qualified names
+     * @param string $namespace Current namespace context (e.g., '\Dom' or '\\' for global)
      * @return PHPParameter
      */
-    public function parseNode(ParameterNode $node, array $paramTypesFromPhpDoc = []): PHPParameter
+    public function parseNode(ParameterNode $node, array $paramTypesFromPhpDoc = [], array $imports = [], string $namespace = '\\'): PHPParameter
     {
         $parameter = new PHPParameter($node->getName());
 
@@ -42,11 +44,13 @@ class StubParameterParser
         $paramName = $node->getName();
         $phpDocType = $paramTypesFromPhpDoc[$paramName] ?? null;
 
-        // Parse type using injected type parser
+        // Parse type using injected type parser with namespace context
         $parsedType = $this->typeParser->parseType(
             $node->getType(),  // Get parameter type from signature
             $phpDocType,
-            $node->getAttributes()
+            $node->getAttributes(),
+            $imports,
+            $namespace
         );
 
         // Apply parsed type data to parameter
@@ -56,10 +60,13 @@ class StubParameterParser
         $parameter->setLanguageLevelTypes($parsedType->languageLevelTypes);
         $parameter->setDefaultType($parsedType->defaultType);
 
-        // Parse available version from attributes using version parser
+        // Set variadic flag from AST node
+        $parameter->setIsVariadic($node->isVariadic());
+
+        // Parse available version from attributes using version parser with import context
         // Note: Parameters typically don't have PhpDoc, only attributes
         $emptyPhpDoc = new ParsedPhpDoc();
-        $versions = $this->versionParser->parseAvailableVersion($emptyPhpDoc, $node->getAttributes());
+        $versions = $this->versionParser->parseAvailableVersion($emptyPhpDoc, $node->getAttributes(), $imports);
         $parameter->setSinceVersion($versions['sinceVersion']);
         $parameter->setRemovedVersion($versions['removedVersion']);
 

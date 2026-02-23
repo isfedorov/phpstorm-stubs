@@ -38,9 +38,11 @@ class StubPropertyParser
      * Parses a property AST node into PHPProperty domain object.
      *
      * @param PropertyNode $node The property AST node
+     * @param array $imports Map of import aliases to fully qualified names
+     * @param string $namespace Current namespace context (e.g., '\Dom' or '\\' for global)
      * @return PHPProperty
      */
-    public function parseNode(PropertyNode $node): PHPProperty
+    public function parseNode(PropertyNode $node, array $imports = [], string $namespace = '\\'): PHPProperty
     {
         $property = new PHPProperty();
         $property->setName($node->getName());
@@ -61,18 +63,20 @@ class StubPropertyParser
         // Parse PhpDoc using injected parser
         $parsedPhpDoc = $this->phpDocParser->parseElementPhpDoc($node->getDocComment());
 
-        // Parse type using injected type parser
+        // Parse type using injected type parser with namespace context
         $parsedType = $this->typeParser->parseType(
             $node->getType(),
             $parsedPhpDoc->varType,
-            $node->getAttributes()
+            $node->getAttributes(),
+            $imports,
+            $namespace
         );
 
         // Apply parsed PhpDoc data to property
         $property->setPhpDoc($parsedPhpDoc->rawPhpDoc);
 
         // Parse and apply available version (from PhpDoc + attributes)
-        $versions = $this->versionParser->parseAvailableVersion($parsedPhpDoc, $node->getAttributes());
+        $versions = $this->versionParser->parseAvailableVersion($parsedPhpDoc, $node->getAttributes(), $imports);
         $property->setSinceVersion($versions['sinceVersion']);
         $property->setRemovedVersion($versions['removedVersion']);
 

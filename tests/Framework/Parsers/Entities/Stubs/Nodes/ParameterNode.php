@@ -23,4 +23,11 @@ interface ParameterNode
      * @return AttributeNode[]
      */
     public function getAttributes(): array;
+
+    /**
+     * Check if the parameter is variadic (uses ... operator).
+     *
+     * @return bool True if parameter is variadic, false otherwise
+     */
+    public function isVariadic(): bool;
 }

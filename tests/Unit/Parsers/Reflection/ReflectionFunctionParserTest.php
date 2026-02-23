@@ -35,9 +35,9 @@ class ReflectionFunctionParserTest extends TestCase
     public function testItCanParseName()
     {
         $functionMock = $this->getMockBuilder(AdaptedReflectionFunction::class)->disableOriginalConstructor()
-            ->onlyMethods(['getName'])
+            ->onlyMethods(['getShortName'])
             ->getMock();
-        $functionMock->method('getName')->willReturn('foo');
+        $functionMock->method('getShortName')->willReturn('foo');
         $basePHPElement = new ReflectionFunctionParser()->parse($functionMock);
         self::assertEquals('foo', $basePHPElement->getName());
     }
@@ -88,9 +88,9 @@ class ReflectionFunctionParserTest extends TestCase
     {
         $functionMock = $this->getMockBuilder(AdaptedReflectionFunction::class)
             ->disableOriginalConstructor()
-            ->onlyMethods(['getName', 'getNamespaceName'])
+            ->onlyMethods(['getShortName', 'getNamespaceName'])
             ->getMock();
-        $functionMock->method('getName')->willReturn('foo');
+        $functionMock->method('getShortName')->willReturn('foo');
         $functionMock->method('getNamespaceName')->willReturn('SomeNamespace\SubNamespace');
         $basePHPElement = new ReflectionFunctionParser()->parse($functionMock);
         self::assertEquals('\SomeNamespace\SubNamespace\foo', $basePHPElement->getId());
@@ -100,9 +100,9 @@ class ReflectionFunctionParserTest extends TestCase
     {
         $functionMock = $this->getMockBuilder(AdaptedReflectionFunction::class)
             ->disableOriginalConstructor()
-            ->onlyMethods(['getName', 'getNamespaceName'])
+            ->onlyMethods(['getShortName', 'getNamespaceName'])
             ->getMock();
-        $functionMock->method('getName')->willReturn('foo');
+        $functionMock->method('getShortName')->willReturn('foo');
         $functionMock->method('getNamespaceName')->willReturn('');
         $basePHPElement = new ReflectionFunctionParser()->parse($functionMock);
         self::assertEquals('\foo', $basePHPElement->getId());

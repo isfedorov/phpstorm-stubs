@@ -43,4 +43,9 @@ class NikicParameterNode implements ParameterNode
         }
         return $attributes;
     }
+
+    public function isVariadic(): bool
+    {
+        return $this->param->variadic;
+    }
 }

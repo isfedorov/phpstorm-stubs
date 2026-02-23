@@ -40,9 +40,10 @@ class StubEnumParser implements MultiEntityStubParserInterface
      * Works with any EnumNode implementation (parser-agnostic).
      *
      * @param EnumNode $node The enum AST node with namespace set
+     * @param array $imports Map of import aliases to fully qualified names
      * @return PHPEnum
      */
-    public function parseNode(EnumNode $node): PHPEnum
+    public function parseNode(EnumNode $node, array $imports = []): PHPEnum
     {
         $phpEnum = new PHPEnum();
 
@@ -68,9 +69,9 @@ class StubEnumParser implements MultiEntityStubParserInterface
             $phpEnum->interfaces[] = $phpInterface;
         }
 
-        // Methods
+        // Methods - pass namespace context for type resolution
         foreach ($node->getMethods() as $methodNode) {
-            $phpEnum->methods[] = $this->methodParser->parseNode($methodNode);
+            $phpEnum->methods[] = $this->methodParser->parseNode($methodNode, $imports, $phpEnum->getNamespace());
         }
 
         // Note: Enum cases are not currently stored in PHPEnum model
@@ -88,11 +89,12 @@ class StubEnumParser implements MultiEntityStubParserInterface
      */
     public function extractAndParseAll(string $stubContent): array
     {
-        $enumNodes = $this->nodeExtractor->extractAllEnums($stubContent);
+        // Extract enum nodes and imports from stub content
+        $result = $this->nodeExtractor->extractAllEnumsWithImports($stubContent);
         $enums = [];
 
-        foreach ($enumNodes as $enumNode) {
-            $enums[] = $this->parseNode($enumNode);
+        foreach ($result as $item) {
+            $enums[] = $this->parseNode($item['node'], $item['imports']);
         }
 
         return $enums;

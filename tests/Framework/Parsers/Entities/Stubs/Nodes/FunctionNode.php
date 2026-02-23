@@ -46,4 +46,19 @@ interface FunctionNode
      * @return AttributeNode[]
      */
     public function getAttributes(): array;
+
+    /**
+     * Set the imports (use statements) for this function's file context.
+     * Maps alias names to fully qualified class names.
+     *
+     * @param array $imports Map of ['Alias' => 'Fully\\Qualified\\Name']
+     */
+    public function setImports(array $imports): void;
+
+    /**
+     * Get the imports (use statements) for this function's file context.
+     *
+     * @return array Map of ['Alias' => 'Fully\\Qualified\\Name']
+     */
+    public function getImports(): array;
 }
