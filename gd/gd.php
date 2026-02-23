@@ -347,7 +347,7 @@ function imagecolorexact(GdImage $image, int $red, int $green, int $blue): int {
  * @return bool|null
  */
 #[LanguageLevelTypeAware(['8.2' => 'null|false'], default: 'null|bool')]
-function imagecolorset(GdImage $image, int $color, int $red, int $green, int $blue, int $alpha = 0): ?bool {}
+function imagecolorset(GdImage $image, int $color, int $red, int $green, int $blue, int $alpha = 0) {}
 
 /**
  * Define a color as transparent
@@ -2251,7 +2251,6 @@ function imageconvolution(GdImage $image, array $matrix, float $divisor, float $
  * @link https://php.net/manual/en/function.imageresolution.php
  * @since 7.2
  */
-#[LanguageLevelTypeAware(['8.2' => 'array|true'], default: 'array|bool')]
 function imageresolution(GdImage $image, ?int $resolution_x = null, ?int $resolution_y = null): array|bool {}
 
 /**

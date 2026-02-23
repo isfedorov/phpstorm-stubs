@@ -5680,7 +5680,7 @@ function intlcal_roll(
  * @since 5.5
  */
 #[LanguageAware(['8.3' => 'true'], default: 'bool')]
-function intlcal_clear(IntlCalendar $calendar, ?int $field = null): bool {}
+function intlcal_clear(IntlCalendar $calendar, ?int $field = null) {}
 
 /**
  * (PHP 5 &gt;=5.5.0 PECL intl &gt;= 3.0.0a1)<br/>

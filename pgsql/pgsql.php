@@ -1397,8 +1397,8 @@ function pg_lo_read_all(#[LanguageLevelTypeAware(['8.1' => 'PgSql\Lob'], default
 function pg_lo_import(
     #[PhpStormStubsElementAvailable(from: '8.0')] #[LanguageLevelTypeAware(['8.1' => 'PgSql\Connection'], default: 'resource')] $connection,
     #[PhpStormStubsElementAvailable(from: '5.3', to: '7.4')] $connection = null,
-    $pathname,
-    $object_id = null
+    $filename,
+    $oid = null
 ): string|int|false {}
 
 /**
@@ -1423,7 +1423,7 @@ function pg_lo_export(
     #[PhpStormStubsElementAvailable('8.0')] #[LanguageLevelTypeAware(['8.1' => 'PgSql\Connection'], default: 'resource')] $connection,
     #[PhpStormStubsElementAvailable(from: '5.3', to: '7.4')] $connection = null,
     $oid,
-    $pathname
+    $filename
 ): bool {}
 
 /**
