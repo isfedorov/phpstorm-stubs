@@ -64,13 +64,14 @@ abstract class CheckTestCase extends TestCase
     }
 
     /**
-     * Create a mock PHPClass with properties (isFinal, isReadonly, namespace).
+     * Create a mock PHPClass with properties (isFinal, isReadonly, namespace, parentClass).
      *
      * @param string $name Class name/ID
      * @param string|null $namespace Class namespace
      * @param bool|null $isFinal Whether class is final
      * @param bool|null $isReadonly Whether class is readonly
      * @param array $methods Array of methods
+     * @param PHPClass|null $parentClass Parent class object
      * @return PHPClass
      */
     protected function createMockClassWithProperties(
@@ -78,7 +79,8 @@ abstract class CheckTestCase extends TestCase
         ?string $namespace = null,
         ?bool $isFinal = null,
         ?bool $isReadonly = null,
-        array $methods = []
+        array $methods = [],
+        ?PHPClass $parentClass = null
     ): PHPClass {
         $class = $this->getMockBuilder(PHPClass::class)
             ->disableOriginalConstructor()
@@ -96,6 +98,9 @@ abstract class CheckTestCase extends TestCase
         }
         if ($isReadonly !== null) {
             $class->isReadonly = $isReadonly;
+        }
+        if ($parentClass !== null) {
+            $class->parentClass = $parentClass;
         }
 
         return $class;

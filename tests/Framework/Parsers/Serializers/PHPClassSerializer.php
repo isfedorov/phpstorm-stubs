@@ -3,6 +3,7 @@
 namespace StubTests\Sources\Parsers\Serializers;
 
 use StubTests\Sources\Parsers\Entities\Model\PHPClass;
+use StubTests\Sources\Parsers\Entities\Model\PHPInterface;
 use StubTests\Sources\Parsers\PhpDocStorage;
 
 /**
@@ -117,8 +118,23 @@ class PHPClassSerializer implements EntityTypeSerializerInterface
             }
         }
 
-        // Note: parent class and interfaces are stored as names only
-        // They need to be resolved separately after all entities are loaded
+        // Restore parent class from stored name
+        if (!empty($data['parentClass'])) {
+            $parentClass = new PHPClass();
+            $parentClass->setName($data['parentClass']);
+            $class->parentClass = $parentClass;
+        }
+
+        // Restore interfaces from stored names
+        if (isset($data['interfaces']) && is_array($data['interfaces'])) {
+            foreach ($data['interfaces'] as $interfaceName) {
+                if (!empty($interfaceName)) {
+                    $interface = new PHPInterface();
+                    $interface->setName($interfaceName);
+                    $class->interfaces[] = $interface;
+                }
+            }
+        }
 
         return $class;
     }

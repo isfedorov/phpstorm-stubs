@@ -408,6 +408,24 @@ class ReflectionEntitySerializer implements EntitySerializerInterface
             }
         }
 
+        // Restore parent class from stored name
+        if (!empty($data['parentClass'])) {
+            $parentClass = new PHPClass();
+            $parentClass->setName($data['parentClass']);
+            $class->parentClass = $parentClass;
+        }
+
+        // Restore interfaces from stored names
+        if (isset($data['interfaces']) && is_array($data['interfaces'])) {
+            foreach ($data['interfaces'] as $interfaceName) {
+                if (!empty($interfaceName)) {
+                    $interface = new PHPInterface();
+                    $interface->setName($interfaceName);
+                    $class->interfaces[] = $interface;
+                }
+            }
+        }
+
         return $class;
     }
 

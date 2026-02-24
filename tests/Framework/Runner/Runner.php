@@ -6,6 +6,7 @@ use StubTests\Sources\Parsers\Serializers\ReflectionEntitySerializer;
 use StubTests\Sources\Parsers\Serializers\StubsEntitySerializer;
 use StubTests\Sources\DataProvider\AllStubsDataProvider;
 use StubTests\Sources\DataProvider\CurrentRuntimeReflectionRawDataProvider;
+use StubTests\Sources\Parsers\ClassHierarchyResolver;
 use StubTests\Sources\Parsers\DefaultParsedDataStorageManager;
 use StubTests\Sources\Parsers\Entities\Reflection\AllReflectionParser;
 use StubTests\Sources\Parsers\Entities\Stubs\AllStubsParser;
@@ -64,6 +65,9 @@ class Runner
             $manager = $parsedReflectionDataStorageManager;
         }
 
+        // Resolve parent class and interface references to actual objects
+        (new ClassHierarchyResolver())->resolve($manager->getClasses(), $manager->getInterfaces());
+
         // Store in in-memory cache
         self::$reflectionCache[$phpVersion] = $manager;
 
@@ -108,6 +112,9 @@ class Runner
 
             $manager = $parsedStubsDataStorageManager;
         }
+
+        // Resolve parent class and interface references to actual objects
+        (new ClassHierarchyResolver())->resolve($manager->getClasses(), $manager->getInterfaces());
 
         // Store in in-memory cache
         self::$stubsCache = $manager;

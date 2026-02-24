@@ -43,4 +43,9 @@ enum CheckType: string
      * Validates that classes exist in reflection.
      */
     case CLASS_EXISTS = 'ClassExistsCheck';
+
+    /**
+     * Validates that parent class in stubs matches parent class in reflection.
+     */
+    case CLASS_PARENT = 'ClassParentClassCheck';
 }

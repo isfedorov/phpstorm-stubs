@@ -173,6 +173,7 @@ class KnownProblemsRegistry
             'FunctionExistsCheck' => CheckType::FUNCTION_EXISTS,
             'MethodExistsCheck' => CheckType::METHOD_EXISTS,
             'ClassExistsCheck' => CheckType::CLASS_EXISTS,
+            'ClassParentClassCheck' => CheckType::CLASS_PARENT,
             default => null,
         };
     }
