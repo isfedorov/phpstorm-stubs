@@ -3,6 +3,7 @@
 namespace StubTests\Unit\Parsers;
 
 use PHPUnit\Framework\TestCase;
+use StubTests\Sources\Parsers\ClassAncestorNamesExtractor;
 use StubTests\Sources\Parsers\ClassHierarchyResolver;
 use StubTests\Sources\Parsers\Entities\Model\PHPClass;
 
@@ -78,25 +79,27 @@ class ClassHierarchyResolverTest extends TestCase
     public function testAncestorChainAfterResolution(): void
     {
         // ErrorException -> Exception -> (none)
-        // getAncestorClassNames() should return ["Exception"]
+        // After resolution, ClassAncestorNamesExtractor should return ["Exception"]
         $exception = $this->makeClass('\\Exception');
         $errorException = $this->makeClass('\\ErrorException', 'Exception');
 
         $this->resolver->resolve([$exception, $errorException]);
 
-        $this->assertEquals(['Exception'], $errorException->getAncestorClassNames());
+        $extractor = new ClassAncestorNamesExtractor();
+        $this->assertEquals(['Exception'], $extractor->extract($errorException));
     }
 
     public function testNamespacedAncestorChainAfterResolution(): void
     {
         // \Random\BrokenRandomEngineError -> RandomError -> (none)
-        // After resolution via namespace fallback, getAncestorClassNames() uses getId()
+        // After resolution via namespace fallback, extractor uses getId()
         // and returns "Random\RandomError" (without leading \), matching reflection format.
         $randomError = $this->makeClass('\\Random\\RandomError');
         $broken = $this->makeClass('\\Random\\BrokenRandomEngineError', 'RandomError');
 
         $this->resolver->resolve([$randomError, $broken]);
 
-        $this->assertEquals(['Random\\RandomError'], $broken->getAncestorClassNames());
+        $extractor = new ClassAncestorNamesExtractor();
+        $this->assertEquals(['Random\\RandomError'], $extractor->extract($broken));
     }
 }

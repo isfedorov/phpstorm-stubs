@@ -208,4 +208,95 @@ class KnownProblemsRegistryTest extends TestCase
             );
         }
     }
+
+    // ── CLASS_INTERFACES check ────────────────────────────────────────────────
+
+    public function testHasProblemForClassInterfacesCheck(): void
+    {
+        $registry = KnownProblemsRegistry::getInstance();
+
+        // SimpleXMLElement implements ArrayAccess at C level (visible in no PHP version via reflection)
+        $this->assertTrue(
+            $registry->hasProblem('classes', '\SimpleXMLElement', 'ClassInterfacesCheck', '8.0')
+        );
+    }
+
+    public function testSimpleXmlElementSkippedAcrossAllVersions(): void
+    {
+        $registry = KnownProblemsRegistry::getInstance();
+
+        foreach (['5.6', '7.0', '7.4', '8.0', '8.4'] as $version) {
+            $this->assertTrue(
+                $registry->hasProblem('classes', '\SimpleXMLElement', 'ClassInterfacesCheck', $version),
+                "SimpleXMLElement should skip ClassInterfacesCheck for PHP {$version}"
+            );
+        }
+    }
+
+    public function testSplObjectStorageSkippedForLegacyVersionsNotPhp84(): void
+    {
+        $registry = KnownProblemsRegistry::getInstance();
+
+        // SeekableIterator was added in PHP 8.4 — problem applies to 5.6–8.3
+        foreach (['5.6', '7.0', '8.0', '8.3'] as $version) {
+            $this->assertTrue(
+                $registry->hasProblem('classes', '\SplObjectStorage', 'ClassInterfacesCheck', $version),
+                "SplObjectStorage should skip ClassInterfacesCheck for PHP {$version}"
+            );
+        }
+
+        $this->assertFalse(
+            $registry->hasProblem('classes', '\SplObjectStorage', 'ClassInterfacesCheck', '8.4'),
+            'SplObjectStorage should NOT skip ClassInterfacesCheck for PHP 8.4 (SeekableIterator is present)'
+        );
+    }
+
+    public function testSplFileInfoSkippedForLegacyVersionsNotPhp80(): void
+    {
+        $registry = KnownProblemsRegistry::getInstance();
+
+        // Stringable was added in PHP 8.0 — problem applies to 5.6–7.4
+        foreach (['5.6', '7.0', '7.4'] as $version) {
+            $this->assertTrue(
+                $registry->hasProblem('classes', '\SplFileInfo', 'ClassInterfacesCheck', $version),
+                "SplFileInfo should skip ClassInterfacesCheck for PHP {$version}"
+            );
+        }
+
+        foreach (['8.0', '8.1', '8.4'] as $version) {
+            $this->assertFalse(
+                $registry->hasProblem('classes', '\SplFileInfo', 'ClassInterfacesCheck', $version),
+                "SplFileInfo should NOT skip ClassInterfacesCheck for PHP {$version}"
+            );
+        }
+    }
+
+    public function testGetSkipReasonForClassProblemContainsDescription(): void
+    {
+        $registry = KnownProblemsRegistry::getInstance();
+
+        $reason = $registry->getSkipReason('classes', '\SimpleXMLElement', 'ClassInterfacesCheck', '8.0');
+
+        $this->assertNotNull($reason);
+        $this->assertStringContainsString('ArrayAccess', $reason);
+    }
+
+    public function testUnknownCheckNameReturnsFalse(): void
+    {
+        $registry = KnownProblemsRegistry::getInstance();
+
+        // Non-existent check name hits the default branch of stringToCheckType → null → false
+        $this->assertFalse(
+            $registry->hasProblem('functions', '\dba_fetch', 'NonExistentCheck', '8.0')
+        );
+    }
+
+    public function testProblemsIndexContainsClassesKey(): void
+    {
+        $registry = KnownProblemsRegistry::getInstance();
+        $index = $registry->getProblemsIndex();
+
+        $this->assertArrayHasKey('classes', $index);
+        $this->assertArrayHasKey('\SimpleXMLElement', $index['classes']);
+    }
 }

@@ -80,7 +80,8 @@ abstract class CheckTestCase extends TestCase
         ?bool $isFinal = null,
         ?bool $isReadonly = null,
         array $methods = [],
-        ?PHPClass $parentClass = null
+        ?PHPClass $parentClass = null,
+        array $interfaces = []
     ): PHPClass {
         $class = $this->getMockBuilder(PHPClass::class)
             ->disableOriginalConstructor()
@@ -101,6 +102,9 @@ abstract class CheckTestCase extends TestCase
         }
         if ($parentClass !== null) {
             $class->parentClass = $parentClass;
+        }
+        if (!empty($interfaces)) {
+            $class->interfaces = $interfaces;
         }
 
         return $class;

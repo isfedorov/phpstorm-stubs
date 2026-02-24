@@ -48,4 +48,9 @@ enum CheckType: string
      * Validates that parent class in stubs matches parent class in reflection.
      */
     case CLASS_PARENT = 'ClassParentClassCheck';
+
+    /**
+     * Validates that directly implemented interfaces in stubs match reflection.
+     */
+    case CLASS_INTERFACES = 'ClassInterfacesCheck';
 }

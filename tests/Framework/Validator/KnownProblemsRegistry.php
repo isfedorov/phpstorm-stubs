@@ -174,6 +174,7 @@ class KnownProblemsRegistry
             'MethodExistsCheck' => CheckType::METHOD_EXISTS,
             'ClassExistsCheck' => CheckType::CLASS_EXISTS,
             'ClassParentClassCheck' => CheckType::CLASS_PARENT,
+            'ClassInterfacesCheck' => CheckType::CLASS_INTERFACES,
             default => null,
         };
     }

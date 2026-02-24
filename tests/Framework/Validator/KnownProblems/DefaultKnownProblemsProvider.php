@@ -146,6 +146,216 @@ class DefaultKnownProblemsProvider implements KnownProblemsProvider
                 versionRange: new PhpVersionRange('5.6', '8.4'),
                 reason: 'crypt has 2 overloaded signatures with different parameter structures'
             ),
+
+            // SimpleXMLElement - ArrayAccess implemented at C level, not visible to reflection
+            new ProblemDefinition(
+                entityType: EntityType::CLASS_TYPE,
+                entityId: '\\SimpleXMLElement',
+                type: ProblemType::INTERNAL_IMPLEMENTATION,
+                affectedChecks: [CheckType::CLASS_INTERFACES],
+                versionRange: new PhpVersionRange('5.6', '8.4'),
+                reason: 'SimpleXMLElement implements ArrayAccess at the C level without declaring it via `implements`. PHP reflection never reports ArrayAccess, but the stub adds it explicitly so PhpStorm can perform array-offset type inference on SimpleXMLElement instances.'
+            ),
+
+            // SplFileInfo - Stringable added in PHP 8.0; stubs already declare it for all versions
+            new ProblemDefinition(
+                entityType: EntityType::CLASS_TYPE,
+                entityId: '\\SplFileInfo',
+                type: ProblemType::INTERNAL_IMPLEMENTATION,
+                affectedChecks: [CheckType::CLASS_INTERFACES],
+                versionRange: new PhpVersionRange('5.6', '7.4'),
+                reason: 'SplFileInfo gained Stringable in PHP 8.0. PhpStorm cannot express per-version interface declarations, so stubs declare Stringable for all versions. Reflection for PHP 5.6–7.4 does not report Stringable.'
+            ),
+
+            // SplObjectStorage - SeekableIterator added in PHP 8.4; stubs already declare it for all versions
+            new ProblemDefinition(
+                entityType: EntityType::CLASS_TYPE,
+                entityId: '\\SplObjectStorage',
+                type: ProblemType::INTERNAL_IMPLEMENTATION,
+                affectedChecks: [CheckType::CLASS_INTERFACES],
+                versionRange: new PhpVersionRange('5.6', '8.3'),
+                reason: 'SplObjectStorage gained SeekableIterator in PHP 8.4. PhpStorm cannot express per-version interface declarations, so stubs declare SeekableIterator for all versions. Reflection for PHP 5.6–8.3 does not report SeekableIterator.'
+            ),
+
+            // Exception - Throwable did not exist in PHP 5.6; stubs declare it for all versions
+            new ProblemDefinition(
+                entityType: EntityType::CLASS_TYPE,
+                entityId: '\\Exception',
+                type: ProblemType::INTERNAL_IMPLEMENTATION,
+                affectedChecks: [CheckType::CLASS_INTERFACES],
+                versionRange: new PhpVersionRange('5.6', '5.6'),
+                reason: 'Throwable was introduced in PHP 7.0. Stubs declare Exception implements Throwable for all versions, but PHP 5.6 reflection does not report it.'
+            ),
+
+            // GMP - Serializable implemented internally, never visible to reflection
+            new ProblemDefinition(
+                entityType: EntityType::CLASS_TYPE,
+                entityId: '\\GMP',
+                type: ProblemType::INTERNAL_IMPLEMENTATION,
+                affectedChecks: [CheckType::CLASS_INTERFACES],
+                versionRange: new PhpVersionRange('5.6', '8.4'),
+                reason: 'GMP implements Serializable at the C level. PHP reflection never reports Serializable for GMP across any version, but stubs declare it explicitly for serialization support in PhpStorm.'
+            ),
+
+            // ReflectionType - Stringable added in PHP 8.0; stubs declare it for all versions
+            new ProblemDefinition(
+                entityType: EntityType::CLASS_TYPE,
+                entityId: '\\ReflectionType',
+                type: ProblemType::INTERNAL_IMPLEMENTATION,
+                affectedChecks: [CheckType::CLASS_INTERFACES],
+                versionRange: new PhpVersionRange('7.0', '7.4'),
+                reason: 'ReflectionType gained Stringable in PHP 8.0. PhpStorm cannot express per-version interface declarations, so stubs declare Stringable for all versions. Reflection for PHP 7.0–7.4 does not report Stringable.'
+            ),
+
+            // ReflectionAttribute - Reflector added in PHP 8.1; stubs declare it for all versions
+            new ProblemDefinition(
+                entityType: EntityType::CLASS_TYPE,
+                entityId: '\\ReflectionAttribute',
+                type: ProblemType::INTERNAL_IMPLEMENTATION,
+                affectedChecks: [CheckType::CLASS_INTERFACES],
+                versionRange: new PhpVersionRange('8.0', '8.0'),
+                reason: 'ReflectionAttribute gained Reflector in PHP 8.1. PhpStorm cannot express per-version interface declarations, so stubs declare Reflector for all versions. Reflection for PHP 8.0 does not report Reflector.'
+            ),
+
+            // DatePeriod - IteratorAggregate added in PHP 8.0; stubs declare it for all versions
+            new ProblemDefinition(
+                entityType: EntityType::CLASS_TYPE,
+                entityId: '\\DatePeriod',
+                type: ProblemType::INTERNAL_IMPLEMENTATION,
+                affectedChecks: [CheckType::CLASS_INTERFACES],
+                versionRange: new PhpVersionRange('5.6', '7.4'),
+                reason: 'DatePeriod gained IteratorAggregate in PHP 8.0. PhpStorm cannot express per-version interface declarations, so stubs declare IteratorAggregate for all versions. Reflection for PHP 5.6–7.4 does not report IteratorAggregate.'
+            ),
+
+            // IntlBreakIterator - IteratorAggregate added in PHP 8.0; stubs declare it for all versions
+            new ProblemDefinition(
+                entityType: EntityType::CLASS_TYPE,
+                entityId: '\\IntlBreakIterator',
+                type: ProblemType::INTERNAL_IMPLEMENTATION,
+                affectedChecks: [CheckType::CLASS_INTERFACES],
+                versionRange: new PhpVersionRange('5.6', '7.4'),
+                reason: 'IntlBreakIterator gained IteratorAggregate in PHP 8.0. PhpStorm cannot express per-version interface declarations, so stubs declare IteratorAggregate for all versions. Reflection for PHP 5.6–7.4 does not report IteratorAggregate.'
+            ),
+
+            // PDOStatement - IteratorAggregate added in PHP 8.0; stubs declare it for all versions
+            new ProblemDefinition(
+                entityType: EntityType::CLASS_TYPE,
+                entityId: '\\PDOStatement',
+                type: ProblemType::INTERNAL_IMPLEMENTATION,
+                affectedChecks: [CheckType::CLASS_INTERFACES],
+                versionRange: new PhpVersionRange('5.6', '7.4'),
+                reason: 'PDOStatement gained IteratorAggregate in PHP 8.0. PhpStorm cannot express per-version interface declarations, so stubs declare IteratorAggregate for all versions. Reflection for PHP 5.6–7.4 does not report IteratorAggregate.'
+            ),
+
+            // mysqli_result - IteratorAggregate added in PHP 8.0; stubs declare it for all versions
+            new ProblemDefinition(
+                entityType: EntityType::CLASS_TYPE,
+                entityId: '\\mysqli_result',
+                type: ProblemType::INTERNAL_IMPLEMENTATION,
+                affectedChecks: [CheckType::CLASS_INTERFACES],
+                versionRange: new PhpVersionRange('5.6', '7.4'),
+                reason: 'mysqli_result gained IteratorAggregate in PHP 8.0. PhpStorm cannot express per-version interface declarations, so stubs declare IteratorAggregate for all versions. Reflection for PHP 5.6–7.4 does not report IteratorAggregate.'
+            ),
+
+            // CachingIterator - Stringable added in PHP 8.0; stubs declare it for all versions
+            new ProblemDefinition(
+                entityType: EntityType::CLASS_TYPE,
+                entityId: '\\CachingIterator',
+                type: ProblemType::INTERNAL_IMPLEMENTATION,
+                affectedChecks: [CheckType::CLASS_INTERFACES],
+                versionRange: new PhpVersionRange('5.6', '7.4'),
+                reason: 'CachingIterator gained Stringable in PHP 8.0. PhpStorm cannot express per-version interface declarations, so stubs declare Stringable for all versions. Reflection for PHP 5.6–7.4 does not report Stringable.'
+            ),
+
+            // SimpleXMLIterator - Stringable added in PHP 8.0; stubs declare it for all versions
+            new ProblemDefinition(
+                entityType: EntityType::CLASS_TYPE,
+                entityId: '\\SimpleXMLIterator',
+                type: ProblemType::INTERNAL_IMPLEMENTATION,
+                affectedChecks: [CheckType::CLASS_INTERFACES],
+                versionRange: new PhpVersionRange('5.6', '7.4'),
+                reason: 'SimpleXMLIterator gained Stringable in PHP 8.0. PhpStorm cannot express per-version interface declarations, so stubs declare Stringable for all versions. Reflection for PHP 5.6–7.4 does not report Stringable.'
+            ),
+
+            // DOMCharacterData - DOMChildNode added in PHP 8.0; stubs declare it for all versions
+            new ProblemDefinition(
+                entityType: EntityType::CLASS_TYPE,
+                entityId: '\\DOMCharacterData',
+                type: ProblemType::INTERNAL_IMPLEMENTATION,
+                affectedChecks: [CheckType::CLASS_INTERFACES],
+                versionRange: new PhpVersionRange('5.6', '7.4'),
+                reason: 'DOMCharacterData gained DOMChildNode in PHP 8.0. PhpStorm cannot express per-version interface declarations, so stubs declare DOMChildNode for all versions. Reflection for PHP 5.6–7.4 does not report DOMChildNode.'
+            ),
+
+            // DOMDocumentFragment - DOMParentNode added in PHP 8.0; stubs declare it for all versions
+            new ProblemDefinition(
+                entityType: EntityType::CLASS_TYPE,
+                entityId: '\\DOMDocumentFragment',
+                type: ProblemType::INTERNAL_IMPLEMENTATION,
+                affectedChecks: [CheckType::CLASS_INTERFACES],
+                versionRange: new PhpVersionRange('5.6', '7.4'),
+                reason: 'DOMDocumentFragment gained DOMParentNode in PHP 8.0. PhpStorm cannot express per-version interface declarations, so stubs declare DOMParentNode for all versions. Reflection for PHP 5.6–7.4 does not report DOMParentNode.'
+            ),
+
+            // DOMDocument - DOMParentNode added in PHP 8.0; stubs declare it for all versions
+            new ProblemDefinition(
+                entityType: EntityType::CLASS_TYPE,
+                entityId: '\\DOMDocument',
+                type: ProblemType::INTERNAL_IMPLEMENTATION,
+                affectedChecks: [CheckType::CLASS_INTERFACES],
+                versionRange: new PhpVersionRange('5.6', '7.4'),
+                reason: 'DOMDocument gained DOMParentNode in PHP 8.0. PhpStorm cannot express per-version interface declarations, so stubs declare DOMParentNode for all versions. Reflection for PHP 5.6–7.4 does not report DOMParentNode.'
+            ),
+
+            // DOMElement - DOMChildNode and DOMParentNode added in PHP 8.0; stubs declare them for all versions
+            new ProblemDefinition(
+                entityType: EntityType::CLASS_TYPE,
+                entityId: '\\DOMElement',
+                type: ProblemType::INTERNAL_IMPLEMENTATION,
+                affectedChecks: [CheckType::CLASS_INTERFACES],
+                versionRange: new PhpVersionRange('5.6', '7.4'),
+                reason: 'DOMElement gained DOMChildNode and DOMParentNode in PHP 8.0. PhpStorm cannot express per-version interface declarations, so stubs declare both for all versions. Reflection for PHP 5.6–7.4 does not report them.'
+            ),
+
+            // DOMNamedNodeMap - Countable added in PHP 7.2, IteratorAggregate added in PHP 8.0
+            new ProblemDefinition(
+                entityType: EntityType::CLASS_TYPE,
+                entityId: '\\DOMNamedNodeMap',
+                type: ProblemType::INTERNAL_IMPLEMENTATION,
+                affectedChecks: [CheckType::CLASS_INTERFACES],
+                versionRange: new PhpVersionRange('5.6', '7.4'),
+                reason: 'DOMNamedNodeMap gained Countable in PHP 7.2 and IteratorAggregate in PHP 8.0. PhpStorm cannot express per-version interface declarations, so stubs declare both for all versions. Reflection for PHP 5.6–7.1 does not report Countable; reflection for PHP 5.6–7.4 does not report IteratorAggregate.'
+            ),
+
+            // DOMNodeList - Countable added in PHP 7.2, IteratorAggregate added in PHP 8.0
+            new ProblemDefinition(
+                entityType: EntityType::CLASS_TYPE,
+                entityId: '\\DOMNodeList',
+                type: ProblemType::INTERNAL_IMPLEMENTATION,
+                affectedChecks: [CheckType::CLASS_INTERFACES],
+                versionRange: new PhpVersionRange('5.6', '7.4'),
+                reason: 'DOMNodeList gained Countable in PHP 7.2 and IteratorAggregate in PHP 8.0. PhpStorm cannot express per-version interface declarations, so stubs declare both for all versions. Reflection for PHP 5.6–7.1 does not report Countable; reflection for PHP 5.6–7.4 does not report IteratorAggregate.'
+            ),
+
+            // ResourceBundle - Countable added in PHP 7.4, IteratorAggregate added in PHP 8.0
+            new ProblemDefinition(
+                entityType: EntityType::CLASS_TYPE,
+                entityId: '\\ResourceBundle',
+                type: ProblemType::INTERNAL_IMPLEMENTATION,
+                affectedChecks: [CheckType::CLASS_INTERFACES],
+                versionRange: new PhpVersionRange('5.6', '7.4'),
+                reason: 'ResourceBundle gained Countable in PHP 7.4 and IteratorAggregate in PHP 8.0. PhpStorm cannot express per-version interface declarations, so stubs declare both for all versions. Reflection for PHP 5.6–7.3 does not report Countable; reflection for PHP 5.6–7.4 does not report IteratorAggregate.'
+            ),
+
+            // SplFixedArray - interfaces changed across PHP versions; stubs declare the union
+            new ProblemDefinition(
+                entityType: EntityType::CLASS_TYPE,
+                entityId: '\\SplFixedArray',
+                type: ProblemType::INTERNAL_IMPLEMENTATION,
+                affectedChecks: [CheckType::CLASS_INTERFACES],
+                versionRange: new PhpVersionRange('5.6', '8.4'),
+                reason: 'SplFixedArray interface list changed across PHP versions: Iterator (5.6–7.4) was replaced by IteratorAggregate (8.0+), and JsonSerializable was added in 8.1. PhpStorm cannot express per-version interface declarations, so stubs declare the union of all interfaces. Each individual PHP version\'s reflection only reports the subset current for that version.'
+            ),
         ];
 
         return $this->problems;

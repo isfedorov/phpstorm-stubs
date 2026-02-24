@@ -322,8 +322,8 @@ class ReflectionEnumParserTest extends TestCase
         $reflectionClassMock = $this->getMockBuilder(AdaptedReflectionClass::class)->disableOriginalConstructor()->getMock();
         $implementedInterfaceMock1 = $this->getMockBuilder(AdaptedReflectionClass::class)->disableOriginalConstructor()->getMock();
         $implementedInterfaceMock2 = $this->getMockBuilder(AdaptedReflectionClass::class)->disableOriginalConstructor()->getMock();
-        $implementedInterfaceMock1->method('getName')->willReturn('\Foo1');
-        $implementedInterfaceMock2->method('getName')->willReturn('\Foo2');
+        $implementedInterfaceMock1->method('getName')->willReturn('Foo1');
+        $implementedInterfaceMock2->method('getName')->willReturn('Foo2');
         $reflectionClassMock->method('getInterfaces')->willReturn([$implementedInterfaceMock1, $implementedInterfaceMock2]);
         $basePHPElement = new ReflectionEnumParser()->parse($reflectionClassMock);
         self::assertEquals('Foo1', $basePHPElement->getImplementedInterfaces()[0]->getName());

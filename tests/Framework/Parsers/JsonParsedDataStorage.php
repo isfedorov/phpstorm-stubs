@@ -122,7 +122,7 @@ class JsonParsedDataStorage implements ParsedDataPersistentStorageProvider
 
         foreach ($data as $entityData) {
             if (isset($entityData['_type'])) {
-                $this->entities[] = $this->serializer->deserialize($entityData);
+                $this->addEntity($this->serializer->deserialize($entityData));
             }
         }
 

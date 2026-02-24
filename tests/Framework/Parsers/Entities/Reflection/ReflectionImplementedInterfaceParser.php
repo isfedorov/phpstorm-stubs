@@ -26,14 +26,11 @@ class ReflectionImplementedInterfaceParser implements Parser
     public function parse($object): PHPInterface
     {
         $parsedInterface = new PHPInterface();
-        $fqn = explode('\\', $object->getName());
-        if (empty($object->getShortName())) {
-            $parsedInterface->setName(array_pop($fqn));
-        } else {
-            $parsedInterface->setName($object->getShortName());
-        }
+        // Use the full name (e.g. 'Random\Engine') so that namespaced interface names
+        // are stored consistently with how stubs write them in the `implements` clause.
+        $parsedInterface->setName($object->getName());
         $parsedInterface->setNamespace($object->getNamespaceName());
-        $parsedInterface->setId($parsedInterface->getNamespace() . '\\' . $parsedInterface->getName());
+        $parsedInterface->setId('\\' . $object->getName());
         return $parsedInterface;
     }
 }

@@ -2,6 +2,7 @@
 
 namespace StubTests\Sources\Validator;
 
+use StubTests\Sources\Parsers\ClassAncestorNamesExtractor;
 use StubTests\Sources\Parsers\ParsedDataStorageManager;
 use StubTests\Sources\Validator\KnownProblems\EntityType;
 
@@ -9,13 +10,16 @@ class ClassParentClassCheck implements CheckInterface
 {
     private ReflectionProviderInterface $reflectionProvider;
     private KnownProblemsRegistry $knownProblemsRegistry;
+    private ClassAncestorNamesExtractor $ancestorExtractor;
 
     public function __construct(
         ?ReflectionProviderInterface $reflectionProvider = null,
-        ?KnownProblemsRegistry $knownProblemsRegistry = null
+        ?KnownProblemsRegistry $knownProblemsRegistry = null,
+        ?ClassAncestorNamesExtractor $ancestorExtractor = null
     ) {
         $this->reflectionProvider = $reflectionProvider ?? new RunnerReflectionProvider();
         $this->knownProblemsRegistry = $knownProblemsRegistry ?? KnownProblemsRegistry::getInstance();
+        $this->ancestorExtractor = $ancestorExtractor ?? new ClassAncestorNamesExtractor();
     }
 
     public function supports(string $phpVersion): bool
@@ -108,9 +112,9 @@ class ClassParentClassCheck implements CheckInterface
 
         // Check whether the reflection parent appears anywhere in the stubs' full ancestor chain.
         // ClassHierarchyResolver ensures that parentClass references are linked to the actual
-        // PHPClass objects, so getAncestorClassNames() can traverse the complete hierarchy
+        // PHPClass objects, so the extractor can traverse the complete hierarchy
         // (e.g. ParseError → CompileError → Error) without any additional lookups here.
-        $stubAncestors = $stubClass->getAncestorClassNames();
+        $stubAncestors = $this->ancestorExtractor->extract($stubClass);
         if (in_array($reflectionParentName, $stubAncestors, true)) {
             $results->addSuccess($entityId);
             return $results;

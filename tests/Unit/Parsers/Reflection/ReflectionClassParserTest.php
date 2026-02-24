@@ -723,7 +723,8 @@ class ReflectionClassParserTest extends BaseTestCase
     public function testItReturnsImplementedInterfacesWithCorrectName() {
         $reflectionClassMock = $this->getMockBuilder(AdaptedReflectionClass::class)->disableOriginalConstructor()->getMock();
         $reflectionInterfaceMock = $this->getMockBuilder(AdaptedReflectionClass::class)->disableOriginalConstructor()->getMock();
-        $reflectionInterfaceMock->method('getName')->willReturn('\Interface');
+        // ReflectionClass::getName() returns the name without a leading backslash
+        $reflectionInterfaceMock->method('getName')->willReturn('Interface');
         $reflectionClassMock->method('getInterfaces')->willReturn([$reflectionInterfaceMock]);
         $basePHPElement = new ReflectionClassParser()->parse($reflectionClassMock);
         self::assertEquals("Interface", $basePHPElement->getImplementedInterfaces()[0]->getName());
@@ -733,7 +734,8 @@ class ReflectionClassParserTest extends BaseTestCase
     {
         $reflectionClassMock = $this->getMockBuilder(AdaptedReflectionClass::class)->disableOriginalConstructor()->getMock();
         $reflectionInterfaceMock = $this->getMockBuilder(AdaptedReflectionClass::class)->disableOriginalConstructor()->getMock();
-        $reflectionInterfaceMock->method('getShortName')->willReturn('Interface');
+        // getName() returns full unqualified name; getNamespaceName() returns the namespace portion
+        $reflectionInterfaceMock->method('getName')->willReturn('My\Namespace\Interface');
         $reflectionInterfaceMock->method('getNamespaceName')->willReturn('\My\Namespace');
         $reflectionClassMock->method('getInterfaces')->willReturn([$reflectionInterfaceMock]);
         $basePHPElement = new ReflectionClassParser()->parse($reflectionClassMock);
@@ -747,9 +749,10 @@ class ReflectionClassParserTest extends BaseTestCase
         $reflectionInterfaceMock1 = $this->getMockBuilder(AdaptedReflectionClass::class)->disableOriginalConstructor()->getMock();
         $reflectionInterfaceMock2 = $this->getMockBuilder(AdaptedReflectionClass::class)->disableOriginalConstructor()->getMock();
         $reflectionInterfaceMock3 = $this->getMockBuilder(AdaptedReflectionClass::class)->disableOriginalConstructor()->getMock();
-        $reflectionInterfaceMock1->method('getName')->willReturn('\Interface1');
-        $reflectionInterfaceMock2->method('getName')->willReturn('\Interface2');
-        $reflectionInterfaceMock3->method('getName')->willReturn('\Interface3');
+        // getName() returns the name without a leading backslash (matching ReflectionClass::getName())
+        $reflectionInterfaceMock1->method('getName')->willReturn('Interface1');
+        $reflectionInterfaceMock2->method('getName')->willReturn('Interface2');
+        $reflectionInterfaceMock3->method('getName')->willReturn('Interface3');
         $reflectionClassMock->method('getInterfaces')->willReturn([$reflectionInterfaceMock1, $reflectionInterfaceMock2, $reflectionInterfaceMock3]);
         $basePHPElement = new ReflectionClassParser()->parse($reflectionClassMock);
         self::assertEquals(3, sizeof($basePHPElement->getImplementedInterfaces()));

@@ -24,4 +24,19 @@ enum ProblemType: string
      * Example: dba_fetch($key, $handle) vs dba_fetch($key, $skip, $dba)
      */
     case OVERLOADED_SIGNATURE = 'overloaded_signature';
+
+    /**
+     * Stubs intentionally declare an interface or behaviour that is implemented
+     * internally (at the C level) but not exposed by PHP's reflection API.
+     *
+     * Some internal classes implement interfaces through the C API without
+     * listing them in the class declaration visible to reflection.  Stubs add
+     * the explicit declaration so that IDEs (e.g. PhpStorm) can provide correct
+     * type-checking and code-completion.
+     *
+     * Example: SimpleXMLElement implements ArrayAccess at the C level;
+     * reflection never reports ArrayAccess, but PhpStorm requires the explicit
+     * declaration to enable array-offset type inference.
+     */
+    case INTERNAL_IMPLEMENTATION = 'internal_implementation';
 }

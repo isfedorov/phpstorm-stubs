@@ -220,4 +220,29 @@ class ParsedDataJsonStorageManagerTest extends TestCase
         self::assertContains('FirstClass', $classNames);
         self::assertContains('SecondClass', $classNames);
     }
+
+    public function testAddEntityStoresDuplicatesWithSameId(): void
+    {
+        // Regression test: the old JsonParsedDataStorage silently dropped the second entity
+        // when two entities shared the same getId() value (e.g. couchbase vs couchbase_v2
+        // directories that contain identically-named classes). Deduplication belongs to the
+        // pipeline (StubsDeduplicationProcessor), not to the storage layer.
+
+        $jsonFilePath = $this->getTempFilePath('duplicate_id_test');
+        $storage = new JsonParsedDataStorage($jsonFilePath, new StubsEntitySerializer(), false);
+
+        $entity1 = new PHPClass();
+        $entity1->setId('\Couchbase\SearchFacet');
+        $entity1->setName('SearchFacet');
+
+        $entity2 = new PHPClass();
+        $entity2->setId('\Couchbase\SearchFacet'); // same ID, different object (from different directory)
+        $entity2->setName('SearchFacet');
+
+        $storage->addEntity($entity1);
+        $storage->addEntity($entity2);
+
+        // Both must be stored — no ID-based deduplication in the storage layer
+        self::assertCount(2, $storage->getEntities());
+    }
 }
