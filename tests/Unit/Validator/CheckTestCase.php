@@ -64,6 +64,44 @@ abstract class CheckTestCase extends TestCase
     }
 
     /**
+     * Create a mock PHPClass with properties (isFinal, isReadonly, namespace).
+     *
+     * @param string $name Class name/ID
+     * @param string|null $namespace Class namespace
+     * @param bool|null $isFinal Whether class is final
+     * @param bool|null $isReadonly Whether class is readonly
+     * @param array $methods Array of methods
+     * @return PHPClass
+     */
+    protected function createMockClassWithProperties(
+        string $name,
+        ?string $namespace = null,
+        ?bool $isFinal = null,
+        ?bool $isReadonly = null,
+        array $methods = []
+    ): PHPClass {
+        $class = $this->getMockBuilder(PHPClass::class)
+            ->disableOriginalConstructor()
+            ->onlyMethods(['getId', 'getName', 'getNamespace', 'getMethods'])
+            ->getMock();
+
+        $class->method('getId')->willReturn($name);
+        $class->method('getName')->willReturn($name);
+        $class->method('getNamespace')->willReturn($namespace);
+        $class->method('getMethods')->willReturn($methods);
+
+        // Set public properties
+        if ($isFinal !== null) {
+            $class->isFinal = $isFinal;
+        }
+        if ($isReadonly !== null) {
+            $class->isReadonly = $isReadonly;
+        }
+
+        return $class;
+    }
+
+    /**
      * Create a mock PHPMethod with the given name.
      */
     protected function createMockMethod(string $name, array $parameters = [], $returnType = null): PHPMethod

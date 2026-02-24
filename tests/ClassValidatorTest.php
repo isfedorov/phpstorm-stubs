@@ -6,6 +6,9 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use StubTests\Framework\Validator\ValidatorTestBase;
 use StubTests\Sources\Runner\PhpVersionRange;
 use StubTests\Sources\Validator\ClassExistsCheck;
+use StubTests\Sources\Validator\ClassNamespaceCheck;
+use StubTests\Sources\Validator\ClassReadonlyCheck;
+use StubTests\Sources\Validator\ClassFinalCheck;
 
 /**
  * Validates that classes from reflection exist in stubs.
@@ -50,4 +53,37 @@ class ClassValidatorTest extends ValidatorTestBase
             "Class {$classId} exists in PHP {$phpVersion} but not in stubs"
         );
     }
+
+	#[PhpVersionRange('5.6','8.4')]
+	public function checkClassNamespace(string $classId, string $phpVersion): void
+	{
+		$this->executeCheck(
+			new ClassNamespaceCheck(),
+			$classId,
+			$phpVersion,
+			"Class {$classId} namespace validation failed in PHP {$phpVersion}"
+		);
+	}
+
+	#[PhpVersionRange('8.2','8.4')]
+	public function checkClassReadonly(string $classId, string $phpVersion): void
+	{
+		$this->executeCheck(
+			new ClassReadonlyCheck(),
+			$classId,
+			$phpVersion,
+			"Class {$classId} readonly validation failed in PHP {$phpVersion}"
+		);
+	}
+
+	#[PhpVersionRange('5.6','8.4')]
+	public function checkClassFinal(string $classId, string $phpVersion): void
+	{
+		$this->executeCheck(
+			new ClassFinalCheck(),
+			$classId,
+			$phpVersion,
+			"Class {$classId} final validation failed in PHP {$phpVersion}"
+		);
+	}
 }
