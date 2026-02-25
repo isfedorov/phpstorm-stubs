@@ -39,4 +39,18 @@ enum ProblemType: string
      * declaration to enable array-offset type inference.
      */
     case INTERNAL_IMPLEMENTATION = 'internal_implementation';
+
+    /**
+     * Stubs cannot use the exact method name because it conflicts with a PHP
+     * reserved keyword or language construct.
+     *
+     * The stub declares the method under a mangled name (PS_UNRESERVE_PREFIX_<name>)
+     * so that PhpStorm can still provide IDE support while PHP itself parses the stub
+     * file without a syntax error.
+     *
+     * Examples:
+     * - Generator::throw()  → Generator::PS_UNRESERVE_PREFIX_throw()
+     * - IntlCalendar::isSet() → IntlCalendar::PS_UNRESERVE_PREFIX_isSet()
+     */
+    case RESERVED_KEYWORD_CONFLICT = 'reserved_keyword_conflict';
 }

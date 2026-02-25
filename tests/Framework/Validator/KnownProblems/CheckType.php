@@ -53,4 +53,9 @@ enum CheckType: string
      * Validates that directly implemented interfaces in stubs match reflection.
      */
     case CLASS_INTERFACES = 'ClassInterfacesCheck';
+
+    /**
+     * Validates that all methods present in reflection also exist in stubs.
+     */
+    case CLASS_METHODS_EXIST = 'ClassMethodsExistCheck';
 }

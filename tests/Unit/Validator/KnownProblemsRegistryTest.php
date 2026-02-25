@@ -3,6 +3,12 @@
 namespace StubTests\Unit\Validator;
 
 use PHPUnit\Framework\TestCase;
+use StubTests\Sources\Runner\PhpVersionRange;
+use StubTests\Sources\Validator\KnownProblems\CheckType;
+use StubTests\Sources\Validator\KnownProblems\EntityType;
+use StubTests\Sources\Validator\KnownProblems\KnownProblemsProvider;
+use StubTests\Sources\Validator\KnownProblems\ProblemDefinition;
+use StubTests\Sources\Validator\KnownProblems\ProblemType;
 use StubTests\Sources\Validator\KnownProblemsRegistry;
 
 class KnownProblemsRegistryTest extends TestCase
@@ -298,5 +304,41 @@ class KnownProblemsRegistryTest extends TestCase
 
         $this->assertArrayHasKey('classes', $index);
         $this->assertArrayHasKey('\SimpleXMLElement', $index['classes']);
+    }
+
+    // ── CLASS_METHODS_EXIST check ─────────────────────────────────────────────
+
+    public function testClassMethodsExistCheckNameMapsCorrectly(): void
+    {
+        // Register a custom known problem for CheckType::CLASS_METHODS_EXIST and verify
+        // that querying with the string 'ClassMethodsExistCheck' correctly resolves it.
+        // This tests the 'ClassMethodsExistCheck' → CheckType::CLASS_METHODS_EXIST branch
+        // of KnownProblemsRegistry::stringToCheckType().
+        $provider = $this->createMock(KnownProblemsProvider::class);
+        $provider->method('getProblems')->willReturn([
+            new ProblemDefinition(
+                entityType: EntityType::CLASS_TYPE,
+                entityId: '\SomeSpecialClass',
+                type: ProblemType::INTERNAL_IMPLEMENTATION,
+                affectedChecks: [CheckType::CLASS_METHODS_EXIST],
+                versionRange: new PhpVersionRange('8.0', '8.4'),
+                reason: 'Test CLASS_METHODS_EXIST mapping'
+            ),
+        ]);
+
+        KnownProblemsRegistry::reset();
+        $registry = KnownProblemsRegistry::getInstance($provider);
+
+        // Version within range → problem found
+        $this->assertTrue(
+            $registry->hasProblem('classes', '\SomeSpecialClass', 'ClassMethodsExistCheck', '8.0'),
+            "'ClassMethodsExistCheck' should map to CheckType::CLASS_METHODS_EXIST"
+        );
+
+        // Version outside range → problem not found
+        $this->assertFalse(
+            $registry->hasProblem('classes', '\SomeSpecialClass', 'ClassMethodsExistCheck', '7.4'),
+            "Version outside registered range should return false"
+        );
     }
 }

@@ -46,6 +46,11 @@ class ClassHierarchyResolver
         foreach ($classMap as $class) {
             $this->resolveClass($class, $classMap, $interfaceMap);
         }
+
+        // Link each interface's parent interfaces to actual objects
+        foreach ($interfaceMap as $iface) {
+            $this->resolveInterface($iface, $interfaceMap);
+        }
     }
 
     private function resolveClass(PHPClass $class, array $classMap, array $interfaceMap): void
@@ -108,6 +113,42 @@ class ClassHierarchyResolver
         }
 
         $ns = ltrim($owningClass->getNamespace() ?? '', '\\');
+        if ($ns !== '') {
+            $qualified = $ns . '\\' . $name;
+            if (isset($interfaceMap[$qualified])) {
+                return $interfaceMap[$qualified];
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Resolve parent interface references for a PHPInterface to actual PHPInterface objects.
+     */
+    private function resolveInterface(PHPInterface $iface, array $interfaceMap): void
+    {
+        $parentInterfaces = $iface->getParentInterfaces();
+        foreach ($parentInterfaces as $idx => $parent) {
+            $resolved = $this->lookupInterfaceByName($parent->getName(), $iface, $interfaceMap);
+            if ($resolved !== null) {
+                $parentInterfaces[$idx] = $resolved;
+            }
+        }
+        $iface->setParentInterfaces($parentInterfaces);
+    }
+
+    private function lookupInterfaceByName(?string $name, PHPInterface $owningInterface, array $interfaceMap): ?PHPInterface
+    {
+        if ($name === null || $name === '') {
+            return null;
+        }
+
+        if (isset($interfaceMap[$name])) {
+            return $interfaceMap[$name];
+        }
+
+        $ns = ltrim($owningInterface->getNamespace() ?? '', '\\');
         if ($ns !== '') {
             $qualified = $ns . '\\' . $name;
             if (isset($interfaceMap[$qualified])) {

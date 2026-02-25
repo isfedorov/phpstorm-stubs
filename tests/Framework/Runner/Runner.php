@@ -12,6 +12,7 @@ use StubTests\Sources\Parsers\Entities\Reflection\AllReflectionParser;
 use StubTests\Sources\Parsers\Entities\Stubs\AllStubsParser;
 use StubTests\Sources\Parsers\Entities\Stubs\StubClassParser;
 use StubTests\Sources\Parsers\Entities\Stubs\StubFunctionParser;
+use StubTests\Sources\Parsers\Entities\Stubs\StubInterfaceParser;
 use StubTests\Sources\Parsers\JsonParsedDataStorage;
 use StubTests\Sources\Parsers\MultiFileJsonStorage;
 use StubTests\Sources\Parsers\ParsedDataStorageManager;
@@ -103,7 +104,7 @@ class Runner
             $parser = new AllStubsParser(
                 new AllStubsDataProvider(),
                 $parsedStubsDataStorageManager,
-                [new StubClassParser(), new StubFunctionParser()]
+                [new StubClassParser(), new StubFunctionParser(), new StubInterfaceParser()]
             );
             $parser->parseAll();
 

@@ -11,6 +11,7 @@ use StubTests\Sources\Validator\ClassNamespaceCheck;
 use StubTests\Sources\Validator\ClassParentClassCheck;
 use StubTests\Sources\Validator\ClassReadonlyCheck;
 use StubTests\Sources\Validator\ClassFinalCheck;
+use StubTests\Sources\Validator\ClassMethodsExistCheck;
 
 /**
  * Validates that classes from reflection exist in stubs.
@@ -108,6 +109,17 @@ class ClassValidatorTest extends ValidatorTestBase
 			$classId,
 			$phpVersion,
 			"Class {$classId} interfaces validation failed in PHP {$phpVersion}"
+		);
+	}
+
+	#[PhpVersionRange('5.6','8.4')]
+	public function checkClassesMethodsExist(string $classId, string $phpVersion): void
+	{
+		$this->executeCheck(
+			new ClassMethodsExistCheck(),
+			$classId,
+			$phpVersion,
+			"Class {$classId} methods check failed in PHP {$phpVersion}"
 		);
 	}
 }

@@ -6,6 +6,7 @@ use PHPUnit\Framework\TestCase;
 use StubTests\Sources\Parsers\ClassAncestorNamesExtractor;
 use StubTests\Sources\Parsers\ClassHierarchyResolver;
 use StubTests\Sources\Parsers\Entities\Model\PHPClass;
+use StubTests\Sources\Parsers\Entities\Model\PHPInterface;
 
 class ClassHierarchyResolverTest extends TestCase
 {
@@ -34,6 +35,26 @@ class ClassHierarchyResolverTest extends TestCase
         }
 
         return $class;
+    }
+
+    private function makeInterface(string $id, ?string $parentShortName = null): PHPInterface
+    {
+        $parts = explode('\\', ltrim($id, '\\'));
+        $shortName = array_pop($parts);
+        $ns = empty($parts) ? '\\' : '\\' . implode('\\', $parts);
+
+        $iface = new PHPInterface();
+        $iface->setId($id);
+        $iface->setName($shortName);
+        $iface->setNamespace($ns);
+
+        if ($parentShortName !== null) {
+            $stub = new PHPInterface();
+            $stub->setName($parentShortName);
+            $iface->addParentInterface($stub);
+        }
+
+        return $iface;
     }
 
     public function testRootNamespaceParentIsLinked(): void
@@ -101,5 +122,64 @@ class ClassHierarchyResolverTest extends TestCase
 
         $extractor = new ClassAncestorNamesExtractor();
         $this->assertEquals(['Random\\RandomError'], $extractor->extract($broken));
+    }
+
+    // ── Interface parent resolution ───────────────────────────────────────────
+
+    public function testInterfaceParentInterfaceIsLinked(): void
+    {
+        $traversable = $this->makeInterface('\\Traversable');
+        $iterator = $this->makeInterface('\\Iterator', 'Traversable');
+
+        $this->resolver->resolve([], [$traversable, $iterator]);
+
+        $parents = $iterator->getParentInterfaces();
+        $this->assertCount(1, $parents);
+        $this->assertSame($traversable, $parents[0]);
+    }
+
+    public function testInterfaceParentInSameNamespaceIsLinkedViaNsFallback(): void
+    {
+        // \Random\CryptoSafeEngine extends BaseEngine (short name stored in cache).
+        // Both live in the \Random namespace, so the fallback prepends the namespace.
+        $baseEngine = $this->makeInterface('\\Random\\BaseEngine');
+        $cryptoEngine = $this->makeInterface('\\Random\\CryptoSafeEngine', 'BaseEngine');
+
+        $this->resolver->resolve([], [$baseEngine, $cryptoEngine]);
+
+        $parents = $cryptoEngine->getParentInterfaces();
+        $this->assertCount(1, $parents);
+        $this->assertSame($baseEngine, $parents[0]);
+    }
+
+    public function testUnresolvableInterfaceParentRemainsAsStub(): void
+    {
+        // Parent 'NonExistentInterface' is not in the collection.
+        // The stub PHPInterface with only the short name must remain unchanged.
+        $iface = $this->makeInterface('\\MyInterface', 'NonExistentInterface');
+
+        $this->resolver->resolve([], [$iface]);
+
+        $parents = $iface->getParentInterfaces();
+        $this->assertCount(1, $parents);
+        $this->assertEquals('NonExistentInterface', $parents[0]->getName());
+    }
+
+    public function testClassAndInterfaceParentsResolvedInSameCall(): void
+    {
+        // A single resolve() call must resolve both class parents and interface parents.
+        $exception = $this->makeClass('\\Exception');
+        $errorException = $this->makeClass('\\ErrorException', 'Exception');
+
+        $traversable = $this->makeInterface('\\Traversable');
+        $iterator = $this->makeInterface('\\Iterator', 'Traversable');
+
+        $this->resolver->resolve([$exception, $errorException], [$traversable, $iterator]);
+
+        $this->assertSame($exception, $errorException->parentClass, 'Class parent should be resolved');
+
+        $iteratorParents = $iterator->getParentInterfaces();
+        $this->assertCount(1, $iteratorParents);
+        $this->assertSame($traversable, $iteratorParents[0], 'Interface parent should be resolved');
     }
 }
