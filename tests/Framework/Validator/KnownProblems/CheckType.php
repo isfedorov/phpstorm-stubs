@@ -58,4 +58,9 @@ enum CheckType: string
      * Validates that all methods present in reflection also exist in stubs.
      */
     case CLASS_METHODS_EXIST = 'ClassMethodsExistCheck';
+
+    /**
+     * Validates that the `final` attribute on methods in stubs matches reflection.
+     */
+    case CLASS_FINAL_METHODS = 'ClassFinalMethodsCheck';
 }

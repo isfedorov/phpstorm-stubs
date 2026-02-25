@@ -11,6 +11,7 @@ use StubTests\Sources\Validator\ClassNamespaceCheck;
 use StubTests\Sources\Validator\ClassParentClassCheck;
 use StubTests\Sources\Validator\ClassReadonlyCheck;
 use StubTests\Sources\Validator\ClassFinalCheck;
+use StubTests\Sources\Validator\ClassFinalMethodsCheck;
 use StubTests\Sources\Validator\ClassMethodsExistCheck;
 
 /**
@@ -120,6 +121,17 @@ class ClassValidatorTest extends ValidatorTestBase
 			$classId,
 			$phpVersion,
 			"Class {$classId} methods check failed in PHP {$phpVersion}"
+		);
+	}
+
+	#[PhpVersionRange('5.6','8.4')]
+	public function checkClassesFinalMethods(string $classId, string $phpVersion): void
+	{
+		$this->executeCheck(
+			new ClassFinalMethodsCheck(),
+			$classId,
+			$phpVersion,
+			"Class {$classId} final methods check failed in PHP {$phpVersion}"
 		);
 	}
 }

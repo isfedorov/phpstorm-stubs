@@ -341,4 +341,194 @@ class KnownProblemsRegistryTest extends TestCase
             "Version outside registered range should return false"
         );
     }
+
+    // ── CLASS_FINAL_METHODS check ─────────────────────────────────────────────
+
+    public function testClassFinalMethodsCheckNameMapsCorrectly(): void
+    {
+        // Verifies the 'ClassFinalMethodsCheck' → CheckType::CLASS_FINAL_METHODS branch
+        // of KnownProblemsRegistry::stringToCheckType().
+        $provider = $this->createMock(KnownProblemsProvider::class);
+        $provider->method('getProblems')->willReturn([
+            new ProblemDefinition(
+                entityType: EntityType::METHOD,
+                entityId: '\SomeClass::doWork',
+                type: ProblemType::INTERNAL_IMPLEMENTATION,
+                affectedChecks: [CheckType::CLASS_FINAL_METHODS],
+                versionRange: new PhpVersionRange('8.0', '8.4'),
+                reason: 'Test CLASS_FINAL_METHODS mapping'
+            ),
+        ]);
+
+        KnownProblemsRegistry::reset();
+        $registry = KnownProblemsRegistry::getInstance($provider);
+
+        // Version within range → problem found
+        $this->assertTrue(
+            $registry->hasProblem('methods', '\SomeClass::doWork', 'ClassFinalMethodsCheck', '8.0'),
+            "'ClassFinalMethodsCheck' should map to CheckType::CLASS_FINAL_METHODS"
+        );
+
+        // Version outside range → problem not found
+        $this->assertFalse(
+            $registry->hasProblem('methods', '\SomeClass::doWork', 'ClassFinalMethodsCheck', '7.4'),
+            "Version outside registered range should return false"
+        );
+
+        // Different check name → no problem (string unmapped)
+        $this->assertFalse(
+            $registry->hasProblem('methods', '\SomeClass::doWork', 'ClassMethodsExistCheck', '8.0'),
+            "A different check name should not match the CLASS_FINAL_METHODS problem"
+        );
+    }
+
+    // ── SimpleXMLElement::__construct final/non-final version boundary ────────
+
+    public function testSimpleXmlConstructorSkippedForLegacyVersions(): void
+    {
+        $registry = KnownProblemsRegistry::getInstance();
+
+        // PHP 5.6–7.4: reflection reports __construct as final; stub is non-final → known problem
+        foreach (['5.6', '7.0', '7.1', '7.2', '7.3', '7.4'] as $version) {
+            $this->assertTrue(
+                $registry->hasProblem('methods', '\SimpleXMLElement::__construct', 'ClassFinalMethodsCheck', $version),
+                "SimpleXMLElement::__construct should be a known problem for ClassFinalMethodsCheck on PHP {$version}"
+            );
+        }
+    }
+
+    public function testSimpleXmlConstructorNotSkippedForModernVersions(): void
+    {
+        $registry = KnownProblemsRegistry::getInstance();
+
+        // PHP 8.0+: reflection also reports __construct as non-final → no mismatch, no skip needed
+        foreach (['8.0', '8.1', '8.2', '8.3', '8.4'] as $version) {
+            $this->assertFalse(
+                $registry->hasProblem('methods', '\SimpleXMLElement::__construct', 'ClassFinalMethodsCheck', $version),
+                "SimpleXMLElement::__construct should NOT be a known problem for ClassFinalMethodsCheck on PHP {$version}"
+            );
+        }
+    }
+
+    public function testSimpleXmlConstructorSkipReasonMentionsFinalAndVersions(): void
+    {
+        $registry = KnownProblemsRegistry::getInstance();
+
+        $reason = $registry->getSkipReason('methods', '\SimpleXMLElement::__construct', 'ClassFinalMethodsCheck', '7.4');
+
+        $this->assertNotNull($reason);
+        $this->assertStringContainsString('final', strtolower($reason));
+        $this->assertStringContainsString('8.0', $reason);
+    }
+
+    public function testSimpleXmlConstructorUnaffectedByOtherChecks(): void
+    {
+        $registry = KnownProblemsRegistry::getInstance();
+
+        // The known problem is specific to ClassFinalMethodsCheck; other checks are unaffected
+        foreach (['ClassMethodsExistCheck', 'ClassExistsCheck', 'ParameterNamesCheck'] as $check) {
+            $this->assertFalse(
+                $registry->hasProblem('methods', '\SimpleXMLElement::__construct', $check, '7.4'),
+                "SimpleXMLElement::__construct should not affect {$check}"
+            );
+        }
+    }
+
+    public function testSimpleXmlConstructorProblemIsMethodEntityType(): void
+    {
+        $registry = KnownProblemsRegistry::getInstance();
+
+        // The entry must be indexed under 'methods', not 'classes' or 'functions'
+        $this->assertTrue(
+            $registry->hasProblem('methods', '\SimpleXMLElement::__construct', 'ClassFinalMethodsCheck', '7.0')
+        );
+        $this->assertFalse(
+            $registry->hasProblem('classes', '\SimpleXMLElement::__construct', 'ClassFinalMethodsCheck', '7.0')
+        );
+        $this->assertFalse(
+            $registry->hasProblem('functions', '\SimpleXMLElement::__construct', 'ClassFinalMethodsCheck', '7.0')
+        );
+    }
+
+    public function testSimpleXmlConstructorBoundaryVersions(): void
+    {
+        $registry = KnownProblemsRegistry::getInstance();
+
+        // 7.4 is the last affected version (inclusive upper bound)
+        $this->assertTrue(
+            $registry->hasProblem('methods', '\SimpleXMLElement::__construct', 'ClassFinalMethodsCheck', '7.4'),
+            'PHP 7.4 is within the affected range (inclusive)'
+        );
+
+        // 8.0 is the first unaffected version
+        $this->assertFalse(
+            $registry->hasProblem('methods', '\SimpleXMLElement::__construct', 'ClassFinalMethodsCheck', '8.0'),
+            'PHP 8.0 is outside the affected range'
+        );
+    }
+
+    // ── SimpleXMLIterator::__construct (inherited final from SimpleXMLElement) ─
+
+    public function testSimpleXmlIteratorConstructorSkippedForLegacyVersions(): void
+    {
+        $registry = KnownProblemsRegistry::getInstance();
+
+        foreach (['5.6', '7.0', '7.1', '7.2', '7.3', '7.4'] as $version) {
+            $this->assertTrue(
+                $registry->hasProblem('methods', '\SimpleXMLIterator::__construct', 'ClassFinalMethodsCheck', $version),
+                "SimpleXMLIterator::__construct should be a known problem for ClassFinalMethodsCheck on PHP {$version}"
+            );
+        }
+    }
+
+    public function testSimpleXmlIteratorConstructorNotSkippedForModernVersions(): void
+    {
+        $registry = KnownProblemsRegistry::getInstance();
+
+        foreach (['8.0', '8.1', '8.2', '8.3', '8.4'] as $version) {
+            $this->assertFalse(
+                $registry->hasProblem('methods', '\SimpleXMLIterator::__construct', 'ClassFinalMethodsCheck', $version),
+                "SimpleXMLIterator::__construct should NOT be a known problem for ClassFinalMethodsCheck on PHP {$version}"
+            );
+        }
+    }
+
+    public function testSimpleXmlIteratorConstructorSkipReasonMentionsInheritanceAndVersions(): void
+    {
+        $registry = KnownProblemsRegistry::getInstance();
+
+        $reason = $registry->getSkipReason('methods', '\SimpleXMLIterator::__construct', 'ClassFinalMethodsCheck', '7.0');
+
+        $this->assertNotNull($reason);
+        $this->assertStringContainsString('SimpleXMLElement', $reason);
+        $this->assertStringContainsString('8.0', $reason);
+    }
+
+    public function testSimpleXmlIteratorConstructorBoundaryVersions(): void
+    {
+        $registry = KnownProblemsRegistry::getInstance();
+
+        $this->assertTrue(
+            $registry->hasProblem('methods', '\SimpleXMLIterator::__construct', 'ClassFinalMethodsCheck', '7.4'),
+            'PHP 7.4 is within the affected range (inclusive)'
+        );
+        $this->assertFalse(
+            $registry->hasProblem('methods', '\SimpleXMLIterator::__construct', 'ClassFinalMethodsCheck', '8.0'),
+            'PHP 8.0 is outside the affected range'
+        );
+    }
+
+    public function testSimpleXmlIteratorAndElementHaveIndependentEntries(): void
+    {
+        $registry = KnownProblemsRegistry::getInstance();
+
+        // Both entries must exist independently — the iterator entry must not
+        // accidentally suppress checks on the element and vice-versa.
+        $this->assertTrue(
+            $registry->hasProblem('methods', '\SimpleXMLElement::__construct', 'ClassFinalMethodsCheck', '7.4')
+        );
+        $this->assertTrue(
+            $registry->hasProblem('methods', '\SimpleXMLIterator::__construct', 'ClassFinalMethodsCheck', '7.4')
+        );
+    }
 }

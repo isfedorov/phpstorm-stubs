@@ -347,6 +347,26 @@ class DefaultKnownProblemsProvider implements KnownProblemsProvider
                 reason: 'ResourceBundle gained Countable in PHP 7.4 and IteratorAggregate in PHP 8.0. PhpStorm cannot express per-version interface declarations, so stubs declare both for all versions. Reflection for PHP 5.6–7.3 does not report Countable; reflection for PHP 5.6–7.4 does not report IteratorAggregate.'
             ),
 
+            // SimpleXMLElement::__construct - final at C level in PHP 5.6–7.4; changed in PHP 8.0
+            new ProblemDefinition(
+                entityType: EntityType::METHOD,
+                entityId: '\\SimpleXMLElement::__construct',
+                type: ProblemType::INTERNAL_IMPLEMENTATION,
+                affectedChecks: [CheckType::CLASS_FINAL_METHODS],
+                versionRange: new PhpVersionRange('5.6', '7.4'),
+                reason: 'SimpleXMLElement::__construct was marked final at the C level in PHP 5.6–7.4. This was changed in PHP 8.0. The stub declares the constructor without final (matching PHP 8.0+ behaviour), but reflection for PHP 5.6–7.4 reports isFinal=true.'
+            ),
+
+            // SimpleXMLIterator::__construct - inherits SimpleXMLElement::__construct which was final at C level in PHP 5.6–7.4
+            new ProblemDefinition(
+                entityType: EntityType::METHOD,
+                entityId: '\\SimpleXMLIterator::__construct',
+                type: ProblemType::INTERNAL_IMPLEMENTATION,
+                affectedChecks: [CheckType::CLASS_FINAL_METHODS],
+                versionRange: new PhpVersionRange('5.6', '7.4'),
+                reason: 'SimpleXMLIterator extends SimpleXMLElement and inherits __construct. Since SimpleXMLElement::__construct was marked final at the C level in PHP 5.6–7.4, reflection reports isFinal=true for the inherited constructor on SimpleXMLIterator as well. This was changed in PHP 8.0. The stub declares the constructor without final (matching PHP 8.0+ behaviour).'
+            ),
+
             // SplFixedArray - interfaces changed across PHP versions; stubs declare the union
             new ProblemDefinition(
                 entityType: EntityType::CLASS_TYPE,
