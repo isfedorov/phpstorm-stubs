@@ -32,6 +32,8 @@ use StubTests\Sources\Parsers\Entities\Model\Types\StandaloneType;
  */
 class ReflectionEntitySerializer implements EntitySerializerInterface
 {
+    use SerializerHelperTrait;
+
     /**
      * Convert value to JSON-safe format, filtering out resources and closures
      */
@@ -439,8 +441,7 @@ class ReflectionEntitySerializer implements EntitySerializerInterface
 
         // Only set return type if provided and not null
         if (isset($data['returnType']) && $data['returnType'] !== null) {
-            // For now, we only support string type names that can be converted to StandaloneType
-            $function->setReturnTypeFromSignature(new StandaloneType($data['returnType']));
+            $function->setReturnTypeFromSignature($this->parseType($data['returnType']));
         }
 
         $function->setSourcePath($data['sourcePath'] ?? null);
@@ -551,7 +552,7 @@ class ReflectionEntitySerializer implements EntitySerializerInterface
 
         // Only set return type if provided and not null
         if (isset($data['returnType']) && $data['returnType'] !== null) {
-            $method->setReturnTypeFromSignature(new StandaloneType($data['returnType']));
+            $method->setReturnTypeFromSignature($this->parseType($data['returnType']));
         }
 
         return $method;
@@ -568,7 +569,7 @@ class ReflectionEntitySerializer implements EntitySerializerInterface
 
         // Only set type if provided and not null
         if (isset($data['type']) && $data['type'] !== null) {
-            $parameter->setType(new StandaloneType($data['type']));
+            $parameter->setType($this->parseType($data['type']));
         }
 
         if (isset($data['defaultValue'])) {
@@ -597,7 +598,7 @@ class ReflectionEntitySerializer implements EntitySerializerInterface
 
         // Only set type if provided and not null
         if (isset($data['type']) && $data['type'] !== null) {
-            $property->setTypeFromSignature(new StandaloneType($data['type']));
+            $property->setTypeFromSignature($this->parseType($data['type']));
         }
 
         return $property;

@@ -89,7 +89,7 @@ class PHPFunctionSerializer implements EntityTypeSerializerInterface
 
         // Only set return type if provided and not null
         if (isset($data['returnType']) && $data['returnType'] !== null) {
-            $function->setReturnTypeFromSignature(new \StubTests\Sources\Parsers\Entities\Model\Types\StandaloneType($data['returnType']));
+            $function->setReturnTypeFromSignature($this->parseType($data['returnType']));
         }
 
         // Stub-specific metadata

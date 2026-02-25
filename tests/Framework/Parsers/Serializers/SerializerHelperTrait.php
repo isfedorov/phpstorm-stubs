@@ -9,7 +9,11 @@ use StubTests\Sources\Parsers\Entities\Model\PHPClassConstant;
 use StubTests\Sources\Parsers\Entities\Model\PHPMethod;
 use StubTests\Sources\Parsers\Entities\Model\PHPParameter;
 use StubTests\Sources\Parsers\Entities\Model\PHPProperty;
+use StubTests\Sources\Parsers\Entities\Model\Types\IntersectionType;
+use StubTests\Sources\Parsers\Entities\Model\Types\NoType;
+use StubTests\Sources\Parsers\Entities\Model\Types\NullableType;
 use StubTests\Sources\Parsers\Entities\Model\Types\StandaloneType;
+use StubTests\Sources\Parsers\Entities\Model\Types\UnionType;
 use StubTests\Sources\Parsers\PhpDocStorage;
 
 /**
@@ -241,7 +245,7 @@ trait SerializerHelperTrait
 
         // Only set return type if provided and not null
         if (isset($data['returnType']) && $data['returnType'] !== null) {
-            $method->setReturnTypeFromSignature(new StandaloneType($data['returnType']));
+            $method->setReturnTypeFromSignature($this->parseType($data['returnType']));
         }
 
         // Stub-specific metadata
@@ -271,7 +275,7 @@ trait SerializerHelperTrait
 
         // Only set type if provided and not null
         if (isset($data['type']) && $data['type'] !== null) {
-            $parameter->setType(new StandaloneType($data['type']));
+            $parameter->setType($this->parseType($data['type']));
         }
 
         if (isset($data['defaultValue'])) {
@@ -310,7 +314,7 @@ trait SerializerHelperTrait
 
         // Only set type if provided and not null
         if (isset($data['type']) && $data['type'] !== null) {
-            $property->setTypeFromSignature(new StandaloneType($data['type']));
+            $property->setTypeFromSignature($this->parseType($data['type']));
         }
 
         // Stub-specific metadata
@@ -338,5 +342,55 @@ trait SerializerHelperTrait
         $constant->isFinal = $data['isFinal'] ?? false;
 
         return $constant;
+    }
+
+    /**
+     * Parse a type string back into the correct type object.
+     *
+     * Rules:
+     *   ""            → NoType
+     *   "A&B"         → IntersectionType
+     *   "A|null"      → NullableType  (exactly 2 parts, one is "null")
+     *   "A|B|..."     → UnionType
+     *   "?A"          → NullableType
+     *   "A"           → StandaloneType
+     */
+    protected function parseType(?string $typeStr): StandaloneType|UnionType|NullableType|NoType|IntersectionType
+    {
+        if ($typeStr === null || $typeStr === '') {
+            return new NoType();
+        }
+
+        if (str_contains($typeStr, '&')) {
+            $type = new IntersectionType();
+            foreach (explode('&', $typeStr) as $part) {
+                $type->addType(new StandaloneType($part));
+            }
+            return $type;
+        }
+
+        if (str_contains($typeStr, '|')) {
+            $parts = explode('|', $typeStr);
+            $nullIndex = array_search('null', $parts, true);
+            if (count($parts) === 2 && $nullIndex !== false) {
+                $basicPart = $parts[$nullIndex === 0 ? 1 : 0];
+                $nullable = new NullableType();
+                $nullable->addBasicType(new StandaloneType($basicPart));
+                return $nullable;
+            }
+            $union = new UnionType();
+            foreach ($parts as $part) {
+                $union->addType(new StandaloneType($part));
+            }
+            return $union;
+        }
+
+        if (str_starts_with($typeStr, '?')) {
+            $nullable = new NullableType();
+            $nullable->addBasicType(new StandaloneType(substr($typeStr, 1)));
+            return $nullable;
+        }
+
+        return new StandaloneType($typeStr);
     }
 }
