@@ -13,6 +13,7 @@ use StubTests\Sources\Validator\ClassReadonlyCheck;
 use StubTests\Sources\Validator\ClassFinalCheck;
 use StubTests\Sources\Validator\ClassFinalMethodsCheck;
 use StubTests\Sources\Validator\ClassMethodsExistCheck;
+use StubTests\Sources\Validator\ClassStaticMethodsCheck;
 
 /**
  * Validates that classes from reflection exist in stubs.
@@ -132,6 +133,17 @@ class ClassValidatorTest extends ValidatorTestBase
 			$classId,
 			$phpVersion,
 			"Class {$classId} final methods check failed in PHP {$phpVersion}"
+		);
+	}
+
+	#[PhpVersionRange('5.6','8.4')]
+	public function checkClassesStaticMethods(string $classId, string $phpVersion): void
+	{
+		$this->executeCheck(
+			new ClassStaticMethodsCheck(),
+			$classId,
+			$phpVersion,
+			"Class {$classId} static methods check failed in PHP {$phpVersion}"
 		);
 	}
 }

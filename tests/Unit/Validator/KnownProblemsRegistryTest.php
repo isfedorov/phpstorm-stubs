@@ -531,4 +531,189 @@ class KnownProblemsRegistryTest extends TestCase
             $registry->hasProblem('methods', '\SimpleXMLIterator::__construct', 'ClassFinalMethodsCheck', '7.4')
         );
     }
+
+    // ── XMLReader::open static/non-static version boundary ───────────────────
+
+    public function testXmlReaderOpenSkippedForLegacyVersions(): void
+    {
+        $registry = KnownProblemsRegistry::getInstance();
+
+        // PHP 5.6–7.4: reflection reports open() as non-static; stub is static → known problem
+        foreach (['5.6', '7.0', '7.1', '7.2', '7.3', '7.4'] as $version) {
+            $this->assertTrue(
+                $registry->hasProblem('methods', '\XMLReader::open', 'ClassStaticMethodsCheck', $version),
+                "XMLReader::open should be a known problem for ClassStaticMethodsCheck on PHP {$version}"
+            );
+        }
+    }
+
+    public function testXmlReaderOpenNotSkippedForModernVersions(): void
+    {
+        $registry = KnownProblemsRegistry::getInstance();
+
+        // PHP 8.0+: open() is officially static → no mismatch, no skip needed
+        foreach (['8.0', '8.1', '8.2', '8.3', '8.4'] as $version) {
+            $this->assertFalse(
+                $registry->hasProblem('methods', '\XMLReader::open', 'ClassStaticMethodsCheck', $version),
+                "XMLReader::open should NOT be a known problem for ClassStaticMethodsCheck on PHP {$version}"
+            );
+        }
+    }
+
+    public function testXmlReaderOpenBoundaryVersions(): void
+    {
+        $registry = KnownProblemsRegistry::getInstance();
+
+        // 7.4 is the last affected version (inclusive upper bound)
+        $this->assertTrue(
+            $registry->hasProblem('methods', '\XMLReader::open', 'ClassStaticMethodsCheck', '7.4'),
+            'PHP 7.4 is within the affected range (inclusive)'
+        );
+
+        // 8.0 is the first unaffected version
+        $this->assertFalse(
+            $registry->hasProblem('methods', '\XMLReader::open', 'ClassStaticMethodsCheck', '8.0'),
+            'PHP 8.0 is outside the affected range'
+        );
+    }
+
+    public function testXmlReaderOpenSkipReasonMentionsStaticAndVersions(): void
+    {
+        $registry = KnownProblemsRegistry::getInstance();
+
+        $reason = $registry->getSkipReason('methods', '\XMLReader::open', 'ClassStaticMethodsCheck', '7.4');
+
+        $this->assertNotNull($reason);
+        $this->assertStringContainsString('static', strtolower($reason));
+        $this->assertStringContainsString('8.0', $reason);
+    }
+
+    public function testXmlReaderOpenUnaffectedByOtherChecks(): void
+    {
+        $registry = KnownProblemsRegistry::getInstance();
+
+        // The known problem is specific to ClassStaticMethodsCheck; other checks are unaffected
+        foreach (['ClassFinalMethodsCheck', 'ClassMethodsExistCheck', 'ParameterNamesCheck'] as $check) {
+            $this->assertFalse(
+                $registry->hasProblem('methods', '\XMLReader::open', $check, '7.4'),
+                "XMLReader::open should not affect {$check}"
+            );
+        }
+    }
+
+    public function testXmlReaderOpenIsMethodEntityType(): void
+    {
+        $registry = KnownProblemsRegistry::getInstance();
+
+        // The entry must be indexed under 'methods', not 'classes' or 'functions'
+        $this->assertTrue(
+            $registry->hasProblem('methods', '\XMLReader::open', 'ClassStaticMethodsCheck', '7.0')
+        );
+        $this->assertFalse(
+            $registry->hasProblem('classes', '\XMLReader::open', 'ClassStaticMethodsCheck', '7.0')
+        );
+        $this->assertFalse(
+            $registry->hasProblem('functions', '\XMLReader::open', 'ClassStaticMethodsCheck', '7.0')
+        );
+    }
+
+    // ── XMLReader::XML static/non-static version boundary ────────────────────
+
+    public function testXmlReaderXmlMethodSkippedForLegacyVersions(): void
+    {
+        $registry = KnownProblemsRegistry::getInstance();
+
+        // PHP 5.6–7.4: reflection reports XML() as non-static; stub is static → known problem
+        foreach (['5.6', '7.0', '7.1', '7.2', '7.3', '7.4'] as $version) {
+            $this->assertTrue(
+                $registry->hasProblem('methods', '\XMLReader::XML', 'ClassStaticMethodsCheck', $version),
+                "XMLReader::XML should be a known problem for ClassStaticMethodsCheck on PHP {$version}"
+            );
+        }
+    }
+
+    public function testXmlReaderXmlMethodNotSkippedForModernVersions(): void
+    {
+        $registry = KnownProblemsRegistry::getInstance();
+
+        // PHP 8.0+: XML() is officially static → no mismatch, no skip needed
+        foreach (['8.0', '8.1', '8.2', '8.3', '8.4'] as $version) {
+            $this->assertFalse(
+                $registry->hasProblem('methods', '\XMLReader::XML', 'ClassStaticMethodsCheck', $version),
+                "XMLReader::XML should NOT be a known problem for ClassStaticMethodsCheck on PHP {$version}"
+            );
+        }
+    }
+
+    public function testXmlReaderXmlMethodBoundaryVersions(): void
+    {
+        $registry = KnownProblemsRegistry::getInstance();
+
+        // 7.4 is the last affected version (inclusive upper bound)
+        $this->assertTrue(
+            $registry->hasProblem('methods', '\XMLReader::XML', 'ClassStaticMethodsCheck', '7.4'),
+            'PHP 7.4 is within the affected range (inclusive)'
+        );
+
+        // 8.0 is the first unaffected version
+        $this->assertFalse(
+            $registry->hasProblem('methods', '\XMLReader::XML', 'ClassStaticMethodsCheck', '8.0'),
+            'PHP 8.0 is outside the affected range'
+        );
+    }
+
+    public function testXmlReaderXmlMethodSkipReasonMentionsStaticAndVersions(): void
+    {
+        $registry = KnownProblemsRegistry::getInstance();
+
+        $reason = $registry->getSkipReason('methods', '\XMLReader::XML', 'ClassStaticMethodsCheck', '7.4');
+
+        $this->assertNotNull($reason);
+        $this->assertStringContainsString('static', strtolower($reason));
+        $this->assertStringContainsString('8.0', $reason);
+    }
+
+    public function testXmlReaderXmlMethodUnaffectedByOtherChecks(): void
+    {
+        $registry = KnownProblemsRegistry::getInstance();
+
+        // The known problem is specific to ClassStaticMethodsCheck; other checks are unaffected
+        foreach (['ClassFinalMethodsCheck', 'ClassMethodsExistCheck', 'ParameterNamesCheck'] as $check) {
+            $this->assertFalse(
+                $registry->hasProblem('methods', '\XMLReader::XML', $check, '7.4'),
+                "XMLReader::XML should not affect {$check}"
+            );
+        }
+    }
+
+    public function testXmlReaderXmlMethodIsMethodEntityType(): void
+    {
+        $registry = KnownProblemsRegistry::getInstance();
+
+        // The entry must be indexed under 'methods', not 'classes' or 'functions'
+        $this->assertTrue(
+            $registry->hasProblem('methods', '\XMLReader::XML', 'ClassStaticMethodsCheck', '7.0')
+        );
+        $this->assertFalse(
+            $registry->hasProblem('classes', '\XMLReader::XML', 'ClassStaticMethodsCheck', '7.0')
+        );
+        $this->assertFalse(
+            $registry->hasProblem('functions', '\XMLReader::XML', 'ClassStaticMethodsCheck', '7.0')
+        );
+    }
+
+    // ── XMLReader::open and ::XML independence ────────────────────────────────
+
+    public function testXmlReaderOpenAndXmlMethodHaveIndependentEntries(): void
+    {
+        $registry = KnownProblemsRegistry::getInstance();
+
+        // Both entries must exist independently of one another
+        $this->assertTrue(
+            $registry->hasProblem('methods', '\XMLReader::open', 'ClassStaticMethodsCheck', '7.4')
+        );
+        $this->assertTrue(
+            $registry->hasProblem('methods', '\XMLReader::XML', 'ClassStaticMethodsCheck', '7.4')
+        );
+    }
 }

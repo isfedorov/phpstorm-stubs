@@ -63,4 +63,9 @@ enum CheckType: string
      * Validates that the `final` attribute on methods in stubs matches reflection.
      */
     case CLASS_FINAL_METHODS = 'ClassFinalMethodsCheck';
+
+    /**
+     * Validates that the `static` attribute on methods in stubs matches reflection.
+     */
+    case CLASS_STATIC_METHODS = 'ClassStaticMethodsCheck';
 }

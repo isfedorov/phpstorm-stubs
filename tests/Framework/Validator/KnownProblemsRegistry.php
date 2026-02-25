@@ -177,6 +177,7 @@ class KnownProblemsRegistry
             'ClassInterfacesCheck' => CheckType::CLASS_INTERFACES,
             'ClassMethodsExistCheck' => CheckType::CLASS_METHODS_EXIST,
             'ClassFinalMethodsCheck' => CheckType::CLASS_FINAL_METHODS,
+            'ClassStaticMethodsCheck' => CheckType::CLASS_STATIC_METHODS,
             default => null,
         };
     }

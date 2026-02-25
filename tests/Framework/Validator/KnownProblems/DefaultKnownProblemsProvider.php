@@ -367,6 +367,26 @@ class DefaultKnownProblemsProvider implements KnownProblemsProvider
                 reason: 'SimpleXMLIterator extends SimpleXMLElement and inherits __construct. Since SimpleXMLElement::__construct was marked final at the C level in PHP 5.6–7.4, reflection reports isFinal=true for the inherited constructor on SimpleXMLIterator as well. This was changed in PHP 8.0. The stub declares the constructor without final (matching PHP 8.0+ behaviour).'
             ),
 
+            // XMLReader::open - became truly static in PHP 8.0; stubs declare it static for all versions
+            new ProblemDefinition(
+                entityType: EntityType::METHOD,
+                entityId: '\\XMLReader::open',
+                type: ProblemType::INTERNAL_IMPLEMENTATION,
+                affectedChecks: [CheckType::CLASS_STATIC_METHODS],
+                versionRange: new PhpVersionRange('5.6', '7.4'),
+                reason: 'XMLReader::open was a non-static instance method in PHP 5.6–7.4 (though callable statically with a deprecation notice). It was made officially static in PHP 8.0. The stub declares it static to match the PHP 8.0+ signature; reflection for PHP 5.6–7.4 reports isStatic=false.'
+            ),
+
+            // XMLReader::XML - became truly static in PHP 8.0; stubs declare it static for all versions
+            new ProblemDefinition(
+                entityType: EntityType::METHOD,
+                entityId: '\\XMLReader::XML',
+                type: ProblemType::INTERNAL_IMPLEMENTATION,
+                affectedChecks: [CheckType::CLASS_STATIC_METHODS],
+                versionRange: new PhpVersionRange('5.6', '7.4'),
+                reason: 'XMLReader::XML was a non-static instance method in PHP 5.6–7.4 (though callable statically with a deprecation notice). It was made officially static in PHP 8.0. The stub declares it static to match the PHP 8.0+ signature; reflection for PHP 5.6–7.4 reports isStatic=false.'
+            ),
+
             // SplFixedArray - interfaces changed across PHP versions; stubs declare the union
             new ProblemDefinition(
                 entityType: EntityType::CLASS_TYPE,
