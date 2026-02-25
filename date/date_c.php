@@ -1099,7 +1099,7 @@ class DatePeriod implements IteratorAggregate
      * Gets the interval
      * @return DateInterval
      * @link https://php.net/manual/en/dateperiod.getdateinterval.php
-     * @since 5.6.5
+     * @since 5.6
      */
     #[TentativeType]
     public function getDateInterval(): DateInterval {}
@@ -1108,7 +1108,7 @@ class DatePeriod implements IteratorAggregate
      * Gets the end date
      * @return DateTimeInterface|null
      * @link https://php.net/manual/en/dateperiod.getenddate.php
-     * @since 5.6.5
+     * @since 5.6
      * @return TEnd
      */
     #[TentativeType]
@@ -1118,7 +1118,7 @@ class DatePeriod implements IteratorAggregate
      * Gets the start date
      * @return DateTimeInterface
      * @link https://php.net/manual/en/dateperiod.getstartdate.php
-     * @since 5.6.5
+     * @since 5.6
      * @return TDate
      */
     #[TentativeType]
@@ -1134,7 +1134,7 @@ class DatePeriod implements IteratorAggregate
      * Get the number of recurrences
      * @return int|null
      * @link https://php.net/manual/en/dateperiod.getrecurrences.php
-     * @since 7.2.17
+     * @since 7.2
      */
     #[TentativeType]
     public function getRecurrences(): ?int {}
