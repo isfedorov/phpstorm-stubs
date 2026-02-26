@@ -1,0 +1,145 @@
+<?php
+
+namespace StubTests\Sources\Validator;
+
+use StubTests\Sources\Parsers\Entities\Model\PHPClass;
+use StubTests\Sources\Parsers\ParsedDataStorageManager;
+use StubTests\Sources\Validator\KnownProblems\EntityType;
+
+/**
+ * Validates that all properties present in reflection also exist in stubs.
+ *
+ * The check is performed per-class: for each class entity ID the validator
+ * 1. collects all properties from the reflection class,
+ * 2. collects all version-appropriate properties from the stub class and its full
+ *    parent class chain in stubs,
+ * 3. reports any reflection property that is absent from the stub property set.
+ *
+ * Parent-chain traversal is necessary because PHP's ReflectionClass::getProperties()
+ * returns inherited public/protected properties from all ancestor classes, while stubs
+ * typically declare each property only once on the class where it is first introduced.
+ *
+ * Version filtering for stub properties uses sinceVersion/removedVersion stored on
+ * each PHPProperty. A stub property is considered available for a given PHP version if:
+ *   - sinceVersion is null OR phpVersion >= sinceVersion
+ *   - AND removedVersion is null OR phpVersion <= removedVersion
+ *
+ * Known problems are supported at two granularities:
+ * - class-level: EntityType::CLASS_TYPE + classId + 'ClassPropertiesExistCheck'
+ *   → skips all property checks for the class.
+ * - property-level: EntityType::PROPERTY + '\ClassName::$propertyName' + 'ClassPropertiesExistCheck'
+ *   → skips only that specific missing-property failure.
+ */
+class ClassPropertiesExistCheck extends AbstractClassCheck
+{
+    public function supports(string $phpVersion): bool
+    {
+        return true;
+    }
+
+    public function run(ParsedDataStorageManager $stubs, string $entityId, string $phpVersion): CheckResultSet
+    {
+        $results = new CheckResultSet();
+
+        // Class-level known problem skips all property validation for this class
+        if ($this->skipWithKnownProblem($results, EntityType::CLASS_TYPE->value, $entityId, 'ClassPropertiesExistCheck', $phpVersion)) {
+            return $results;
+        }
+
+        $reflection = $this->reflectionProvider->getReflection($phpVersion);
+
+        $reflectionClass = $this->findClassById($reflection, $entityId);
+        if ($reflectionClass === null) {
+            $results->addFailure($entityId, "Class {$entityId} not found in reflection data");
+            return $results;
+        }
+
+        $stubClass = $this->findClassById($stubs, $entityId);
+        if ($stubClass === null) {
+            $results->addFailure($entityId, "Class {$entityId} not found in stubs");
+            return $results;
+        }
+
+        // Collect all property names from reflection (includes inherited public/protected props).
+        $reflectionPropertyNames = [];
+        foreach ($reflectionClass->getProperties() as $property) {
+            $name = $property->getName();
+            if ($name !== null) {
+                $reflectionPropertyNames[$name] = true;
+            }
+        }
+
+        // Collect version-appropriate property names from the stub class and its full parent chain.
+        $stubPropertyNames = $this->collectVersionedStubProperties($stubClass, $phpVersion);
+
+        $missingProperties = array_diff(array_keys($reflectionPropertyNames), array_keys($stubPropertyNames));
+
+        if (empty($missingProperties)) {
+            $results->addSuccess($entityId);
+            return $results;
+        }
+
+        // For each missing property, check for a property-level known problem entry.
+        sort($missingProperties);
+        foreach ($missingProperties as $propertyName) {
+            $propertyEntityId = $entityId . '::$' . $propertyName;
+
+            if (!$this->skipWithKnownProblem($results, EntityType::PROPERTY->value, $propertyEntityId, 'ClassPropertiesExistCheck', $phpVersion)) {
+                $results->addFailure(
+                    $propertyEntityId,
+                    "Property {$propertyEntityId} exists in PHP {$phpVersion} but not in stubs"
+                );
+            }
+        }
+
+        return $results;
+    }
+
+    /**
+     * Collect version-filtered stub properties from the full parent class chain.
+     * Child class definitions win over parent class definitions for the same property name.
+     *
+     * A property is considered available if:
+     * - sinceVersion is null OR phpVersion >= sinceVersion
+     * - AND removedVersion is null OR phpVersion <= removedVersion
+     *
+     * @return array<string, true>
+     */
+    private function collectVersionedStubProperties(PHPClass $class, string $phpVersion): array
+    {
+        $propertyMap = [];
+        $visited     = [];
+
+        $current = $class;
+        while ($current !== null) {
+            $id = $current->getId();
+            if ($id !== null && in_array($id, $visited, true)) {
+                break; // cycle guard
+            }
+            if ($id !== null) {
+                $visited[] = $id;
+            }
+
+            foreach ($current->getProperties() as $property) {
+                $name = $property->getName();
+                if ($name === null || isset($propertyMap[$name])) {
+                    continue;
+                }
+
+                $sinceVersion   = $property->getSinceVersion();
+                $removedVersion = $property->getRemovedVersion();
+
+                $available = ($sinceVersion === null || version_compare($phpVersion, $sinceVersion, '>='))
+                    && ($removedVersion === null || version_compare($phpVersion, $removedVersion, '<='));
+
+                if ($available) {
+                    $propertyMap[$name] = true;
+                }
+            }
+
+            $current = $current->parentClass;
+        }
+
+        return $propertyMap;
+    }
+}

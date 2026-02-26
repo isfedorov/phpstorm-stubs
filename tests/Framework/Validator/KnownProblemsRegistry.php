@@ -178,6 +178,7 @@ class KnownProblemsRegistry
             'ClassMethodsExistCheck' => CheckType::CLASS_METHODS_EXIST,
             'ClassFinalMethodsCheck' => CheckType::CLASS_FINAL_METHODS,
             'ClassStaticMethodsCheck' => CheckType::CLASS_STATIC_METHODS,
+            'ClassPropertiesExistCheck' => CheckType::CLASS_PROPERTIES_EXIST,
             default => null,
         };
     }

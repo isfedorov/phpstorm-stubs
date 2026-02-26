@@ -7,6 +7,7 @@ use StubTests\Sources\Parsers\Entities\Model\PHPClass;
 use StubTests\Sources\Parsers\Entities\Model\PHPFunction;
 use StubTests\Sources\Parsers\Entities\Model\PHPMethod;
 use StubTests\Sources\Parsers\Entities\Model\PHPParameter;
+use StubTests\Sources\Parsers\Entities\Model\PHPProperty;
 use StubTests\Sources\Parsers\Entities\Model\Types\NoType;
 use StubTests\Sources\Parsers\Entities\Model\Types\NullableType;
 use StubTests\Sources\Parsers\Entities\Model\Types\StandaloneType;
@@ -81,17 +82,19 @@ abstract class CheckTestCase extends TestCase
         ?bool $isReadonly = null,
         array $methods = [],
         ?PHPClass $parentClass = null,
-        array $interfaces = []
+        array $interfaces = [],
+        array $properties = []
     ): PHPClass {
         $class = $this->getMockBuilder(PHPClass::class)
             ->disableOriginalConstructor()
-            ->onlyMethods(['getId', 'getName', 'getNamespace', 'getMethods'])
+            ->onlyMethods(['getId', 'getName', 'getNamespace', 'getMethods', 'getProperties'])
             ->getMock();
 
         $class->method('getId')->willReturn($name);
         $class->method('getName')->willReturn($name);
         $class->method('getNamespace')->willReturn($namespace);
         $class->method('getMethods')->willReturn($methods);
+        $class->method('getProperties')->willReturn($properties);
 
         // Set public properties
         if ($isFinal !== null) {
@@ -108,6 +111,23 @@ abstract class CheckTestCase extends TestCase
         }
 
         return $class;
+    }
+
+    /**
+     * Create a mock PHPProperty with the given name and optional version bounds.
+     */
+    protected function createMockProperty(string $name, ?string $sinceVersion = null, ?string $removedVersion = null): PHPProperty
+    {
+        $property = $this->getMockBuilder(PHPProperty::class)
+            ->disableOriginalConstructor()
+            ->onlyMethods(['getName', 'getSinceVersion', 'getRemovedVersion'])
+            ->getMock();
+
+        $property->method('getName')->willReturn($name);
+        $property->method('getSinceVersion')->willReturn($sinceVersion);
+        $property->method('getRemovedVersion')->willReturn($removedVersion);
+
+        return $property;
     }
 
     /**

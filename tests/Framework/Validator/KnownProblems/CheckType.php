@@ -68,4 +68,9 @@ enum CheckType: string
      * Validates that the `static` attribute on methods in stubs matches reflection.
      */
     case CLASS_STATIC_METHODS = 'ClassStaticMethodsCheck';
+
+    /**
+     * Validates that all properties present in reflection also exist in stubs.
+     */
+    case CLASS_PROPERTIES_EXIST = 'ClassPropertiesExistCheck';
 }

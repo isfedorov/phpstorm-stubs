@@ -31,6 +31,11 @@ enum EntityType: string
     case INTERFACE_TYPE = 'interfaces';
 
     /**
+     * Class properties (e.g., DateTime::$timezone)
+     */
+    case PROPERTY = 'properties';
+
+    /**
      * Get entity type from entity ID format.
      *
      * @param string $entityId Entity ID like "\dba_fetch" or "DateTime::format"

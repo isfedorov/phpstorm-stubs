@@ -396,6 +396,26 @@ class DefaultKnownProblemsProvider implements KnownProblemsProvider
                 versionRange: new PhpVersionRange('5.6', '8.4'),
                 reason: 'SplFixedArray interface list changed across PHP versions: Iterator (5.6–7.4) was replaced by IteratorAggregate (8.0+), and JsonSerializable was added in 8.1. PhpStorm cannot express per-version interface declarations, so stubs declare the union of all interfaces. Each individual PHP version\'s reflection only reports the subset current for that version.'
             ),
+
+            // SoapClient - internal C-level implementation properties not declared in stubs
+            new ProblemDefinition(
+                entityType: EntityType::CLASS_TYPE,
+                entityId: '\\SoapClient',
+                type: ProblemType::INTERNAL_IMPLEMENTATION,
+                affectedChecks: [CheckType::CLASS_PROPERTIES_EXIST],
+                versionRange: new PhpVersionRange('8.1', '8.4'),
+                reason: 'SoapClient exposes numerous private C-level implementation properties (e.g. $sdl, $typemap, $_encoding, $httpsocket) that became visible via reflection in PHP 8.1 after an internal refactoring. These are undocumented implementation details not intended for user access and are not declared in stubs.'
+            ),
+
+            // SoapServer - internal C-level implementation properties not declared in stubs
+            new ProblemDefinition(
+                entityType: EntityType::CLASS_TYPE,
+                entityId: '\\SoapServer',
+                type: ProblemType::INTERNAL_IMPLEMENTATION,
+                affectedChecks: [CheckType::CLASS_PROPERTIES_EXIST],
+                versionRange: new PhpVersionRange('8.1', '8.4'),
+                reason: 'SoapServer exposes internal C-level implementation properties ($service, $__soap_fault) that became visible via reflection in PHP 8.1 after an internal refactoring. These are undocumented implementation details not intended for user access and are not declared in stubs.'
+            ),
         ];
 
         return $this->problems;
