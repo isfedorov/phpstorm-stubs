@@ -9,26 +9,8 @@ use StubTests\Sources\Parsers\ParsedDataStorageManager;
  *
  * The entityId should be in format: "FunctionName" or "ClassName::methodName"
  */
-class ReturnTypesCheck implements CheckInterface
+class ReturnTypesCheck extends AbstractCallableCheck
 {
-    private ReflectionProviderInterface $reflectionProvider;
-    private KnownProblemsRegistry $knownProblemsRegistry;
-    private ?string $currentPhpVersion = null;
-
-    /**
-     * @param ReflectionProviderInterface|null $reflectionProvider Optional reflection provider for dependency injection.
-     *                                                              Defaults to RunnerReflectionProvider for production use.
-     * @param KnownProblemsRegistry|null $knownProblemsRegistry Optional registry for known problems.
-     *                                                            Defaults to singleton instance.
-     */
-    public function __construct(
-        ?ReflectionProviderInterface $reflectionProvider = null,
-        ?KnownProblemsRegistry $knownProblemsRegistry = null
-    ) {
-        $this->reflectionProvider = $reflectionProvider ?? new RunnerReflectionProvider();
-        $this->knownProblemsRegistry = $knownProblemsRegistry ?? KnownProblemsRegistry::getInstance();
-    }
-
     public function supports(string $phpVersion): bool
     {
         // Return type declarations were introduced in PHP 7.0
@@ -39,48 +21,26 @@ class ReturnTypesCheck implements CheckInterface
     {
         $results = new CheckResultSet();
 
-        // Store PHP version for use in findCallable
-        $this->currentPhpVersion = $phpVersion;
-
         // Check if this entity has a known problem that should skip validation
         $entityType = str_contains($entityId, '::') ? 'methods' : 'functions';
-        if ($this->knownProblemsRegistry->shouldSkipValidation(
-            $entityType,
-            $entityId,
-            'ReturnTypesCheck',
-            $phpVersion
-        )) {
-            $reason = $this->knownProblemsRegistry->getSkipReason(
-                $entityType,
-                $entityId,
-                'ReturnTypesCheck',
-                $phpVersion
-            );
-            // Mark as success with note that validation was skipped
-            $results->addSuccess($entityId . ' (skipped: ' . $reason . ')');
+        if ($this->skipWithKnownProblem($results, $entityType, $entityId, 'ReturnTypesCheck', $phpVersion)) {
             return $results;
         }
 
         // Get the function/method from reflection
         $reflection = $this->reflectionProvider->getReflection($phpVersion);
-        $reflectionCallable = $this->findCallable($reflection, $entityId);
+        $reflectionCallable = $this->findCallable($reflection, $entityId, $phpVersion);
 
         if ($reflectionCallable === null) {
-            $results->addFailure(
-				$entityId,
-	            "Function/method {$entityId} not found in reflection data"
-            );
+            $results->addFailure($entityId, "Function/method {$entityId} not found in reflection data");
             return $results;
         }
 
         // Get the function/method from stubs
-        $stubCallable = $this->findCallable($stubs, $entityId);
+        $stubCallable = $this->findCallable($stubs, $entityId, $phpVersion);
 
         if ($stubCallable === null) {
-            $results->addFailure(
-				$entityId,
-	            "Function/method {$entityId} not found in stubs"
-            );
+            $results->addFailure($entityId, "Function/method {$entityId} not found in stubs");
             return $results;
         }
 
@@ -115,8 +75,8 @@ class ReturnTypesCheck implements CheckInterface
         // Compare return types
         if ($normalizedReflectionType !== $normalizedStubType) {
             $results->addFailure(
-				$entityId,
-	            "Return type mismatch: reflection has '{$reflectionReturnType}', " .
+                $entityId,
+                "Return type mismatch: reflection has '{$reflectionReturnType}', " .
                 "stubs have '{$stubReturnType}'"
             );
         } else {
@@ -134,20 +94,16 @@ class ReturnTypesCheck implements CheckInterface
      * - Union type ordering (sort components alphabetically)
      * - Leading backslashes on class names (for FQN consistency)
      *
-     * Both reflection and stubs now return FQN (e.g., 'Dom\Attr'), and we just need to ensure
-     * consistent handling of leading backslashes for comparison.
-     *
      * @param string|null $type Type string to normalize, or null if no type information
      * @return string|null Normalized type string, or null if input was null
      */
     private function normalizeType(?string $type): ?string
     {
-        // If type is null (no type information), return null
         if ($type === null) {
             return null;
         }
+
         // Handle typed arrays: convert string[], int[], etc. to array
-        // Pattern: word[] (but not if it's part of a longer word)
         $type = preg_replace('/\b(\w+)\[\]/', 'array', $type);
 
         // Handle union types: sort components for consistent comparison
@@ -155,9 +111,7 @@ class ReturnTypesCheck implements CheckInterface
             $parts = explode('|', $type);
             // Trim whitespace and strip leading backslashes from each part
             $parts = array_map(fn($part) => ltrim(trim($part), '\\'), $parts);
-            // Sort alphabetically
             sort($parts);
-            // Rejoin
             $type = implode('|', $parts);
         } else {
             // For standalone types, strip leading backslash
@@ -178,7 +132,7 @@ class ReturnTypesCheck implements CheckInterface
      *
      * @param mixed $callable
      * @param string $phpVersion PHP version (e.g., '8.0')
-     * @return string|null Returns null when no return type information is available (not the same as 'mixed')
+     * @return string|null Returns null when no return type information is available
      */
     private function getReturnTypeString($callable, string $phpVersion): ?string
     {
@@ -193,7 +147,6 @@ class ReturnTypesCheck implements CheckInterface
                         $signatureType = (string) $returnType;
                     } elseif (method_exists($returnType, 'toString')) {
                         $typeString = $returnType->toString();
-                        // NoType returns empty string
                         $signatureType = $typeString === '' ? null : $typeString;
                     } elseif (method_exists($returnType, 'getTypeName')) {
                         $signatureType = $returnType->getTypeName();
@@ -204,13 +157,11 @@ class ReturnTypesCheck implements CheckInterface
             }
         }
 
-        // If we have a signature type, use it (highest priority)
         if ($signatureType !== null && $signatureType !== '') {
             return $signatureType;
         }
 
         // Check for LanguageLevelTypeAware (second priority)
-        // Only used when there's no explicit signature type
         $versionAwareType = $this->resolveVersionAwareType($callable, $phpVersion);
         if ($versionAwareType !== null) {
             return $versionAwareType;
@@ -227,7 +178,6 @@ class ReturnTypesCheck implements CheckInterface
                     }
                     if (method_exists($returnType, 'toString')) {
                         $typeString = $returnType->toString();
-                        // NoType returns empty string
                         $signatureType = $typeString === '' ? null : $typeString;
                     } elseif (method_exists($returnType, 'getTypeName')) {
                         $signatureType = $returnType->getTypeName();
@@ -238,15 +188,10 @@ class ReturnTypesCheck implements CheckInterface
             }
         }
 
-        // If we have a signature type, use it (highest priority)
         if ($signatureType !== null && $signatureType !== '') {
             return $signatureType;
         }
 
-        // No return type information available
-        // Note: This is different from 'mixed' type - it means the reflection
-        // doesn't provide any return type information (e.g., PHP 7.x, or PHP 8.0
-        // functions that haven't been updated with return types yet)
         return null;
     }
 
@@ -256,18 +201,12 @@ class ReturnTypesCheck implements CheckInterface
      * Logic: Find the highest version in languageLevelTypes that is <= current PHP version.
      * If found, use that version's type. Otherwise, use default type.
      *
-     * Example: ['8.4' => 'true'], default: 'bool'
-     * - PHP 8.0: No version <= 8.0, use default → 'bool'
-     * - PHP 8.4: Found '8.4' <= 8.4, use that → 'true'
-     * - PHP 8.5: Found '8.4' <= 8.5, use that → 'true'
-     *
      * @param mixed $callable
      * @param string $phpVersion PHP version (e.g., '8.0')
      * @return string|null Resolved type or null if no LanguageLevelTypeAware data
      */
     private function resolveVersionAwareType($callable, string $phpVersion): ?string
     {
-        // Check if callable has LanguageLevelTypeAware data
         if (!method_exists($callable, 'getLanguageLevelTypes') || !method_exists($callable, 'getDefaultType')) {
             return null;
         }
@@ -275,7 +214,6 @@ class ReturnTypesCheck implements CheckInterface
         $languageLevelTypes = $callable->getLanguageLevelTypes();
         $defaultType = $callable->getDefaultType();
 
-        // No LanguageLevelTypeAware data
         if ($languageLevelTypes === null && $defaultType === null) {
             return null;
         }
@@ -286,9 +224,7 @@ class ReturnTypesCheck implements CheckInterface
 
         if (is_array($languageLevelTypes)) {
             foreach ($languageLevelTypes as $version => $type) {
-                // Check if this version applies to current PHP version
                 if (version_compare($phpVersion, $version, '>=')) {
-                    // This version applies - check if it's the highest one we've seen
                     if ($highestApplicableVersion === null || version_compare($version, $highestApplicableVersion, '>')) {
                         $highestApplicableVersion = $version;
                         $applicableType = $type;
@@ -297,111 +233,6 @@ class ReturnTypesCheck implements CheckInterface
             }
         }
 
-        // If we found an applicable version-specific type, use it
-        if ($applicableType !== null) {
-            return $applicableType;
-        }
-
-        // Otherwise, use default type
-        return $defaultType;
-    }
-
-    /**
-     * Find a function or method in the given storage.
-     *
-     * @param ParsedDataStorageManager $storage
-     * @param string $functionOrMethodId Format: "functionName" or "ClassName::methodName"
-     * @return mixed|null The function/method object or null if not found
-     */
-    private function findCallable(ParsedDataStorageManager $storage, string $functionOrMethodId)
-    {
-        // Check if it's a method (contains ::)
-        if (str_contains($functionOrMethodId, '::')) {
-            [$className, $methodName] = explode('::', $functionOrMethodId, 2);
-
-            // Find the class
-            $classes = $storage->getClasses();
-            foreach ($classes as $class) {
-                $classId = method_exists($class, 'getId') ? $class->getId() :
-                    (method_exists($class, 'getName') ? $class->getName() : '');
-
-                if ($classId === $className) {
-                    // Find the method in this class
-                    if (method_exists($class, 'getMethods')) {
-                        $methods = $class->getMethods();
-                        foreach ($methods as $method) {
-                            $stubMethodName = method_exists($method, 'getName') ? $method->getName() : '';
-                            if ($stubMethodName === $methodName) {
-                                return $method;
-                            }
-                        }
-                    }
-                }
-            }
-            return null;
-        }
-
-        // It's a function - may have multiple versions
-        return $this->findVersionedFunction($storage, $functionOrMethodId);
-    }
-
-    /**
-     * Find a function in storage, considering version availability.
-     *
-     * Some functions have multiple definitions with different #[PhpStormStubsElementAvailable]
-     * attributes. This method finds the function definition that's available for the current
-     * PHP version being validated.
-     *
-     * @param ParsedDataStorageManager $storage
-     * @param string $functionId Function identifier
-     * @return mixed|null The function object or null if not found
-     */
-    private function findVersionedFunction(ParsedDataStorageManager $storage, string $functionId)
-    {
-        $functions = $storage->getFunctions();
-        $candidates = [];
-
-        // Find all functions matching the ID
-        foreach ($functions as $function) {
-            $currentId = method_exists($function, 'getId') ? $function->getId() :
-                (method_exists($function, 'getName') ? $function->getName() : '');
-
-            if ($currentId === $functionId) {
-                $candidates[] = $function;
-            }
-        }
-
-        if (empty($candidates)) {
-            return null;
-        }
-
-        // If only one candidate, return it
-        if (count($candidates) === 1) {
-            return $candidates[0];
-        }
-
-        // Multiple candidates - filter by version availability
-        $phpVersion = $this->currentPhpVersion;
-
-        if ($phpVersion === null) {
-            // No version context, return first candidate
-            return $candidates[0];
-        }
-
-        // Filter by version availability
-        foreach ($candidates as $candidate) {
-            $sinceVersion = method_exists($candidate, 'getSinceVersion') ? $candidate->getSinceVersion() : null;
-            $removedVersion = method_exists($candidate, 'getRemovedVersion') ? $candidate->getRemovedVersion() : null;
-
-            $isAvailableSince = $sinceVersion === null || version_compare($phpVersion, $sinceVersion, '>=');
-            $isNotRemoved = $removedVersion === null || version_compare($phpVersion, $removedVersion, '<=');
-
-            if ($isAvailableSince && $isNotRemoved) {
-                return $candidate;
-            }
-        }
-
-        // No candidate matches the version, return first one
-        return $candidates[0];
+        return $applicableType ?? $defaultType;
     }
 }

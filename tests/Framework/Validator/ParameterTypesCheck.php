@@ -9,26 +9,8 @@ use StubTests\Sources\Parsers\ParsedDataStorageManager;
  *
  * The entityId should be in format: "FunctionName" or "ClassName::methodName"
  */
-class ParameterTypesCheck implements CheckInterface
+class ParameterTypesCheck extends AbstractCallableCheck
 {
-    private ReflectionProviderInterface $reflectionProvider;
-    private KnownProblemsRegistry $knownProblemsRegistry;
-    private ?string $currentPhpVersion = null;
-
-    /**
-     * @param ReflectionProviderInterface|null $reflectionProvider Optional reflection provider for dependency injection.
-     *                                                              Defaults to RunnerReflectionProvider for production use.
-     * @param KnownProblemsRegistry|null $knownProblemsRegistry Optional registry for known problems.
-     *                                                            Defaults to singleton instance.
-     */
-    public function __construct(
-        ?ReflectionProviderInterface $reflectionProvider = null,
-        ?KnownProblemsRegistry $knownProblemsRegistry = null
-    ) {
-        $this->reflectionProvider = $reflectionProvider ?? new RunnerReflectionProvider();
-        $this->knownProblemsRegistry = $knownProblemsRegistry ?? KnownProblemsRegistry::getInstance();
-    }
-
     public function supports(string $phpVersion): bool
     {
         // Type hints were introduced gradually:
@@ -41,50 +23,28 @@ class ParameterTypesCheck implements CheckInterface
 
     public function run(ParsedDataStorageManager $stubs, string $entityId, string $phpVersion): CheckResultSet
     {
-        // Store PHP version for use in findCallable
-        $this->currentPhpVersion = $phpVersion;
-
         $results = new CheckResultSet();
 
         // Check if this entity has a known problem that should skip validation
         $entityType = str_contains($entityId, '::') ? 'methods' : 'functions';
-        if ($this->knownProblemsRegistry->shouldSkipValidation(
-            $entityType,
-            $entityId,
-            'ParameterTypesCheck',
-            $phpVersion
-        )) {
-            $reason = $this->knownProblemsRegistry->getSkipReason(
-                $entityType,
-                $entityId,
-                'ParameterTypesCheck',
-                $phpVersion
-            );
-            // Mark as success with note that validation was skipped
-            $results->addSuccess($entityId . ' (skipped: ' . $reason . ')');
+        if ($this->skipWithKnownProblem($results, $entityType, $entityId, 'ParameterTypesCheck', $phpVersion)) {
             return $results;
         }
 
         // Get the function/method from reflection
         $reflection = $this->reflectionProvider->getReflection($phpVersion);
-        $reflectionCallable = $this->findCallable($reflection, $entityId);
+        $reflectionCallable = $this->findCallable($reflection, $entityId, $phpVersion);
 
         if ($reflectionCallable === null) {
-            $results->addFailure(
-				$entityId,
-	            "Function/method {$entityId} not found in reflection data"
-            );
+            $results->addFailure($entityId, "Function/method {$entityId} not found in reflection data");
             return $results;
         }
 
         // Get the function/method from stubs
-        $stubCallable = $this->findCallable($stubs, $entityId);
+        $stubCallable = $this->findCallable($stubs, $entityId, $phpVersion);
 
         if ($stubCallable === null) {
-            $results->addFailure(
-				$entityId,
-	            "Function/method {$entityId} not found in stubs"
-            );
+            $results->addFailure($entityId, "Function/method {$entityId} not found in stubs");
             return $results;
         }
 
@@ -96,14 +56,14 @@ class ParameterTypesCheck implements CheckInterface
             ? $stubCallable->getParameters()
             : [];
 
-		// Filter stub parameters by version availability
-		$stubParams = $this->filterParametersByVersion($stubParams, $phpVersion);
+        // Filter stub parameters by version availability
+        $stubParams = $this->filterParametersByVersion($stubParams, $phpVersion);
 
         // Check parameter count matches
         if (count($reflectionParams) !== count($stubParams)) {
             $results->addFailure(
-				$entityId,
-	            "Parameter count mismatch: reflection has " . count($reflectionParams) .
+                $entityId,
+                "Parameter count mismatch: reflection has " . count($reflectionParams) .
                 " parameters, stubs have " . count($stubParams) . " parameters"
             );
             return $results;
@@ -114,10 +74,7 @@ class ParameterTypesCheck implements CheckInterface
             $stubParam = $stubParams[$index] ?? null;
 
             if ($stubParam === null) {
-                $results->addFailure(
-					$entityId,
-	                "Parameter #{$index} missing in stubs"
-                );
+                $results->addFailure($entityId, "Parameter #{$index} missing in stubs");
                 continue;
             }
 
@@ -127,8 +84,8 @@ class ParameterTypesCheck implements CheckInterface
             if ($reflectionType !== $stubType) {
                 $paramName = method_exists($reflectionParam, 'getName') ? $reflectionParam->getName() : "#{$index}";
                 $results->addFailure(
-					$entityId,
-	                "Parameter '{$paramName}' type mismatch: reflection has '{$reflectionType}', " .
+                    $entityId,
+                    "Parameter '{$paramName}' type mismatch: reflection has '{$reflectionType}', " .
                     "stubs have '{$stubType}'"
                 );
             }
@@ -177,187 +134,75 @@ class ParameterTypesCheck implements CheckInterface
         return (string) $type;
     }
 
-	/**
-	 * Filter parameters by their version availability.
-	 *
-	 * Parameters with PhpStormStubsElementAvailable attributes may have sinceVersion and removedVersion.
-	 * This method filters out parameters that are not available in the target PHP version.
-	 *
-	 * After filtering, this method also merges duplicate-named parameters that represent the
-	 * workaround for non-optional variadic parameters in PHP < 8.0.
-	 *
-	 * @param array $parameters Array of parameter objects
-	 * @param string $phpVersion Target PHP version (e.g., '8.0', '8.1')
-	 * @return array Filtered array of parameters available in the target version
-	 */
-	private function filterParametersByVersion(array $parameters, string $phpVersion): array
-	{
-		$filtered = [];
-
-		foreach ($parameters as $param) {
-			// Check if parameter has version constraints
-			$sinceVersion = method_exists($param, 'getSinceVersion') ? $param->getSinceVersion() : null;
-			$removedVersion = method_exists($param, 'getRemovedVersion') ? $param->getRemovedVersion() : null;
-
-			// Parameter is available if:
-			// - sinceVersion is null OR target version >= sinceVersion
-			// - AND removedVersion is null OR target version <= removedVersion
-			$isAvailableSince = $sinceVersion === null || version_compare($phpVersion, $sinceVersion, '>=');
-			$isNotRemoved = $removedVersion === null || version_compare($phpVersion, $removedVersion, '<=');
-
-			if ($isAvailableSince && $isNotRemoved) {
-				$filtered[] = $param;
-			}
-		}
-
-		// Merge duplicate-named parameters (workaround for non-optional variadics)
-		return $this->mergeDuplicateNamedParameters($filtered);
-	}
-
-	/**
-	 * Merge consecutive parameters with the same name where the second is variadic.
-	 *
-	 * This handles the stub workaround for non-optional variadic parameters in PHP < 8.0.
-	 * The pattern is:
-	 *   #[PhpStormStubsElementAvailable(from: '5.3', to: '7.4')] mixed $values,
-	 *   mixed ...$values
-	 *
-	 * When both parameters are present after version filtering, they represent a single
-	 * non-optional variadic parameter and should be merged into one.
-	 *
-	 * @param array $parameters Array of parameter objects
-	 * @return array Array with duplicate-named parameters merged
-	 */
-	private function mergeDuplicateNamedParameters(array $parameters): array
-	{
-		$merged = [];
-		$count = count($parameters);
-
-		for ($i = 0; $i < $count; $i++) {
-			$current = $parameters[$i];
-			$next = $parameters[$i + 1] ?? null;
-
-			// Check if current and next parameters have the same name
-			$currentName = method_exists($current, 'getName') ? $current->getName() : null;
-			$nextName = $next && method_exists($next, 'getName') ? $next->getName() : null;
-
-			// Check if next parameter is variadic
-			$nextIsVariadic = $next && method_exists($next, 'isVariadic') && $next->isVariadic();
-
-			if ($currentName !== null && $currentName === $nextName && $nextIsVariadic) {
-				// Skip current parameter and keep only the variadic one
-				// This merges the two parameters into one
-				$merged[] = $next;
-				$i++; // Skip the next iteration since we already processed it
-			} else {
-				$merged[] = $current;
-			}
-		}
-
-		return $merged;
-	}
-
-
-	/**
-     * Find a function or method in the given storage.
+    /**
+     * Filter parameters by their version availability.
      *
-     * When multiple function definitions exist with the same ID (e.g., overloaded functions
-     * with different #[PhpStormStubsElementAvailable] attributes), this method selects the
-     * definition that's available in the current PHP version being validated.
+     * Parameters with PhpStormStubsElementAvailable attributes may have sinceVersion and removedVersion.
+     * This method filters out parameters that are not available in the target PHP version.
      *
-     * @param ParsedDataStorageManager $storage
-     * @param string $functionOrMethodId Format: "functionName" or "ClassName::methodName"
-     * @return mixed|null The function/method object or null if not found
+     * After filtering, this method also merges duplicate-named parameters that represent the
+     * workaround for non-optional variadic parameters in PHP < 8.0.
+     *
+     * @param array $parameters Array of parameter objects
+     * @param string $phpVersion Target PHP version (e.g., '8.0', '8.1')
+     * @return array Filtered array of parameters available in the target version
      */
-    private function findCallable(ParsedDataStorageManager $storage, string $functionOrMethodId)
+    private function filterParametersByVersion(array $parameters, string $phpVersion): array
     {
-        // Check if it's a method (contains ::)
-        if (str_contains($functionOrMethodId, '::')) {
-            [$className, $methodName] = explode('::', $functionOrMethodId, 2);
+        $filtered = [];
 
-            // Find the class
-            $classes = $storage->getClasses();
-            foreach ($classes as $class) {
-                $classId = method_exists($class, 'getId') ? $class->getId() :
-                    (method_exists($class, 'getName') ? $class->getName() : '');
+        foreach ($parameters as $param) {
+            $sinceVersion   = method_exists($param, 'getSinceVersion') ? $param->getSinceVersion() : null;
+            $removedVersion = method_exists($param, 'getRemovedVersion') ? $param->getRemovedVersion() : null;
 
-                if ($classId === $className) {
-                    // Find the method in this class
-                    if (method_exists($class, 'getMethods')) {
-                        $methods = $class->getMethods();
-                        foreach ($methods as $method) {
-                            $stubMethodName = method_exists($method, 'getName') ? $method->getName() : '';
-                            if ($stubMethodName === $methodName) {
-                                return $method;
-                            }
-                        }
-                    }
-                }
+            $isAvailableSince = $sinceVersion === null || version_compare($phpVersion, $sinceVersion, '>=');
+            $isNotRemoved     = $removedVersion === null || version_compare($phpVersion, $removedVersion, '<=');
+
+            if ($isAvailableSince && $isNotRemoved) {
+                $filtered[] = $param;
             }
-            return null;
         }
 
-        // It's a function - may have multiple versions
-        return $this->findVersionedFunction($storage, $functionOrMethodId);
+        // Merge duplicate-named parameters (workaround for non-optional variadics)
+        return $this->mergeDuplicateNamedParameters($filtered);
     }
 
     /**
-     * Find a function in storage, considering version availability.
+     * Merge consecutive parameters with the same name where the second is variadic.
      *
-     * Some functions have multiple definitions with different #[PhpStormStubsElementAvailable]
-     * attributes. This method finds the function definition that's available for the current
-     * PHP version being validated.
+     * This handles the stub workaround for non-optional variadic parameters in PHP < 8.0.
+     * The pattern is:
+     *   #[PhpStormStubsElementAvailable(from: '5.3', to: '7.4')] mixed $values,
+     *   mixed ...$values
      *
-     * @param ParsedDataStorageManager $storage
-     * @param string $functionId Function identifier
-     * @return mixed|null The function object or null if not found
+     * When both parameters are present after version filtering, they represent a single
+     * non-optional variadic parameter and should be merged into one.
+     *
+     * @param array $parameters Array of parameter objects
+     * @return array Array with duplicate-named parameters merged
      */
-    private function findVersionedFunction(ParsedDataStorageManager $storage, string $functionId)
+    private function mergeDuplicateNamedParameters(array $parameters): array
     {
-        $functions = $storage->getFunctions();
-        $candidates = [];
+        $merged = [];
+        $count = count($parameters);
 
-        // Find all functions matching the ID
-        foreach ($functions as $function) {
-            $currentId = method_exists($function, 'getId') ? $function->getId() :
-                (method_exists($function, 'getName') ? $function->getName() : '');
+        for ($i = 0; $i < $count; $i++) {
+            $current = $parameters[$i];
+            $next    = $parameters[$i + 1] ?? null;
 
-            if ($currentId === $functionId) {
-                $candidates[] = $function;
+            $currentName  = method_exists($current, 'getName') ? $current->getName() : null;
+            $nextName     = $next && method_exists($next, 'getName') ? $next->getName() : null;
+            $nextIsVariadic = $next && method_exists($next, 'isVariadic') && $next->isVariadic();
+
+            if ($currentName !== null && $currentName === $nextName && $nextIsVariadic) {
+                // Skip current parameter and keep only the variadic one
+                $merged[] = $next;
+                $i++; // Skip the next iteration since we already processed it
+            } else {
+                $merged[] = $current;
             }
         }
 
-        if (empty($candidates)) {
-            return null;
-        }
-
-        // If only one candidate, return it
-        if (count($candidates) === 1) {
-            return $candidates[0];
-        }
-
-        // Multiple candidates - filter by version availability
-        $phpVersion = $this->currentPhpVersion;
-
-        if ($phpVersion === null) {
-            // No version context, return first candidate
-            return $candidates[0];
-        }
-
-        // Filter by version availability
-        foreach ($candidates as $candidate) {
-            $sinceVersion = method_exists($candidate, 'getSinceVersion') ? $candidate->getSinceVersion() : null;
-            $removedVersion = method_exists($candidate, 'getRemovedVersion') ? $candidate->getRemovedVersion() : null;
-
-            $isAvailableSince = $sinceVersion === null || version_compare($phpVersion, $sinceVersion, '>=');
-            $isNotRemoved = $removedVersion === null || version_compare($phpVersion, $removedVersion, '<=');
-
-            if ($isAvailableSince && $isNotRemoved) {
-                return $candidate;
-            }
-        }
-
-        // No candidate matches the version, return first one
-        return $candidates[0];
+        return $merged;
     }
 }

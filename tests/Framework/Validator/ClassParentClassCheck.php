@@ -6,10 +6,8 @@ use StubTests\Sources\Parsers\ClassAncestorNamesExtractor;
 use StubTests\Sources\Parsers\ParsedDataStorageManager;
 use StubTests\Sources\Validator\KnownProblems\EntityType;
 
-class ClassParentClassCheck implements CheckInterface
+class ClassParentClassCheck extends AbstractClassCheck
 {
-    private ReflectionProviderInterface $reflectionProvider;
-    private KnownProblemsRegistry $knownProblemsRegistry;
     private ClassAncestorNamesExtractor $ancestorExtractor;
 
     public function __construct(
@@ -17,8 +15,7 @@ class ClassParentClassCheck implements CheckInterface
         ?KnownProblemsRegistry $knownProblemsRegistry = null,
         ?ClassAncestorNamesExtractor $ancestorExtractor = null
     ) {
-        $this->reflectionProvider = $reflectionProvider ?? new RunnerReflectionProvider();
-        $this->knownProblemsRegistry = $knownProblemsRegistry ?? KnownProblemsRegistry::getInstance();
+        parent::__construct($reflectionProvider, $knownProblemsRegistry);
         $this->ancestorExtractor = $ancestorExtractor ?? new ClassAncestorNamesExtractor();
     }
 
@@ -31,49 +28,19 @@ class ClassParentClassCheck implements CheckInterface
     {
         $results = new CheckResultSet();
 
-        // Check if this entity has a known problem that should skip validation
-        if ($this->knownProblemsRegistry->shouldSkipValidation(
-            EntityType::CLASS_TYPE->value,
-            $entityId,
-            'ClassParentClassCheck',
-            $phpVersion
-        )) {
-            $reason = $this->knownProblemsRegistry->getSkipReason(
-                EntityType::CLASS_TYPE->value,
-                $entityId,
-                'ClassParentClassCheck',
-                $phpVersion
-            );
-            $results->addSuccess($entityId . ' (skipped: ' . $reason . ')');
+        if ($this->skipWithKnownProblem($results, EntityType::CLASS_TYPE->value, $entityId, 'ClassParentClassCheck', $phpVersion)) {
             return $results;
         }
 
-        // Get reflection data for this PHP version
         $reflection = $this->reflectionProvider->getReflection($phpVersion);
 
-        // Find class in reflection
-        $reflectionClass = null;
-        foreach ($reflection->getClasses() as $class) {
-            if ($class->getId() === $entityId) {
-                $reflectionClass = $class;
-                break;
-            }
-        }
-
+        $reflectionClass = $this->findClassById($reflection, $entityId);
         if ($reflectionClass === null) {
             $results->addFailure($entityId, "Class {$entityId} not found in reflection data");
             return $results;
         }
 
-        // Find class in stubs
-        $stubClass = null;
-        foreach ($stubs->getClasses() as $class) {
-            if ($class->getId() === $entityId) {
-                $stubClass = $class;
-                break;
-            }
-        }
-
+        $stubClass = $this->findClassById($stubs, $entityId);
         if ($stubClass === null) {
             $results->addFailure($entityId, "Class {$entityId} not found in stubs");
             return $results;
