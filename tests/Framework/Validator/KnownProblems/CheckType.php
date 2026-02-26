@@ -73,4 +73,9 @@ enum CheckType: string
      * Validates that all properties present in reflection also exist in stubs.
      */
     case CLASS_PROPERTIES_EXIST = 'ClassPropertiesExistCheck';
+
+    /**
+     * Validates that the visibility (public/protected/private) of methods in stubs matches reflection.
+     */
+    case CLASS_METHODS_VISIBILITY = 'ClassMethodsVisibilityCheck';
 }
