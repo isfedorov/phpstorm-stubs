@@ -2,6 +2,7 @@
 
 namespace StubTests\Unit\Validator;
 
+use StubTests\Sources\Runner\PhpVersions;
 use StubTests\Sources\Validator\ClassReadonlyCheck;
 
 class ClassReadonlyCheckTest extends CheckTestCase
@@ -16,18 +17,18 @@ class ClassReadonlyCheckTest extends CheckTestCase
 
     public function testSupportsPhp82AndAbove(): void
     {
-        $this->assertTrue($this->check->supports('8.2'));
-        $this->assertTrue($this->check->supports('8.3'));
-        $this->assertTrue($this->check->supports('8.4'));
+        $this->assertTrue($this->check->supports(PhpVersions::PHP_8_2->value));
+        $this->assertTrue($this->check->supports(PhpVersions::PHP_8_3->value));
+        $this->assertTrue($this->check->supports(PhpVersions::LATEST->value));
     }
 
     public function testDoesNotSupportOlderPhpVersions(): void
     {
-        $this->assertFalse($this->check->supports('5.6'));
-        $this->assertFalse($this->check->supports('7.0'));
-        $this->assertFalse($this->check->supports('7.4'));
-        $this->assertFalse($this->check->supports('8.0'));
-        $this->assertFalse($this->check->supports('8.1'));
+        $this->assertFalse($this->check->supports(PhpVersions::EARLIEST->value));
+        $this->assertFalse($this->check->supports(PhpVersions::PHP_7_0->value));
+        $this->assertFalse($this->check->supports(PhpVersions::PHP_7_4->value));
+        $this->assertFalse($this->check->supports(PhpVersions::PHP_8_0->value));
+        $this->assertFalse($this->check->supports(PhpVersions::PHP_8_1->value));
     }
 
     public function testReadonlyClassWithBooleanTrue(): void

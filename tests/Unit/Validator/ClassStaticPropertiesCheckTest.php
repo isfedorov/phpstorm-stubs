@@ -11,6 +11,7 @@ use StubTests\Sources\Validator\KnownProblems\EntityType;
 use StubTests\Sources\Validator\KnownProblems\ProblemDefinition;
 use StubTests\Sources\Validator\KnownProblems\ProblemType;
 use StubTests\Sources\Runner\PhpVersionRange;
+use StubTests\Sources\Runner\PhpVersions;
 
 class ClassStaticPropertiesCheckTest extends CheckTestCase
 {
@@ -51,10 +52,10 @@ class ClassStaticPropertiesCheckTest extends CheckTestCase
 
     public function testSupportsAllPhpVersions(): void
     {
-        $this->assertTrue($this->check->supports('5.6'));
-        $this->assertTrue($this->check->supports('7.0'));
-        $this->assertTrue($this->check->supports('8.0'));
-        $this->assertTrue($this->check->supports('8.4'));
+        $this->assertTrue($this->check->supports(PhpVersions::EARLIEST->value));
+        $this->assertTrue($this->check->supports(PhpVersions::PHP_7_0->value));
+        $this->assertTrue($this->check->supports(PhpVersions::PHP_8_0->value));
+        $this->assertTrue($this->check->supports(PhpVersions::LATEST->value));
     }
 
     // ── Class not found ───────────────────────────────────────────────────────
@@ -323,7 +324,7 @@ class ClassStaticPropertiesCheckTest extends CheckTestCase
                 entityId: $className,
                 type: ProblemType::INTERNAL_IMPLEMENTATION,
                 affectedChecks: [CheckType::CLASS_STATIC_PROPERTIES],
-                versionRange: new PhpVersionRange('5.6', '8.4'),
+                versionRange: new PhpVersionRange(PhpVersions::EARLIEST, PhpVersions::LATEST),
                 reason: 'Class-level skip'
             ),
         ]);
@@ -373,7 +374,7 @@ class ClassStaticPropertiesCheckTest extends CheckTestCase
                 entityId: $mismatchedId,
                 type: ProblemType::INTERNAL_IMPLEMENTATION,
                 affectedChecks: [CheckType::CLASS_STATIC_PROPERTIES],
-                versionRange: new PhpVersionRange('5.6', '8.4'),
+                versionRange: new PhpVersionRange(PhpVersions::EARLIEST, PhpVersions::LATEST),
                 reason: 'Property-level skip'
             ),
         ]);
@@ -419,7 +420,7 @@ class ClassStaticPropertiesCheckTest extends CheckTestCase
                 entityId: $className . '::$instance',
                 type: ProblemType::INTERNAL_IMPLEMENTATION,
                 affectedChecks: [CheckType::CLASS_STATIC_PROPERTIES],
-                versionRange: new PhpVersionRange('5.6', '8.4'),
+                versionRange: new PhpVersionRange(PhpVersions::EARLIEST, PhpVersions::LATEST),
                 reason: 'Only instance is known'
             ),
         ]);

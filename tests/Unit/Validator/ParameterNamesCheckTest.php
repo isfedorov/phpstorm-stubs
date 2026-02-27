@@ -2,6 +2,7 @@
 
 namespace StubTests\Unit\Validator;
 
+use StubTests\Sources\Runner\PhpVersions;
 use StubTests\Sources\Validator\ParameterNamesCheck;
 
 class ParameterNamesCheckTest extends CheckTestCase
@@ -10,12 +11,12 @@ class ParameterNamesCheckTest extends CheckTestCase
     {
         $check = new ParameterNamesCheck();
 
-        $this->assertFalse($check->supports('5.6'));
-        $this->assertFalse($check->supports('7.0'));
-        $this->assertFalse($check->supports('7.4'));
-        $this->assertTrue($check->supports('8.0'));
-        $this->assertTrue($check->supports('8.1'));
-        $this->assertTrue($check->supports('8.4'));
+        $this->assertFalse($check->supports(PhpVersions::EARLIEST->value));
+        $this->assertFalse($check->supports(PhpVersions::PHP_7_0->value));
+        $this->assertFalse($check->supports(PhpVersions::PHP_7_4->value));
+        $this->assertTrue($check->supports(PhpVersions::PHP_8_0->value));
+        $this->assertTrue($check->supports(PhpVersions::PHP_8_1->value));
+        $this->assertTrue($check->supports(PhpVersions::LATEST->value));
     }
 
     public function testMatchingParameterNamesForFunction(): void

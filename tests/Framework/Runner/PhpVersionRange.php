@@ -7,9 +7,14 @@ use Attribute;
 #[Attribute(Attribute::TARGET_METHOD)]
 class PhpVersionRange
 {
-    public function __construct(public string $from, public ?string $to = null)
+    public string $from;
+    public string $to;
+
+    public function __construct(PhpVersions|string $from, PhpVersions|string|null $to = null)
     {
-        $this->to ??= $from;
+        $this->from = $from instanceof PhpVersions ? $from->value : $from;
+        $to ??= $from;
+        $this->to = $to instanceof PhpVersions ? $to->value : $to;
     }
 
     public function includes(string $version): bool

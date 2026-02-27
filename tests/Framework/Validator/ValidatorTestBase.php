@@ -6,6 +6,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 use StubTests\Sources\Runner\PhpVersionRange;
+use StubTests\Sources\Runner\PhpVersions;
 use StubTests\Sources\Runner\Runner;
 use StubTests\Sources\Validator\CheckInterface;
 
@@ -20,7 +21,6 @@ use StubTests\Sources\Validator\CheckInterface;
  */
 abstract class ValidatorTestBase extends TestCase
 {
-    protected const ALL_PHP_VERSIONS = ['5.6', '7.0', '7.1', '7.2', '7.3', '7.4', '8.0', '8.1', '8.2', '8.3', '8.4'];
 
     /**
      * Generic data provider that yields [methodName, entityId, phpVersion] for each entity.
@@ -45,7 +45,8 @@ abstract class ValidatorTestBase extends TestCase
                 /** @var PhpVersionRange $range */
                 $range = $attr->newInstance();
 
-                foreach (self::ALL_PHP_VERSIONS as $version) {
+                foreach (PhpVersions::cases() as $phpVersion) {
+                    $version = $phpVersion->value;
                     if (!$range->includes($version)) {
                         continue;
                     }

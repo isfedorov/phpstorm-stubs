@@ -11,6 +11,7 @@ use StubTests\Sources\Validator\KnownProblems\EntityType;
 use StubTests\Sources\Validator\KnownProblems\ProblemDefinition;
 use StubTests\Sources\Validator\KnownProblems\ProblemType;
 use StubTests\Sources\Runner\PhpVersionRange;
+use StubTests\Sources\Runner\PhpVersions;
 
 class ClassInterfacesCheckTest extends CheckTestCase
 {
@@ -48,10 +49,10 @@ class ClassInterfacesCheckTest extends CheckTestCase
 
     public function testSupportsAllPhpVersions(): void
     {
-        $this->assertTrue($this->check->supports('5.6'));
-        $this->assertTrue($this->check->supports('7.0'));
-        $this->assertTrue($this->check->supports('8.0'));
-        $this->assertTrue($this->check->supports('8.4'));
+        $this->assertTrue($this->check->supports(PhpVersions::EARLIEST->value));
+        $this->assertTrue($this->check->supports(PhpVersions::PHP_7_0->value));
+        $this->assertTrue($this->check->supports(PhpVersions::PHP_8_0->value));
+        $this->assertTrue($this->check->supports(PhpVersions::LATEST->value));
     }
 
     public function testClassWithNoInterfacesOnBothSides(): void
@@ -232,7 +233,7 @@ class ClassInterfacesCheckTest extends CheckTestCase
                 entityId: $className,
                 type: ProblemType::OVERLOADED_SIGNATURE,
                 affectedChecks: [CheckType::CLASS_INTERFACES],
-                versionRange: new PhpVersionRange('5.6', '8.4'),
+                versionRange: new PhpVersionRange(PhpVersions::EARLIEST, PhpVersions::LATEST),
                 reason: 'Known interface issue'
             ),
         ]);

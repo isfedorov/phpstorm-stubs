@@ -2,6 +2,7 @@
 
 namespace StubTests\Unit\Validator;
 
+use StubTests\Sources\Runner\PhpVersions;
 use StubTests\Sources\Validator\ParameterTypesCheck;
 
 class ParameterTypesCheckTest extends CheckTestCase
@@ -10,11 +11,11 @@ class ParameterTypesCheckTest extends CheckTestCase
     {
         $check = new ParameterTypesCheck();
 
-        $this->assertFalse($check->supports('5.6'));
-        $this->assertTrue($check->supports('7.0'));
-        $this->assertTrue($check->supports('7.4'));
-        $this->assertTrue($check->supports('8.0'));
-        $this->assertTrue($check->supports('8.4'));
+        $this->assertFalse($check->supports(PhpVersions::EARLIEST->value));
+        $this->assertTrue($check->supports(PhpVersions::PHP_7_0->value));
+        $this->assertTrue($check->supports(PhpVersions::PHP_7_4->value));
+        $this->assertTrue($check->supports(PhpVersions::PHP_8_0->value));
+        $this->assertTrue($check->supports(PhpVersions::LATEST->value));
     }
 
     public function testMatchingParameterTypes(): void

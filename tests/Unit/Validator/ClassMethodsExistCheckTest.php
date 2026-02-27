@@ -12,6 +12,7 @@ use StubTests\Sources\Validator\KnownProblems\EntityType;
 use StubTests\Sources\Validator\KnownProblems\ProblemDefinition;
 use StubTests\Sources\Validator\KnownProblems\ProblemType;
 use StubTests\Sources\Runner\PhpVersionRange;
+use StubTests\Sources\Runner\PhpVersions;
 
 class ClassMethodsExistCheckTest extends CheckTestCase
 {
@@ -51,10 +52,10 @@ class ClassMethodsExistCheckTest extends CheckTestCase
 
     public function testSupportsAllPhpVersions(): void
     {
-        $this->assertTrue($this->check->supports('5.6'));
-        $this->assertTrue($this->check->supports('7.0'));
-        $this->assertTrue($this->check->supports('8.0'));
-        $this->assertTrue($this->check->supports('8.4'));
+        $this->assertTrue($this->check->supports(PhpVersions::EARLIEST->value));
+        $this->assertTrue($this->check->supports(PhpVersions::PHP_7_0->value));
+        $this->assertTrue($this->check->supports(PhpVersions::PHP_8_0->value));
+        $this->assertTrue($this->check->supports(PhpVersions::LATEST->value));
     }
 
     public function testClassWithNoMethods(): void
@@ -314,7 +315,7 @@ class ClassMethodsExistCheckTest extends CheckTestCase
                 entityId: $className,
                 type: ProblemType::INTERNAL_IMPLEMENTATION,
                 affectedChecks: [CheckType::CLASS_METHODS_EXIST],
-                versionRange: new PhpVersionRange('5.6', '8.4'),
+                versionRange: new PhpVersionRange(PhpVersions::EARLIEST, PhpVersions::LATEST),
                 reason: 'Class-level skip reason'
             ),
         ]);
@@ -373,7 +374,7 @@ class ClassMethodsExistCheckTest extends CheckTestCase
                 entityId: $missingMethodId,
                 type: ProblemType::INTERNAL_IMPLEMENTATION,
                 affectedChecks: [CheckType::CLASS_METHODS_EXIST],
-                versionRange: new PhpVersionRange('5.6', '8.4'),
+                versionRange: new PhpVersionRange(PhpVersions::EARLIEST, PhpVersions::LATEST),
                 reason: 'Method-level skip reason'
             ),
         ]);
@@ -742,7 +743,7 @@ class ClassMethodsExistCheckTest extends CheckTestCase
                 entityId: $missingMethodId,
                 type: ProblemType::INTERNAL_IMPLEMENTATION,
                 affectedChecks: [CheckType::CLASS_METHODS_EXIST],
-                versionRange: new PhpVersionRange('8.0', '8.2'),
+                versionRange: new PhpVersionRange(PhpVersions::PHP_8_0, PhpVersions::PHP_8_2),
                 reason: 'Partial version skip'
             ),
         ]);

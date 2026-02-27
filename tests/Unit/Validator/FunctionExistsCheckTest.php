@@ -2,6 +2,7 @@
 
 namespace StubTests\Unit\Validator;
 
+use StubTests\Sources\Runner\PhpVersions;
 use StubTests\Sources\Validator\FunctionExistsCheck;
 
 class FunctionExistsCheckTest extends CheckTestCase
@@ -16,10 +17,10 @@ class FunctionExistsCheckTest extends CheckTestCase
 
     public function testSupportsAllPhpVersions(): void
     {
-        $this->assertTrue($this->check->supports('5.6'));
-        $this->assertTrue($this->check->supports('7.0'));
-        $this->assertTrue($this->check->supports('8.0'));
-        $this->assertTrue($this->check->supports('8.4'));
+        $this->assertTrue($this->check->supports(PhpVersions::EARLIEST->value));
+        $this->assertTrue($this->check->supports(PhpVersions::PHP_7_0->value));
+        $this->assertTrue($this->check->supports(PhpVersions::PHP_8_0->value));
+        $this->assertTrue($this->check->supports(PhpVersions::LATEST->value));
     }
 
     public function testFunctionExistsInStubs(): void

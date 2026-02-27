@@ -5,6 +5,7 @@ namespace StubTests;
 use PHPUnit\Framework\Attributes\DataProvider;
 use StubTests\Framework\Validator\ValidatorTestBase;
 use StubTests\Sources\Runner\PhpVersionRange;
+use StubTests\Sources\Runner\PhpVersions;
 use StubTests\Sources\Validator\ClassExistsCheck;
 use StubTests\Sources\Validator\ClassInterfacesCheck;
 use StubTests\Sources\Validator\ClassNamespaceCheck;
@@ -51,7 +52,7 @@ class ClassValidatorTest extends ValidatorTestBase
      *
      * This check runs on all PHP versions from 5.6 to 8.4.
      */
-    #[PhpVersionRange('5.6', '8.4')]
+    #[PhpVersionRange(PhpVersions::EARLIEST, PhpVersions::LATEST)]
     public function checkClassExists(string $classId, string $phpVersion): void
     {
         $this->executeCheck(
@@ -62,7 +63,7 @@ class ClassValidatorTest extends ValidatorTestBase
         );
     }
 
-	#[PhpVersionRange('5.6','8.4')]
+	#[PhpVersionRange(PhpVersions::EARLIEST, PhpVersions::LATEST)]
 	public function checkClassNamespace(string $classId, string $phpVersion): void
 	{
 		$this->executeCheck(
@@ -73,7 +74,7 @@ class ClassValidatorTest extends ValidatorTestBase
 		);
 	}
 
-	#[PhpVersionRange('8.2','8.4')]
+	#[PhpVersionRange(PhpVersions::PHP_8_2, PhpVersions::LATEST)]
 	public function checkClassReadonly(string $classId, string $phpVersion): void
 	{
 		$this->executeCheck(
@@ -84,7 +85,7 @@ class ClassValidatorTest extends ValidatorTestBase
 		);
 	}
 
-	#[PhpVersionRange('5.6','8.4')]
+	#[PhpVersionRange(PhpVersions::EARLIEST, PhpVersions::LATEST)]
 	public function checkClassFinal(string $classId, string $phpVersion): void
 	{
 		$this->executeCheck(
@@ -95,7 +96,7 @@ class ClassValidatorTest extends ValidatorTestBase
 		);
 	}
 
-	#[PhpVersionRange('5.6','8.4')]
+	#[PhpVersionRange(PhpVersions::EARLIEST, PhpVersions::LATEST)]
 	public function checkParentClass(string $classId, string $phpVersion): void
 	{
 		$this->executeCheck(
@@ -106,7 +107,7 @@ class ClassValidatorTest extends ValidatorTestBase
 		);
 	}
 
-	#[PhpVersionRange('5.6','8.4')]
+	#[PhpVersionRange(PhpVersions::EARLIEST, PhpVersions::LATEST)]
 	public function checkClassInterfaces(string $classId, string $phpVersion): void
 	{
 		$this->executeCheck(
@@ -117,7 +118,7 @@ class ClassValidatorTest extends ValidatorTestBase
 		);
 	}
 
-	#[PhpVersionRange('5.6','8.4')]
+	#[PhpVersionRange(PhpVersions::EARLIEST, PhpVersions::LATEST)]
 	public function checkClassesMethodsExist(string $classId, string $phpVersion): void
 	{
 		$this->executeCheck(
@@ -128,7 +129,7 @@ class ClassValidatorTest extends ValidatorTestBase
 		);
 	}
 
-	#[PhpVersionRange('5.6','8.4')]
+	#[PhpVersionRange(PhpVersions::EARLIEST, PhpVersions::LATEST)]
 	public function checkClassesFinalMethods(string $classId, string $phpVersion): void
 	{
 		$this->executeCheck(
@@ -139,7 +140,7 @@ class ClassValidatorTest extends ValidatorTestBase
 		);
 	}
 
-	#[PhpVersionRange('5.6','8.4')]
+	#[PhpVersionRange(PhpVersions::EARLIEST, PhpVersions::LATEST)]
 	public function checkClassesStaticMethods(string $classId, string $phpVersion): void
 	{
 		$this->executeCheck(
@@ -150,7 +151,7 @@ class ClassValidatorTest extends ValidatorTestBase
 		);
 	}
 
-	#[PhpVersionRange('5.6','8.4')]
+	#[PhpVersionRange(PhpVersions::EARLIEST, PhpVersions::LATEST)]
 	public function checkClassProperties(string $classId, string $phpVersion): void
 	{
 		$this->executeCheck(
@@ -161,7 +162,7 @@ class ClassValidatorTest extends ValidatorTestBase
 		);
 	}
 
-	#[PhpVersionRange('5.6','8.4')]
+	#[PhpVersionRange(PhpVersions::EARLIEST, PhpVersions::LATEST)]
 	public function checkClassesMethodsVisibility(string $classId, string $phpVersion): void
 	{
 		$this->executeCheck(
@@ -172,7 +173,7 @@ class ClassValidatorTest extends ValidatorTestBase
 		);
 	}
 
-	#[PhpVersionRange('5.6','8.4')]
+	#[PhpVersionRange(PhpVersions::EARLIEST, PhpVersions::LATEST)]
 	public function checkClassStaticProperties(string $classId, string $phpVersion): void
 	{
 		$this->executeCheck(

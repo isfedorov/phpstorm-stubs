@@ -5,6 +5,7 @@ namespace StubTests;
 use PHPUnit\Framework\Attributes\DataProvider;
 use StubTests\Framework\Validator\ValidatorTestBase;
 use StubTests\Sources\Runner\PhpVersionRange;
+use StubTests\Sources\Runner\PhpVersions;
 use StubTests\Sources\Validator\FunctionExistsCheck;
 use StubTests\Sources\Validator\ParameterNamesCheck;
 use StubTests\Sources\Validator\ParameterTypesCheck;
@@ -43,7 +44,7 @@ class FunctionValidatorTest extends ValidatorTestBase
      *
      * This check runs on all PHP versions from 5.6 to 8.4.
      */
-    #[PhpVersionRange('5.6', '8.4')]
+    #[PhpVersionRange(PhpVersions::EARLIEST, PhpVersions::LATEST)]
     public function checkFunctionExists(string $functionId, string $phpVersion): void
     {
         $this->executeCheck(
@@ -59,7 +60,7 @@ class FunctionValidatorTest extends ValidatorTestBase
      *
      * This check only runs on PHP 8.0+ where named parameters were introduced.
      */
-    #[PhpVersionRange('8.0', '8.4')]
+    #[PhpVersionRange(PhpVersions::PHP_8_0, PhpVersions::LATEST)]
     public function checkParameterNames(string $functionId, string $phpVersion): void
     {
         $this->executeCheck(
@@ -75,7 +76,7 @@ class FunctionValidatorTest extends ValidatorTestBase
      *
      * This check runs on PHP 7.0+ where type hints became more comprehensive.
      */
-    #[PhpVersionRange('7.0', '8.4')]
+    #[PhpVersionRange(PhpVersions::PHP_7_0, PhpVersions::LATEST)]
     public function checkParameterTypes(string $functionId, string $phpVersion): void
     {
         $this->executeCheck(
@@ -91,7 +92,7 @@ class FunctionValidatorTest extends ValidatorTestBase
      *
      * This check runs on PHP 7.0+ where return type declarations were introduced.
      */
-    #[PhpVersionRange('7.0', '8.4')]
+    #[PhpVersionRange(PhpVersions::PHP_7_0, PhpVersions::LATEST)]
     public function checkReturnTypes(string $functionId, string $phpVersion): void
     {
         $this->executeCheck(

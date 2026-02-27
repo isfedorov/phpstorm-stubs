@@ -4,6 +4,7 @@ namespace StubTests\Unit\Validator;
 
 use PHPUnit\Framework\TestCase;
 use StubTests\Sources\Runner\PhpVersionRange;
+use StubTests\Sources\Runner\PhpVersions;
 use StubTests\Sources\Validator\KnownProblems\CheckType;
 use StubTests\Sources\Validator\KnownProblems\EntityType;
 use StubTests\Sources\Validator\KnownProblems\KnownProblemsProvider;
@@ -321,7 +322,7 @@ class KnownProblemsRegistryTest extends TestCase
                 entityId: '\SomeSpecialClass',
                 type: ProblemType::INTERNAL_IMPLEMENTATION,
                 affectedChecks: [CheckType::CLASS_METHODS_EXIST],
-                versionRange: new PhpVersionRange('8.0', '8.4'),
+                versionRange: new PhpVersionRange(PhpVersions::PHP_8_0, PhpVersions::LATEST),
                 reason: 'Test CLASS_METHODS_EXIST mapping'
             ),
         ]);
@@ -355,7 +356,7 @@ class KnownProblemsRegistryTest extends TestCase
                 entityId: '\SomeClass::doWork',
                 type: ProblemType::INTERNAL_IMPLEMENTATION,
                 affectedChecks: [CheckType::CLASS_FINAL_METHODS],
-                versionRange: new PhpVersionRange('8.0', '8.4'),
+                versionRange: new PhpVersionRange(PhpVersions::PHP_8_0, PhpVersions::LATEST),
                 reason: 'Test CLASS_FINAL_METHODS mapping'
             ),
         ]);
