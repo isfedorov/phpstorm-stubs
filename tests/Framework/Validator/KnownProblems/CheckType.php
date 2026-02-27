@@ -83,4 +83,9 @@ enum CheckType: string
      * Validates that the `static` attribute on properties in stubs matches reflection.
      */
     case CLASS_STATIC_PROPERTIES = 'ClassStaticPropertiesCheck';
+
+    /**
+     * Validates that the visibility (public/protected/private) of properties in stubs matches reflection.
+     */
+    case CLASS_PROPERTIES_VISIBILITY = 'ClassPropertiesVisibilityCheck';
 }
