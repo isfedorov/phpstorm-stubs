@@ -2,10 +2,7 @@
 
 namespace StubTests\Sources\Validator;
 
-use StubTests\Sources\Parsers\Entities\Model\PHPClass;
 use StubTests\Sources\Parsers\Entities\Model\PHPProperty;
-use StubTests\Sources\Parsers\ParsedDataStorageManager;
-use StubTests\Sources\Validator\KnownProblems\EntityType;
 
 /**
  * Validates that the `static` modifier on properties in stubs matches reflection.
@@ -25,115 +22,29 @@ use StubTests\Sources\Validator\KnownProblems\EntityType;
  * - property-level: EntityType::PROPERTY + '\ClassName::$propertyName' + 'ClassStaticPropertiesCheck'
  *   → skips only that specific mismatch.
  */
-class ClassStaticPropertiesCheck extends AbstractClassCheck
+class ClassStaticPropertiesCheck extends AbstractPropertyFlagCheck
 {
-    public function supports(string $phpVersion): bool
+    protected function getCheckName(): string
     {
-        return true;
+        return 'ClassStaticPropertiesCheck';
     }
 
-    public function run(ParsedDataStorageManager $stubs, string $entityId, string $phpVersion): CheckResultSet
-    {
-        $results = new CheckResultSet();
+    protected function describeMismatch(
+        string $propertyEntityId,
+        PHPProperty $reflProperty,
+        PHPProperty $stubProperty,
+        string $phpVersion
+    ): ?string {
+        $reflIsStatic = $reflProperty->isStatic();
+        $stubIsStatic = $stubProperty->isStatic();
 
-        if ($this->skipWithKnownProblem($results, EntityType::CLASS_TYPE->value, $entityId, 'ClassStaticPropertiesCheck', $phpVersion)) {
-            return $results;
+        if ($reflIsStatic === $stubIsStatic) {
+            return null;
         }
 
-        $reflection = $this->reflectionProvider->getReflection($phpVersion);
+        $expected = $reflIsStatic ? 'static' : 'non-static';
+        $actual   = $stubIsStatic ? 'static' : 'non-static';
 
-        $reflectionClass = $this->findClassById($reflection, $entityId);
-        if ($reflectionClass === null) {
-            $results->addFailure($entityId, "Class {$entityId} not found in reflection data");
-            return $results;
-        }
-
-        $stubClass = $this->findClassById($stubs, $entityId);
-        if ($stubClass === null) {
-            $results->addFailure($entityId, "Class {$entityId} not found in stubs");
-            return $results;
-        }
-
-        $stubProperties = $this->collectVersionedStubPropertiesMap($stubClass, $phpVersion);
-
-        $hasMismatch = false;
-        foreach ($reflectionClass->getProperties() as $reflProperty) {
-            $name = $reflProperty->getName();
-            if ($name === null || !isset($stubProperties[$name])) {
-                // Property absent from stubs — ClassPropertiesExistCheck's responsibility
-                continue;
-            }
-
-            $propertyEntityId = $entityId . '::$' . $name;
-            $stubProperty = $stubProperties[$name];
-
-            $reflIsStatic = $reflProperty->isStatic();
-            $stubIsStatic = $stubProperty->isStatic();
-
-            if ($reflIsStatic === $stubIsStatic) {
-                continue;
-            }
-
-            $hasMismatch = true;
-            if (!$this->skipWithKnownProblem($results, EntityType::PROPERTY->value, $propertyEntityId, 'ClassStaticPropertiesCheck', $phpVersion)) {
-                $expected = $reflIsStatic ? 'static' : 'non-static';
-                $actual   = $stubIsStatic ? 'static' : 'non-static';
-                $results->addFailure($propertyEntityId, "Property {$propertyEntityId} is {$expected} in PHP {$phpVersion} but {$actual} in stubs");
-            }
-        }
-
-        if (!$hasMismatch) {
-            $results->addSuccess($entityId);
-        }
-
-        return $results;
-    }
-
-    /**
-     * Collect version-filtered stub properties from the full parent class chain.
-     * Returns a map of property name → PHPProperty. Child definitions win over parent.
-     *
-     * A property is considered available if:
-     * - sinceVersion is null OR phpVersion >= sinceVersion
-     * - AND removedVersion is null OR phpVersion <= removedVersion
-     *
-     * @return array<string, PHPProperty>
-     */
-    private function collectVersionedStubPropertiesMap(PHPClass $class, string $phpVersion): array
-    {
-        $propertyMap = [];
-        $visited     = [];
-
-        $current = $class;
-        while ($current !== null) {
-            $id = $current->getId();
-            if ($id !== null && in_array($id, $visited, true)) {
-                break; // cycle guard
-            }
-            if ($id !== null) {
-                $visited[] = $id;
-            }
-
-            foreach ($current->getProperties() as $property) {
-                $name = $property->getName();
-                if ($name === null || isset($propertyMap[$name])) {
-                    continue;
-                }
-
-                $sinceVersion   = $property->getSinceVersion();
-                $removedVersion = $property->getRemovedVersion();
-
-                $available = ($sinceVersion === null || version_compare($phpVersion, $sinceVersion, '>='))
-                    && ($removedVersion === null || version_compare($phpVersion, $removedVersion, '<='));
-
-                if ($available) {
-                    $propertyMap[$name] = $property;
-                }
-            }
-
-            $current = $current->parentClass;
-        }
-
-        return $propertyMap;
+        return "Property {$propertyEntityId} is {$expected} in PHP {$phpVersion} but {$actual} in stubs";
     }
 }

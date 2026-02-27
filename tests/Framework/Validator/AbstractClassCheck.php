@@ -6,6 +6,7 @@ use StubTests\Sources\Parsers\Entities\Model\PHPClass;
 use StubTests\Sources\Parsers\Entities\Model\PHPClassLikeObject;
 use StubTests\Sources\Parsers\Entities\Model\PHPInterface;
 use StubTests\Sources\Parsers\Entities\Model\PHPMethod;
+use StubTests\Sources\Parsers\Entities\Model\PHPProperty;
 use StubTests\Sources\Parsers\ParsedDataStorageManager;
 
 abstract class AbstractClassCheck extends AbstractReflectionCheck
@@ -21,6 +22,54 @@ abstract class AbstractClassCheck extends AbstractReflectionCheck
             }
         }
         return null;
+    }
+
+    /**
+     * Collect version-filtered stub properties from the full parent class chain.
+     * Returns a map of property name → PHPProperty. Child definitions win over parent.
+     *
+     * A property is considered available if:
+     * - sinceVersion is null OR phpVersion >= sinceVersion
+     * - AND removedVersion is null OR phpVersion <= removedVersion
+     *
+     * @return array<string, PHPProperty>
+     */
+    protected function collectVersionedStubPropertiesMap(PHPClass $class, string $phpVersion): array
+    {
+        $propertyMap = [];
+        $visited     = [];
+
+        $current = $class;
+        while ($current !== null) {
+            $id = $current->getId();
+            if ($id !== null && in_array($id, $visited, true)) {
+                break; // cycle guard
+            }
+            if ($id !== null) {
+                $visited[] = $id;
+            }
+
+            foreach ($current->getProperties() as $property) {
+                $name = $property->getName();
+                if ($name === null || isset($propertyMap[$name])) {
+                    continue;
+                }
+
+                $sinceVersion   = $property->getSinceVersion();
+                $removedVersion = $property->getRemovedVersion();
+
+                $available = ($sinceVersion === null || version_compare($phpVersion, $sinceVersion, '>='))
+                    && ($removedVersion === null || version_compare($phpVersion, $removedVersion, '<='));
+
+                if ($available) {
+                    $propertyMap[$name] = $property;
+                }
+            }
+
+            $current = $current->parentClass;
+        }
+
+        return $propertyMap;
     }
 
     /**

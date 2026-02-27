@@ -2,7 +2,6 @@
 
 namespace StubTests\Sources\Validator;
 
-use StubTests\Sources\Parsers\Entities\Model\PHPClass;
 use StubTests\Sources\Parsers\ParsedDataStorageManager;
 use StubTests\Sources\Validator\KnownProblems\EntityType;
 
@@ -70,7 +69,7 @@ class ClassPropertiesExistCheck extends AbstractClassCheck
         }
 
         // Collect version-appropriate property names from the stub class and its full parent chain.
-        $stubPropertyNames = $this->collectVersionedStubProperties($stubClass, $phpVersion);
+        $stubPropertyNames = $this->collectVersionedStubPropertiesMap($stubClass, $phpVersion);
 
         $missingProperties = array_diff(array_keys($reflectionPropertyNames), array_keys($stubPropertyNames));
 
@@ -93,53 +92,5 @@ class ClassPropertiesExistCheck extends AbstractClassCheck
         }
 
         return $results;
-    }
-
-    /**
-     * Collect version-filtered stub properties from the full parent class chain.
-     * Child class definitions win over parent class definitions for the same property name.
-     *
-     * A property is considered available if:
-     * - sinceVersion is null OR phpVersion >= sinceVersion
-     * - AND removedVersion is null OR phpVersion <= removedVersion
-     *
-     * @return array<string, true>
-     */
-    private function collectVersionedStubProperties(PHPClass $class, string $phpVersion): array
-    {
-        $propertyMap = [];
-        $visited     = [];
-
-        $current = $class;
-        while ($current !== null) {
-            $id = $current->getId();
-            if ($id !== null && in_array($id, $visited, true)) {
-                break; // cycle guard
-            }
-            if ($id !== null) {
-                $visited[] = $id;
-            }
-
-            foreach ($current->getProperties() as $property) {
-                $name = $property->getName();
-                if ($name === null || isset($propertyMap[$name])) {
-                    continue;
-                }
-
-                $sinceVersion   = $property->getSinceVersion();
-                $removedVersion = $property->getRemovedVersion();
-
-                $available = ($sinceVersion === null || version_compare($phpVersion, $sinceVersion, '>='))
-                    && ($removedVersion === null || version_compare($phpVersion, $removedVersion, '<='));
-
-                if ($available) {
-                    $propertyMap[$name] = true;
-                }
-            }
-
-            $current = $current->parentClass;
-        }
-
-        return $propertyMap;
     }
 }
