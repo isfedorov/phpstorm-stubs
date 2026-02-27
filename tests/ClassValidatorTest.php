@@ -14,6 +14,7 @@ use StubTests\Sources\Validator\ClassFinalCheck;
 use StubTests\Sources\Validator\ClassFinalMethodsCheck;
 use StubTests\Sources\Validator\ClassMethodsExistCheck;
 use StubTests\Sources\Validator\ClassMethodsVisibilityCheck;
+use StubTests\Sources\Validator\ClassStaticPropertiesCheck;
 use StubTests\Sources\Validator\ClassPropertiesExistCheck;
 use StubTests\Sources\Validator\ClassStaticMethodsCheck;
 
@@ -168,6 +169,17 @@ class ClassValidatorTest extends ValidatorTestBase
 			$classId,
 			$phpVersion,
 			"Class {$classId} methods visibility check failed in PHP {$phpVersion}"
+		);
+	}
+
+	#[PhpVersionRange('5.6','8.4')]
+	public function checkClassStaticProperties(string $classId, string $phpVersion): void
+	{
+		$this->executeCheck(
+			new ClassStaticPropertiesCheck(),
+			$classId,
+			$phpVersion,
+			"Class {$classId} static properties check failed in PHP {$phpVersion}"
 		);
 	}
 }

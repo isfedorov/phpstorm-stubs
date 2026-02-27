@@ -12,21 +12,31 @@ class CurrentRuntimeReflectionRawDataProvider implements ReflectionDataProvider 
 
     public function getReflectionClasses()
     {
-        return array_values(array_filter(get_declared_classes(), function($class) {
+        // Deduplicate by canonical name to handle case-insensitive aliases
+        // (e.g. PHP 8.4+ declares both `DOMException` and `dom\DomException` which
+        // both resolve to the same ReflectionClass with getName() = 'DOMException').
+        $seen = [];
+        $result = [];
+        foreach (get_declared_classes() as $class) {
             try {
                 $reflection = new \ReflectionClass($class);
                 if (!$reflection->isInternal()) {
-                    return false;
+                    continue;
                 }
                 // Check if it's an enum (PHP 8.1+) and exclude enums
                 if (method_exists($reflection, 'isEnum') && $reflection->isEnum()) {
-                    return false;
+                    continue;
                 }
-                return true;
+                $canonicalName = $reflection->getName();
+                if (!isset($seen[$canonicalName])) {
+                    $seen[$canonicalName] = true;
+                    $result[] = $canonicalName;
+                }
             } catch (\Exception $e) {
-                return false;
+                continue;
             }
-        }));
+        }
+        return $result;
     }
 
     public function getReflectionInterfaces()
