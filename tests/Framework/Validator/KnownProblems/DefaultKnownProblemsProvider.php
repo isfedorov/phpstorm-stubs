@@ -417,6 +417,208 @@ class DefaultKnownProblemsProvider implements KnownProblemsProvider
                 versionRange: new PhpVersionRange(PhpVersions::PHP_8_1, PhpVersions::LATEST),
                 reason: 'SoapServer exposes internal C-level implementation properties ($service, $__soap_fault) that became visible via reflection in PHP 8.1 after an internal refactoring. These are undocumented implementation details not intended for user access and are not declared in stubs.'
             ),
+
+            // ── ClassMethodsParametersCountCheck known problems ───────────────────────
+
+            // Closure::__invoke - reflection reports the concrete closure signature (0 params for the generic stub)
+            new ProblemDefinition(
+                entityType: EntityType::METHOD,
+                entityId: '\\Closure::__invoke',
+                type: ProblemType::OVERLOADED_SIGNATURE,
+                affectedChecks: [CheckType::CLASS_METHODS_PARAMETERS_COUNT],
+                versionRange: new PhpVersionRange(PhpVersions::PHP_7_2, PhpVersions::LATEST),
+                reason: 'Closure::__invoke reflects the actual closure signature. PHP reflection returns 0 parameters for a generic Closure, but the stub declares 1 placeholder parameter for IDE support.'
+            ),
+
+            // DateTime::__set_state - reflection reports 0 params in PHP 5.6–7.2; PHP 7.3+ fixed
+            new ProblemDefinition(
+                entityType: EntityType::METHOD,
+                entityId: '\\DateTime::__set_state',
+                type: ProblemType::INTERNAL_IMPLEMENTATION,
+                affectedChecks: [CheckType::CLASS_METHODS_PARAMETERS_COUNT],
+                versionRange: new PhpVersionRange(PhpVersions::EARLIEST, PhpVersions::PHP_7_2),
+                reason: 'DateTime::__set_state is documented with 1 parameter ($array), but reflection in PHP 5.6–7.2 reports 0 parameters. PHP 7.3 corrected the reflection metadata.'
+            ),
+
+            // DateTimeImmutable::__set_state - same issue
+            new ProblemDefinition(
+                entityType: EntityType::METHOD,
+                entityId: '\\DateTimeImmutable::__set_state',
+                type: ProblemType::INTERNAL_IMPLEMENTATION,
+                affectedChecks: [CheckType::CLASS_METHODS_PARAMETERS_COUNT],
+                versionRange: new PhpVersionRange(PhpVersions::EARLIEST, PhpVersions::PHP_7_2),
+                reason: 'DateTimeImmutable::__set_state is documented with 1 parameter ($array), but reflection in PHP 5.6–7.2 reports 0 parameters. PHP 7.3 corrected the reflection metadata.'
+            ),
+
+            // DateTimeZone::__set_state - same issue
+            new ProblemDefinition(
+                entityType: EntityType::METHOD,
+                entityId: '\\DateTimeZone::__set_state',
+                type: ProblemType::INTERNAL_IMPLEMENTATION,
+                affectedChecks: [CheckType::CLASS_METHODS_PARAMETERS_COUNT],
+                versionRange: new PhpVersionRange(PhpVersions::EARLIEST, PhpVersions::PHP_7_2),
+                reason: 'DateTimeZone::__set_state is documented with 1 parameter ($array), but reflection in PHP 5.6–7.2 reports 0 parameters. PHP 7.3 corrected the reflection metadata.'
+            ),
+
+            // DateInterval::__set_state - same issue
+            new ProblemDefinition(
+                entityType: EntityType::METHOD,
+                entityId: '\\DateInterval::__set_state',
+                type: ProblemType::INTERNAL_IMPLEMENTATION,
+                affectedChecks: [CheckType::CLASS_METHODS_PARAMETERS_COUNT],
+                versionRange: new PhpVersionRange(PhpVersions::EARLIEST, PhpVersions::PHP_7_2),
+                reason: 'DateInterval::__set_state is documented with 1 parameter ($array), but reflection in PHP 5.6–7.2 reports 0 parameters. PHP 7.3 corrected the reflection metadata.'
+            ),
+
+            // DatePeriod::__construct - overloaded signature (DatePeriod accepts multiple constructor forms)
+            new ProblemDefinition(
+                entityType: EntityType::METHOD,
+                entityId: '\\DatePeriod::__construct',
+                type: ProblemType::OVERLOADED_SIGNATURE,
+                affectedChecks: [CheckType::CLASS_METHODS_PARAMETERS_COUNT],
+                versionRange: new PhpVersionRange(PhpVersions::EARLIEST, PhpVersions::PHP_7_4),
+                reason: 'DatePeriod::__construct has multiple overloaded forms. Stubs document all parameters across all overloads (4 params), but reflection for PHP 5.6–7.4 returns only 3 parameters.'
+            ),
+
+            // DOMImplementation::hasFeature - deprecated no-op; reflection reports 0 params in older PHP
+            new ProblemDefinition(
+                entityType: EntityType::METHOD,
+                entityId: '\\DOMImplementation::hasFeature',
+                type: ProblemType::INTERNAL_IMPLEMENTATION,
+                affectedChecks: [CheckType::CLASS_METHODS_PARAMETERS_COUNT],
+                versionRange: new PhpVersionRange(PhpVersions::EARLIEST, PhpVersions::PHP_7_4),
+                reason: 'DOMImplementation::hasFeature is a deprecated no-op. Reflection in PHP 5.6–7.4 reports 0 parameters, but the stub correctly declares 2 parameters ($feature, $version) per the DOM specification.'
+            ),
+
+            // DOMDocument::save - optional $options parameter not reported by reflection in PHP 5.6–7.4
+            new ProblemDefinition(
+                entityType: EntityType::METHOD,
+                entityId: '\\DOMDocument::save',
+                type: ProblemType::INTERNAL_IMPLEMENTATION,
+                affectedChecks: [CheckType::CLASS_METHODS_PARAMETERS_COUNT],
+                versionRange: new PhpVersionRange(PhpVersions::EARLIEST, PhpVersions::PHP_7_4),
+                reason: 'DOMDocument::save has an optional $options parameter that was not exposed by reflection in PHP 5.6–7.4. The stub declares both $filename and $options (2 params), but reflection reports only 1.'
+            ),
+
+            // DOMDocument::saveHTML - optional $node parameter not reported by reflection in PHP 5.6–7.4
+            new ProblemDefinition(
+                entityType: EntityType::METHOD,
+                entityId: '\\DOMDocument::saveHTML',
+                type: ProblemType::INTERNAL_IMPLEMENTATION,
+                affectedChecks: [CheckType::CLASS_METHODS_PARAMETERS_COUNT],
+                versionRange: new PhpVersionRange(PhpVersions::EARLIEST, PhpVersions::PHP_7_4),
+                reason: 'DOMDocument::saveHTML has an optional $node parameter that was not exposed by reflection in PHP 5.6–7.4. The stub declares 1 parameter, but reflection reports 0.'
+            ),
+
+            // DOMDocument::schemaValidate - optional $flags parameter not in reflection for PHP 5.6–7.4
+            new ProblemDefinition(
+                entityType: EntityType::METHOD,
+                entityId: '\\DOMDocument::schemaValidate',
+                type: ProblemType::INTERNAL_IMPLEMENTATION,
+                affectedChecks: [CheckType::CLASS_METHODS_PARAMETERS_COUNT],
+                versionRange: new PhpVersionRange(PhpVersions::EARLIEST, PhpVersions::PHP_7_4),
+                reason: 'DOMDocument::schemaValidate has an optional $flags parameter not reported by reflection in PHP 5.6–7.4. Stubs declare 2 params, reflection reports 1.'
+            ),
+
+            // DOMDocument::schemaValidateSource - optional $flags parameter not in reflection for PHP 5.6–7.4
+            new ProblemDefinition(
+                entityType: EntityType::METHOD,
+                entityId: '\\DOMDocument::schemaValidateSource',
+                type: ProblemType::INTERNAL_IMPLEMENTATION,
+                affectedChecks: [CheckType::CLASS_METHODS_PARAMETERS_COUNT],
+                versionRange: new PhpVersionRange(PhpVersions::EARLIEST, PhpVersions::PHP_7_4),
+                reason: 'DOMDocument::schemaValidateSource has an optional $flags parameter not reported by reflection in PHP 5.6–7.4. Stubs declare 2 params, reflection reports 1.'
+            ),
+
+            // DOMXPath::registerPhpFunctions - optional $restrict parameter not in reflection for PHP 5.6–7.4
+            new ProblemDefinition(
+                entityType: EntityType::METHOD,
+                entityId: '\\DOMXPath::registerPhpFunctions',
+                type: ProblemType::INTERNAL_IMPLEMENTATION,
+                affectedChecks: [CheckType::CLASS_METHODS_PARAMETERS_COUNT],
+                versionRange: new PhpVersionRange(PhpVersions::EARLIEST, PhpVersions::PHP_7_4),
+                reason: 'DOMXPath::registerPhpFunctions has an optional $restrict parameter not reported by reflection in PHP 5.6–7.4. Stubs declare 1 parameter, reflection reports 0.'
+            ),
+
+            // ArrayObject::__construct - reflection in PHP 5.6 reports only 1 param; stub has 3
+            new ProblemDefinition(
+                entityType: EntityType::METHOD,
+                entityId: '\\ArrayObject::__construct',
+                type: ProblemType::INTERNAL_IMPLEMENTATION,
+                affectedChecks: [CheckType::CLASS_METHODS_PARAMETERS_COUNT],
+                versionRange: new PhpVersionRange(PhpVersions::EARLIEST, PhpVersions::PHP_5_6),
+                reason: 'ArrayObject::__construct reflection in PHP 5.6 reports only 1 parameter, but the stub declares 3 ($array, $flags, $iteratorClass). PHP 7.0+ reflection correctly reports all 3.'
+            ),
+
+            // SplHeap::compare - abstract method; reflection in PHP 5.6–7.4 reports 0 params
+            new ProblemDefinition(
+                entityType: EntityType::METHOD,
+                entityId: '\\SplHeap::compare',
+                type: ProblemType::INTERNAL_IMPLEMENTATION,
+                affectedChecks: [CheckType::CLASS_METHODS_PARAMETERS_COUNT],
+                versionRange: new PhpVersionRange(PhpVersions::EARLIEST, PhpVersions::PHP_7_4),
+                reason: 'SplHeap::compare is an abstract method. Reflection in PHP 5.6–7.4 reports 0 parameters, but the stub declares 2 ($value1, $value2) matching the intended override contract.'
+            ),
+
+            // PDO::query - overloaded signature; reflection reports fewer params in PHP 5.6–7.4
+            new ProblemDefinition(
+                entityType: EntityType::METHOD,
+                entityId: '\\PDO::query',
+                type: ProblemType::OVERLOADED_SIGNATURE,
+                affectedChecks: [CheckType::CLASS_METHODS_PARAMETERS_COUNT],
+                versionRange: new PhpVersionRange(PhpVersions::EARLIEST, PhpVersions::PHP_7_4),
+                reason: 'PDO::query has multiple overloaded forms with different parameter counts. Reflection in PHP 5.6–7.4 reports fewer parameters than the stub, which documents all forms.'
+            ),
+
+            // XMLWriter::writeDtdEntity - reflection reports 2 params in PHP 5.6–7.4; stub has 6
+            new ProblemDefinition(
+                entityType: EntityType::METHOD,
+                entityId: '\\XMLWriter::writeDtdEntity',
+                type: ProblemType::INTERNAL_IMPLEMENTATION,
+                affectedChecks: [CheckType::CLASS_METHODS_PARAMETERS_COUNT],
+                versionRange: new PhpVersionRange(PhpVersions::EARLIEST, PhpVersions::PHP_7_4),
+                reason: 'XMLWriter::writeDtdEntity reflection in PHP 5.6–7.4 reports only 2 parameters, but the stub declares 6 ($name, $content, $pe, $pubid, $sysid, $ndataid) per the XML spec. PHP 8.0+ reflection correctly reports all 6.'
+            ),
+
+            // mysqli_stmt::__construct - reflection reports 0 params in PHP 5.6–7.4
+            new ProblemDefinition(
+                entityType: EntityType::METHOD,
+                entityId: '\\mysqli_stmt::__construct',
+                type: ProblemType::INTERNAL_IMPLEMENTATION,
+                affectedChecks: [CheckType::CLASS_METHODS_PARAMETERS_COUNT],
+                versionRange: new PhpVersionRange(PhpVersions::EARLIEST, PhpVersions::PHP_7_4),
+                reason: 'mysqli_stmt::__construct reflection in PHP 5.6–7.4 reports 0 parameters, but the stub declares 2 ($mysql, $query). PHP 8.0+ reflection correctly reports them.'
+            ),
+
+            // mysqli_stmt::bind_param - variadic; reflection reports 2 params, stub has 3 (types + vars + variadic)
+            new ProblemDefinition(
+                entityType: EntityType::METHOD,
+                entityId: '\\mysqli_stmt::bind_param',
+                type: ProblemType::OVERLOADED_SIGNATURE,
+                affectedChecks: [CheckType::CLASS_METHODS_PARAMETERS_COUNT],
+                versionRange: new PhpVersionRange(PhpVersions::EARLIEST, PhpVersions::LATEST),
+                reason: 'mysqli_stmt::bind_param is variadic. Reflection reports 2 parameters ($types + variadic &$var), but the stub declares 3 ($types, $var1, &...$vars) to document the required first variable explicitly for IDE support.'
+            ),
+
+            // mysqli_stmt::bind_result - variadic; reflection reports 1 param, stub has 2
+            new ProblemDefinition(
+                entityType: EntityType::METHOD,
+                entityId: '\\mysqli_stmt::bind_result',
+                type: ProblemType::OVERLOADED_SIGNATURE,
+                affectedChecks: [CheckType::CLASS_METHODS_PARAMETERS_COUNT],
+                versionRange: new PhpVersionRange(PhpVersions::EARLIEST, PhpVersions::LATEST),
+                reason: 'mysqli_stmt::bind_result is variadic. Reflection reports 1 parameter (variadic &$var), but the stub declares 2 ($var1, &...$vars) to document the required first variable explicitly for IDE support.'
+            ),
+
+            // SoapFault::__construct - reflection reports fewer params in PHP 5.6–7.4
+            new ProblemDefinition(
+                entityType: EntityType::METHOD,
+                entityId: '\\SoapFault::__construct',
+                type: ProblemType::INTERNAL_IMPLEMENTATION,
+                affectedChecks: [CheckType::CLASS_METHODS_PARAMETERS_COUNT],
+                versionRange: new PhpVersionRange(PhpVersions::EARLIEST, PhpVersions::PHP_7_4),
+                reason: 'SoapFault::__construct reflection in PHP 5.6–7.4 reports fewer parameters than the stub. The stub documents the full constructor signature including optional parameters not exposed by older reflection.'
+            ),
         ];
 
         return $this->problems;

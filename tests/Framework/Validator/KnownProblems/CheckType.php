@@ -94,4 +94,10 @@ enum CheckType: string
      * Supports LanguageLevelTypeAware version-specific types.
      */
     case CLASS_PROPERTIES_TYPE = 'ClassPropertiesTypeCheck';
+
+    /**
+     * Validates that the number of parameters in stub methods matches reflection.
+     * Accounts for PhpStormStubsElementAvailable version-filtered parameters.
+     */
+    case CLASS_METHODS_PARAMETERS_COUNT = 'ClassMethodsParametersCountCheck';
 }
