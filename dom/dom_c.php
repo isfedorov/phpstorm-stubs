@@ -1696,6 +1696,7 @@ class DOMElement extends DOMNode implements DOMParentNode, DOMChildNode
      * The parent of this node. If there is no such node, this returns NULL.
      * @link https://php.net/manual/en/class.domnode.php#domnode.props.parentnode
      */
+    #[LanguageLevelTypeAware(['8.1' => 'DOMNode|null'], default: '')]
     public $parentNode;
 
     /**
@@ -1703,6 +1704,7 @@ class DOMElement extends DOMNode implements DOMParentNode, DOMChildNode
      * The first child of this node. If there is no such node, this returns NULL.
      * @link https://php.net/manual/en/class.domnode.php#domnode.props.firstchild
      */
+    #[LanguageLevelTypeAware(['8.1' => 'DOMNode|null'], default: '')]
     public $firstChild;
 
     /**
@@ -1710,6 +1712,7 @@ class DOMElement extends DOMNode implements DOMParentNode, DOMChildNode
      * The last child of this node. If there is no such node, this returns NULL.
      * @link https://php.net/manual/en/class.domnode.php#domnode.props.lastchild
      */
+    #[LanguageLevelTypeAware(['8.1' => 'DOMNode|null'], default: '')]
     public $lastChild;
 
     /**
@@ -1717,6 +1720,7 @@ class DOMElement extends DOMNode implements DOMParentNode, DOMChildNode
      * The node immediately preceding this node. If there is no such node, this returns NULL.
      * @link https://php.net/manual/en/class.domnode.php#domnode.props.previoussibling
      */
+    #[LanguageLevelTypeAware(['8.1' => 'DOMNode|null'], default: '')]
     public $previousSibling;
 
     /**
@@ -1724,6 +1728,7 @@ class DOMElement extends DOMNode implements DOMParentNode, DOMChildNode
      * The node immediately following this node. If there is no such node, this returns NULL.
      * @link https://php.net/manual/en/class.domnode.php#domnode.props.nextsibling
      */
+    #[LanguageLevelTypeAware(['8.1' => 'DOMNode|null'], default: '')]
     public $nextSibling;
 
     /**
@@ -1731,7 +1736,7 @@ class DOMElement extends DOMNode implements DOMParentNode, DOMChildNode
      * A <classname>DOMNamedNodeMap</classname> containing the attributes of this node (if it is a <classname>DOMElement</classname>) or NULL otherwise.
      * @link https://php.net/manual/en/class.domnode.php#domnode.props.attributes
      */
-    #[LanguageLevelTypeAware(['8.1' => 'DOMNamedNodeMap'], default: '')]
+    #[LanguageLevelTypeAware(['8.1' => 'DOMNamedNodeMap|null'], default: '')]
     public $attributes;
 
     /**

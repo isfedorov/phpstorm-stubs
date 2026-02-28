@@ -16,12 +16,6 @@ use JetBrains\PhpStorm\Pure;
 class ReflectionFunction extends ReflectionFunctionAbstract
 {
     /**
-     * @var string Function name, same as calling the {@see ReflectionFunction::getName()} method
-     */
-    #[Immutable]
-    public $name;
-
-    /**
      * Indicates deprecated functions.
      *
      * @link https://www.php.net/manual/en/class.reflectionfunction.php#reflectionfunction.constants.is-deprecated
