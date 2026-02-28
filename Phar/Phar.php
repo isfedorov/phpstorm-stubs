@@ -989,6 +989,9 @@ class Phar extends RecursiveDirectoryIterator implements RecursiveIterator, Seek
     #[TentativeType]
     public function getPath(): string {}
 
+    /**
+     * @deprecated 8.2
+     */
     final public function _bad_state_ex() {}
 }
 
