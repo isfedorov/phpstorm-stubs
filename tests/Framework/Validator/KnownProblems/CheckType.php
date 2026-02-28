@@ -88,4 +88,10 @@ enum CheckType: string
      * Validates that the visibility (public/protected/private) of properties in stubs matches reflection.
      */
     case CLASS_PROPERTIES_VISIBILITY = 'ClassPropertiesVisibilityCheck';
+
+    /**
+     * Validates that the declared type of properties in stubs matches reflection.
+     * Supports LanguageLevelTypeAware version-specific types.
+     */
+    case CLASS_PROPERTIES_TYPE = 'ClassPropertiesTypeCheck';
 }

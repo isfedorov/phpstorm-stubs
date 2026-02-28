@@ -59,7 +59,7 @@ abstract class AbstractClassCheck extends AbstractReflectionCheck
                 $removedVersion = $property->getRemovedVersion();
 
                 $available = ($sinceVersion === null || version_compare($phpVersion, $sinceVersion, '>='))
-                    && ($removedVersion === null || version_compare($phpVersion, $removedVersion, '<='));
+                    && ($removedVersion === null || version_compare($phpVersion, $removedVersion, '<'));
 
                 if ($available) {
                     $propertyMap[$name] = $property;

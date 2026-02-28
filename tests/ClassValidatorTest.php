@@ -18,6 +18,7 @@ use StubTests\Sources\Validator\ClassMethodsVisibilityCheck;
 use StubTests\Sources\Validator\ClassStaticPropertiesCheck;
 use StubTests\Sources\Validator\ClassPropertiesExistCheck;
 use StubTests\Sources\Validator\ClassPropertiesVisibilityCheck;
+use StubTests\Sources\Validator\ClassPropertiesTypeCheck;
 use StubTests\Sources\Validator\ClassStaticMethodsCheck;
 
 /**
@@ -193,6 +194,17 @@ class ClassValidatorTest extends ValidatorTestBase
 			$classId,
 			$phpVersion,
 			"Class {$classId} properties visibility check failed in PHP {$phpVersion}"
+		);
+	}
+
+	#[PhpVersionRange(PhpVersions::PHP_7_4, PhpVersions::LATEST)]
+	public function checkClassPropertiesType(string $classId, string $phpVersion): void
+	{
+		$this->executeCheck(
+			new ClassPropertiesTypeCheck(),
+			$classId,
+			$phpVersion,
+			"Class {$classId} properties type check failed in PHP {$phpVersion}"
 		);
 	}
 }

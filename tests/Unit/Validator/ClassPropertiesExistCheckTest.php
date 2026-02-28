@@ -223,7 +223,7 @@ class ClassPropertiesExistCheckTest extends CheckTestCase
         $check = new ClassPropertiesExistCheck($reflectionProvider);
         $result = $check->run($stubsManager, $className, '7.4');
 
-        $this->assertFalse($result->hasFailures(), 'Property with removedVersion==phpVersion should still be included');
+        $this->assertTrue($result->hasFailures(), 'Property with removedVersion==phpVersion should NOT be included (exclusive boundary)');
     }
 
     public function testClassNotFoundInReflection(): void
