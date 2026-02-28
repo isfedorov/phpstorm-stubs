@@ -8,6 +8,7 @@ use StubTests\Sources\Runner\PhpVersionRange;
 use StubTests\Sources\Runner\PhpVersions;
 use StubTests\Sources\Validator\FunctionDeprecationCheck;
 use StubTests\Sources\Validator\FunctionExistsCheck;
+use StubTests\Sources\Validator\FunctionParametersCountCheck;
 use StubTests\Sources\Validator\ParameterNamesCheck;
 use StubTests\Sources\Validator\ParameterTypesCheck;
 use StubTests\Sources\Validator\ReturnTypesCheck;
@@ -115,6 +116,20 @@ class FunctionValidatorTest extends ValidatorTestBase
             $functionId,
             $phpVersion,
             "Function {$functionId} deprecation mismatch in PHP {$phpVersion}"
+        );
+    }
+
+    /**
+     * Check that the number of parameters matches between reflection and stubs.
+     */
+    #[PhpVersionRange(PhpVersions::EARLIEST, PhpVersions::LATEST)]
+    public function checkFunctionParametersCount(string $functionId, string $phpVersion): void
+    {
+        $this->executeCheck(
+            new FunctionParametersCountCheck(),
+            $functionId,
+            $phpVersion,
+            "Function {$functionId} has parameter count mismatch in PHP {$phpVersion}"
         );
     }
 }

@@ -369,6 +369,63 @@ class ClassMethodsParametersCountCheckTest extends CheckTestCase
         }
     }
 
+    // ── Same-name deduplication (placeholder + variadic) ─────────────────────
+
+    public function testPlaceholderAndVariadicWithSameNameCountAsOne(): void
+    {
+        // Stub: process($x, $vals[to:'7.4'], ...$vals)
+        // In PHP 7.4: placeholder+variadic both available → unique names {'x','vals'} = 2
+        $className = '\MyClass';
+
+        $reflClass = $this->createMockClassWithProperties(
+            $className, null, null, null,
+            [$this->makeMethod('process', [$this->makeParam('x'), $this->makeParam('vals')])]
+        );
+        $stubClass = $this->createMockClassWithProperties(
+            $className, null, null, null,
+            [$this->makeMethod('process', [
+                $this->makeParam('x'),
+                $this->makeParam('vals', null, '7.4'), // placeholder: available until 7.4
+                $this->makeParam('vals'),              // variadic: always available
+            ])]
+        );
+
+        $provider = $this->createMockReflectionProvider([], [$reflClass]);
+        $stubs    = $this->createMockStorageManager();
+        $stubs->method('getClasses')->willReturn([$stubClass]);
+
+        $result = (new ClassMethodsParametersCountCheck($provider))->run($stubs, $className, '7.4');
+
+        $this->assertFalse($result->hasFailures(), 'Placeholder+variadic with same name counted as one');
+    }
+
+    public function testVariadicAloneCountsNormallyWhenPlaceholderExcluded(): void
+    {
+        // In PHP 8.0: placeholder excluded (to:'7.4'), variadic 'vals' counts alone → 2 unique
+        $className = '\MyClass';
+
+        $reflClass = $this->createMockClassWithProperties(
+            $className, null, null, null,
+            [$this->makeMethod('process', [$this->makeParam('x'), $this->makeParam('vals')])]
+        );
+        $stubClass = $this->createMockClassWithProperties(
+            $className, null, null, null,
+            [$this->makeMethod('process', [
+                $this->makeParam('x'),
+                $this->makeParam('vals', null, '7.4'), // excluded in PHP 8.0
+                $this->makeParam('vals'),              // only this counts in PHP 8.0
+            ])]
+        );
+
+        $provider = $this->createMockReflectionProvider([], [$reflClass]);
+        $stubs    = $this->createMockStorageManager();
+        $stubs->method('getClasses')->willReturn([$stubClass]);
+
+        $result = (new ClassMethodsParametersCountCheck($provider))->run($stubs, $className, '8.0');
+
+        $this->assertFalse($result->hasFailures(), 'Variadic alone (placeholder excluded) counts normally');
+    }
+
     // ── Hierarchy: method from parent class ───────────────────────────────────
 
     public function testMethodInheritedFromParentIsChecked(): void
@@ -448,7 +505,7 @@ class ClassMethodsParametersCountCheckTest extends CheckTestCase
                 entityType: EntityType::CLASS_TYPE,
                 entityId: $className,
                 type: ProblemType::INTERNAL_IMPLEMENTATION,
-                affectedChecks: [CheckType::CLASS_METHODS_PARAMETERS_COUNT],
+                affectedChecks: [CheckType::PARAMETERS_COUNT],
                 versionRange: new PhpVersionRange(PhpVersions::EARLIEST, PhpVersions::LATEST),
                 reason: 'Class-level skip'
             ),
@@ -498,7 +555,7 @@ class ClassMethodsParametersCountCheckTest extends CheckTestCase
                 entityType: EntityType::METHOD,
                 entityId: $mismatchedId,
                 type: ProblemType::INTERNAL_IMPLEMENTATION,
-                affectedChecks: [CheckType::CLASS_METHODS_PARAMETERS_COUNT],
+                affectedChecks: [CheckType::PARAMETERS_COUNT],
                 versionRange: new PhpVersionRange(PhpVersions::EARLIEST, PhpVersions::LATEST),
                 reason: 'Method-level skip'
             ),
@@ -544,7 +601,7 @@ class ClassMethodsParametersCountCheckTest extends CheckTestCase
                 entityType: EntityType::METHOD,
                 entityId: $className . '::doWork',
                 type: ProblemType::INTERNAL_IMPLEMENTATION,
-                affectedChecks: [CheckType::CLASS_METHODS_PARAMETERS_COUNT],
+                affectedChecks: [CheckType::PARAMETERS_COUNT],
                 versionRange: new PhpVersionRange(PhpVersions::EARLIEST, PhpVersions::LATEST),
                 reason: 'Only doWork is known'
             ),

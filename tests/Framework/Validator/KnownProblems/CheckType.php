@@ -96,10 +96,11 @@ enum CheckType: string
     case CLASS_PROPERTIES_TYPE = 'ClassPropertiesTypeCheck';
 
     /**
-     * Validates that the number of parameters in stub methods matches reflection.
+     * Validates that the number of parameters in stub methods/functions matches reflection.
      * Accounts for PhpStormStubsElementAvailable version-filtered parameters.
+     * Used by both ClassMethodsParametersCountCheck and FunctionParametersCountCheck.
      */
-    case CLASS_METHODS_PARAMETERS_COUNT = 'ClassMethodsParametersCountCheck';
+    case PARAMETERS_COUNT = 'ParametersCountCheck';
 
     /**
      * Validates that functions/methods deprecated in reflection are also marked deprecated in stubs.

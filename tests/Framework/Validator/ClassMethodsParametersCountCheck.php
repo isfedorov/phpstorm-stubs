@@ -21,17 +21,22 @@ use StubTests\Sources\Parsers\Entities\Model\PHPMethod;
  * consistent with how PhpStormStubsElementAvailable `to` is interpreted elsewhere
  * (e.g. `to: '7.1'` means the parameter is still available in PHP 7.1).
  *
+ * Parameters are deduplicated by name after version filtering. When a version-bounded
+ * placeholder and a variadic share the same name (e.g. a `to: '7.4'` placeholder $vars
+ * followed by `...$vars`), they represent a single mandatory variadic parameter and are
+ * counted once.
+ *
  * Known problems are supported at two granularities:
- * - class-level: EntityType::CLASS_TYPE + classId + 'ClassMethodsParametersCountCheck'
+ * - class-level: EntityType::CLASS_TYPE + classId + 'ParametersCountCheck'
  *   → skips all parameter-count checks for the class.
- * - method-level: EntityType::METHOD + '\ClassName::methodName' + 'ClassMethodsParametersCountCheck'
+ * - method-level: EntityType::METHOD + '\ClassName::methodName' + 'ParametersCountCheck'
  *   → skips only that specific mismatch.
  */
 class ClassMethodsParametersCountCheck extends AbstractMethodFlagCheck
 {
     protected function getCheckName(): string
     {
-        return 'ClassMethodsParametersCountCheck';
+        return 'ParametersCountCheck';
     }
 
     protected function describeMismatch(
@@ -42,7 +47,11 @@ class ClassMethodsParametersCountCheck extends AbstractMethodFlagCheck
     ): ?string {
         $reflCount = count($reflMethod->getParameters());
 
-        $stubCount = 0;
+        // Count available parameters, deduplicating by name.
+        // When a version-bounded placeholder and a variadic share the same name
+        // (e.g. `#[PhpStormStubsElementAvailable(to:'7.4')] $vars` + `mixed ...$vars`),
+        // they represent one mandatory variadic parameter and must be counted as one.
+        $availableParamNames = [];
         foreach ($stubMethod->getParameters() as $param) {
             $sinceVersion   = $param->getSinceVersion();
             $removedVersion = $param->getRemovedVersion();
@@ -51,9 +60,10 @@ class ClassMethodsParametersCountCheck extends AbstractMethodFlagCheck
                 && ($removedVersion === null || version_compare($phpVersion, $removedVersion, '<='));
 
             if ($available) {
-                $stubCount++;
+                $availableParamNames[$param->getName()] = true;
             }
         }
+        $stubCount = count($availableParamNames);
 
         if ($reflCount === $stubCount) {
             return null;
