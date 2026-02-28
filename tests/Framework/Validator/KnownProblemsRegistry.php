@@ -184,6 +184,7 @@ class KnownProblemsRegistry
             'ClassPropertiesVisibilityCheck' => CheckType::CLASS_PROPERTIES_VISIBILITY,
             'ClassPropertiesTypeCheck'            => CheckType::CLASS_PROPERTIES_TYPE,
             'ClassMethodsParametersCountCheck'   => CheckType::CLASS_METHODS_PARAMETERS_COUNT,
+            'DeprecationCheck'                   => CheckType::DEPRECATION,
             default => null,
         };
     }

@@ -100,4 +100,10 @@ enum CheckType: string
      * Accounts for PhpStormStubsElementAvailable version-filtered parameters.
      */
     case CLASS_METHODS_PARAMETERS_COUNT = 'ClassMethodsParametersCountCheck';
+
+    /**
+     * Validates that functions/methods deprecated in reflection are also marked deprecated in stubs.
+     * Used by both FunctionDeprecationCheck and MethodDeprecationCheck.
+     */
+    case DEPRECATION = 'DeprecationCheck';
 }

@@ -6,6 +6,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use StubTests\Framework\Validator\ValidatorTestBase;
 use StubTests\Sources\Runner\PhpVersionRange;
 use StubTests\Sources\Runner\PhpVersions;
+use StubTests\Sources\Validator\FunctionDeprecationCheck;
 use StubTests\Sources\Validator\FunctionExistsCheck;
 use StubTests\Sources\Validator\ParameterNamesCheck;
 use StubTests\Sources\Validator\ParameterTypesCheck;
@@ -100,6 +101,20 @@ class FunctionValidatorTest extends ValidatorTestBase
             $functionId,
             $phpVersion,
             "Function {$functionId} has mismatched return type in PHP {$phpVersion}"
+        );
+    }
+
+    /**
+     * Check that functions deprecated in reflection are also deprecated in stubs.
+     */
+    #[PhpVersionRange(PhpVersions::EARLIEST, PhpVersions::LATEST)]
+    public function checkFunctionsDeprecation(string $functionId, string $phpVersion): void
+    {
+        $this->executeCheck(
+            new FunctionDeprecationCheck(),
+            $functionId,
+            $phpVersion,
+            "Function {$functionId} deprecation mismatch in PHP {$phpVersion}"
         );
     }
 }

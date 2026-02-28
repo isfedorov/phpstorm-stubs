@@ -20,6 +20,7 @@ use StubTests\Sources\Validator\ClassPropertiesExistCheck;
 use StubTests\Sources\Validator\ClassPropertiesVisibilityCheck;
 use StubTests\Sources\Validator\ClassPropertiesTypeCheck;
 use StubTests\Sources\Validator\ClassMethodsParametersCountCheck;
+use StubTests\Sources\Validator\MethodDeprecationCheck;
 use StubTests\Sources\Validator\ClassStaticMethodsCheck;
 
 /**
@@ -217,6 +218,17 @@ class ClassValidatorTest extends ValidatorTestBase
 			$classId,
 			$phpVersion,
 			"Class {$classId} methods parameters count check failed in PHP {$phpVersion}"
+		);
+	}
+
+	#[PhpVersionRange(PhpVersions::EARLIEST, PhpVersions::LATEST)]
+	public function checkMethodsDeprecation(string $classId, string $phpVersion): void
+	{
+		$this->executeCheck(
+			new MethodDeprecationCheck(),
+			$classId,
+			$phpVersion,
+			"Class {$classId} methods deprecation check failed in PHP {$phpVersion}"
 		);
 	}
 }

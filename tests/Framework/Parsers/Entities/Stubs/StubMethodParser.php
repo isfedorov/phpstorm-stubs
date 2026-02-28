@@ -77,7 +77,7 @@ class StubMethodParser
 
         // Apply parsed PhpDoc data to method
         $method->setPhpDoc($parsedPhpDoc->rawPhpDoc);
-        $method->setDeprecated($parsedPhpDoc->isDeprecated);
+        $method->setDeprecated($parsedPhpDoc->isDeprecated || $this->hasDeprecatedAttribute($node->getAttributes(), $imports));
 
         // Parse and apply available version (from PhpDoc + attributes)
         $versions = $this->versionParser->parseAvailableVersion($parsedPhpDoc, $node->getAttributes(), $imports);
@@ -99,5 +99,27 @@ class StubMethodParser
         $method->setParameters($parameters);
 
         return $method;
+    }
+
+    /**
+     * Check whether any attribute in the list resolves to a deprecation marker.
+     * Handles both JetBrains `#[JetBrains\PhpStorm\Deprecated]` and the built-in PHP `#[Deprecated]`.
+     *
+     * @param array $attributes Array of AttributeNode objects
+     * @param array $imports    Map of import aliases to fully qualified names
+     */
+    private function hasDeprecatedAttribute(array $attributes, array $imports): bool
+    {
+        foreach ($attributes as $attribute) {
+            $name     = $attribute->getName();
+            $fullName = $imports[$name] ?? $name;
+            if ($fullName === 'JetBrains\\PhpStorm\\Deprecated'
+                || str_ends_with($fullName, '\\PhpStorm\\Deprecated')
+                || $fullName === 'Deprecated'
+            ) {
+                return true;
+            }
+        }
+        return false;
     }
 }
