@@ -2651,14 +2651,6 @@ class IntlGregorianCalendar extends IntlCalendar
     public function __construct($timezoneOrYear, $localeOrMonth, $day, $hour, $minute, $second) {}
 
     /**
-     * (PHP 5 &gt;=5.5.0 PECL intl &gt;= 3.0.0a1)<br/>
-     * @param mixed $timeZone
-     * @param string $locale
-     * @return IntlGregorianCalendar
-     */
-    public static function createInstance($timeZone = null, $locale = null) {}
-
-    /**
      * @param float $timestamp
      */
     #[TentativeType]
@@ -3359,6 +3351,8 @@ class IntlCalendar
      * </p>
      * @return bool Returns <b>TRUE</b> on success and <b>FALSE</b> on failure.
      */
+    #[TentativeType]
+    #[LanguageLevelTypeAware(['8.4' => 'true'], default: 'bool')]
     public function set($year, $month, $dayOfMonth = null, $hour = null, $minute = null, $second = null) {}
 
     /**
@@ -3370,6 +3364,8 @@ class IntlCalendar
      * @return bool Returns <b>TRUE</b> on success and <b>FALSE</b> on failure.
      * @since 5.5
      */
+    #[TentativeType]
+    #[LanguageLevelTypeAware(['8.4' => 'true'], default: 'bool')]
     public function set($field, $value) {}
 
     /**
@@ -7420,59 +7416,6 @@ class IntlRuleBasedBreakIterator extends IntlBreakIterator implements Traversabl
         #[LanguageAware(['8.0' => 'string'], default: '')] $rules,
         #[LanguageAware(['8.0' => 'bool'], default: '')] $compiled = false
     ) {}
-
-    /**
-     * (PHP 5 &gt;=5.5.0)<br/>
-     * Create break iterator for boundaries of combining character sequences
-     * @link https://secure.php.net/manual/en/intlbreakiterator.createcharacterinstance.php
-     * @param string $locale
-     * @return IntlRuleBasedBreakIterator
-     */
-    public static function createCharacterInstance($locale) {}
-
-    /**
-     * (PHP 5 &gt;=5.5.0)<br/>
-     * Create break iterator for boundaries of code points
-     * @link https://secure.php.net/manual/en/intlbreakiterator.createcodepointinstance.php
-     * @return IntlRuleBasedBreakIterator
-     */
-    public static function createCodePointInstance() {}
-
-    /**
-     * (PHP 5 &gt;=5.5.0)<br/>
-     * Create break iterator for logically possible line breaks
-     * @link https://secure.php.net/manual/en/intlbreakiterator.createlineinstance.php
-     * @param string $locale [optional]
-     * @return IntlRuleBasedBreakIterator
-     */
-    public static function createLineInstance($locale) {}
-
-    /**
-     * (PHP 5 &gt;=5.5.0)<br/>
-     * Create break iterator for sentence breaks
-     * @link https://secure.php.net/manual/en/intlbreakiterator.createsentenceinstance.php
-     * @param string $locale [optional]
-     * @return IntlRuleBasedBreakIterator
-     */
-    public static function createSentenceInstance($locale) {}
-
-    /**
-     * (PHP 5 &gt;=5.5.0)<br/>
-     * Create break iterator for title-casing breaks
-     * @link https://secure.php.net/manual/en/intlbreakiterator.createtitleinstance.php
-     * @param string $locale [optional]
-     * @return IntlRuleBasedBreakIterator
-     */
-    public static function createTitleInstance($locale) {}
-
-    /**
-     * (PHP 5 &gt;=5.5.0)<br/>
-     * Create break iterator for word breaks
-     * @link https://secure.php.net/manual/en/intlbreakiterator.createwordinstance.php
-     * @param string $locale [optional]
-     * @return IntlRuleBasedBreakIterator
-     */
-    public static function createWordInstance($locale) {}
 
     /**
      * (PHP 5 &gt;=5.5.0)<br/>

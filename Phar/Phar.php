@@ -922,30 +922,32 @@ class Phar extends RecursiveDirectoryIterator implements RecursiveIterator, Seek
      * </p>
      * @return bool whether the current entry is a directory, but not '.' or '..'
      */
-    public function hasChildren($allow_links = false) {}
+    #[TentativeType]
+    public function hasChildren(#[LanguageLevelTypeAware(['8.0' => 'bool'], default: '')] $allow_links = false): bool {}
 
     /**
      * Returns an iterator for the current entry if it is a directory
      * @link https://php.net/manual/en/recursivedirectoryiterator.getchildren.php
-     * @return mixed The filename, file information, or $this depending on the set flags.
-     * See the FilesystemIterator
-     * constants.
+     * @return RecursiveDirectoryIterator An iterator for the current entry, if it is a directory.
      */
-    public function getChildren() {}
+    #[TentativeType]
+    public function getChildren(): RecursiveDirectoryIterator {}
 
     /**
      * Rewinds back to the beginning
      * @link https://php.net/manual/en/filesystemiterator.rewind.php
      * @return void No value is returned.
      */
-    public function rewind() {}
+    #[TentativeType]
+    public function rewind(): void {}
 
     /**
      * Move to the next file
      * @link https://php.net/manual/en/filesystemiterator.next.php
      * @return void No value is returned.
      */
-    public function next() {}
+    #[TentativeType]
+    public function next(): void {}
 
     /**
      * Retrieve the key for the current file
@@ -953,7 +955,8 @@ class Phar extends RecursiveDirectoryIterator implements RecursiveIterator, Seek
      * @return string the pathname or filename depending on the set flags.
      * See the FilesystemIterator constants.
      */
-    public function key() {}
+    #[TentativeType]
+    public function key(): string {}
 
     /**
      * The current file
@@ -961,14 +964,16 @@ class Phar extends RecursiveDirectoryIterator implements RecursiveIterator, Seek
      * @return mixed The filename, file information, or $this depending on the set flags.
      * See the FilesystemIterator constants.
      */
-    public function current() {}
+    #[TentativeType]
+    public function current(): SplFileInfo|FilesystemIterator|string {}
 
     /**
      * Check whether current DirectoryIterator position is a valid file
      * @link https://php.net/manual/en/directoryiterator.valid.php
      * @return bool <b>TRUE</b> if the position is valid, otherwise <b>FALSE</b>
      */
-    public function valid() {}
+    #[TentativeType]
+    public function valid(): bool {}
 
     /**
      * Seek to a DirectoryIterator item
@@ -978,7 +983,8 @@ class Phar extends RecursiveDirectoryIterator implements RecursiveIterator, Seek
      * </p>
      * @return void No value is returned.
      */
-    public function seek($position) {}
+    #[TentativeType]
+    public function seek(#[LanguageLevelTypeAware(['8.0' => 'int'], default: '')] $position): void {}
 
     /**
      * Gets the path without filename
@@ -992,7 +998,8 @@ class Phar extends RecursiveDirectoryIterator implements RecursiveIterator, Seek
     /**
      * @deprecated 8.2
      */
-    final public function _bad_state_ex() {}
+    #[TentativeType]
+    final public function _bad_state_ex(): void {}
 }
 
 /**
@@ -1081,30 +1088,32 @@ class PharData extends RecursiveDirectoryIterator implements Countable, ArrayAcc
      * </p>
      * @return bool whether the current entry is a directory, but not '.' or '..'
      */
-    public function hasChildren($allow_links = false) {}
+    #[TentativeType]
+    public function hasChildren(#[LanguageLevelTypeAware(['8.0' => 'bool'], default: '')] $allow_links = false): bool {}
 
     /**
      * Returns an iterator for the current entry if it is a directory
      * @link https://php.net/manual/en/recursivedirectoryiterator.getchildren.php
-     * @return mixed The filename, file information, or $this depending on the set flags.
-     * See the FilesystemIterator
-     * constants.
+     * @return RecursiveDirectoryIterator An iterator for the current entry, if it is a directory.
      */
-    public function getChildren() {}
+    #[TentativeType]
+    public function getChildren(): RecursiveDirectoryIterator {}
 
     /**
      * Rewinds back to the beginning
      * @link https://php.net/manual/en/filesystemiterator.rewind.php
      * @return void No value is returned.
      */
-    public function rewind() {}
+    #[TentativeType]
+    public function rewind(): void {}
 
     /**
      * Move to the next file
      * @link https://php.net/manual/en/filesystemiterator.next.php
      * @return void No value is returned.
      */
-    public function next() {}
+    #[TentativeType]
+    public function next(): void {}
 
     /**
      * Retrieve the key for the current file
@@ -1112,7 +1121,8 @@ class PharData extends RecursiveDirectoryIterator implements Countable, ArrayAcc
      * @return string the pathname or filename depending on the set flags.
      * See the FilesystemIterator constants.
      */
-    public function key() {}
+    #[TentativeType]
+    public function key(): string {}
 
     /**
      * The current file
@@ -1120,14 +1130,16 @@ class PharData extends RecursiveDirectoryIterator implements Countable, ArrayAcc
      * @return mixed The filename, file information, or $this depending on the set flags.
      * See the FilesystemIterator constants.
      */
-    public function current() {}
+    #[TentativeType]
+    public function current(): SplFileInfo|FilesystemIterator|string {}
 
     /**
      * Check whether current DirectoryIterator position is a valid file
      * @link https://php.net/manual/en/directoryiterator.valid.php
      * @return bool <b>TRUE</b> if the position is valid, otherwise <b>FALSE</b>
      */
-    public function valid() {}
+    #[TentativeType]
+    public function valid(): bool {}
 
     /**
      * (Unknown)<br/>
@@ -1269,11 +1281,12 @@ class PharData extends RecursiveDirectoryIterator implements Countable, ArrayAcc
      * </p>
      * @return static|null a <b>Phar</b> object.
      */
+    #[LanguageLevelTypeAware(['8.0' => 'static|null'], default: '')]
     #[TentativeType]
     public function compress(
         #[LanguageLevelTypeAware(['8.0' => 'int'], default: '')] $compression,
         #[LanguageLevelTypeAware(['8.0' => 'string|null'], default: '')] $extension = null
-    ): ?Phar {}
+    ) {}
 
     /**
      * (PHP &gt;= 5.3.0, PECL phar &gt;= 2.0.0)<br/>
@@ -1288,8 +1301,9 @@ class PharData extends RecursiveDirectoryIterator implements Countable, ArrayAcc
      * </p>
      * @return static|null A <b>Phar</b> object is returned.
      */
+    #[LanguageLevelTypeAware(['8.0' => 'static|null'], default: '')]
     #[TentativeType]
-    public function decompress(#[LanguageLevelTypeAware(['8.0' => 'string|null'], default: '')] $extension = null): ?Phar {}
+    public function decompress(#[LanguageLevelTypeAware(['8.0' => 'string|null'], default: '')] $extension = null) {}
 
     /**
      * (PHP &gt;= 5.3.0, PECL phar &gt;= 2.0.0)<br/>
@@ -1944,7 +1958,8 @@ class PharData extends RecursiveDirectoryIterator implements Countable, ArrayAcc
      * </p>
      * @return void No value is returned.
      */
-    public function seek($position) {}
+    #[TentativeType]
+    public function seek(#[LanguageLevelTypeAware(['8.0' => 'int'], default: '')] $position): void {}
 
     public function __destruct() {}
 }

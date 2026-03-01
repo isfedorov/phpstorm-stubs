@@ -529,7 +529,11 @@ class DOMImplementation
      * </p>
      * @return bool true on success or false on failure.
      */
-    public function hasFeature($feature, $version) {}
+    #[TentativeType]
+    public function hasFeature(
+        #[LanguageLevelTypeAware(['8.0' => 'string'], default: '')] $feature,
+        #[LanguageLevelTypeAware(['8.0' => 'string'], default: '')] $version
+    ): bool {}
 
     /**
      * Creates an empty DOMDocumentType object
@@ -1121,7 +1125,11 @@ class DOMDocument extends DOMNode implements DOMParentNode
      * </p>
      * @return int|false the number of bytes written or false if an error occurred.
      */
-    public function save($filename, $options = null) {}
+    #[TentativeType]
+    public function save(
+        #[LanguageLevelTypeAware(['8.0' => 'string'], default: '')] $filename,
+        #[LanguageLevelTypeAware(['8.0' => 'int'], default: '')] $options = null
+    ): int|false {}
 
     /**
      * Load XML from a string
@@ -1242,7 +1250,8 @@ class DOMDocument extends DOMNode implements DOMParentNode
      * @param null|DOMNode $node [optional] parameter to output a subset of the document.
      * @return string|false The HTML, or false if an error occurred.
      */
-    public function saveHTML(DOMNode $node = null) {}
+    #[TentativeType]
+    public function saveHTML(#[LanguageLevelTypeAware(['8.0' => 'DOMNode|null'], default: '')] $node = null): string|false {}
 
     /**
      * Dumps the internal document into a file using HTML formatting
@@ -1267,7 +1276,11 @@ class DOMDocument extends DOMNode implements DOMParentNode
      * </p>
      * @return bool true on success or false on failure.
      */
-    public function schemaValidate($filename, $options = null) {}
+    #[TentativeType]
+    public function schemaValidate(
+        #[LanguageLevelTypeAware(['8.0' => 'string'], default: '')] $filename,
+        #[LanguageLevelTypeAware(['8.0' => 'int'], default: '')] $options = null
+    ): bool {}
 
     /**
      * Validates a document based on a schema
@@ -1279,7 +1292,11 @@ class DOMDocument extends DOMNode implements DOMParentNode
      * Available since PHP 5.5.2 and Libxml 2.6.14.</p>
      * @return bool true on success or false on failure.
      */
-    public function schemaValidateSource($source, $flags) {}
+    #[TentativeType]
+    public function schemaValidateSource(
+        #[LanguageLevelTypeAware(['8.0' => 'string'], default: '')] $source,
+        #[LanguageLevelTypeAware(['8.0' => 'int'], default: '')] $flags = 0
+    ): bool {}
 
     /**
      * Performs relaxNG validation on the document
@@ -2545,7 +2562,8 @@ class DOMXPath
      * </p>
      * @return void
      */
-    public function registerPhpFunctions($restrict = null) {}
+    #[TentativeType]
+    public function registerPhpFunctions(#[LanguageLevelTypeAware(['8.0' => 'string|array|null'], default: '')] $restrict = null): void {}
 
     /**
      * @since 8.4

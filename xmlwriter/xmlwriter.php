@@ -574,14 +574,15 @@ class XMLWriter
      * @param string $ndataid
      * @return bool <b>TRUE</b> on success or <b>FALSE</b> on failure.
      */
+    #[TentativeType]
     public function writeDtdEntity(
         #[LanguageLevelTypeAware(['8.0' => 'string'], default: '')] $name,
         #[LanguageLevelTypeAware(['8.0' => 'string'], default: '')] $content,
-        $pe,
-        $pubid,
-        $sysid,
-        $ndataid
-    ) {}
+        #[LanguageLevelTypeAware(['8.0' => 'bool'], default: '')] $pe,
+        #[LanguageLevelTypeAware(['8.0' => 'string'], default: '')] $pubid,
+        #[LanguageLevelTypeAware(['8.0' => 'string'], default: '')] $sysid,
+        #[LanguageLevelTypeAware(['8.0' => 'string'], default: '')] $ndataid
+    ): bool {}
 
     /**
      * (PHP 5 &gt;= 5.1.2, PECL xmlwriter &gt;= 0.1.0)<br/>
