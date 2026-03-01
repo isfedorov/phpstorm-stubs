@@ -20,6 +20,7 @@ use StubTests\Sources\Validator\ClassPropertiesExistCheck;
 use StubTests\Sources\Validator\ClassPropertiesVisibilityCheck;
 use StubTests\Sources\Validator\ClassPropertiesTypeCheck;
 use StubTests\Sources\Validator\ClassMethodsParametersCountCheck;
+use StubTests\Sources\Validator\ClassMethodsReturnTypesCheck;
 use StubTests\Sources\Validator\MethodDeprecationCheck;
 use StubTests\Sources\Validator\ClassStaticMethodsCheck;
 
@@ -218,6 +219,17 @@ class ClassValidatorTest extends ValidatorTestBase
 			$classId,
 			$phpVersion,
 			"Class {$classId} methods parameters count check failed in PHP {$phpVersion}"
+		);
+	}
+
+	#[PhpVersionRange(PhpVersions::PHP_7_0, PhpVersions::LATEST)]
+	public function checkClassMethodsReturnTypes(string $classId, string $phpVersion): void
+	{
+		$this->executeCheck(
+			new ClassMethodsReturnTypesCheck(),
+			$classId,
+			$phpVersion,
+			"Class {$classId} methods return type check failed in PHP {$phpVersion}"
 		);
 	}
 

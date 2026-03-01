@@ -26,6 +26,9 @@ class NikicTypeNode implements TypeNode
     {
         if ($typeNode instanceof \PhpParser\Node\Identifier) {
             return $typeNode->toString();
+        } elseif ($typeNode instanceof \PhpParser\Node\Name\FullyQualified) {
+            // Preserve the leading backslash so TypeNodeConverter knows it's already FQN
+            return '\\' . $typeNode->toString();
         } elseif ($typeNode instanceof \PhpParser\Node\Name) {
             return $typeNode->toString();
         } elseif ($typeNode instanceof \PhpParser\Node\UnionType) {

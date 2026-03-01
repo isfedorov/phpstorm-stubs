@@ -11,7 +11,7 @@ use StubTests\Sources\Validator\FunctionExistsCheck;
 use StubTests\Sources\Validator\FunctionParametersCountCheck;
 use StubTests\Sources\Validator\ParameterNamesCheck;
 use StubTests\Sources\Validator\ParameterTypesCheck;
-use StubTests\Sources\Validator\ReturnTypesCheck;
+use StubTests\Sources\Validator\FunctionReturnTypesCheck;
 
 /**
  * Validates that functions from reflection match stubs.
@@ -98,7 +98,7 @@ class FunctionValidatorTest extends ValidatorTestBase
     public function checkReturnTypes(string $functionId, string $phpVersion): void
     {
         $this->executeCheck(
-            new ReturnTypesCheck(),
+            new FunctionReturnTypesCheck(),
             $functionId,
             $phpVersion,
             "Function {$functionId} has mismatched return type in PHP {$phpVersion}"
