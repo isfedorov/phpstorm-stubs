@@ -31,6 +31,11 @@ enum EntityType: string
     case INTERFACE_TYPE = 'interfaces';
 
     /**
+     * Enums
+     */
+    case ENUM_TYPE = 'enums';
+
+    /**
      * Class properties (e.g., DateTime::$timezone)
      */
     case PROPERTY = 'properties';

@@ -83,8 +83,16 @@ class PHPEnumSerializer implements EntityTypeSerializerInterface
             }
         }
 
-        // Note: interfaces are stored as names only
-        // They need to be resolved separately after all entities are loaded
+        // Restore interfaces from stored names
+        if (isset($data['interfaces']) && is_array($data['interfaces'])) {
+            foreach ($data['interfaces'] as $interfaceName) {
+                if (!empty($interfaceName)) {
+                    $interface = new \StubTests\Sources\Parsers\Entities\Model\PHPInterface();
+                    $interface->setName($interfaceName);
+                    $enum->interfaces[] = $interface;
+                }
+            }
+        }
 
         return $enum;
     }

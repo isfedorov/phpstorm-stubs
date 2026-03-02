@@ -119,4 +119,9 @@ enum CheckType: string
      * are themselves declared in the stubs (stubs self-consistency check).
      */
     case INTERFACE_PARENT_INTERFACES = 'InterfaceParentInterfacesCheck';
+
+    /**
+     * Validates that directly implemented interfaces in enum stubs match reflection.
+     */
+    case ENUM_INTERFACES = 'EnumInterfacesCheck';
 }

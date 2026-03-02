@@ -37,6 +37,7 @@ interface ParsedDataStorageManager
     public function getInterfaces();
     public function hasInterface(string $id): bool;
     public function getEnums();
+    public function hasEnum(string $id): bool;
     public function getConstants();
 
     // Pipeline access

@@ -249,6 +249,16 @@ class DefaultParsedDataStorageManager implements ParsedDataStorageManager
         });
     }
 
+    public function hasEnum(string $id): bool
+    {
+        foreach ($this->getEnums() as $enum) {
+            if ($enum->getId() === $id) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public function getConstants()
     {
         $allEntities = $this->parsedDataStorageProvider->getEntities();

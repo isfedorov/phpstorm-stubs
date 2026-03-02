@@ -504,6 +504,17 @@ class ReflectionEntitySerializer implements EntitySerializerInterface
             }
         }
 
+        // Restore interfaces from stored names
+        if (isset($data['interfaces']) && is_array($data['interfaces'])) {
+            foreach ($data['interfaces'] as $interfaceName) {
+                if (!empty($interfaceName)) {
+                    $interface = new PHPInterface();
+                    $interface->setName($interfaceName);
+                    $enum->interfaces[] = $interface;
+                }
+            }
+        }
+
         return $enum;
     }
 

@@ -4,6 +4,7 @@ namespace StubTests\Sources\Validator;
 
 use StubTests\Sources\Parsers\Entities\Model\PHPClass;
 use StubTests\Sources\Parsers\Entities\Model\PHPClassLikeObject;
+use StubTests\Sources\Parsers\Entities\Model\PHPEnum;
 use StubTests\Sources\Parsers\Entities\Model\PHPInterface;
 use StubTests\Sources\Parsers\Entities\Model\PHPMethod;
 use StubTests\Sources\Parsers\Entities\Model\PHPProperty;
@@ -108,6 +109,42 @@ abstract class AbstractClassCheck extends AbstractReflectionCheck
             }
 
             $current = $current->parentClass;
+        }
+
+        return $methodMap;
+    }
+
+    /**
+     * Find an enum by entity ID in the given storage.
+     */
+    protected function findEnumById(ParsedDataStorageManager $storage, string $entityId): ?PHPEnum
+    {
+        foreach ($storage->getEnums() as $enum) {
+            if ($enum->getId() === $entityId) {
+                return $enum;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Collect version-filtered stub methods from an enum and its implemented interface chain.
+     *
+     * Traversal includes:
+     * - The enum itself
+     * - All implemented interfaces (and their parent interface chains)
+     *
+     * @return array<string, PHPMethod>
+     */
+    protected function collectVersionedEnumStubMethods(PHPEnum $enum, string $phpVersion): array
+    {
+        $methodMap = [];
+        $visited   = [];
+
+        $this->collectMethodsFromClassLike($enum, $phpVersion, $methodMap);
+
+        foreach ($enum->getImplementedInterfaces() as $interface) {
+            $this->collectMethodsFromInterfaceHierarchy($interface, $phpVersion, $methodMap, $visited);
         }
 
         return $methodMap;

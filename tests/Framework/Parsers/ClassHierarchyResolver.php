@@ -3,6 +3,7 @@
 namespace StubTests\Sources\Parsers;
 
 use StubTests\Sources\Parsers\Entities\Model\PHPClass;
+use StubTests\Sources\Parsers\Entities\Model\PHPEnum;
 use StubTests\Sources\Parsers\Entities\Model\PHPInterface;
 
 /**
@@ -17,11 +18,13 @@ class ClassHierarchyResolver
 {
     /**
      * Link parentClass and interfaces on every PHPClass to the actual objects in the collection.
+     * Also links interfaces on every PHPEnum.
      *
-     * @param iterable $classes  All PHPClass instances from the storage
+     * @param iterable $classes     All PHPClass instances from the storage
      * @param iterable $interfaces  All PHPInterface instances from the storage
+     * @param iterable $enums       All PHPEnum instances from the storage
      */
-    public function resolve(iterable $classes, iterable $interfaces = []): void
+    public function resolve(iterable $classes, iterable $interfaces = [], iterable $enums = []): void
     {
         // Build FQN → object lookup tables (keyed by getId() stripped of the leading \).
         // Using FQN keys eliminates collisions when multiple classes share the same short
@@ -50,6 +53,11 @@ class ClassHierarchyResolver
         // Link each interface's parent interfaces to actual objects
         foreach ($interfaceMap as $iface) {
             $this->resolveInterface($iface, $interfaceMap);
+        }
+
+        // Link each enum's interfaces to actual objects
+        foreach ($enums as $enum) {
+            $this->resolveEnum($enum, $interfaceMap);
         }
     }
 
@@ -136,6 +144,37 @@ class ClassHierarchyResolver
             }
         }
         $iface->setParentInterfaces($parentInterfaces);
+    }
+
+    private function resolveEnum(PHPEnum $enum, array $interfaceMap): void
+    {
+        foreach ($enum->interfaces as $idx => $iface) {
+            $resolved = $this->lookupInterfaceForEnum($iface->getName(), $enum, $interfaceMap);
+            if ($resolved !== null) {
+                $enum->interfaces[$idx] = $resolved;
+            }
+        }
+    }
+
+    private function lookupInterfaceForEnum(?string $name, PHPEnum $owningEnum, array $interfaceMap): ?PHPInterface
+    {
+        if ($name === null || $name === '') {
+            return null;
+        }
+
+        if (isset($interfaceMap[$name])) {
+            return $interfaceMap[$name];
+        }
+
+        $ns = ltrim($owningEnum->getNamespace() ?? '', '\\');
+        if ($ns !== '') {
+            $qualified = $ns . '\\' . $name;
+            if (isset($interfaceMap[$qualified])) {
+                return $interfaceMap[$qualified];
+            }
+        }
+
+        return null;
     }
 
     private function lookupInterfaceByName(?string $name, PHPInterface $owningInterface, array $interfaceMap): ?PHPInterface

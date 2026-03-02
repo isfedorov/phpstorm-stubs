@@ -11,6 +11,7 @@ use StubTests\Sources\Parsers\DefaultParsedDataStorageManager;
 use StubTests\Sources\Parsers\Entities\Reflection\AllReflectionParser;
 use StubTests\Sources\Parsers\Entities\Stubs\AllStubsParser;
 use StubTests\Sources\Parsers\Entities\Stubs\StubClassParser;
+use StubTests\Sources\Parsers\Entities\Stubs\StubEnumParser;
 use StubTests\Sources\Parsers\Entities\Stubs\StubFunctionParser;
 use StubTests\Sources\Parsers\Entities\Stubs\StubInterfaceParser;
 use StubTests\Sources\Parsers\JsonParsedDataStorage;
@@ -66,8 +67,8 @@ class Runner
             $manager = $parsedReflectionDataStorageManager;
         }
 
-        // Resolve parent class and interface references to actual objects
-        (new ClassHierarchyResolver())->resolve($manager->getClasses(), $manager->getInterfaces());
+        // Resolve parent class, interface, and enum interface references to actual objects
+        (new ClassHierarchyResolver())->resolve($manager->getClasses(), $manager->getInterfaces(), $manager->getEnums());
 
         // Store in in-memory cache
         self::$reflectionCache[$phpVersion] = $manager;
@@ -104,7 +105,7 @@ class Runner
             $parser = new AllStubsParser(
                 new AllStubsDataProvider(),
                 $parsedStubsDataStorageManager,
-                [new StubClassParser(), new StubFunctionParser(), new StubInterfaceParser()]
+                [new StubClassParser(), new StubFunctionParser(), new StubInterfaceParser(), new StubEnumParser()]
             );
             $parser->parseAll();
 
@@ -114,8 +115,8 @@ class Runner
             $manager = $parsedStubsDataStorageManager;
         }
 
-        // Resolve parent class and interface references to actual objects
-        (new ClassHierarchyResolver())->resolve($manager->getClasses(), $manager->getInterfaces());
+        // Resolve parent class, interface, and enum interface references to actual objects
+        (new ClassHierarchyResolver())->resolve($manager->getClasses(), $manager->getInterfaces(), $manager->getEnums());
 
         // Store in in-memory cache
         self::$stubsCache = $manager;

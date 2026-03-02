@@ -187,6 +187,7 @@ class KnownProblemsRegistry
             'DeprecationCheck'                   => CheckType::DEPRECATION,
             'OptionalParametersCheck'            => CheckType::OPTIONAL_PARAMETERS,
             'InterfaceParentInterfacesCheck'      => CheckType::INTERFACE_PARENT_INTERFACES,
+            'EnumInterfacesCheck'                 => CheckType::ENUM_INTERFACES,
             default => null,
         };
     }
