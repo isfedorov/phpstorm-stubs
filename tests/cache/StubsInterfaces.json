@@ -45,7 +45,10 @@
                 "defaultType": null
             }
         ],
-        "constants": []
+        "constants": [],
+        "parentInterfaces": [
+            "Iterator"
+        ]
     },
     {
         "_type": "PHPInterface",
@@ -76,7 +79,10 @@
                 "defaultType": null
             }
         ],
-        "constants": []
+        "constants": [],
+        "parentInterfaces": [
+            "Iterator"
+        ]
     },
     {
         "_type": "PHPInterface",
@@ -125,7 +131,10 @@
                 "defaultType": null
             }
         ],
-        "constants": []
+        "constants": [],
+        "parentInterfaces": [
+            "Iterator"
+        ]
     },
     {
         "_type": "PHPInterface",
@@ -172,7 +181,8 @@
                 "defaultType": null
             }
         ],
-        "constants": []
+        "constants": [],
+        "parentInterfaces": []
     },
     {
         "_type": "PHPInterface",
@@ -269,7 +279,8 @@
                 "defaultType": null
             }
         ],
-        "constants": []
+        "constants": [],
+        "parentInterfaces": []
     },
     {
         "_type": "PHPInterface",
@@ -396,7 +407,8 @@
                 "defaultType": null
             }
         ],
-        "constants": []
+        "constants": [],
+        "parentInterfaces": []
     },
     {
         "_type": "PHPInterface",
@@ -464,7 +476,8 @@
                 "visibility": "public",
                 "isFinal": false
             }
-        ]
+        ],
+        "parentInterfaces": []
     },
     {
         "_type": "PHPInterface",
@@ -477,7 +490,8 @@
         "sinceVersion": null,
         "removedVersion": null,
         "methods": [],
-        "constants": []
+        "constants": [],
+        "parentInterfaces": []
     },
     {
         "_type": "PHPInterface",
@@ -490,7 +504,10 @@
         "sinceVersion": null,
         "removedVersion": null,
         "methods": [],
-        "constants": []
+        "constants": [],
+        "parentInterfaces": [
+            "iterable"
+        ]
     },
     {
         "_type": "PHPInterface",
@@ -521,7 +538,10 @@
                 "defaultType": null
             }
         ],
-        "constants": []
+        "constants": [],
+        "parentInterfaces": [
+            "Traversable"
+        ]
     },
     {
         "_type": "PHPInterface",
@@ -620,7 +640,10 @@
                 "defaultType": null
             }
         ],
-        "constants": []
+        "constants": [],
+        "parentInterfaces": [
+            "Traversable"
+        ]
     },
     {
         "_type": "PHPInterface",
@@ -791,7 +814,8 @@
                 "defaultType": null
             }
         ],
-        "constants": []
+        "constants": [],
+        "parentInterfaces": []
     },
     {
         "_type": "PHPInterface",
@@ -857,7 +881,8 @@
                 "defaultType": null
             }
         ],
-        "constants": []
+        "constants": [],
+        "parentInterfaces": []
     },
     {
         "_type": "PHPInterface",
@@ -1005,11 +1030,16 @@
                 "sinceVersion": "7.0",
                 "removedVersion": null,
                 "returnTypeFromPhpDoc": "string",
-                "languageLevelTypes": null,
-                "defaultType": null
+                "languageLevelTypes": {
+                    "8.0": "string"
+                },
+                "defaultType": ""
             }
         ],
-        "constants": []
+        "constants": [],
+        "parentInterfaces": [
+            "Stringable"
+        ]
     },
     {
         "_type": "PHPInterface",
@@ -1040,7 +1070,8 @@
                 "defaultType": null
             }
         ],
-        "constants": []
+        "constants": [],
+        "parentInterfaces": []
     },
     {
         "_type": "PHPInterface",
@@ -1071,7 +1102,8 @@
                 "defaultType": null
             }
         ],
-        "constants": []
+        "constants": [],
+        "parentInterfaces": []
     },
     {
         "_type": "PHPInterface",
@@ -1102,7 +1134,8 @@
                 "defaultType": null
             }
         ],
-        "constants": []
+        "constants": [],
+        "parentInterfaces": []
     },
     {
         "_type": "PHPInterface",
@@ -1182,7 +1215,10 @@
                 "defaultType": null
             }
         ],
-        "constants": []
+        "constants": [],
+        "parentInterfaces": [
+            "UnitEnum"
+        ]
     },
     {
         "_type": "PHPInterface",
@@ -1262,7 +1298,10 @@
                 "defaultType": null
             }
         ],
-        "constants": []
+        "constants": [],
+        "parentInterfaces": [
+            "BackedEnum"
+        ]
     },
     {
         "_type": "PHPInterface",
@@ -1342,7 +1381,10 @@
                 "defaultType": null
             }
         ],
-        "constants": []
+        "constants": [],
+        "parentInterfaces": [
+            "BackedEnum"
+        ]
     },
     {
         "_type": "PHPInterface",
@@ -1424,7 +1466,12 @@
                 "defaultType": null
             }
         ],
-        "constants": []
+        "constants": [],
+        "parentInterfaces": [
+            "Countable",
+            "IteratorAggregate",
+            "JsonSerializable"
+        ]
     },
     {
         "_type": "PHPInterface",
@@ -1488,7 +1535,8 @@
                 "defaultType": null
             }
         ],
-        "constants": []
+        "constants": [],
+        "parentInterfaces": []
     },
     {
         "_type": "PHPInterface",
@@ -2325,7 +2373,11 @@
                 "defaultType": null
             }
         ],
-        "constants": []
+        "constants": [],
+        "parentInterfaces": [
+            "Collection",
+            "ArrayAccess"
+        ]
     },
     {
         "_type": "PHPInterface",
@@ -2373,7 +2425,8 @@
                 "defaultType": null
             }
         ],
-        "constants": []
+        "constants": [],
+        "parentInterfaces": []
     },
     {
         "_type": "PHPInterface",
@@ -2420,7 +2473,8 @@
                 "defaultType": null
             }
         ],
-        "constants": []
+        "constants": [],
+        "parentInterfaces": []
     },
     {
         "_type": "PHPInterface",
@@ -2467,7 +2521,8 @@
                 "defaultType": null
             }
         ],
-        "constants": []
+        "constants": [],
+        "parentInterfaces": []
     },
     {
         "_type": "PHPInterface",
@@ -2514,7 +2569,8 @@
                 "defaultType": null
             }
         ],
-        "constants": []
+        "constants": [],
+        "parentInterfaces": []
     },
     {
         "_type": "PHPInterface",
@@ -2561,7 +2617,8 @@
                 "defaultType": null
             }
         ],
-        "constants": []
+        "constants": [],
+        "parentInterfaces": []
     },
     {
         "_type": "PHPInterface",
@@ -2626,7 +2683,8 @@
                 "defaultType": null
             }
         ],
-        "constants": []
+        "constants": [],
+        "parentInterfaces": []
     },
     {
         "_type": "PHPInterface",
@@ -2657,7 +2715,8 @@
                 "defaultType": null
             }
         ],
-        "constants": []
+        "constants": [],
+        "parentInterfaces": []
     },
     {
         "_type": "PHPInterface",
@@ -2688,7 +2747,10 @@
                 "defaultType": null
             }
         ],
-        "constants": []
+        "constants": [],
+        "parentInterfaces": [
+            "mysql_xdevapi\\DatabaseObject"
+        ]
     },
     {
         "_type": "PHPInterface",
@@ -3028,7 +3090,8 @@
                 "visibility": "public",
                 "isFinal": false
             }
-        ]
+        ],
+        "parentInterfaces": []
     },
     {
         "_type": "PHPInterface",
@@ -3059,7 +3122,8 @@
                 "defaultType": null
             }
         ],
-        "constants": []
+        "constants": [],
+        "parentInterfaces": []
     },
     {
         "_type": "PHPInterface",
@@ -3124,7 +3188,8 @@
                 "defaultType": null
             }
         ],
-        "constants": []
+        "constants": [],
+        "parentInterfaces": []
     },
     {
         "_type": "PHPInterface",
@@ -3137,7 +3202,8 @@
         "sinceVersion": null,
         "removedVersion": null,
         "methods": [],
-        "constants": []
+        "constants": [],
+        "parentInterfaces": []
     },
     {
         "_type": "PHPInterface",
@@ -3168,7 +3234,10 @@
                 "defaultType": null
             }
         ],
-        "constants": []
+        "constants": [],
+        "parentInterfaces": [
+            "Type"
+        ]
     },
     {
         "_type": "PHPInterface",
@@ -3233,7 +3302,8 @@
                 "defaultType": null
             }
         ],
-        "constants": []
+        "constants": [],
+        "parentInterfaces": []
     },
     {
         "_type": "PHPInterface",
@@ -3298,7 +3368,8 @@
                 "defaultType": null
             }
         ],
-        "constants": []
+        "constants": [],
+        "parentInterfaces": []
     },
     {
         "_type": "PHPInterface",
@@ -3363,7 +3434,8 @@
                 "defaultType": null
             }
         ],
-        "constants": []
+        "constants": [],
+        "parentInterfaces": []
     },
     {
         "_type": "PHPInterface",
@@ -3394,7 +3466,8 @@
                 "defaultType": null
             }
         ],
-        "constants": []
+        "constants": [],
+        "parentInterfaces": []
     },
     {
         "_type": "PHPInterface",
@@ -3407,7 +3480,8 @@
         "sinceVersion": null,
         "removedVersion": null,
         "methods": [],
-        "constants": []
+        "constants": [],
+        "parentInterfaces": []
     },
     {
         "_type": "PHPInterface",
@@ -3438,7 +3512,11 @@
                 "defaultType": null
             }
         ],
-        "constants": []
+        "constants": [],
+        "parentInterfaces": [
+            "Unserializable",
+            "Serializable"
+        ]
     },
     {
         "_type": "PHPInterface",
@@ -3451,7 +3529,8 @@
         "sinceVersion": null,
         "removedVersion": null,
         "methods": [],
-        "constants": []
+        "constants": [],
+        "parentInterfaces": []
     },
     {
         "_type": "PHPInterface",
@@ -3499,7 +3578,8 @@
                 "defaultType": null
             }
         ],
-        "constants": []
+        "constants": [],
+        "parentInterfaces": []
     },
     {
         "_type": "PHPInterface",
@@ -3547,7 +3627,8 @@
                 "defaultType": null
             }
         ],
-        "constants": []
+        "constants": [],
+        "parentInterfaces": []
     },
     {
         "_type": "PHPInterface",
@@ -3594,7 +3675,10 @@
                 "defaultType": null
             }
         ],
-        "constants": []
+        "constants": [],
+        "parentInterfaces": [
+            "Type"
+        ]
     },
     {
         "_type": "PHPInterface",
@@ -3709,7 +3793,10 @@
                 "defaultType": null
             }
         ],
-        "constants": []
+        "constants": [],
+        "parentInterfaces": [
+            "Traversable"
+        ]
     },
     {
         "_type": "PHPInterface",
@@ -3823,6 +3910,9 @@
                 "visibility": "public",
                 "isFinal": false
             }
+        ],
+        "parentInterfaces": [
+            "Subscriber"
         ]
     },
     {
@@ -3936,7 +4026,10 @@
                 "defaultType": null
             }
         ],
-        "constants": []
+        "constants": [],
+        "parentInterfaces": [
+            "Subscriber"
+        ]
     },
     {
         "_type": "PHPInterface",
@@ -3949,7 +4042,8 @@
         "sinceVersion": "1.3.0",
         "removedVersion": null,
         "methods": [],
-        "constants": []
+        "constants": [],
+        "parentInterfaces": []
     },
     {
         "_type": "PHPInterface",
@@ -4260,7 +4354,10 @@
                 "defaultType": null
             }
         ],
-        "constants": []
+        "constants": [],
+        "parentInterfaces": [
+            "Subscriber"
+        ]
     },
     {
         "_type": "PHPInterface",
@@ -4273,7 +4370,10 @@
         "sinceVersion": null,
         "removedVersion": null,
         "methods": [],
-        "constants": []
+        "constants": [],
+        "parentInterfaces": [
+            "Throwable"
+        ]
     },
     {
         "_type": "PHPInterface",
@@ -4420,7 +4520,8 @@
                 "defaultType": null
             }
         ],
-        "constants": []
+        "constants": [],
+        "parentInterfaces": []
     },
     {
         "_type": "PHPInterface",
@@ -4770,7 +4871,10 @@
                 "defaultType": null
             }
         ],
-        "constants": []
+        "constants": [],
+        "parentInterfaces": [
+            "ExecutionSegmentInterface"
+        ]
     },
     {
         "_type": "PHPInterface",
@@ -4949,7 +5053,10 @@
                 "defaultType": null
             }
         ],
-        "constants": []
+        "constants": [],
+        "parentInterfaces": [
+            "ExecutionSegmentInterface"
+        ]
     },
     {
         "_type": "PHPInterface",
@@ -5014,7 +5121,10 @@
                 "defaultType": null
             }
         ],
-        "constants": []
+        "constants": [],
+        "parentInterfaces": [
+            "ExecutionSegmentContextInterface"
+        ]
     },
     {
         "_type": "PHPInterface",
@@ -5061,7 +5171,8 @@
                 "defaultType": null
             }
         ],
-        "constants": []
+        "constants": [],
+        "parentInterfaces": []
     },
     {
         "_type": "PHPInterface",
@@ -5174,7 +5285,8 @@
                 "defaultType": null
             }
         ],
-        "constants": []
+        "constants": [],
+        "parentInterfaces": []
     },
     {
         "_type": "PHPInterface",
@@ -5251,7 +5363,8 @@
                 "defaultType": null
             }
         ],
-        "constants": []
+        "constants": [],
+        "parentInterfaces": []
     },
     {
         "_type": "PHPInterface",
@@ -5833,7 +5946,8 @@
                 "defaultType": null
             }
         ],
-        "constants": []
+        "constants": [],
+        "parentInterfaces": []
     },
     {
         "_type": "PHPInterface",
@@ -5864,7 +5978,10 @@
                 "defaultType": null
             }
         ],
-        "constants": []
+        "constants": [],
+        "parentInterfaces": [
+            "ExecutionSegmentContextInterface"
+        ]
     },
     {
         "_type": "PHPInterface",
@@ -5926,7 +6043,8 @@
                 "defaultType": null
             }
         ],
-        "constants": []
+        "constants": [],
+        "parentInterfaces": []
     },
     {
         "_type": "PHPInterface",
@@ -5990,7 +6108,8 @@
                 "defaultType": null
             }
         ],
-        "constants": []
+        "constants": [],
+        "parentInterfaces": []
     },
     {
         "_type": "PHPInterface",
@@ -6235,7 +6354,8 @@
                 "defaultType": null
             }
         ],
-        "constants": []
+        "constants": [],
+        "parentInterfaces": []
     },
     {
         "_type": "PHPInterface",
@@ -6266,7 +6386,8 @@
                 "defaultType": null
             }
         ],
-        "constants": []
+        "constants": [],
+        "parentInterfaces": []
     },
     {
         "_type": "PHPInterface",
@@ -6279,7 +6400,8 @@
         "sinceVersion": null,
         "removedVersion": null,
         "methods": [],
-        "constants": []
+        "constants": [],
+        "parentInterfaces": []
     },
     {
         "_type": "PHPInterface",
@@ -6505,7 +6627,8 @@
                 "visibility": "public",
                 "isFinal": false
             }
-        ]
+        ],
+        "parentInterfaces": []
     },
     {
         "_type": "PHPInterface",
@@ -6638,7 +6761,8 @@
                 "defaultType": null
             }
         ],
-        "constants": []
+        "constants": [],
+        "parentInterfaces": []
     },
     {
         "_type": "PHPInterface",
@@ -6928,7 +7052,8 @@
                 "defaultType": null
             }
         ],
-        "constants": []
+        "constants": [],
+        "parentInterfaces": []
     },
     {
         "_type": "PHPInterface",
@@ -7416,7 +7541,8 @@
                 "defaultType": null
             }
         ],
-        "constants": []
+        "constants": [],
+        "parentInterfaces": []
     },
     {
         "_type": "PHPInterface",
@@ -7429,7 +7555,8 @@
         "sinceVersion": null,
         "removedVersion": null,
         "methods": [],
-        "constants": []
+        "constants": [],
+        "parentInterfaces": []
     },
     {
         "_type": "PHPInterface",
@@ -7442,7 +7569,8 @@
         "sinceVersion": null,
         "removedVersion": null,
         "methods": [],
-        "constants": []
+        "constants": [],
+        "parentInterfaces": []
     },
     {
         "_type": "PHPInterface",
@@ -7455,7 +7583,8 @@
         "sinceVersion": null,
         "removedVersion": null,
         "methods": [],
-        "constants": []
+        "constants": [],
+        "parentInterfaces": []
     },
     {
         "_type": "PHPInterface",
@@ -7605,7 +7734,8 @@
                 "defaultType": null
             }
         ],
-        "constants": []
+        "constants": [],
+        "parentInterfaces": []
     },
     {
         "_type": "PHPInterface",
@@ -7653,7 +7783,8 @@
                 "defaultType": null
             }
         ],
-        "constants": []
+        "constants": [],
+        "parentInterfaces": []
     },
     {
         "_type": "PHPInterface",
@@ -7802,7 +7933,8 @@
                 "defaultType": null
             }
         ],
-        "constants": []
+        "constants": [],
+        "parentInterfaces": []
     },
     {
         "_type": "PHPInterface",
@@ -7882,7 +8014,8 @@
                 "defaultType": null
             }
         ],
-        "constants": []
+        "constants": [],
+        "parentInterfaces": []
     },
     {
         "_type": "PHPInterface",
@@ -8146,7 +8279,8 @@
                 "defaultType": null
             }
         ],
-        "constants": []
+        "constants": [],
+        "parentInterfaces": []
     },
     {
         "_type": "PHPInterface",
@@ -8193,7 +8327,8 @@
                 "defaultType": null
             }
         ],
-        "constants": []
+        "constants": [],
+        "parentInterfaces": []
     },
     {
         "_type": "PHPInterface",
@@ -8555,7 +8690,8 @@
                 "defaultType": null
             }
         ],
-        "constants": []
+        "constants": [],
+        "parentInterfaces": []
     },
     {
         "_type": "PHPInterface",
@@ -8586,7 +8722,8 @@
                 "defaultType": null
             }
         ],
-        "constants": []
+        "constants": [],
+        "parentInterfaces": []
     },
     {
         "_type": "PHPInterface",
@@ -8753,7 +8890,8 @@
                 "defaultType": null
             }
         ],
-        "constants": []
+        "constants": [],
+        "parentInterfaces": []
     },
     {
         "_type": "PHPInterface",
@@ -8766,7 +8904,8 @@
         "sinceVersion": null,
         "removedVersion": null,
         "methods": [],
-        "constants": []
+        "constants": [],
+        "parentInterfaces": []
     },
     {
         "_type": "PHPInterface",
@@ -8830,7 +8969,8 @@
                 "defaultType": null
             }
         ],
-        "constants": []
+        "constants": [],
+        "parentInterfaces": []
     },
     {
         "_type": "PHPInterface",
@@ -8861,7 +9001,8 @@
                 "defaultType": null
             }
         ],
-        "constants": []
+        "constants": [],
+        "parentInterfaces": []
     },
     {
         "_type": "PHPInterface",
@@ -9069,7 +9210,8 @@
                 "defaultType": null
             }
         ],
-        "constants": []
+        "constants": [],
+        "parentInterfaces": []
     },
     {
         "_type": "PHPInterface",
@@ -9164,7 +9306,8 @@
                 "defaultType": null
             }
         ],
-        "constants": []
+        "constants": [],
+        "parentInterfaces": []
     },
     {
         "_type": "PHPInterface",
@@ -9372,7 +9515,8 @@
                 "defaultType": null
             }
         ],
-        "constants": []
+        "constants": [],
+        "parentInterfaces": []
     },
     {
         "_type": "PHPInterface",
@@ -9467,7 +9611,8 @@
                 "defaultType": null
             }
         ],
-        "constants": []
+        "constants": [],
+        "parentInterfaces": []
     },
     {
         "_type": "PHPInterface",
@@ -9580,7 +9725,8 @@
                 "defaultType": null
             }
         ],
-        "constants": []
+        "constants": [],
+        "parentInterfaces": []
     },
     {
         "_type": "PHPInterface",
@@ -9710,7 +9856,8 @@
                 "defaultType": null
             }
         ],
-        "constants": []
+        "constants": [],
+        "parentInterfaces": []
     },
     {
         "_type": "PHPInterface",
@@ -9889,7 +10036,8 @@
                 "defaultType": null
             }
         ],
-        "constants": []
+        "constants": [],
+        "parentInterfaces": []
     },
     {
         "_type": "PHPInterface",
@@ -10019,7 +10167,8 @@
                 "defaultType": null
             }
         ],
-        "constants": []
+        "constants": [],
+        "parentInterfaces": []
     },
     {
         "_type": "PHPInterface",
@@ -10198,7 +10347,10 @@
                 "defaultType": null
             }
         ],
-        "constants": []
+        "constants": [],
+        "parentInterfaces": [
+            "Iterator"
+        ]
     },
     {
         "_type": "PHPInterface",
@@ -10229,7 +10381,8 @@
                 "defaultType": null
             }
         ],
-        "constants": []
+        "constants": [],
+        "parentInterfaces": []
     },
     {
         "_type": "PHPInterface",
@@ -10242,7 +10395,10 @@
         "sinceVersion": "8.2",
         "removedVersion": null,
         "methods": [],
-        "constants": []
+        "constants": [],
+        "parentInterfaces": [
+            "Engine"
+        ]
     },
     {
         "_type": "PHPInterface",
@@ -10255,7 +10411,8 @@
         "sinceVersion": null,
         "removedVersion": null,
         "methods": [],
-        "constants": []
+        "constants": [],
+        "parentInterfaces": []
     },
     {
         "_type": "PHPInterface",
@@ -10286,7 +10443,8 @@
                 "defaultType": null
             }
         ],
-        "constants": []
+        "constants": [],
+        "parentInterfaces": []
     },
     {
         "_type": "PHPInterface",
@@ -10299,7 +10457,8 @@
         "sinceVersion": null,
         "removedVersion": null,
         "methods": [],
-        "constants": []
+        "constants": [],
+        "parentInterfaces": []
     },
     {
         "_type": "PHPInterface",
@@ -10314,7 +10473,8 @@
         "sinceVersion": null,
         "removedVersion": null,
         "methods": [],
-        "constants": []
+        "constants": [],
+        "parentInterfaces": []
     },
     {
         "_type": "PHPInterface",
@@ -10358,11 +10518,16 @@
                 "sinceVersion": null,
                 "removedVersion": null,
                 "returnTypeFromPhpDoc": "string",
-                "languageLevelTypes": null,
-                "defaultType": null
+                "languageLevelTypes": {
+                    "8.0": "string"
+                },
+                "defaultType": ""
             }
         ],
-        "constants": []
+        "constants": [],
+        "parentInterfaces": [
+            "Stringable"
+        ]
     },
     {
         "_type": "PHPInterface",
@@ -10444,7 +10609,8 @@
                 "defaultType": null
             }
         ],
-        "constants": []
+        "constants": [],
+        "parentInterfaces": []
     },
     {
         "_type": "PHPInterface",
@@ -10594,7 +10760,8 @@
                 "defaultType": null
             }
         ],
-        "constants": []
+        "constants": [],
+        "parentInterfaces": []
     },
     {
         "_type": "PHPInterface",
@@ -10710,7 +10877,8 @@
                 "defaultType": null
             }
         ],
-        "constants": []
+        "constants": [],
+        "parentInterfaces": []
     },
     {
         "_type": "PHPInterface",
@@ -10758,7 +10926,8 @@
                 "defaultType": null
             }
         ],
-        "constants": []
+        "constants": [],
+        "parentInterfaces": []
     },
     {
         "_type": "PHPInterface",
@@ -10789,7 +10958,8 @@
                 "defaultType": null
             }
         ],
-        "constants": []
+        "constants": [],
+        "parentInterfaces": []
     },
     {
         "_type": "PHPInterface",
@@ -10837,7 +11007,10 @@
                 "defaultType": null
             }
         ],
-        "constants": []
+        "constants": [],
+        "parentInterfaces": [
+            "Result"
+        ]
     },
     {
         "_type": "PHPInterface",
@@ -10885,7 +11058,10 @@
                 "defaultType": null
             }
         ],
-        "constants": []
+        "constants": [],
+        "parentInterfaces": [
+            "Result"
+        ]
     },
     {
         "_type": "PHPInterface",
@@ -10916,7 +11092,10 @@
                 "defaultType": null
             }
         ],
-        "constants": []
+        "constants": [],
+        "parentInterfaces": [
+            "Result"
+        ]
     },
     {
         "_type": "PHPInterface",
@@ -10947,7 +11126,10 @@
                 "defaultType": null
             }
         ],
-        "constants": []
+        "constants": [],
+        "parentInterfaces": [
+            "Result"
+        ]
     },
     {
         "_type": "PHPInterface",
@@ -10978,7 +11160,10 @@
                 "defaultType": null
             }
         ],
-        "constants": []
+        "constants": [],
+        "parentInterfaces": [
+            "MutationResult"
+        ]
     },
     {
         "_type": "PHPInterface",
@@ -11108,7 +11293,10 @@
                 "defaultType": null
             }
         ],
-        "constants": []
+        "constants": [],
+        "parentInterfaces": [
+            "Result"
+        ]
     },
     {
         "_type": "PHPInterface",
@@ -11155,7 +11343,10 @@
                 "defaultType": null
             }
         ],
-        "constants": []
+        "constants": [],
+        "parentInterfaces": [
+            "MutationResult"
+        ]
     },
     {
         "_type": "PHPInterface",
@@ -11203,7 +11394,8 @@
                 "defaultType": null
             }
         ],
-        "constants": []
+        "constants": [],
+        "parentInterfaces": []
     },
     {
         "_type": "PHPInterface",
@@ -11251,7 +11443,8 @@
                 "defaultType": null
             }
         ],
-        "constants": []
+        "constants": [],
+        "parentInterfaces": []
     },
     {
         "_type": "PHPInterface",
@@ -11299,7 +11492,8 @@
                 "defaultType": null
             }
         ],
-        "constants": []
+        "constants": [],
+        "parentInterfaces": []
     },
     {
         "_type": "PHPInterface",
@@ -11381,7 +11575,8 @@
                 "defaultType": null
             }
         ],
-        "constants": []
+        "constants": [],
+        "parentInterfaces": []
     },
     {
         "_type": "PHPInterface",
@@ -11463,7 +11658,8 @@
                 "defaultType": null
             }
         ],
-        "constants": []
+        "constants": [],
+        "parentInterfaces": []
     },
     {
         "_type": "PHPInterface",
@@ -11596,7 +11792,8 @@
                 "defaultType": null
             }
         ],
-        "constants": []
+        "constants": [],
+        "parentInterfaces": []
     },
     {
         "_type": "PHPInterface",
@@ -11661,7 +11858,8 @@
                 "defaultType": null
             }
         ],
-        "constants": []
+        "constants": [],
+        "parentInterfaces": []
     },
     {
         "_type": "PHPInterface",
@@ -11709,7 +11907,8 @@
                 "defaultType": null
             }
         ],
-        "constants": []
+        "constants": [],
+        "parentInterfaces": []
     },
     {
         "_type": "PHPInterface",
@@ -11741,7 +11940,8 @@
                 "visibility": "public",
                 "isFinal": false
             }
-        ]
+        ],
+        "parentInterfaces": []
     },
     {
         "_type": "PHPInterface",
@@ -11773,7 +11973,8 @@
                 "visibility": "public",
                 "isFinal": false
             }
-        ]
+        ],
+        "parentInterfaces": []
     },
     {
         "_type": "PHPInterface",
@@ -11786,7 +11987,8 @@
         "sinceVersion": null,
         "removedVersion": null,
         "methods": [],
-        "constants": []
+        "constants": [],
+        "parentInterfaces": []
     },
     {
         "_type": "PHPInterface",
@@ -11824,7 +12026,8 @@
                 "visibility": "public",
                 "isFinal": false
             }
-        ]
+        ],
+        "parentInterfaces": []
     },
     {
         "_type": "PHPInterface",
@@ -11850,7 +12053,8 @@
                 "visibility": "public",
                 "isFinal": false
             }
-        ]
+        ],
+        "parentInterfaces": []
     },
     {
         "_type": "PHPInterface",
@@ -11863,7 +12067,8 @@
         "sinceVersion": null,
         "removedVersion": null,
         "methods": [],
-        "constants": []
+        "constants": [],
+        "parentInterfaces": []
     },
     {
         "_type": "PHPInterface",
@@ -11876,7 +12081,8 @@
         "sinceVersion": null,
         "removedVersion": null,
         "methods": [],
-        "constants": []
+        "constants": [],
+        "parentInterfaces": []
     },
     {
         "_type": "PHPInterface",
@@ -11908,7 +12114,8 @@
                 "visibility": "public",
                 "isFinal": false
             }
-        ]
+        ],
+        "parentInterfaces": []
     },
     {
         "_type": "PHPInterface",
@@ -11921,7 +12128,8 @@
         "sinceVersion": null,
         "removedVersion": null,
         "methods": [],
-        "constants": []
+        "constants": [],
+        "parentInterfaces": []
     },
     {
         "_type": "PHPInterface",
@@ -11936,7 +12144,8 @@
         "sinceVersion": null,
         "removedVersion": null,
         "methods": [],
-        "constants": []
+        "constants": [],
+        "parentInterfaces": []
     },
     {
         "_type": "PHPInterface",
@@ -11949,7 +12158,8 @@
         "sinceVersion": null,
         "removedVersion": null,
         "methods": [],
-        "constants": []
+        "constants": [],
+        "parentInterfaces": []
     },
     {
         "_type": "PHPInterface",
@@ -11987,7 +12197,8 @@
                 "visibility": "public",
                 "isFinal": false
             }
-        ]
+        ],
+        "parentInterfaces": []
     },
     {
         "_type": "PHPInterface",
@@ -12019,7 +12230,8 @@
                 "visibility": "public",
                 "isFinal": false
             }
-        ]
+        ],
+        "parentInterfaces": []
     },
     {
         "_type": "PHPInterface",
@@ -12045,7 +12257,8 @@
                 "visibility": "public",
                 "isFinal": false
             }
-        ]
+        ],
+        "parentInterfaces": []
     },
     {
         "_type": "PHPInterface",
@@ -12083,7 +12296,8 @@
                 "visibility": "public",
                 "isFinal": false
             }
-        ]
+        ],
+        "parentInterfaces": []
     },
     {
         "_type": "PHPInterface",
@@ -12115,7 +12329,8 @@
                 "visibility": "public",
                 "isFinal": false
             }
-        ]
+        ],
+        "parentInterfaces": []
     },
     {
         "_type": "PHPInterface",
@@ -12147,7 +12362,8 @@
                 "visibility": "public",
                 "isFinal": false
             }
-        ]
+        ],
+        "parentInterfaces": []
     },
     {
         "_type": "PHPInterface",
@@ -12173,7 +12389,8 @@
                 "visibility": "public",
                 "isFinal": false
             }
-        ]
+        ],
+        "parentInterfaces": []
     },
     {
         "_type": "PHPInterface",
@@ -12205,7 +12422,8 @@
                 "visibility": "public",
                 "isFinal": false
             }
-        ]
+        ],
+        "parentInterfaces": []
     },
     {
         "_type": "PHPInterface",
@@ -12237,7 +12455,8 @@
                 "visibility": "public",
                 "isFinal": false
             }
-        ]
+        ],
+        "parentInterfaces": []
     },
     {
         "_type": "PHPInterface",
@@ -12284,7 +12503,8 @@
                 "defaultType": null
             }
         ],
-        "constants": []
+        "constants": [],
+        "parentInterfaces": []
     },
     {
         "_type": "PHPInterface",
@@ -12346,7 +12566,8 @@
                 "defaultType": null
             }
         ],
-        "constants": []
+        "constants": [],
+        "parentInterfaces": []
     },
     {
         "_type": "PHPInterface",
@@ -12425,7 +12646,8 @@
                 "defaultType": null
             }
         ],
-        "constants": []
+        "constants": [],
+        "parentInterfaces": []
     },
     {
         "_type": "PHPInterface",
@@ -12487,7 +12709,8 @@
                 "defaultType": null
             }
         ],
-        "constants": []
+        "constants": [],
+        "parentInterfaces": []
     },
     {
         "_type": "PHPInterface",
@@ -12729,7 +12952,8 @@
                 "defaultType": null
             }
         ],
-        "constants": []
+        "constants": [],
+        "parentInterfaces": []
     },
     {
         "_type": "PHPInterface",
@@ -12760,7 +12984,8 @@
                 "defaultType": null
             }
         ],
-        "constants": []
+        "constants": [],
+        "parentInterfaces": []
     },
     {
         "_type": "PHPInterface",
@@ -12855,6 +13080,7 @@
                 "defaultType": null
             }
         ],
-        "constants": []
+        "constants": [],
+        "parentInterfaces": []
     }
 ]
