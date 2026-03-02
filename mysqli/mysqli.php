@@ -762,8 +762,8 @@ class mysqli
      */
     #[TentativeType]
     public static function poll(
-        #[LanguageLevelTypeAware(['8.0' => 'array|null'], default: '')] &$read,
-        #[LanguageLevelTypeAware(['8.0' => 'array|null'], default: '')] &$error,
+        #[LanguageLevelTypeAware(['7.1' => 'array|null'], default: '')] &$read,
+        #[LanguageLevelTypeAware(['7.1' => 'array|null'], default: '')] &$error,
         #[LanguageLevelTypeAware(['8.0' => 'array'], default: '')] &$reject,
         #[LanguageLevelTypeAware(['8.0' => 'int'], default: '')] $seconds,
         #[LanguageLevelTypeAware(['8.0' => 'int'], default: '')] $microseconds = 0
@@ -1473,7 +1473,10 @@ class mysqli_stmt
      * @param mysqli $mysql
      * @param string $query [optional]
      */
-    public function __construct($mysql, $query) {}
+    public function __construct(
+        #[LanguageLevelTypeAware(['8.0' => 'mysqli'], default: '')] $mysql,
+        #[LanguageLevelTypeAware(['8.0' => 'string|null'], default: '')] $query
+    ) {}
 
     /**
      * Used to get the current value of a statement attribute

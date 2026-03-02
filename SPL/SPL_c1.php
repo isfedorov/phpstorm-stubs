@@ -1548,7 +1548,10 @@ abstract class SplHeap implements Iterator, Countable
      */
     #[TentativeType]
     #[LanguageLevelTypeAware(['8.1' => 'int'], default: '')]
-    abstract protected function compare($value1, $value2);
+    abstract protected function compare(
+        #[LanguageLevelTypeAware(['8.0' => 'mixed'], default: '')] $value1,
+        #[LanguageLevelTypeAware(['8.0' => 'mixed'], default: '')] $value2
+    );
 
     /**
      * @return bool
@@ -1610,7 +1613,7 @@ class SplMinHeap extends SplHeap
      */
     #[TentativeType]
     #[LanguageLevelTypeAware(['8.4' => 'true'], default: 'bool')]
-    public function insert($value) {}
+    public function insert(#[LanguageLevelTypeAware(['8.0' => 'mixed'], default: '')] $value) {}
 
     /**
      * Peeks at the node from the top of the heap

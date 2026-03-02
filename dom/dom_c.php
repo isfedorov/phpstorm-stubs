@@ -381,8 +381,8 @@ class DOMNode
     public function C14N(
         #[LanguageLevelTypeAware(['8.0' => 'bool'], default: '')] $exclusive = false,
         #[LanguageLevelTypeAware(['8.0' => 'bool'], default: '')] $withComments = false,
-        #[LanguageLevelTypeAware(['8.0' => 'array|null'], default: 'array')] $xpath = null,
-        #[LanguageLevelTypeAware(['8.0' => 'array|null'], default: 'array')] $nsPrefixes = null
+        #[LanguageLevelTypeAware(['7.1' => 'array|null'], default: '')] $xpath = null,
+        #[LanguageLevelTypeAware(['7.1' => 'array|null'], default: '')] $nsPrefixes = null
     ): string|false {}
 
     /**
@@ -400,8 +400,8 @@ class DOMNode
         #[LanguageLevelTypeAware(['8.0' => 'string'], default: '')] $uri,
         #[LanguageLevelTypeAware(['8.0' => 'bool'], default: '')] $exclusive = false,
         #[LanguageLevelTypeAware(['8.0' => 'bool'], default: '')] $withComments = false,
-        #[LanguageLevelTypeAware(['8.0' => 'array|null'], default: 'array')] $xpath = null,
-        #[LanguageLevelTypeAware(['8.0' => 'array|null'], default: 'array')] $nsPrefixes = null
+        #[LanguageLevelTypeAware(['7.1' => 'array|null'], default: '')] $xpath = null,
+        #[LanguageLevelTypeAware(['7.1' => 'array|null'], default: '')] $nsPrefixes = null
     ): int|false {}
 
     /**
