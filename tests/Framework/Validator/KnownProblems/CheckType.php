@@ -113,4 +113,10 @@ enum CheckType: string
      * Used by both FunctionOptionalParametersCheck and ClassMethodsOptionalParametersCheck.
      */
     case OPTIONAL_PARAMETERS = 'OptionalParametersCheck';
+
+    /**
+     * Validates that all parent interfaces declared in the stubs hierarchy for an interface
+     * are themselves declared in the stubs (stubs self-consistency check).
+     */
+    case INTERFACE_PARENT_INTERFACES = 'InterfaceParentInterfacesCheck';
 }

@@ -34,26 +34,63 @@ class ClassMethodsExistCheck extends AbstractClassCheck
         return true;
     }
 
+    /**
+     * Template method: look up the entity in the given storage by ID.
+     * Override in subclasses to support interfaces instead of classes.
+     */
+    protected function findEntityById(ParsedDataStorageManager $storage, string $entityId): mixed
+    {
+        return $this->findClassById($storage, $entityId);
+    }
+
+    /**
+     * Template method: collect version-available stub methods for the entity.
+     * Override in subclasses to traverse interface hierarchies instead of class hierarchies.
+     *
+     * @return array<string, mixed>
+     */
+    protected function collectEntityStubMethods(mixed $entity, string $phpVersion): array
+    {
+        return $this->collectVersionedStubMethods($entity, $phpVersion);
+    }
+
+    /**
+     * Template method: label used in "not found" error messages.
+     */
+    protected function getEntityLabel(): string
+    {
+        return 'Class';
+    }
+
+    /**
+     * Template method: entity type for known-problem lookups.
+     */
+    protected function getEntityType(): string
+    {
+        return EntityType::CLASS_TYPE->value;
+    }
+
     public function run(ParsedDataStorageManager $stubs, string $entityId, string $phpVersion): CheckResultSet
     {
         $results = new CheckResultSet();
 
-        // Class-level known problem skips all method validation for this class
-        if ($this->skipWithKnownProblem($results, EntityType::CLASS_TYPE->value, $entityId, 'ClassMethodsExistCheck', $phpVersion)) {
+        // Entity-level known problem skips all method validation for this entity
+        if ($this->skipWithKnownProblem($results, $this->getEntityType(), $entityId, 'ClassMethodsExistCheck', $phpVersion)) {
             return $results;
         }
 
         $reflection = $this->reflectionProvider->getReflection($phpVersion);
+        $label      = $this->getEntityLabel();
 
-        $reflectionClass = $this->findClassById($reflection, $entityId);
+        $reflectionClass = $this->findEntityById($reflection, $entityId);
         if ($reflectionClass === null) {
-            $results->addFailure($entityId, "Class {$entityId} not found in reflection data");
+            $results->addFailure($entityId, "{$label} {$entityId} not found in reflection data");
             return $results;
         }
 
-        $stubClass = $this->findClassById($stubs, $entityId);
+        $stubClass = $this->findEntityById($stubs, $entityId);
         if ($stubClass === null) {
-            $results->addFailure($entityId, "Class {$entityId} not found in stubs");
+            $results->addFailure($entityId, "{$label} {$entityId} not found in stubs");
             return $results;
         }
 
@@ -69,9 +106,9 @@ class ClassMethodsExistCheck extends AbstractClassCheck
             }
         }
 
-        // Collect all method names from the stub class and its full parent hierarchy,
+        // Collect all method names from the stub entity and its full hierarchy,
         // filtered to only those available in the given PHP version.
-        $stubMethodNames = array_keys($this->collectVersionedStubMethods($stubClass, $phpVersion));
+        $stubMethodNames = array_keys($this->collectEntityStubMethods($stubClass, $phpVersion));
 
         $missingMethods = array_diff(array_keys($reflectionMethodNames), $stubMethodNames);
 

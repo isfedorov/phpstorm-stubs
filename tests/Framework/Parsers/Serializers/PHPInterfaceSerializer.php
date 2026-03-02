@@ -54,6 +54,12 @@ class PHPInterfaceSerializer implements EntityTypeSerializerInterface
             $data['constants'][] = $this->serializeClassConstant($constant);
         }
 
+        // Serialize parent interfaces (just store the names)
+        $data['parentInterfaces'] = [];
+        foreach ($entity->getParentInterfaces() as $parentInterface) {
+            $data['parentInterfaces'][] = $parentInterface->getName();
+        }
+
         return $data;
     }
 
@@ -83,6 +89,17 @@ class PHPInterfaceSerializer implements EntityTypeSerializerInterface
         if (isset($data['constants']) && is_array($data['constants'])) {
             foreach ($data['constants'] as $constantData) {
                 $interface->constants[] = $this->deserializeClassConstant($constantData);
+            }
+        }
+
+        // Restore parent interfaces from stored names
+        if (isset($data['parentInterfaces']) && is_array($data['parentInterfaces'])) {
+            foreach ($data['parentInterfaces'] as $parentInterfaceName) {
+                if (!empty($parentInterfaceName)) {
+                    $parentInterface = new PHPInterface();
+                    $parentInterface->setName($parentInterfaceName);
+                    $interface->addParentInterface($parentInterface);
+                }
             }
         }
 

@@ -35,6 +35,7 @@ interface ParsedDataStorageManager
     public function hasClass(string $id): bool;
     public function getFunctions();
     public function getInterfaces();
+    public function hasInterface(string $id): bool;
     public function getEnums();
     public function getConstants();
 

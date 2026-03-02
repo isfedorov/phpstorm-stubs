@@ -186,6 +186,7 @@ class KnownProblemsRegistry
             'ParametersCountCheck'               => CheckType::PARAMETERS_COUNT,
             'DeprecationCheck'                   => CheckType::DEPRECATION,
             'OptionalParametersCheck'            => CheckType::OPTIONAL_PARAMETERS,
+            'InterfaceParentInterfacesCheck'      => CheckType::INTERFACE_PARENT_INTERFACES,
             default => null,
         };
     }

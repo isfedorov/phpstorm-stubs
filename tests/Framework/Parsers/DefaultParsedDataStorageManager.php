@@ -227,6 +227,16 @@ class DefaultParsedDataStorageManager implements ParsedDataStorageManager
         });
     }
 
+    public function hasInterface(string $id): bool
+    {
+        foreach ($this->getInterfaces() as $interface) {
+            if ($interface->getId() === $id) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public function getEnums()
     {
         $allEntities = $this->parsedDataStorageProvider->getEntities();

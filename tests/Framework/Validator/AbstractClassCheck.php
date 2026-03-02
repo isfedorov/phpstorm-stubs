@@ -114,6 +114,32 @@ abstract class AbstractClassCheck extends AbstractReflectionCheck
     }
 
     /**
+     * Find an interface by entity ID in the given storage.
+     */
+    protected function findInterfaceById(ParsedDataStorageManager $storage, string $entityId): ?PHPInterface
+    {
+        foreach ($storage->getInterfaces() as $interface) {
+            if ($interface->getId() === $entityId) {
+                return $interface;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Collect version-filtered stub methods from an interface and its full parent interface chain.
+     *
+     * @return array<string, PHPMethod>
+     */
+    protected function collectVersionedInterfaceStubMethods(PHPInterface $interface, string $phpVersion): array
+    {
+        $methodMap = [];
+        $visited   = [];
+        $this->collectMethodsFromInterfaceHierarchy($interface, $phpVersion, $methodMap, $visited);
+        return $methodMap;
+    }
+
+    /**
      * Add version-available methods from a single class-like entity to the map.
      * Only inserts a name if not already present (first/child definition wins).
      *
@@ -122,7 +148,7 @@ abstract class AbstractClassCheck extends AbstractReflectionCheck
      *
      * @param array<string, PHPMethod> $methodMap
      */
-    private function collectMethodsFromClassLike(PHPClassLikeObject $entity, string $phpVersion, array &$methodMap): void
+    protected function collectMethodsFromClassLike(PHPClassLikeObject $entity, string $phpVersion, array &$methodMap): void
     {
         foreach ($entity->getMethods() as $method) {
             $name = $method->getName();
@@ -156,7 +182,7 @@ abstract class AbstractClassCheck extends AbstractReflectionCheck
      * @param array<string, PHPMethod> $methodMap
      * @param array<string>            $visited
      */
-    private function collectMethodsFromInterfaceHierarchy(
+    protected function collectMethodsFromInterfaceHierarchy(
         PHPInterface $interface,
         string $phpVersion,
         array &$methodMap,
