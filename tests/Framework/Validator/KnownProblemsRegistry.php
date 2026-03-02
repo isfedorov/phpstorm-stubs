@@ -185,6 +185,7 @@ class KnownProblemsRegistry
             'ClassPropertiesTypeCheck'            => CheckType::CLASS_PROPERTIES_TYPE,
             'ParametersCountCheck'               => CheckType::PARAMETERS_COUNT,
             'DeprecationCheck'                   => CheckType::DEPRECATION,
+            'OptionalParametersCheck'            => CheckType::OPTIONAL_PARAMETERS,
             default => null,
         };
     }

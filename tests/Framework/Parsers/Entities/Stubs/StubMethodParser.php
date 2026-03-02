@@ -91,10 +91,10 @@ class StubMethodParser
         $method->setLanguageLevelTypes($parsedReturnType->languageLevelTypes);
         $method->setDefaultType($parsedReturnType->defaultType);
 
-        // Parse parameters with @param types from PhpDoc, imports, and namespace context
+        // Parse parameters with @param types from PhpDoc, imports, namespace, and optional flags
         $parameters = [];
         foreach ($node->getParameters() as $param) {
-            $parameters[] = $this->parameterParser->parseNode($param, $parsedPhpDoc->paramTypes, $imports, $namespace);
+            $parameters[] = $this->parameterParser->parseNode($param, $parsedPhpDoc->paramTypes, $imports, $namespace, $parsedPhpDoc->optionalParams);
         }
         $method->setParameters($parameters);
 

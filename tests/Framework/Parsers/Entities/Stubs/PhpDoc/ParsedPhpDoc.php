@@ -29,6 +29,14 @@ class ParsedPhpDoc
     public bool $isDeprecated = false;
 
     /**
+     * Names of parameters marked as [optional] in @param PhpDoc descriptions.
+     * These parameters are optional even without a default value in the signature.
+     *
+     * @var string[]
+     */
+    public array $optionalParams = [];
+
+    /**
      * Create a new ParsedPhpDoc instance.
      * All properties can be set via constructor for convenience.
      */
@@ -39,7 +47,8 @@ class ParsedPhpDoc
         ?string $varType = null,
         ?string $sinceVersion = null,
         ?string $removedVersion = null,
-        bool $isDeprecated = false
+        bool $isDeprecated = false,
+        array $optionalParams = []
     ) {
         $this->rawPhpDoc = $rawPhpDoc;
         $this->returnType = $returnType;
@@ -48,5 +57,6 @@ class ParsedPhpDoc
         $this->sinceVersion = $sinceVersion;
         $this->removedVersion = $removedVersion;
         $this->isDeprecated = $isDeprecated;
+        $this->optionalParams = $optionalParams;
     }
 }

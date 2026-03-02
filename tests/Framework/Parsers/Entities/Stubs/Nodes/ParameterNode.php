@@ -30,4 +30,11 @@ interface ParameterNode
      * @return bool True if parameter is variadic, false otherwise
      */
     public function isVariadic(): bool;
+
+    /**
+     * Check if the parameter has a default value in the signature.
+     *
+     * @return bool True if the parameter has an explicit default value
+     */
+    public function hasDefaultValue(): bool;
 }

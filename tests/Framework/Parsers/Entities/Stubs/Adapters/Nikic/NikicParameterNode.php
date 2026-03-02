@@ -48,4 +48,9 @@ class NikicParameterNode implements ParameterNode
     {
         return $this->param->variadic;
     }
+
+    public function hasDefaultValue(): bool
+    {
+        return $this->param->default !== null;
+    }
 }

@@ -52,6 +52,7 @@ class PhpDocumentorParser implements PhpDocParserInterface
         // Extract all information from DocBlock
         $parsed->returnType = $this->extractReturnType($docBlock);
         $parsed->paramTypes = $this->extractParamTypes($docBlock);
+        $parsed->optionalParams = $this->extractOptionalParams($docBlock);
         $parsed->varType = $this->extractVarType($docBlock);
         $parsed->sinceVersion = $this->extractSinceVersion($docBlock);
         $parsed->removedVersion = $this->extractRemovedVersion($docBlock);
@@ -104,6 +105,33 @@ class PhpDocumentorParser implements PhpDocParserInterface
         }
 
         return $paramTypesMap;
+    }
+
+    /**
+     * Extract names of parameters marked as [optional] in their @param description.
+     *
+     * Stubs use the pattern `@param type $name [optional] description` to indicate
+     * that a parameter is optional even when it has no default value in the signature.
+     *
+     * @return string[] List of parameter names (without $) marked as [optional]
+     */
+    private function extractOptionalParams(DocBlock $docBlock): array
+    {
+        $optionalParams = [];
+        $paramTags = $docBlock->getTagsByName('param');
+
+        foreach ($paramTags as $paramTag) {
+            if ($paramTag instanceof Param) {
+                $varName = $paramTag->getVariableName();
+                $description = (string) $paramTag->getDescription();
+
+                if ($varName !== null && str_contains($description, '[optional]')) {
+                    $optionalParams[] = ltrim($varName, '$');
+                }
+            }
+        }
+
+        return $optionalParams;
     }
 
     private function extractVarType(DocBlock $docBlock): ?string

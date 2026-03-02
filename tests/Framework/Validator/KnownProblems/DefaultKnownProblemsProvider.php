@@ -651,6 +651,130 @@ class DefaultKnownProblemsProvider implements KnownProblemsProvider
                 versionRange: new PhpVersionRange(PhpVersions::EARLIEST, PhpVersions::PHP_5_6),
                 reason: 'session_set_save_handler stub declares 9 callable parameters including validate_sid and update_timestamp added in PHP 7.0. Reflection in PHP 5.6 reports only 7 parameters.'
             ),
+
+            // ── FunctionOptionalParametersCheck known problems ────────────────────────
+
+            // strtr - overloaded signature; $to is optional in the 2-arg form strtr($str, $pairs)
+            new ProblemDefinition(
+                entityType: EntityType::FUNCTION,
+                entityId: '\\strtr',
+                type: ProblemType::OVERLOADED_SIGNATURE,
+                affectedChecks: [CheckType::OPTIONAL_PARAMETERS],
+                versionRange: new PhpVersionRange(PhpVersions::EARLIEST, PhpVersions::LATEST),
+                reason: 'strtr has 2 overloaded signatures. In the 2-arg form strtr($str, $pairs_map), $to is absent; reflection reports $to as optional. Stubs cannot mark $to optional in the 3-arg overload without incorrectly allowing strtr($str, $from).'
+            ),
+
+            // crypt - $salt was optional in PHP 5.6-7.4 (deprecated auto-generation)
+            new ProblemDefinition(
+                entityType: EntityType::FUNCTION,
+                entityId: '\\crypt',
+                type: ProblemType::OVERLOADED_SIGNATURE,
+                affectedChecks: [CheckType::OPTIONAL_PARAMETERS],
+                versionRange: new PhpVersionRange(PhpVersions::EARLIEST, PhpVersions::PHP_7_4),
+                reason: 'In PHP 5.6-7.4, crypt() could be called without $salt (deprecated auto-generation). Reflection marks $salt as optional. The stub requires $salt to discourage the deprecated usage.'
+            ),
+
+            // dba_fetch - overloaded signature; reflection reports $handle/$dba as optional
+            new ProblemDefinition(
+                entityType: EntityType::FUNCTION,
+                entityId: '\\dba_fetch',
+                type: ProblemType::OVERLOADED_SIGNATURE,
+                affectedChecks: [CheckType::OPTIONAL_PARAMETERS],
+                versionRange: new PhpVersionRange(PhpVersions::EARLIEST, PhpVersions::LATEST),
+                reason: 'dba_fetch has 2 overloaded signatures. Reflection marks the handle/dba parameter as optional because the function can accept either 2 or 3 args. Stubs cannot express this without marking the handle optional in the 2-arg overload.'
+            ),
+
+            // session_set_save_handler - 9-param overload; reflection marks params 2-9 as optional
+            new ProblemDefinition(
+                entityType: EntityType::FUNCTION,
+                entityId: '\\session_set_save_handler',
+                type: ProblemType::OVERLOADED_SIGNATURE,
+                affectedChecks: [CheckType::OPTIONAL_PARAMETERS],
+                versionRange: new PhpVersionRange(PhpVersions::EARLIEST, PhpVersions::LATEST),
+                reason: 'session_set_save_handler has 2 overloaded signatures. Reflection reports most callable parameters as optional (since the 2-arg SessionHandlerInterface form omits them), but the 9-arg callable form requires them.'
+            ),
+
+            // imagefilledpolygon - PHP 8.0 changed parameter order; reflection marks $color as optional
+            new ProblemDefinition(
+                entityType: EntityType::FUNCTION,
+                entityId: '\\imagefilledpolygon',
+                type: ProblemType::OVERLOADED_SIGNATURE,
+                affectedChecks: [CheckType::OPTIONAL_PARAMETERS],
+                versionRange: new PhpVersionRange(PhpVersions::PHP_8_0, PhpVersions::LATEST),
+                reason: 'imagefilledpolygon has 2 overloaded signatures in PHP 8.0+ (3-arg and 4-arg forms). Reflection marks $color as optional because the function can be called with 3 args. Stubs use separate version-specific definitions that cannot mark $color optional without breaking the 4-arg overload.'
+            ),
+
+            // stream_context_set_option - overloaded signature; reflection marks $option_name/$value as optional
+            new ProblemDefinition(
+                entityType: EntityType::FUNCTION,
+                entityId: '\\stream_context_set_option',
+                type: ProblemType::OVERLOADED_SIGNATURE,
+                affectedChecks: [CheckType::OPTIONAL_PARAMETERS],
+                versionRange: new PhpVersionRange(PhpVersions::PHP_7_4, PhpVersions::LATEST),
+                reason: 'stream_context_set_option has 2 overloaded signatures: array-options form and individual scalar params form. Reflection marks $option_name and $value as optional since the function can be called with 2 args (context + options array). Stubs cannot express this without marking them optional in the 4-arg overload.'
+            ),
+
+            // implode - PHP 8.0+ $array is optional in the 1-arg BC form implode($array)
+            new ProblemDefinition(
+                entityType: EntityType::FUNCTION,
+                entityId: '\\implode',
+                type: ProblemType::OVERLOADED_SIGNATURE,
+                affectedChecks: [CheckType::OPTIONAL_PARAMETERS],
+                versionRange: new PhpVersionRange(PhpVersions::PHP_8_0, PhpVersions::LATEST),
+                reason: 'implode() accepts both implode($separator, $array) and the BC form implode($array). Reflection marks $array as optional. The stub uses array|string $separator to model both forms but cannot mark $array as truly optional without allowing a zero-argument call.'
+            ),
+
+            // join - alias of implode; same known problem
+            new ProblemDefinition(
+                entityType: EntityType::FUNCTION,
+                entityId: '\\join',
+                type: ProblemType::OVERLOADED_SIGNATURE,
+                affectedChecks: [CheckType::OPTIONAL_PARAMETERS],
+                versionRange: new PhpVersionRange(PhpVersions::PHP_8_0, PhpVersions::LATEST),
+                reason: 'join() is an alias of implode(). Same known problem: $array is optional in the 1-arg BC form, but the stub cannot express this without allowing a zero-argument call.'
+            ),
+
+            // hash_update_file - PHP 5.6-7.0 named the 3rd param "context" (same as 1st stub param); false-positive
+            new ProblemDefinition(
+                entityType: EntityType::FUNCTION,
+                entityId: '\\hash_update_file',
+                type: ProblemType::INTERNAL_IMPLEMENTATION,
+                affectedChecks: [CheckType::OPTIONAL_PARAMETERS],
+                versionRange: new PhpVersionRange(PhpVersions::EARLIEST, PhpVersions::PHP_7_0),
+                reason: 'In PHP 5.6-7.0, the 3rd parameter of hash_update_file() was named "context" in reflection, colliding with the 1st stub param name "context" (HashContext). The optional-parameters check incorrectly matches the required 1st stub param against the optional 3rd reflection param.'
+            ),
+
+            // ── ClassMethodsOptionalParametersCheck known problems ───────────────────
+
+            // SoapFault::__construct - PHP 5.6-7.4 reflection marks $code as optional (C-extension quirk)
+            new ProblemDefinition(
+                entityType: EntityType::METHOD,
+                entityId: '\\SoapFault::__construct',
+                type: ProblemType::OVERLOADED_SIGNATURE,
+                affectedChecks: [CheckType::OPTIONAL_PARAMETERS],
+                versionRange: new PhpVersionRange(PhpVersions::EARLIEST, PhpVersions::PHP_7_4),
+                reason: 'SoapFault::__construct in PHP 5.6-7.4: reflection marks $code as optional due to C-extension implementation detail. The parameter is required in the public API.'
+            ),
+
+            // DOMNamedNodeMap::item - PHP 7.1-7.4 reflection marks $index as optional (C-extension keeps default = 0)
+            new ProblemDefinition(
+                entityType: EntityType::METHOD,
+                entityId: '\\DOMNamedNodeMap::item',
+                type: ProblemType::INTERNAL_IMPLEMENTATION,
+                affectedChecks: [CheckType::OPTIONAL_PARAMETERS],
+                versionRange: new PhpVersionRange(PhpVersions::PHP_7_1, PhpVersions::PHP_7_4),
+                reason: 'DOMNamedNodeMap::item in PHP 7.1-7.4: reflection marks $index as optional (default = 0 retained in C implementation). The stub intentionally requires $index for PHP 7.1+ to enforce correct usage.'
+            ),
+
+            // DatePeriod::__construct - PHP 8.0+ reflection marks $interval and $end as optional (overloaded constructor)
+            new ProblemDefinition(
+                entityType: EntityType::METHOD,
+                entityId: '\\DatePeriod::__construct',
+                type: ProblemType::OVERLOADED_SIGNATURE,
+                affectedChecks: [CheckType::OPTIONAL_PARAMETERS],
+                versionRange: new PhpVersionRange(PhpVersions::PHP_8_0, PhpVersions::LATEST),
+                reason: 'DatePeriod::__construct has 3 overloaded forms: (start, interval, end, options), (start, interval, recurrences, options), and (isostr, options). Reflection marks $interval and $end as optional due to multi-arity overloading. Stubs express each overload separately.'
+            ),
         ];
 
         return $this->problems;

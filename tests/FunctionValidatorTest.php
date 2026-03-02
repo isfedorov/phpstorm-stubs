@@ -8,6 +8,7 @@ use StubTests\Sources\Runner\PhpVersionRange;
 use StubTests\Sources\Runner\PhpVersions;
 use StubTests\Sources\Validator\FunctionDeprecationCheck;
 use StubTests\Sources\Validator\FunctionExistsCheck;
+use StubTests\Sources\Validator\FunctionOptionalParametersCheck;
 use StubTests\Sources\Validator\FunctionParametersCountCheck;
 use StubTests\Sources\Validator\ParameterNamesCheck;
 use StubTests\Sources\Validator\ParameterTypesCheck;
@@ -130,6 +131,20 @@ class FunctionValidatorTest extends ValidatorTestBase
             $functionId,
             $phpVersion,
             "Function {$functionId} has parameter count mismatch in PHP {$phpVersion}"
+        );
+    }
+
+    /**
+     * Check that parameters optional in reflection are also optional in stubs.
+     */
+    #[PhpVersionRange(PhpVersions::EARLIEST, PhpVersions::LATEST)]
+    public function checkFunctionOptionalParameters(string $functionId, string $phpVersion): void
+    {
+        $this->executeCheck(
+            new FunctionOptionalParametersCheck(),
+            $functionId,
+            $phpVersion,
+            "Function {$functionId} optional parameters check failed in PHP {$phpVersion}"
         );
     }
 }

@@ -103,10 +103,10 @@ class StubFunctionParser implements MultiEntityStubParserInterface
         $phpFunction->setLanguageLevelTypes($parsedReturnType->languageLevelTypes);
         $phpFunction->setDefaultType($parsedReturnType->defaultType);
 
-        // Parse parameters with @param types from PhpDoc, imports, and namespace context
+        // Parse parameters with @param types from PhpDoc, imports, namespace, and optional flags
         $parameters = [];
         foreach ($node->getParameters() as $param) {
-            $parameters[] = $this->parameterParser->parseNode($param, $parsedPhpDoc->paramTypes, $imports, $phpFunction->getNamespace());
+            $parameters[] = $this->parameterParser->parseNode($param, $parsedPhpDoc->paramTypes, $imports, $phpFunction->getNamespace(), $parsedPhpDoc->optionalParams);
         }
         $phpFunction->setParameters($parameters);
 

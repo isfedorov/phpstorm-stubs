@@ -107,4 +107,10 @@ enum CheckType: string
      * Used by both FunctionDeprecationCheck and MethodDeprecationCheck.
      */
     case DEPRECATION = 'DeprecationCheck';
+
+    /**
+     * Validates that parameters optional in reflection are also optional in stubs.
+     * Used by both FunctionOptionalParametersCheck and ClassMethodsOptionalParametersCheck.
+     */
+    case OPTIONAL_PARAMETERS = 'OptionalParametersCheck';
 }

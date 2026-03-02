@@ -34,9 +34,10 @@ class StubParameterParser
      * @param array $paramTypesFromPhpDoc Map of parameter name => type from @param tags
      * @param array $imports Map of import aliases to fully qualified names
      * @param string $namespace Current namespace context (e.g., '\Dom' or '\\' for global)
+     * @param string[] $optionalParamsFromPhpDoc Names of params marked [optional] in @param descriptions
      * @return PHPParameter
      */
-    public function parseNode(ParameterNode $node, array $paramTypesFromPhpDoc = [], array $imports = [], string $namespace = '\\'): PHPParameter
+    public function parseNode(ParameterNode $node, array $paramTypesFromPhpDoc = [], array $imports = [], string $namespace = '\\', array $optionalParamsFromPhpDoc = []): PHPParameter
     {
         $parameter = new PHPParameter($node->getName());
 
@@ -62,6 +63,17 @@ class StubParameterParser
 
         // Set variadic flag from AST node
         $parameter->setIsVariadic($node->isVariadic());
+
+        // Set hasDefaultValue from AST node
+        $hasDefault = $node->hasDefaultValue();
+        $parameter->setHasDefaultValue($hasDefault);
+
+        // A parameter is optional if it has a default value, is variadic,
+        // or is explicitly marked [optional] in the PhpDoc @param description.
+        $isOptional = $hasDefault
+            || $node->isVariadic()
+            || in_array($paramName, $optionalParamsFromPhpDoc, true);
+        $parameter->setIsOptional($isOptional);
 
         // Parse available version from attributes using version parser with import context
         // Note: Parameters typically don't have PhpDoc, only attributes
