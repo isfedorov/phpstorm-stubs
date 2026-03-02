@@ -6,13 +6,13 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use StubTests\Framework\Validator\ValidatorTestBase;
 use StubTests\Sources\Runner\PhpVersionRange;
 use StubTests\Sources\Runner\PhpVersions;
-use StubTests\Sources\Validator\FunctionDeprecationCheck;
-use StubTests\Sources\Validator\FunctionExistsCheck;
-use StubTests\Sources\Validator\FunctionOptionalParametersCheck;
-use StubTests\Sources\Validator\FunctionParametersCountCheck;
-use StubTests\Sources\Validator\ParameterNamesCheck;
-use StubTests\Sources\Validator\ParameterTypesCheck;
-use StubTests\Sources\Validator\FunctionReturnTypesCheck;
+use StubTests\Sources\Validator\Functions\FunctionDeprecationCheck;
+use StubTests\Sources\Validator\Functions\FunctionExistsCheck;
+use StubTests\Sources\Validator\Functions\FunctionOptionalParametersCheck;
+use StubTests\Sources\Validator\Functions\FunctionParametersCountCheck;
+use StubTests\Sources\Validator\Functions\ParameterNamesCheck;
+use StubTests\Sources\Validator\Functions\ParameterTypesCheck;
+use StubTests\Sources\Validator\Functions\FunctionReturnTypesCheck;
 
 /**
  * Validates that functions from reflection match stubs.

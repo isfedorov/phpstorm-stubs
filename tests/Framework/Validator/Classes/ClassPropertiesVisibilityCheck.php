@@ -1,0 +1,48 @@
+<?php
+
+namespace StubTests\Sources\Validator\Classes;
+
+use StubTests\Sources\Parsers\Entities\Model\PHPProperty;
+use StubTests\Sources\Validator\AbstractPropertyFlagCheck;
+
+/**
+ * Validates that the visibility (public/protected/private) of properties in stubs matches reflection.
+ *
+ * For each class identified by $entityId the validator:
+ * 1. Iterates all properties reported by reflection for the class.
+ * 2. Looks up each property in the version-filtered stub hierarchy (parent classes),
+ *    collecting a name → PHPProperty map with child-wins-over-parent priority.
+ * 3. If the stub property is not found it is silently skipped — existence is
+ *    ClassPropertiesExistCheck's responsibility.
+ * 4. When both sides are found, their visibility is compared and any mismatch
+ *    is reported as a failure.
+ *
+ * Known problems are supported at two granularities:
+ * - class-level: EntityType::CLASS_TYPE + classId + 'ClassPropertiesVisibilityCheck'
+ *   → skips all visibility checks for the class.
+ * - property-level: EntityType::PROPERTY + '\ClassName::$propertyName' + 'ClassPropertiesVisibilityCheck'
+ *   → skips only that specific mismatch.
+ */
+class ClassPropertiesVisibilityCheck extends AbstractPropertyFlagCheck
+{
+    protected function getCheckName(): string
+    {
+        return 'ClassPropertiesVisibilityCheck';
+    }
+
+    protected function describeMismatch(
+        string $propertyEntityId,
+        PHPProperty $reflProperty,
+        PHPProperty $stubProperty,
+        string $phpVersion
+    ): ?string {
+        $reflVisibility = $reflProperty->getAccess()?->toString() ?? 'public';
+        $stubVisibility = $stubProperty->getAccess()?->toString() ?? 'public';
+
+        if ($reflVisibility === $stubVisibility) {
+            return null;
+        }
+
+        return "Property {$propertyEntityId} is {$reflVisibility} in PHP {$phpVersion} but {$stubVisibility} in stubs";
+    }
+}

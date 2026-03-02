@@ -6,16 +6,16 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use StubTests\Framework\Validator\ValidatorTestBase;
 use StubTests\Sources\Runner\PhpVersionRange;
 use StubTests\Sources\Runner\PhpVersions;
-use StubTests\Sources\Validator\InterfaceExistsCheck;
-use StubTests\Sources\Validator\InterfaceNamespaceCheck;
-use StubTests\Sources\Validator\InterfaceMethodsExistCheck;
-use StubTests\Sources\Validator\InterfaceStaticMethodsCheck;
-use StubTests\Sources\Validator\InterfaceMethodsParametersCountCheck;
-use StubTests\Sources\Validator\InterfaceMethodsReturnTypesCheck;
-use StubTests\Sources\Validator\InterfaceMethodsOptionalParametersCheck;
-use StubTests\Sources\Validator\InterfaceMethodsParameterTypesCheck;
-use StubTests\Sources\Validator\InterfaceMethodDeprecationCheck;
-use StubTests\Sources\Validator\InterfaceParentInterfacesCheck;
+use StubTests\Sources\Validator\Interfaces\InterfaceExistsCheck;
+use StubTests\Sources\Validator\Interfaces\InterfaceNamespaceCheck;
+use StubTests\Sources\Validator\Interfaces\InterfaceMethodsExistCheck;
+use StubTests\Sources\Validator\Interfaces\InterfaceStaticMethodsCheck;
+use StubTests\Sources\Validator\Interfaces\InterfaceMethodsParametersCountCheck;
+use StubTests\Sources\Validator\Interfaces\InterfaceMethodsReturnTypesCheck;
+use StubTests\Sources\Validator\Interfaces\InterfaceMethodsOptionalParametersCheck;
+use StubTests\Sources\Validator\Interfaces\InterfaceMethodsParameterTypesCheck;
+use StubTests\Sources\Validator\Interfaces\InterfaceMethodDeprecationCheck;
+use StubTests\Sources\Validator\Interfaces\InterfaceParentInterfacesCheck;
 
 /**
  * Validates that interfaces from reflection exist in stubs and their methods are correct.
