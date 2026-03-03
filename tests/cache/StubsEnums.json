@@ -11,6 +11,7 @@
         "phpDoc": null,
         "sinceVersion": null,
         "removedVersion": null,
+        "constants": [],
         "methods": [
             {
                 "name": "cases",
@@ -46,6 +47,7 @@
         "phpDoc": null,
         "sinceVersion": null,
         "removedVersion": null,
+        "constants": [],
         "methods": [
             {
                 "name": "cases",
@@ -148,6 +150,7 @@
         "phpDoc": null,
         "sinceVersion": null,
         "removedVersion": null,
+        "constants": [],
         "methods": [
             {
                 "name": "cases",
@@ -183,6 +186,7 @@
         "phpDoc": null,
         "sinceVersion": null,
         "removedVersion": null,
+        "constants": [],
         "methods": [
             {
                 "name": "cases",
@@ -218,6 +222,7 @@
         "phpDoc": null,
         "sinceVersion": null,
         "removedVersion": null,
+        "constants": [],
         "methods": [],
         "interfaces": []
     },
@@ -233,6 +238,7 @@
         "phpDoc": null,
         "sinceVersion": null,
         "removedVersion": null,
+        "constants": [],
         "methods": [
             {
                 "name": "cases",

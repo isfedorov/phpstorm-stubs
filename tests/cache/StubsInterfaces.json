@@ -426,55 +426,73 @@
                 "name": "INVALID_ARGUMENT",
                 "value": 0,
                 "visibility": "public",
-                "isFinal": false
+                "isFinal": false,
+                "sinceVersion": null,
+                "removedVersion": null
             },
             {
                 "name": "RUNTIME",
                 "value": 1,
                 "visibility": "public",
-                "isFinal": false
+                "isFinal": false,
+                "sinceVersion": null,
+                "removedVersion": null
             },
             {
                 "name": "CONNECTION_FAILED",
                 "value": 2,
                 "visibility": "public",
-                "isFinal": false
+                "isFinal": false,
+                "sinceVersion": null,
+                "removedVersion": null
             },
             {
                 "name": "IO",
                 "value": 3,
                 "visibility": "public",
-                "isFinal": false
+                "isFinal": false,
+                "sinceVersion": null,
+                "removedVersion": null
             },
             {
                 "name": "ESCAPE",
                 "value": 4,
                 "visibility": "public",
-                "isFinal": false
+                "isFinal": false,
+                "sinceVersion": null,
+                "removedVersion": null
             },
             {
                 "name": "UNINITIALIZED",
                 "value": 6,
                 "visibility": "public",
-                "isFinal": false
+                "isFinal": false,
+                "sinceVersion": null,
+                "removedVersion": null
             },
             {
                 "name": "BAD_METHODCALL",
                 "value": 5,
                 "visibility": "public",
-                "isFinal": false
+                "isFinal": false,
+                "sinceVersion": null,
+                "removedVersion": null
             },
             {
                 "name": "SQL",
                 "value": 8,
                 "visibility": "public",
-                "isFinal": false
+                "isFinal": false,
+                "sinceVersion": null,
+                "removedVersion": null
             },
             {
                 "name": "DOMAIN",
                 "value": 7,
                 "visibility": "public",
-                "isFinal": false
+                "isFinal": false,
+                "sinceVersion": null,
+                "removedVersion": null
             }
         ],
         "parentInterfaces": []
@@ -3010,85 +3028,113 @@
                 "name": "ATOM",
                 "value": "Y-m-d\\TH:i:sP",
                 "visibility": "public",
-                "isFinal": false
+                "isFinal": false,
+                "sinceVersion": "7.2",
+                "removedVersion": null
             },
             {
                 "name": "COOKIE",
                 "value": "l, d-M-Y H:i:s T",
                 "visibility": "public",
-                "isFinal": false
+                "isFinal": false,
+                "sinceVersion": "7.2",
+                "removedVersion": null
             },
             {
                 "name": "ISO8601",
                 "value": "Y-m-d\\TH:i:sO",
                 "visibility": "public",
-                "isFinal": false
+                "isFinal": false,
+                "sinceVersion": "7.2",
+                "removedVersion": null
             },
             {
                 "name": "ISO8601_EXPANDED",
                 "value": null,
                 "visibility": "public",
-                "isFinal": false
+                "isFinal": false,
+                "sinceVersion": "8.2",
+                "removedVersion": null
             },
             {
                 "name": "RFC822",
                 "value": "D, d M y H:i:s O",
                 "visibility": "public",
-                "isFinal": false
+                "isFinal": false,
+                "sinceVersion": "7.2",
+                "removedVersion": null
             },
             {
                 "name": "RFC850",
                 "value": "l, d-M-y H:i:s T",
                 "visibility": "public",
-                "isFinal": false
+                "isFinal": false,
+                "sinceVersion": "7.2",
+                "removedVersion": null
             },
             {
                 "name": "RFC1036",
                 "value": "D, d M y H:i:s O",
                 "visibility": "public",
-                "isFinal": false
+                "isFinal": false,
+                "sinceVersion": "7.2",
+                "removedVersion": null
             },
             {
                 "name": "RFC1123",
                 "value": "D, d M Y H:i:s O",
                 "visibility": "public",
-                "isFinal": false
+                "isFinal": false,
+                "sinceVersion": "7.2",
+                "removedVersion": null
             },
             {
                 "name": "RFC2822",
                 "value": "D, d M Y H:i:s O",
                 "visibility": "public",
-                "isFinal": false
+                "isFinal": false,
+                "sinceVersion": "7.2",
+                "removedVersion": null
             },
             {
                 "name": "RFC3339",
                 "value": "Y-m-d\\TH:i:sP",
                 "visibility": "public",
-                "isFinal": false
+                "isFinal": false,
+                "sinceVersion": "7.2",
+                "removedVersion": null
             },
             {
                 "name": "RFC3339_EXTENDED",
                 "value": "Y-m-d\\TH:i:s.vP",
                 "visibility": "public",
-                "isFinal": false
+                "isFinal": false,
+                "sinceVersion": "7.2",
+                "removedVersion": null
             },
             {
                 "name": "RFC7231",
                 "value": "D, d M Y H:i:s \\G\\M\\T",
                 "visibility": "public",
-                "isFinal": false
+                "isFinal": false,
+                "sinceVersion": "7.2",
+                "removedVersion": null
             },
             {
                 "name": "RSS",
                 "value": "D, d M Y H:i:s O",
                 "visibility": "public",
-                "isFinal": false
+                "isFinal": false,
+                "sinceVersion": "7.2",
+                "removedVersion": null
             },
             {
                 "name": "W3C",
                 "value": "Y-m-d\\TH:i:sP",
                 "visibility": "public",
-                "isFinal": false
+                "isFinal": false,
+                "sinceVersion": "7.2",
+                "removedVersion": null
             }
         ],
         "parentInterfaces": []
@@ -3878,37 +3924,49 @@
                 "name": "LEVEL_ERROR",
                 "value": 0,
                 "visibility": "public",
-                "isFinal": false
+                "isFinal": false,
+                "sinceVersion": null,
+                "removedVersion": null
             },
             {
                 "name": "LEVEL_CRITICAL",
                 "value": 1,
                 "visibility": "public",
-                "isFinal": false
+                "isFinal": false,
+                "sinceVersion": null,
+                "removedVersion": null
             },
             {
                 "name": "LEVEL_WARNING",
                 "value": 2,
                 "visibility": "public",
-                "isFinal": false
+                "isFinal": false,
+                "sinceVersion": null,
+                "removedVersion": null
             },
             {
                 "name": "LEVEL_MESSAGE",
                 "value": 3,
                 "visibility": "public",
-                "isFinal": false
+                "isFinal": false,
+                "sinceVersion": null,
+                "removedVersion": null
             },
             {
                 "name": "LEVEL_INFO",
                 "value": 4,
                 "visibility": "public",
-                "isFinal": false
+                "isFinal": false,
+                "sinceVersion": null,
+                "removedVersion": null
             },
             {
                 "name": "LEVEL_DEBUG",
                 "value": 5,
                 "visibility": "public",
-                "isFinal": false
+                "isFinal": false,
+                "sinceVersion": null,
+                "removedVersion": null
             }
         ],
         "parentInterfaces": [
@@ -6601,31 +6659,41 @@
                 "name": "POLL_NONE",
                 "value": 0,
                 "visibility": "public",
-                "isFinal": false
+                "isFinal": false,
+                "sinceVersion": null,
+                "removedVersion": null
             },
             {
                 "name": "POLL_IN",
                 "value": 1,
                 "visibility": "public",
-                "isFinal": false
+                "isFinal": false,
+                "sinceVersion": null,
+                "removedVersion": null
             },
             {
                 "name": "POLL_OUT",
                 "value": 2,
                 "visibility": "public",
-                "isFinal": false
+                "isFinal": false,
+                "sinceVersion": null,
+                "removedVersion": null
             },
             {
                 "name": "POLL_INOUT",
                 "value": 3,
                 "visibility": "public",
-                "isFinal": false
+                "isFinal": false,
+                "sinceVersion": null,
+                "removedVersion": null
             },
             {
                 "name": "POLL_REMOVE",
                 "value": 4,
                 "visibility": "public",
-                "isFinal": false
+                "isFinal": false,
+                "sinceVersion": null,
+                "removedVersion": null
             }
         ],
         "parentInterfaces": []
@@ -11926,19 +11994,25 @@
                 "name": "COUCHBASE",
                 "value": "couchbase",
                 "visibility": "public",
-                "isFinal": false
+                "isFinal": false,
+                "sinceVersion": null,
+                "removedVersion": null
             },
             {
                 "name": "S3",
                 "value": "s3",
                 "visibility": "public",
-                "isFinal": false
+                "isFinal": false,
+                "sinceVersion": null,
+                "removedVersion": null
             },
             {
                 "name": "AZURE_BLOB",
                 "value": "azureblob",
                 "visibility": "public",
-                "isFinal": false
+                "isFinal": false,
+                "sinceVersion": null,
+                "removedVersion": null
             }
         ],
         "parentInterfaces": []
@@ -11959,19 +12033,25 @@
                 "name": "NONE",
                 "value": "none",
                 "visibility": "public",
-                "isFinal": false
+                "isFinal": false,
+                "sinceVersion": null,
+                "removedVersion": null
             },
             {
                 "name": "HALF",
                 "value": "half",
                 "visibility": "public",
-                "isFinal": false
+                "isFinal": false,
+                "sinceVersion": null,
+                "removedVersion": null
             },
             {
                 "name": "FULL",
                 "value": "full",
                 "visibility": "public",
-                "isFinal": false
+                "isFinal": false,
+                "sinceVersion": null,
+                "removedVersion": null
             }
         ],
         "parentInterfaces": []
@@ -12006,25 +12086,33 @@
                 "name": "FULL",
                 "value": "fullEviction",
                 "visibility": "public",
-                "isFinal": false
+                "isFinal": false,
+                "sinceVersion": null,
+                "removedVersion": null
             },
             {
                 "name": "VALUE_ONLY",
                 "value": "valueOnly",
                 "visibility": "public",
-                "isFinal": false
+                "isFinal": false,
+                "sinceVersion": null,
+                "removedVersion": null
             },
             {
                 "name": "NO_EVICTION",
                 "value": "noEviction",
                 "visibility": "public",
-                "isFinal": false
+                "isFinal": false,
+                "sinceVersion": null,
+                "removedVersion": null
             },
             {
                 "name": "NOT_RECENTLY_USED",
                 "value": "nruEviction",
                 "visibility": "public",
-                "isFinal": false
+                "isFinal": false,
+                "sinceVersion": null,
+                "removedVersion": null
             }
         ],
         "parentInterfaces": []
@@ -12045,13 +12133,17 @@
                 "name": "COUCHSTORE",
                 "value": "couchstore",
                 "visibility": "public",
-                "isFinal": false
+                "isFinal": false,
+                "sinceVersion": null,
+                "removedVersion": null
             },
             {
                 "name": "MAGMA",
                 "value": "magma",
                 "visibility": "public",
-                "isFinal": false
+                "isFinal": false,
+                "sinceVersion": null,
+                "removedVersion": null
             }
         ],
         "parentInterfaces": []
@@ -12100,19 +12192,25 @@
                 "name": "HTML",
                 "value": "html",
                 "visibility": "public",
-                "isFinal": false
+                "isFinal": false,
+                "sinceVersion": null,
+                "removedVersion": null
             },
             {
                 "name": "ANSI",
                 "value": "ansi",
                 "visibility": "public",
-                "isFinal": false
+                "isFinal": false,
+                "sinceVersion": null,
+                "removedVersion": null
             },
             {
                 "name": "SIMPLE",
                 "value": "simple",
                 "visibility": "public",
-                "isFinal": false
+                "isFinal": false,
+                "sinceVersion": null,
+                "removedVersion": null
             }
         ],
         "parentInterfaces": []
@@ -12177,25 +12275,33 @@
                 "name": "AUTO",
                 "value": "auto",
                 "visibility": "public",
-                "isFinal": false
+                "isFinal": false,
+                "sinceVersion": null,
+                "removedVersion": null
             },
             {
                 "name": "STRING",
                 "value": "string",
                 "visibility": "public",
-                "isFinal": false
+                "isFinal": false,
+                "sinceVersion": null,
+                "removedVersion": null
             },
             {
                 "name": "NUMBER",
                 "value": "number",
                 "visibility": "public",
-                "isFinal": false
+                "isFinal": false,
+                "sinceVersion": null,
+                "removedVersion": null
             },
             {
                 "name": "DATE",
                 "value": "date",
                 "visibility": "public",
-                "isFinal": false
+                "isFinal": false,
+                "sinceVersion": null,
+                "removedVersion": null
             }
         ],
         "parentInterfaces": []
@@ -12216,19 +12322,25 @@
                 "name": "DEFAULT",
                 "value": "default",
                 "visibility": "public",
-                "isFinal": false
+                "isFinal": false,
+                "sinceVersion": null,
+                "removedVersion": null
             },
             {
                 "name": "MIN",
                 "value": "min",
                 "visibility": "public",
-                "isFinal": false
+                "isFinal": false,
+                "sinceVersion": null,
+                "removedVersion": null
             },
             {
                 "name": "MAX",
                 "value": "max",
                 "visibility": "public",
-                "isFinal": false
+                "isFinal": false,
+                "sinceVersion": null,
+                "removedVersion": null
             }
         ],
         "parentInterfaces": []
@@ -12249,13 +12361,17 @@
                 "name": "FIRST",
                 "value": "first",
                 "visibility": "public",
-                "isFinal": false
+                "isFinal": false,
+                "sinceVersion": null,
+                "removedVersion": null
             },
             {
                 "name": "LAST",
                 "value": "last",
                 "visibility": "public",
-                "isFinal": false
+                "isFinal": false,
+                "sinceVersion": null,
+                "removedVersion": null
             }
         ],
         "parentInterfaces": []
@@ -12276,25 +12392,33 @@
                 "name": "NONE",
                 "value": 0,
                 "visibility": "public",
-                "isFinal": false
+                "isFinal": false,
+                "sinceVersion": null,
+                "removedVersion": null
             },
             {
                 "name": "MAJORITY",
                 "value": 1,
                 "visibility": "public",
-                "isFinal": false
+                "isFinal": false,
+                "sinceVersion": null,
+                "removedVersion": null
             },
             {
                 "name": "MAJORITY_AND_PERSIST_TO_ACTIVE",
                 "value": 2,
                 "visibility": "public",
-                "isFinal": false
+                "isFinal": false,
+                "sinceVersion": null,
+                "removedVersion": null
             },
             {
                 "name": "PERSIST_TO_MAJORITY",
                 "value": 3,
                 "visibility": "public",
-                "isFinal": false
+                "isFinal": false,
+                "sinceVersion": null,
+                "removedVersion": null
             }
         ],
         "parentInterfaces": []
@@ -12315,19 +12439,25 @@
                 "name": "REPLACE",
                 "value": 0,
                 "visibility": "public",
-                "isFinal": false
+                "isFinal": false,
+                "sinceVersion": null,
+                "removedVersion": null
             },
             {
                 "name": "UPSERT",
                 "value": 1,
                 "visibility": "public",
-                "isFinal": false
+                "isFinal": false,
+                "sinceVersion": null,
+                "removedVersion": null
             },
             {
                 "name": "INSERT",
                 "value": 2,
                 "visibility": "public",
-                "isFinal": false
+                "isFinal": false,
+                "sinceVersion": null,
+                "removedVersion": null
             }
         ],
         "parentInterfaces": []
@@ -12348,19 +12478,25 @@
                 "name": "NOT_BOUNDED",
                 "value": 0,
                 "visibility": "public",
-                "isFinal": false
+                "isFinal": false,
+                "sinceVersion": null,
+                "removedVersion": null
             },
             {
                 "name": "REQUEST_PLUS",
                 "value": 1,
                 "visibility": "public",
-                "isFinal": false
+                "isFinal": false,
+                "sinceVersion": null,
+                "removedVersion": null
             },
             {
                 "name": "UPDATE_AFTER",
                 "value": 2,
                 "visibility": "public",
-                "isFinal": false
+                "isFinal": false,
+                "sinceVersion": null,
+                "removedVersion": null
             }
         ],
         "parentInterfaces": []
@@ -12381,13 +12517,17 @@
                 "name": "ASCENDING",
                 "value": 0,
                 "visibility": "public",
-                "isFinal": false
+                "isFinal": false,
+                "sinceVersion": null,
+                "removedVersion": null
             },
             {
                 "name": "DESCENDING",
                 "value": 1,
                 "visibility": "public",
-                "isFinal": false
+                "isFinal": false,
+                "sinceVersion": null,
+                "removedVersion": null
             }
         ],
         "parentInterfaces": []
@@ -12408,19 +12548,25 @@
                 "name": "NOT_BOUNDED",
                 "value": 1,
                 "visibility": "public",
-                "isFinal": false
+                "isFinal": false,
+                "sinceVersion": null,
+                "removedVersion": null
             },
             {
                 "name": "REQUEST_PLUS",
                 "value": 2,
                 "visibility": "public",
-                "isFinal": false
+                "isFinal": false,
+                "sinceVersion": null,
+                "removedVersion": null
             },
             {
                 "name": "STATEMENT_PLUS",
                 "value": 3,
                 "visibility": "public",
-                "isFinal": false
+                "isFinal": false,
+                "sinceVersion": null,
+                "removedVersion": null
             }
         ],
         "parentInterfaces": []
@@ -12441,19 +12587,25 @@
                 "name": "OFF",
                 "value": 1,
                 "visibility": "public",
-                "isFinal": false
+                "isFinal": false,
+                "sinceVersion": null,
+                "removedVersion": null
             },
             {
                 "name": "PHASES",
                 "value": 2,
                 "visibility": "public",
-                "isFinal": false
+                "isFinal": false,
+                "sinceVersion": null,
+                "removedVersion": null
             },
             {
                 "name": "TIMINGS",
                 "value": 3,
                 "visibility": "public",
-                "isFinal": false
+                "isFinal": false,
+                "sinceVersion": null,
+                "removedVersion": null
             }
         ],
         "parentInterfaces": []
