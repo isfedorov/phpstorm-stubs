@@ -10,6 +10,7 @@ use StubTests\Sources\Validator\Functions\FunctionDeprecationCheck;
 use StubTests\Sources\Validator\Functions\FunctionExistsCheck;
 use StubTests\Sources\Validator\Functions\FunctionOptionalParametersCheck;
 use StubTests\Sources\Validator\Functions\FunctionParametersCountCheck;
+use StubTests\Sources\Validator\Functions\FunctionTentativeReturnTypeCheck;
 use StubTests\Sources\Validator\Functions\ParameterNamesCheck;
 use StubTests\Sources\Validator\Functions\ParameterTypesCheck;
 use StubTests\Sources\Validator\Functions\FunctionReturnTypesCheck;
@@ -145,6 +146,22 @@ class FunctionValidatorTest extends ValidatorTestBase
             $functionId,
             $phpVersion,
             "Function {$functionId} optional parameters check failed in PHP {$phpVersion}"
+        );
+    }
+
+    /**
+     * Check that the tentative return type flag matches between reflection and stubs.
+     *
+     * This check only runs on PHP 8.1+ where tentative return types were introduced.
+     */
+    #[PhpVersionRange(PhpVersions::PHP_8_1, PhpVersions::LATEST)]
+    public function checkFunctionTentativeReturnType(string $functionId, string $phpVersion): void
+    {
+        $this->executeCheck(
+            new FunctionTentativeReturnTypeCheck(),
+            $functionId,
+            $phpVersion,
+            "Function {$functionId} tentative return type check failed in PHP {$phpVersion}"
         );
     }
 }

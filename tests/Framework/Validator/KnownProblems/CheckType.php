@@ -17,6 +17,13 @@ enum CheckType: string
     case PARAMETER_NAMES = 'ParameterNamesCheck';
 
     /**
+     * Validates that methods with tentative return types in reflection
+     * are marked with #[TentativeType] in stubs.
+     * Relevant for PHP 8.1+ where tentative return types were introduced.
+     */
+    case TENTATIVE_RETURN_TYPE = 'TentativeReturnTypeCheck';
+
+    /**
      * Validates that parameter types in stubs match reflection.
      * Checks type hints for all parameters.
      */

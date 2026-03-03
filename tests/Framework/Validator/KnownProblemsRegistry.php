@@ -191,6 +191,7 @@ class KnownProblemsRegistry
             'ParametersCountCheck'               => CheckType::PARAMETERS_COUNT,
             'DeprecationCheck'                   => CheckType::DEPRECATION,
             'OptionalParametersCheck'            => CheckType::OPTIONAL_PARAMETERS,
+            'TentativeReturnTypeCheck'            => CheckType::TENTATIVE_RETURN_TYPE,
             'InterfaceParentInterfacesCheck'      => CheckType::INTERFACE_PARENT_INTERFACES,
             'EnumInterfacesCheck'                 => CheckType::ENUM_INTERFACES,
             'ClassFinalCheck'                     => CheckType::CLASS_FINAL,

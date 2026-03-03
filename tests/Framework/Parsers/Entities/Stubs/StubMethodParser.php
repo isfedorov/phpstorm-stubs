@@ -78,6 +78,7 @@ class StubMethodParser
         // Apply parsed PhpDoc data to method
         $method->setPhpDoc($parsedPhpDoc->rawPhpDoc);
         $method->setDeprecated($parsedPhpDoc->isDeprecated || $this->hasDeprecatedAttribute($node->getAttributes(), $imports));
+        $method->setHasTentativeReturnType($this->hasTentativeTypeAttribute($node->getAttributes(), $imports));
 
         // Parse and apply available version (from PhpDoc + attributes)
         $versions = $this->versionParser->parseAvailableVersion($parsedPhpDoc, $node->getAttributes(), $imports);
@@ -99,6 +100,27 @@ class StubMethodParser
         $method->setParameters($parameters);
 
         return $method;
+    }
+
+    /**
+     * Check whether any attribute in the list is JetBrains\PhpStorm\Internal\TentativeType.
+     *
+     * @param array $attributes Array of AttributeNode objects
+     * @param array $imports    Map of import aliases to fully qualified names
+     */
+    private function hasTentativeTypeAttribute(array $attributes, array $imports): bool
+    {
+        foreach ($attributes as $attribute) {
+            $name     = $attribute->getName();
+            $fullName = $imports[$name] ?? $name;
+            if ($fullName === 'JetBrains\\PhpStorm\\Internal\\TentativeType'
+                || $fullName === 'TentativeType'
+                || str_ends_with($fullName, '\\Internal\\TentativeType')
+            ) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**

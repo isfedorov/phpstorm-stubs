@@ -15,6 +15,7 @@ use StubTests\Sources\Validator\Interfaces\InterfaceMethodsReturnTypesCheck;
 use StubTests\Sources\Validator\Interfaces\InterfaceMethodsOptionalParametersCheck;
 use StubTests\Sources\Validator\Interfaces\InterfaceMethodsParameterTypesCheck;
 use StubTests\Sources\Validator\Interfaces\InterfaceMethodsParameterNamesCheck;
+use StubTests\Sources\Validator\Interfaces\InterfaceMethodsTentativeReturnTypeCheck;
 use StubTests\Sources\Validator\Interfaces\InterfaceMethodDeprecationCheck;
 use StubTests\Sources\Validator\Interfaces\InterfaceParentInterfacesCheck;
 use StubTests\Sources\Validator\Interfaces\InterfaceConstantsCheck;
@@ -170,6 +171,17 @@ class InterfaceValidatorTest extends ValidatorTestBase
             $interfaceId,
             $phpVersion,
             "Interface {$interfaceId} methods parameter names check failed in PHP {$phpVersion}"
+        );
+    }
+
+    #[PhpVersionRange(PhpVersions::PHP_8_1, PhpVersions::LATEST)]
+    public function checkInterfaceMethodsTentativeReturnType(string $interfaceId, string $phpVersion): void
+    {
+        $this->executeCheck(
+            new InterfaceMethodsTentativeReturnTypeCheck(),
+            $interfaceId,
+            $phpVersion,
+            "Interface {$interfaceId} methods tentative return type check failed in PHP {$phpVersion}"
         );
     }
 }
