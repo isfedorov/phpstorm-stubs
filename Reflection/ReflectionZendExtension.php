@@ -50,7 +50,6 @@ class ReflectionZendExtension implements Reflector
      * @return string
      * @since 5.4
      */
-    #[TentativeType]
     public function __toString(): string {}
 
     /**

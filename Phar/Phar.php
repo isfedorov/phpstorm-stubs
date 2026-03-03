@@ -1668,7 +1668,6 @@ class PharData extends RecursiveDirectoryIterator implements Countable, ArrayAcc
      * @return bool <b>TRUE</b> on success or <b>FALSE</b> on failure.
      */
     #[LanguageLevelTypeAware(['8.4' => 'true'], default: 'bool')]
-    #[TentativeType]
     public function setStub(
         $stub,
         #[LanguageLevelTypeAware(['8.0' => 'int'], default: '')] $length

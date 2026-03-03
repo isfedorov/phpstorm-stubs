@@ -54,7 +54,6 @@ class ReflectionParameter implements Reflector
      * @link https://php.net/manual/en/reflectionparameter.tostring.php
      * @return string
      */
-    #[TentativeType]
     public function __toString(): string {}
 
     /**

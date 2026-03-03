@@ -251,7 +251,6 @@ class SimpleXMLElement implements Traversable, ArrayAccess, Countable, Iterator,
      * @return string the string content on success or an empty string on failure.
      * @since 5.3
      */
-    #[TentativeType]
     public function __toString(): string {}
 
     /**

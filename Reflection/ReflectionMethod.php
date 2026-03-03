@@ -96,7 +96,6 @@ class ReflectionMethod extends ReflectionFunctionAbstract
      * @link https://php.net/manual/en/reflectionmethod.tostring.php
      * @return string A string representation of this {@see ReflectionMethod} instance.
      */
-    #[TentativeType]
     public function __toString(): string {}
 
     /**

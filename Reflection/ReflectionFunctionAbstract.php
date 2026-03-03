@@ -345,6 +345,5 @@ abstract class ReflectionFunctionAbstract implements Reflector
     #[TentativeType]
     public function isStatic(): bool {}
 
-    #[TentativeType]
     public function __toString(): string {}
 }
