@@ -5,12 +5,22 @@ namespace StubTests\Sources\Validator\Functions;
 use StubTests\Sources\Parsers\ParsedDataStorageManager;
 use StubTests\Sources\Validator\AbstractCallableCheck;
 use StubTests\Sources\Validator\CheckResultSet;
+use StubTests\Sources\Validator\KnownProblems\EntityType;
 
 /**
- * Validates that parameter names in stubs match those in reflection.
+ * Validates that parameter names in stub functions/methods match those in reflection.
  *
- * This check is only relevant for PHP >= 8.0 where named parameters were introduced.
- * The entityId should be in format: "FunctionName" or "ClassName::methodName"
+ * Named parameters were introduced in PHP 8.0, so this check only applies to PHP >= 8.0.
+ *
+ * Algorithm:
+ * 1. Look up the callable in both reflection and stubs using findCallable().
+ * 2. If not found in stubs, silently succeed — FunctionExistsCheck handles existence.
+ * 3. Filter and deduplicate stub parameters by version (merges same-named variadic pairs).
+ * 4. If parameter counts differ, silently succeed — ParametersCountCheck handles that.
+ * 5. Compare names positionally; collect all mismatches into one failure message.
+ *
+ * Known problems are supported via EntityType::FUNCTION / EntityType::METHOD (auto-detected
+ * from the entityId format) with checkName 'ParameterNamesCheck'.
  */
 class ParameterNamesCheck extends AbstractCallableCheck
 {
@@ -24,79 +34,56 @@ class ParameterNamesCheck extends AbstractCallableCheck
     {
         $results = new CheckResultSet();
 
-        // Check if this entity has a known problem that should skip validation
-        $entityType = str_contains($entityId, '::') ? 'methods' : 'functions';
+        $entityType = EntityType::fromEntityId($entityId)->value;
         if ($this->skipWithKnownProblem($results, $entityType, $entityId, 'ParameterNamesCheck', $phpVersion)) {
             return $results;
         }
 
-        // Get the function/method from reflection
         $reflection = $this->reflectionProvider->getReflection($phpVersion);
-        $reflectionCallable = $this->findCallable($reflection, $entityId, $phpVersion);
+        $reflCallable = $this->findCallable($reflection, $entityId, $phpVersion);
 
-        if ($reflectionCallable === null) {
+        if ($reflCallable === null) {
             $results->addFailure($entityId, "Function/method {$entityId} not found in reflection data");
             return $results;
         }
 
-        // Get the function/method from stubs
+        // Stub not found — FunctionExistsCheck's responsibility
         $stubCallable = $this->findCallable($stubs, $entityId, $phpVersion);
-
         if ($stubCallable === null) {
-            $results->addFailure($entityId, "Function/method {$entityId} not found in stubs");
+            $results->addSuccess($entityId);
             return $results;
         }
 
-        // Get parameters from both
-        $reflectionParams = method_exists($reflectionCallable, 'getParameters')
-            ? $reflectionCallable->getParameters()
-            : [];
-        $stubParams = method_exists($stubCallable, 'getParameters')
-            ? $stubCallable->getParameters()
-            : [];
+        $reflParams = method_exists($reflCallable, 'getParameters') ? $reflCallable->getParameters() : [];
+        $stubParams = method_exists($stubCallable, 'getParameters') ? $stubCallable->getParameters() : [];
 
-        // Filter stub parameters by version availability
-        $stubParams = $this->filterParametersByVersion($stubParams, $phpVersion);
+        $stubParams = $this->filterAndDeduplicateByVersion($stubParams, $phpVersion);
 
-        // Compare parameter names
-        $reflectionParamNames = [];
-        foreach ($reflectionParams as $param) {
-            if (method_exists($param, 'getName')) {
-                $reflectionParamNames[] = $param->getName();
+        // Count mismatch — ParametersCountCheck's responsibility
+        if (count($reflParams) !== count($stubParams)) {
+            $results->addSuccess($entityId);
+            return $results;
+        }
+
+        $mismatches = [];
+        foreach ($reflParams as $index => $reflParam) {
+            $reflName = method_exists($reflParam, 'getName') ? $reflParam->getName() : null;
+            $stubName = isset($stubParams[$index]) && method_exists($stubParams[$index], 'getName')
+                ? $stubParams[$index]->getName()
+                : null;
+
+            if ($reflName !== null && $stubName !== null && $reflName !== $stubName) {
+                $mismatches[] = "#{$index}: reflection '\${$reflName}', stubs '\${$stubName}'";
             }
         }
 
-        $stubParamNames = [];
-        foreach ($stubParams as $param) {
-            if (method_exists($param, 'getName')) {
-                $stubParamNames[] = $param->getName();
-            }
-        }
-
-        // Check parameter count matches
-        if (count($reflectionParamNames) !== count($stubParamNames)) {
+        if (!empty($mismatches)) {
             $results->addFailure(
                 $entityId,
-                "Parameter count mismatch: reflection has " . count($reflectionParamNames) .
-                " parameters, stubs have " . count($stubParamNames) . " parameters"
+                "Function/method {$entityId}: parameter name mismatch(es) in PHP {$phpVersion}: "
+                . implode('; ', $mismatches)
             );
-            return $results;
-        }
-
-        // Check each parameter name matches
-        foreach ($reflectionParamNames as $index => $reflectionName) {
-            $stubName = $stubParamNames[$index] ?? null;
-
-            if ($reflectionName !== $stubName) {
-                $results->addFailure(
-                    $entityId,
-                    "Parameter #{$index} name mismatch: reflection has '{$reflectionName}', " .
-                    "stubs have '{$stubName}'"
-                );
-            }
-        }
-
-        if (!$results->hasFailures()) {
+        } else {
             $results->addSuccess($entityId);
         }
 
@@ -104,28 +91,46 @@ class ParameterNamesCheck extends AbstractCallableCheck
     }
 
     /**
-     * Filter parameters by their version availability.
+     * Filter parameters by version availability and merge same-named variadic pairs.
      *
-     * @param array $parameters Array of parameter objects
-     * @param string $phpVersion Target PHP version (e.g., '8.0', '8.1')
-     * @return array Filtered array of parameters available in the target version
+     * The merge handles the stub workaround for non-optional variadic parameters:
+     *   #[PhpStormStubsElementAvailable(to: '7.4')] mixed $values,
+     *   mixed ...$values
+     * Both survive version filtering for old PHP; treat them as one parameter.
      */
-    private function filterParametersByVersion(array $parameters, string $phpVersion): array
+    private function filterAndDeduplicateByVersion(array $parameters, string $phpVersion): array
     {
         $filtered = [];
-
         foreach ($parameters as $param) {
-            $sinceVersion   = method_exists($param, 'getSinceVersion') ? $param->getSinceVersion() : null;
-            $removedVersion = method_exists($param, 'getRemovedVersion') ? $param->getRemovedVersion() : null;
+            $since   = method_exists($param, 'getSinceVersion') ? $param->getSinceVersion() : null;
+            $removed = method_exists($param, 'getRemovedVersion') ? $param->getRemovedVersion() : null;
 
-            $isAvailableSince = $sinceVersion === null || version_compare($phpVersion, $sinceVersion, '>=');
-            $isNotRemoved     = $removedVersion === null || version_compare($phpVersion, $removedVersion, '<=');
+            $available = ($since === null || version_compare($phpVersion, $since, '>='))
+                && ($removed === null || version_compare($phpVersion, $removed, '<='));
 
-            if ($isAvailableSince && $isNotRemoved) {
+            if ($available) {
                 $filtered[] = $param;
             }
         }
 
-        return $filtered;
+        $merged = [];
+        $count  = count($filtered);
+        for ($i = 0; $i < $count; $i++) {
+            $current = $filtered[$i];
+            $next    = $filtered[$i + 1] ?? null;
+
+            $currentName    = method_exists($current, 'getName') ? $current->getName() : null;
+            $nextName       = $next && method_exists($next, 'getName') ? $next->getName() : null;
+            $nextIsVariadic = $next && method_exists($next, 'isVariadic') && $next->isVariadic();
+
+            if ($currentName !== null && $currentName === $nextName && $nextIsVariadic) {
+                $merged[] = $next;
+                $i++;
+            } else {
+                $merged[] = $current;
+            }
+        }
+
+        return $merged;
     }
 }

@@ -22,7 +22,6 @@ class ParameterNamesCheckTest extends CheckTestCase
 
     public function testMatchingParameterNamesForFunction(): void
     {
-        // Arrange
         $functionName = 'array_map';
         $param1 = $this->createMockParameter('callback');
         $param2 = $this->createMockParameter('array');
@@ -36,17 +35,14 @@ class ParameterNamesCheckTest extends CheckTestCase
 
         $check = new ParameterNamesCheck($reflectionProvider);
 
-        // Act
         $result = $check->run($stubsManager, $functionName, '8.0');
 
-        // Assert
         $this->assertFalse($result->hasFailures());
         $this->assertEquals(1, $result->getSuccessCount());
     }
 
     public function testParameterNameMismatch(): void
     {
-        // Arrange
         $functionName = 'test_function';
         $reflectionParam = $this->createMockParameter('callback');
         $stubParam = $this->createMockParameter('wrongName');
@@ -60,23 +56,21 @@ class ParameterNamesCheckTest extends CheckTestCase
 
         $check = new ParameterNamesCheck($reflectionProvider);
 
-        // Act
         $result = $check->run($stubsManager, $functionName, '8.0');
 
-        // Assert
         $this->assertTrue($result->hasFailures());
         $this->assertEquals(1, $result->getFailureCount());
 
         $failures = $result->getFailures();
         $this->assertArrayHasKey($functionName, $failures);
-        $this->assertStringContainsString('Parameter #0 name mismatch', $failures[$functionName]);
-        $this->assertStringContainsString('callback', $failures[$functionName]);
-        $this->assertStringContainsString('wrongName', $failures[$functionName]);
+        $this->assertStringContainsString('#0: reflection \'$callback\'', $failures[$functionName]);
+        $this->assertStringContainsString('stubs \'$wrongName\'', $failures[$functionName]);
+        $this->assertStringContainsString('parameter name mismatch(es)', $failures[$functionName]);
     }
 
-    public function testParameterCountMismatch(): void
+    public function testParameterCountMismatchSilentlySucceeds(): void
     {
-        // Arrange
+        // Parameter count mismatches are ParametersCountCheck's responsibility — silently skip
         $functionName = 'test_function';
         $param1 = $this->createMockParameter('param1');
         $param2 = $this->createMockParameter('param2');
@@ -90,22 +84,14 @@ class ParameterNamesCheckTest extends CheckTestCase
 
         $check = new ParameterNamesCheck($reflectionProvider);
 
-        // Act
         $result = $check->run($stubsManager, $functionName, '8.0');
 
-        // Assert
-        $this->assertTrue($result->hasFailures());
-        $this->assertEquals(1, $result->getFailureCount());
-
-        $failures = $result->getFailures();
-        $this->assertStringContainsString('Parameter count mismatch', $failures[$functionName]);
-        $this->assertStringContainsString('2 parameters', $failures[$functionName]);
-        $this->assertStringContainsString('1 parameters', $failures[$functionName]);
+        $this->assertFalse($result->hasFailures());
+        $this->assertEquals(1, $result->getSuccessCount());
     }
 
     public function testFunctionNotFoundInReflection(): void
     {
-        // Arrange
         $functionName = 'missing_function';
         $stubFunction = $this->createMockFunction($functionName);
 
@@ -115,20 +101,16 @@ class ParameterNamesCheckTest extends CheckTestCase
 
         $check = new ParameterNamesCheck($reflectionProvider);
 
-        // Act
         $result = $check->run($stubsManager, $functionName, '8.0');
 
-        // Assert
         $this->assertTrue($result->hasFailures());
-        $this->assertEquals(1, $result->getFailureCount());
-
         $failures = $result->getFailures();
         $this->assertStringContainsString('not found in reflection data', $failures[$functionName]);
     }
 
-    public function testFunctionNotFoundInStubs(): void
+    public function testFunctionNotFoundInStubsSilentlySucceeds(): void
     {
-        // Arrange
+        // Stub not found — FunctionExistsCheck's responsibility; silently skip
         $functionName = 'missing_function';
         $reflectionFunction = $this->createMockFunction($functionName);
 
@@ -138,20 +120,14 @@ class ParameterNamesCheckTest extends CheckTestCase
 
         $check = new ParameterNamesCheck($reflectionProvider);
 
-        // Act
         $result = $check->run($stubsManager, $functionName, '8.0');
 
-        // Assert
-        $this->assertTrue($result->hasFailures());
-        $this->assertEquals(1, $result->getFailureCount());
-
-        $failures = $result->getFailures();
-        $this->assertStringContainsString('not found in stubs', $failures[$functionName]);
+        $this->assertFalse($result->hasFailures());
+        $this->assertEquals(1, $result->getSuccessCount());
     }
 
     public function testMatchingParameterNamesForMethod(): void
     {
-        // Arrange
         $methodId = 'DateTime::format';
         $param = $this->createMockParameter('format');
 
@@ -167,24 +143,21 @@ class ParameterNamesCheckTest extends CheckTestCase
 
         $check = new ParameterNamesCheck($reflectionProvider);
 
-        // Act
         $result = $check->run($stubsManager, $methodId, '8.0');
 
-        // Assert
         $this->assertFalse($result->hasFailures());
         $this->assertEquals(1, $result->getSuccessCount());
     }
 
-    public function testMultipleParameterNameMismatches(): void
+    public function testMultipleParameterNameMismatchesReportedInOneMessage(): void
     {
-        // Arrange
         $functionName = 'test_function';
-        $reflectionParam1 = $this->createMockParameter('callback');
-        $reflectionParam2 = $this->createMockParameter('array');
+        $reflParam1 = $this->createMockParameter('callback');
+        $reflParam2 = $this->createMockParameter('array');
         $stubParam1 = $this->createMockParameter('wrongName1');
         $stubParam2 = $this->createMockParameter('wrongName2');
 
-        $reflectionFunction = $this->createMockFunction($functionName, [$reflectionParam1, $reflectionParam2]);
+        $reflectionFunction = $this->createMockFunction($functionName, [$reflParam1, $reflParam2]);
         $stubFunction = $this->createMockFunction($functionName, [$stubParam1, $stubParam2]);
 
         $reflectionProvider = $this->createMockReflectionProvider([$reflectionFunction]);
@@ -193,36 +166,32 @@ class ParameterNamesCheckTest extends CheckTestCase
 
         $check = new ParameterNamesCheck($reflectionProvider);
 
-        // Act
         $result = $check->run($stubsManager, $functionName, '8.0');
 
-        // Assert
         $this->assertTrue($result->hasFailures());
-        // Note: ParameterNamesCheck adds multiple failures, but only the first one is stored
-        // because addFailure uses the same key for all parameter mismatches
         $this->assertEquals(1, $result->getFailureCount());
 
         $failures = $result->getFailures();
         $this->assertArrayHasKey($functionName, $failures);
-        // The implementation stores the last parameter mismatch (overwrites previous ones)
-        $this->assertStringContainsString('Parameter #', $failures[$functionName]);
+        // Both mismatches must appear in the single combined message
+        $this->assertStringContainsString('#0', $failures[$functionName]);
+        $this->assertStringContainsString('$callback', $failures[$functionName]);
+        $this->assertStringContainsString('$wrongName1', $failures[$functionName]);
+        $this->assertStringContainsString('#1', $failures[$functionName]);
+        $this->assertStringContainsString('$array', $failures[$functionName]);
+        $this->assertStringContainsString('$wrongName2', $failures[$functionName]);
     }
 
     public function testParametersWithVersionAttributes(): void
     {
-        // Arrange - Simulates mktime function with two 'hour' parameters for different PHP versions
+        // Old parameter (5.3–7.4) filtered out at PHP 8.0; only new one (8.0+) remains
         $functionName = 'mktime';
 
-        // Reflection has only the PHP 8.0 version (1 parameter: hour)
         $reflectionParam = $this->createMockParameter('hour');
         $reflectionFunction = $this->createMockFunction($functionName, [$reflectionParam]);
 
-        // Stubs have both versions of the 'hour' parameter
-        // Old version: available from 5.3 to 7.4
         $stubParamOld = $this->createMockParameter('hour', null, '5.3', '7.4');
-        // New version: available from 8.0
         $stubParamNew = $this->createMockParameter('hour', null, '8.0', null);
-
         $stubFunction = $this->createMockFunction($functionName, [$stubParamOld, $stubParamNew]);
 
         $reflectionProvider = $this->createMockReflectionProvider([$reflectionFunction]);
@@ -231,30 +200,24 @@ class ParameterNamesCheckTest extends CheckTestCase
 
         $check = new ParameterNamesCheck($reflectionProvider);
 
-        // Act - Test with PHP 8.0
         $result = $check->run($stubsManager, $functionName, '8.0');
 
-        // Assert - Should succeed because only the 8.0 parameter is considered
         $this->assertFalse($result->hasFailures(), 'Expected no failures when filtering parameters by version');
         $this->assertEquals(1, $result->getSuccessCount());
     }
 
     public function testParametersWithAliasedVersionAttributes(): void
     {
-        // Arrange - Simulates collator_sort_with_sort_keys function with aliased ElementAvailable attribute
+        // $sort_flags removed after 5.6 — filtered out at PHP 8.0; count matches reflection (2)
         $functionName = 'collator_sort_with_sort_keys';
 
-        // Reflection for PHP 8.0 has 2 parameters (no $sort_flags parameter)
-        $reflectionParam1 = $this->createMockParameter('object');
-        $reflectionParam2 = $this->createMockParameter('array');
-        $reflectionFunction = $this->createMockFunction($functionName, [$reflectionParam1, $reflectionParam2]);
+        $reflParam1 = $this->createMockParameter('object');
+        $reflParam2 = $this->createMockParameter('array');
+        $reflectionFunction = $this->createMockFunction($functionName, [$reflParam1, $reflParam2]);
 
-        // Stubs have 3 parameters, including $sort_flags that was removed after PHP 5.6
         $stubParam1 = $this->createMockParameter('object');
         $stubParam2 = $this->createMockParameter('array');
-        // $sort_flags parameter has ElementAvailable attribute (aliased): available from 5.3 to 5.6
         $stubParam3 = $this->createMockParameter('sort_flags', null, '5.3', '5.6');
-
         $stubFunction = $this->createMockFunction($functionName, [$stubParam1, $stubParam2, $stubParam3]);
 
         $reflectionProvider = $this->createMockReflectionProvider([$reflectionFunction]);
@@ -263,70 +226,30 @@ class ParameterNamesCheckTest extends CheckTestCase
 
         $check = new ParameterNamesCheck($reflectionProvider);
 
-        // Act - Test with PHP 8.0
         $result = $check->run($stubsManager, $functionName, '8.0');
 
-        // Assert - Should succeed because $sort_flags is filtered out (removed after 5.6)
-        $this->assertFalse($result->hasFailures(), 'Expected no failures when filtering parameters with aliased version attributes');
+        $this->assertFalse($result->hasFailures(), 'Expected no failures when filtering parameters with version attributes');
         $this->assertEquals(1, $result->getSuccessCount());
-    }
-
-    public function testParametersWithAliasedAttributesIncludedInOldVersions(): void
-    {
-        // Arrange - Same function but testing with PHP 5.6 where the parameter should be included
-        $functionName = 'collator_sort_with_sort_keys';
-
-        // Reflection for PHP 5.6 has 3 parameters (includes $sort_flags)
-        $reflectionParam1 = $this->createMockParameter('object');
-        $reflectionParam2 = $this->createMockParameter('array');
-        $reflectionParam3 = $this->createMockParameter('sort_flags');
-        $reflectionFunction = $this->createMockFunction($functionName, [$reflectionParam1, $reflectionParam2, $reflectionParam3]);
-
-        // Stubs have same 3 parameters
-        $stubParam1 = $this->createMockParameter('object');
-        $stubParam2 = $this->createMockParameter('array');
-        $stubParam3 = $this->createMockParameter('sort_flags', null, '5.3', '5.6');
-
-        $stubFunction = $this->createMockFunction($functionName, [$stubParam1, $stubParam2, $stubParam3]);
-
-        $reflectionProvider = $this->createMockReflectionProvider([$reflectionFunction]);
-        $stubsManager = $this->createMockStorageManager();
-        $stubsManager->method('getFunctions')->willReturn([$stubFunction]);
-
-        $check = new ParameterNamesCheck($reflectionProvider);
-
-        // Act - Test with PHP 5.6
-        $result = $check->run($stubsManager, $functionName, '5.6');
-
-        // Assert - Should fail because check doesn't support PHP < 8.0
-        // (Named parameters were introduced in PHP 8.0)
-        $this->markTestSkipped('ParameterNamesCheck only supports PHP 8.0+');
     }
 
     public function testParameterIncludedAtBoundaryVersion(): void
     {
-        // Arrange - Parameter with 'to: 8.2' should be included in PHP 8.2
+        // Parameter with removedVersion='8.2' must still be counted for PHP 8.2
         $functionName = 'imagerotate';
 
-        // Reflection for PHP 8.2 has 4 parameters (including $ignore_transparent)
-        $reflectionParam1 = $this->createMockParameter('image');
-        $reflectionParam2 = $this->createMockParameter('angle');
-        $reflectionParam3 = $this->createMockParameter('background_color');
-        $reflectionParam4 = $this->createMockParameter('ignore_transparent');
-        $reflectionFunction = $this->createMockFunction($functionName, [
-            $reflectionParam1, $reflectionParam2, $reflectionParam3, $reflectionParam4
-        ]);
+        $reflParams = array_map(
+            fn($n) => $this->createMockParameter($n),
+            ['image', 'angle', 'background_color', 'ignore_transparent']
+        );
+        $reflectionFunction = $this->createMockFunction($functionName, $reflParams);
 
-        // Stubs have same 4 parameters, with last one having removedVersion='8.2'
-        $stubParam1 = $this->createMockParameter('image');
-        $stubParam2 = $this->createMockParameter('angle');
-        $stubParam3 = $this->createMockParameter('background_color');
-        // Parameter available up to and including PHP 8.2 (removed in 8.3)
-        $stubParam4 = $this->createMockParameter('ignore_transparent', null, null, '8.2');
-
-        $stubFunction = $this->createMockFunction($functionName, [
-            $stubParam1, $stubParam2, $stubParam3, $stubParam4
-        ]);
+        $stubParams = [
+            $this->createMockParameter('image'),
+            $this->createMockParameter('angle'),
+            $this->createMockParameter('background_color'),
+            $this->createMockParameter('ignore_transparent', null, null, '8.2'),
+        ];
+        $stubFunction = $this->createMockFunction($functionName, $stubParams);
 
         $reflectionProvider = $this->createMockReflectionProvider([$reflectionFunction]);
         $stubsManager = $this->createMockStorageManager();
@@ -334,37 +257,31 @@ class ParameterNamesCheckTest extends CheckTestCase
 
         $check = new ParameterNamesCheck($reflectionProvider);
 
-        // Act - Test with PHP 8.2 (the boundary version)
         $result = $check->run($stubsManager, $functionName, '8.2');
 
-        // Assert - Should succeed because parameter with 'to: 8.2' is included in PHP 8.2
-        $this->assertFalse($result->hasFailures(), 'Expected no failures when parameter is at boundary version');
+        $this->assertFalse($result->hasFailures(), 'Parameter with removedVersion=8.2 should be included in PHP 8.2');
         $this->assertEquals(1, $result->getSuccessCount());
     }
 
     public function testParameterExcludedAfterBoundaryVersion(): void
     {
-        // Arrange - Parameter with 'to: 8.2' should be excluded in PHP 8.3
+        // Parameter with removedVersion='8.2' is filtered out for PHP 8.3 — count drops to 3
+        // which matches the 3 reflection params, so names still match
         $functionName = 'imagerotate';
 
-        // Reflection for PHP 8.3 has 3 parameters (no $ignore_transparent)
-        $reflectionParam1 = $this->createMockParameter('image');
-        $reflectionParam2 = $this->createMockParameter('angle');
-        $reflectionParam3 = $this->createMockParameter('background_color');
-        $reflectionFunction = $this->createMockFunction($functionName, [
-            $reflectionParam1, $reflectionParam2, $reflectionParam3
-        ]);
+        $reflParams = array_map(
+            fn($n) => $this->createMockParameter($n),
+            ['image', 'angle', 'background_color']
+        );
+        $reflectionFunction = $this->createMockFunction($functionName, $reflParams);
 
-        // Stubs have 4 parameters, with last one having removedVersion='8.2'
-        $stubParam1 = $this->createMockParameter('image');
-        $stubParam2 = $this->createMockParameter('angle');
-        $stubParam3 = $this->createMockParameter('background_color');
-        // Parameter available up to and including PHP 8.2 (removed in 8.3)
-        $stubParam4 = $this->createMockParameter('ignore_transparent', null, null, '8.2');
-
-        $stubFunction = $this->createMockFunction($functionName, [
-            $stubParam1, $stubParam2, $stubParam3, $stubParam4
-        ]);
+        $stubParams = [
+            $this->createMockParameter('image'),
+            $this->createMockParameter('angle'),
+            $this->createMockParameter('background_color'),
+            $this->createMockParameter('ignore_transparent', null, null, '8.2'),
+        ];
+        $stubFunction = $this->createMockFunction($functionName, $stubParams);
 
         $reflectionProvider = $this->createMockReflectionProvider([$reflectionFunction]);
         $stubsManager = $this->createMockStorageManager();
@@ -372,11 +289,44 @@ class ParameterNamesCheckTest extends CheckTestCase
 
         $check = new ParameterNamesCheck($reflectionProvider);
 
-        // Act - Test with PHP 8.3 (after boundary version)
         $result = $check->run($stubsManager, $functionName, '8.3');
 
-        // Assert - Should succeed because parameter with 'to: 8.2' is excluded in PHP 8.3
-        $this->assertFalse($result->hasFailures(), 'Expected no failures when parameter is excluded after boundary');
+        $this->assertFalse($result->hasFailures(), 'Parameter with removedVersion=8.2 should be excluded in PHP 8.3');
+        $this->assertEquals(1, $result->getSuccessCount());
+    }
+
+    public function testVariadicDeduplicationMergesSameNamedPair(): void
+    {
+        // Stub pattern: $vals[to:'7.4'], ...$vals  → deduplicates to 1 param named 'vals' at PHP 8.0
+        $functionName = 'test_variadic';
+
+        $reflParam = $this->createMockParameter('vals');
+        $reflectionFunction = $this->createMockFunction($functionName, [$reflParam]);
+
+        $stubParamFixed = $this->createMockParameter('vals', null, null, '7.4');
+        $stubParamVariadic = $this->getMockBuilder(\StubTests\Sources\Parsers\Entities\Model\PHPParameter::class)
+            ->disableOriginalConstructor()
+            ->onlyMethods(['getName', 'getSinceVersion', 'getRemovedVersion', 'isVariadic', 'isOptional', 'isPassedByReference', 'getDeclaredType'])
+            ->getMock();
+        $stubParamVariadic->method('getName')->willReturn('vals');
+        $stubParamVariadic->method('getSinceVersion')->willReturn(null);
+        $stubParamVariadic->method('getRemovedVersion')->willReturn(null);
+        $stubParamVariadic->method('isVariadic')->willReturn(true);
+        $stubParamVariadic->method('isOptional')->willReturn(false);
+        $stubParamVariadic->method('isPassedByReference')->willReturn(false);
+        $stubParamVariadic->method('getDeclaredType')->willReturn(new \StubTests\Sources\Parsers\Entities\Model\Types\NoType());
+
+        $stubFunction = $this->createMockFunction($functionName, [$stubParamFixed, $stubParamVariadic]);
+
+        $reflectionProvider = $this->createMockReflectionProvider([$reflectionFunction]);
+        $stubsManager = $this->createMockStorageManager();
+        $stubsManager->method('getFunctions')->willReturn([$stubFunction]);
+
+        $check = new ParameterNamesCheck($reflectionProvider);
+
+        $result = $check->run($stubsManager, $functionName, '8.0');
+
+        $this->assertFalse($result->hasFailures(), 'Variadic deduplication should merge same-named pair to 1 param');
         $this->assertEquals(1, $result->getSuccessCount());
     }
 }

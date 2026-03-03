@@ -15,6 +15,7 @@ use StubTests\Sources\Validator\Enums\EnumMethodsExistCheck;
 use StubTests\Sources\Validator\Enums\EnumMethodsOptionalParametersCheck;
 use StubTests\Sources\Validator\Enums\EnumMethodsParameterTypesCheck;
 use StubTests\Sources\Validator\Enums\EnumMethodsParametersCountCheck;
+use StubTests\Sources\Validator\Enums\EnumMethodsParameterNamesCheck;
 use StubTests\Sources\Validator\Enums\EnumMethodsReturnTypesCheck;
 use StubTests\Sources\Validator\Enums\EnumMethodsVisibilityCheck;
 use StubTests\Sources\Validator\Enums\EnumConstantsCheck;
@@ -196,6 +197,17 @@ class EnumValidatorTest extends ValidatorTestBase
             $enumId,
             $phpVersion,
             "Enum {$enumId} constants check failed in PHP {$phpVersion}"
+        );
+    }
+
+    #[PhpVersionRange(PhpVersions::PHP_8_1, PhpVersions::LATEST)]
+    public function checkEnumMethodsParameterNames(string $enumId, string $phpVersion): void
+    {
+        $this->executeCheck(
+            new EnumMethodsParameterNamesCheck(),
+            $enumId,
+            $phpVersion,
+            "Enum {$enumId} methods parameter names check failed in PHP {$phpVersion}"
         );
     }
 }

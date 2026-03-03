@@ -23,6 +23,7 @@ use StubTests\Sources\Validator\Classes\ClassMethodsParametersCountCheck;
 use StubTests\Sources\Validator\Classes\ClassMethodsReturnTypesCheck;
 use StubTests\Sources\Validator\Classes\ClassMethodsOptionalParametersCheck;
 use StubTests\Sources\Validator\Classes\ClassMethodsParameterTypesCheck;
+use StubTests\Sources\Validator\Classes\ClassMethodsParameterNamesCheck;
 use StubTests\Sources\Validator\Classes\MethodDeprecationCheck;
 use StubTests\Sources\Validator\Classes\ClassStaticMethodsCheck;
 use StubTests\Sources\Validator\Classes\ClassConstantsCheck;
@@ -277,6 +278,17 @@ class ClassValidatorTest extends ValidatorTestBase
 			$classId,
 			$phpVersion,
 			"Class {$classId} constants check failed in PHP {$phpVersion}"
+		);
+	}
+
+	#[PhpVersionRange(PhpVersions::PHP_8_0, PhpVersions::LATEST)]
+	public function checkClassMethodsParameterNames(string $classId, string $phpVersion): void
+	{
+		$this->executeCheck(
+			new ClassMethodsParameterNamesCheck(),
+			$classId,
+			$phpVersion,
+			"Class {$classId} methods parameter names check failed in PHP {$phpVersion}"
 		);
 	}
 }
