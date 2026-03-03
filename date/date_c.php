@@ -894,7 +894,7 @@ class DateTimeZone
     public function __wakeup(): void {}
 
     #[TentativeType]
-    public static function __set_state(array $an_array): static {}
+    public static function __set_state(array $array): static {}
 
     #[PhpStormStubsElementAvailable(from: '8.2')]
     public function __serialize(): array {}
@@ -997,7 +997,7 @@ class DateInterval
     public function __wakeup(): void {}
 
     #[TentativeType]
-    public static function __set_state(array $an_array): static {}
+    public static function __set_state(array $array): static {}
 
     #[PhpStormStubsElementAvailable(from: '8.2')]
     public function __serialize(): array {}

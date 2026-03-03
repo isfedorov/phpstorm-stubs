@@ -306,16 +306,16 @@ class Phar extends RecursiveDirectoryIterator implements RecursiveIterator, Seek
      * (PHP &gt;= 5.3.0, PECL phar &gt;= 2.0.0)<br/>
      * Copy a file internal to the phar archive to another new file within the phar
      * @link https://php.net/manual/en/phar.copy.php
-     * @param string $to
      * @param string $from
+     * @param string $to
      * @return bool returns <b>TRUE</b> on success, but it is safer to encase method call in a
      * try/catch block and assume success if no exception is thrown.
      */
     #[LanguageLevelTypeAware(['8.4' => 'true'], default: 'bool')]
     #[TentativeType]
     public function copy(
-        #[LanguageLevelTypeAware(['8.0' => 'string'], default: '')] $to,
-        #[LanguageLevelTypeAware(['8.0' => 'string'], default: '')] $from
+        #[LanguageLevelTypeAware(['8.0' => 'string'], default: '')] $from,
+        #[LanguageLevelTypeAware(['8.0' => 'string'], default: '')] $to
     ) {}
 
     /**
@@ -920,12 +920,12 @@ class Phar extends RecursiveDirectoryIterator implements RecursiveIterator, Seek
     /**
      * Returns whether current entry is a directory and not '.' or '..'
      * @link https://php.net/manual/en/recursivedirectoryiterator.haschildren.php
-     * @param bool $allow_links [optional] <p>
+     * @param bool $allowLinks [optional] <p>
      * </p>
      * @return bool whether the current entry is a directory, but not '.' or '..'
      */
     #[TentativeType]
-    public function hasChildren(#[LanguageLevelTypeAware(['8.0' => 'bool'], default: '')] $allow_links = false): bool {}
+    public function hasChildren(#[LanguageLevelTypeAware(['8.0' => 'bool'], default: '')] $allowLinks = false): bool {}
 
     /**
      * Returns an iterator for the current entry if it is a directory
@@ -980,13 +980,13 @@ class Phar extends RecursiveDirectoryIterator implements RecursiveIterator, Seek
     /**
      * Seek to a DirectoryIterator item
      * @link https://php.net/manual/en/directoryiterator.seek.php
-     * @param int $position <p>
+     * @param int $offset <p>
      * The zero-based numeric position to seek to.
      * </p>
      * @return void No value is returned.
      */
     #[TentativeType]
-    public function seek(#[LanguageLevelTypeAware(['8.0' => 'int'], default: '')] $position): void {}
+    public function seek(#[LanguageLevelTypeAware(['8.0' => 'int'], default: '')] $offset): void {}
 
     /**
      * Gets the path without filename
@@ -1086,12 +1086,12 @@ class PharData extends RecursiveDirectoryIterator implements Countable, ArrayAcc
     /**
      * Returns whether current entry is a directory and not '.' or '..'
      * @link https://php.net/manual/en/recursivedirectoryiterator.haschildren.php
-     * @param bool $allow_links [optional] <p>
+     * @param bool $allowLinks [optional] <p>
      * </p>
      * @return bool whether the current entry is a directory, but not '.' or '..'
      */
     #[TentativeType]
-    public function hasChildren(#[LanguageLevelTypeAware(['8.0' => 'bool'], default: '')] $allow_links = false): bool {}
+    public function hasChildren(#[LanguageLevelTypeAware(['8.0' => 'bool'], default: '')] $allowLinks = false): bool {}
 
     /**
      * Returns an iterator for the current entry if it is a directory
@@ -1385,16 +1385,16 @@ class PharData extends RecursiveDirectoryIterator implements Countable, ArrayAcc
      * (PHP &gt;= 5.3.0, PECL phar &gt;= 2.0.0)<br/>
      * Copy a file internal to the phar archive to another new file within the phar
      * @link https://php.net/manual/en/phardata.copy.php
-     * @param string $to
      * @param string $from
+     * @param string $to
      * @return bool returns <b>TRUE</b> on success, but it is safer to encase method call in a
      * try/catch block and assume success if no exception is thrown.
      */
     #[LanguageLevelTypeAware(['8.4' => 'true'], default: 'bool')]
     #[TentativeType]
     public function copy(
-        #[LanguageLevelTypeAware(['8.0' => 'string'], default: '')] $to,
-        #[LanguageLevelTypeAware(['8.0' => 'string'], default: '')] $from
+        #[LanguageLevelTypeAware(['8.0' => 'string'], default: '')] $from,
+        #[LanguageLevelTypeAware(['8.0' => 'string'], default: '')] $to
     ) {}
 
     /**
@@ -1955,13 +1955,13 @@ class PharData extends RecursiveDirectoryIterator implements Countable, ArrayAcc
     /**
      * Seek to a DirectoryIterator item
      * @link https://php.net/manual/en/directoryiterator.seek.php
-     * @param int $position <p>
+     * @param int $offset <p>
      * The zero-based numeric position to seek to.
      * </p>
      * @return void No value is returned.
      */
     #[TentativeType]
-    public function seek(#[LanguageLevelTypeAware(['8.0' => 'int'], default: '')] $position): void {}
+    public function seek(#[LanguageLevelTypeAware(['8.0' => 'int'], default: '')] $offset): void {}
 
     public function __destruct() {}
 }

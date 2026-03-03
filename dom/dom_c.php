@@ -1279,7 +1279,7 @@ class DOMDocument extends DOMNode implements DOMParentNode
     #[TentativeType]
     public function schemaValidate(
         #[LanguageLevelTypeAware(['8.0' => 'string'], default: '')] $filename,
-        #[LanguageLevelTypeAware(['8.0' => 'int'], default: '')] $options = null
+        #[LanguageLevelTypeAware(['8.0' => 'int'], default: '')] $flags = null
     ): bool {}
 
     /**

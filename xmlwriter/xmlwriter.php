@@ -568,20 +568,20 @@ class XMLWriter
      * @param string $content <p>
      * The content of the entity.
      * </p>
-     * @param bool $pe
-     * @param string $pubid
-     * @param string $sysid
-     * @param string $ndataid
+     * @param bool $isParam
+     * @param string|null $publicId
+     * @param string|null $systemId
+     * @param string|null $notationData
      * @return bool <b>TRUE</b> on success or <b>FALSE</b> on failure.
      */
     #[TentativeType]
     public function writeDtdEntity(
         #[LanguageLevelTypeAware(['8.0' => 'string'], default: '')] $name,
         #[LanguageLevelTypeAware(['8.0' => 'string'], default: '')] $content,
-        #[LanguageLevelTypeAware(['8.0' => 'bool'], default: '')] $pe,
-        #[LanguageLevelTypeAware(['8.0' => 'string'], default: '')] $pubid,
-        #[LanguageLevelTypeAware(['8.0' => 'string'], default: '')] $sysid,
-        #[LanguageLevelTypeAware(['8.0' => 'string'], default: '')] $ndataid
+        #[LanguageLevelTypeAware(['8.0' => 'bool'], default: '')] $isParam = false,
+        #[LanguageLevelTypeAware(['8.0' => 'string|null'], default: '')] $publicId = null,
+        #[LanguageLevelTypeAware(['8.0' => 'string|null'], default: '')] $systemId = null,
+        #[LanguageLevelTypeAware(['8.0' => 'string|null'], default: '')] $notationData = null
     ): bool {}
 
     /**
