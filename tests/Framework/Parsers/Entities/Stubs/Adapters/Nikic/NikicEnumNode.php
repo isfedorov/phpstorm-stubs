@@ -2,9 +2,11 @@
 
 namespace StubTests\Sources\Parsers\Entities\Stubs\Adapters\Nikic;
 
+use PhpParser\Node\Stmt\ClassConst;
 use PhpParser\Node\Stmt\ClassMethod;
 use PhpParser\Node\Stmt\Enum_;
 use PhpParser\Node\Stmt\EnumCase;
+use StubTests\Sources\Parsers\Entities\Stubs\Nodes\ConstantNode;
 use StubTests\Sources\Parsers\Entities\Stubs\Nodes\DocCommentNode;
 use StubTests\Sources\Parsers\Entities\Stubs\Nodes\EnumNode;
 use StubTests\Sources\Parsers\Entities\Stubs\Nodes\MethodNode;
@@ -80,8 +82,24 @@ class NikicEnumNode implements EnumNode
 
     public function isFinal(): bool
     {
-        // Enums are implicitly final
-        return true;
+        // PHP does not support the `final enum` syntax — the `final` modifier is not
+        // applicable to enum declarations.  ReflectionClass::isFinal() always returns
+        // false for enums regardless of their implicit non-extensibility.  Returning
+        // false here keeps stubs in sync with what PHP reflection actually reports.
+        return false;
+    }
+
+    public function getConstants(): array
+    {
+        $constants = [];
+        foreach ($this->enum->stmts as $stmt) {
+            if ($stmt instanceof ClassConst) {
+                foreach ($stmt->consts as $const) {
+                    $constants[] = new NikicConstantNode($const, $stmt);
+                }
+            }
+        }
+        return $constants;
     }
 
     public function getDocComment(): ?DocCommentNode

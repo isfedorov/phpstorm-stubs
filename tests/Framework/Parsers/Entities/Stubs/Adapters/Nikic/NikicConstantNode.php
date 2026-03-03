@@ -61,4 +61,15 @@ class NikicConstantNode implements ConstantNode
         }
         return new NikicDocCommentNode($docComment);
     }
+
+    public function getAttributes(): array
+    {
+        $attributes = [];
+        foreach ($this->classConst->attrGroups as $attrGroup) {
+            foreach ($attrGroup->attrs as $attr) {
+                $attributes[] = new NikicAttributeNode($attr);
+            }
+        }
+        return $attributes;
+    }
 }

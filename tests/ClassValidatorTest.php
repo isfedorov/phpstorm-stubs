@@ -25,6 +25,7 @@ use StubTests\Sources\Validator\Classes\ClassMethodsOptionalParametersCheck;
 use StubTests\Sources\Validator\Classes\ClassMethodsParameterTypesCheck;
 use StubTests\Sources\Validator\Classes\MethodDeprecationCheck;
 use StubTests\Sources\Validator\Classes\ClassStaticMethodsCheck;
+use StubTests\Sources\Validator\Classes\ClassConstantsCheck;
 
 /**
  * Validates that classes from reflection exist in stubs.
@@ -265,6 +266,17 @@ class ClassValidatorTest extends ValidatorTestBase
 			$classId,
 			$phpVersion,
 			"Class {$classId} methods optional parameters check failed in PHP {$phpVersion}"
+		);
+	}
+
+	#[PhpVersionRange(PhpVersions::EARLIEST, PhpVersions::LATEST)]
+	public function checkClassConstants(string $classId, string $phpVersion): void
+	{
+		$this->executeCheck(
+			new ClassConstantsCheck(),
+			$classId,
+			$phpVersion,
+			"Class {$classId} constants check failed in PHP {$phpVersion}"
 		);
 	}
 }

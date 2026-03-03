@@ -207,6 +207,8 @@ trait SerializerHelperTrait
             'value' => $this->toJsonSafe($constant->getValue()),
             'visibility' => $constant->visibility ?? 'public',
             'isFinal' => $constant->isFinal(),
+            'sinceVersion' => $this->toJsonSafe($constant->getSinceVersion()),
+            'removedVersion' => $this->toJsonSafe($constant->getRemovedVersion()),
         ];
     }
 
@@ -340,6 +342,8 @@ trait SerializerHelperTrait
         $constant->value = $data['value'] ?? null;
         $constant->visibility = $data['visibility'] ?? 'public';
         $constant->isFinal = $data['isFinal'] ?? false;
+        $constant->setSinceVersion($data['sinceVersion'] ?? null);
+        $constant->setRemovedVersion($data['removedVersion'] ?? null);
 
         return $constant;
     }

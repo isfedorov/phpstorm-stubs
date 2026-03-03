@@ -2,6 +2,8 @@
 
 namespace StubTests\Sources\Parsers\Entities\Stubs;
 
+use StubTests\Framework\Parsers\Entities\Stubs\PhpDoc\PhpDocParserInterface;
+use StubTests\Framework\Parsers\Entities\Stubs\Versions\AvailableVersionParserInterface;
 use StubTests\Sources\Parsers\Entities\Model\PHPEnum;
 use StubTests\Sources\Parsers\Entities\Model\PHPInterface;
 use StubTests\Sources\Parsers\Entities\Stubs\Adapters\Nikic\NikicNodeExtractor;
@@ -10,17 +12,22 @@ use StubTests\Sources\Parsers\Entities\Stubs\Nodes\EnumNode;
 /**
  * Parses PHP enum nodes from AST into PHPEnum domain objects.
  * Parser-agnostic: works with any AST node implementing EnumNode interface.
- * Uses dedicated parsers for child entities (methods).
+ * Uses dedicated parsers for child entities (methods, constants).
  */
 class StubEnumParser implements MultiEntityStubParserInterface
 {
     public NodeExtractorInterface $nodeExtractor;
     private StubMethodParser $methodParser;
+    private StubClassConstantParser $constantParser;
 
-    public function __construct(?NodeExtractorInterface $nodeExtractor = null)
-    {
+    public function __construct(
+        ?NodeExtractorInterface $nodeExtractor = null,
+        ?PhpDocParserInterface $phpDocParser = null,
+        ?AvailableVersionParserInterface $versionParser = null
+    ) {
         $this->nodeExtractor = $nodeExtractor ?? new NikicNodeExtractor();
-        $this->methodParser = new StubMethodParser();
+        $this->methodParser = new StubMethodParser($phpDocParser, null, $versionParser);
+        $this->constantParser = new StubClassConstantParser($phpDocParser, $versionParser);
     }
 
     /**
@@ -67,6 +74,11 @@ class StubEnumParser implements MultiEntityStubParserInterface
             $phpInterface = new PHPInterface();
             $phpInterface->setName($interfaceName);
             $phpEnum->interfaces[] = $phpInterface;
+        }
+
+        // Constants
+        foreach ($node->getConstants() as $constantNode) {
+            $phpEnum->constants[] = $this->constantParser->parseNode($constantNode, $imports);
         }
 
         // Methods - pass namespace context for type resolution

@@ -7,6 +7,7 @@ use StubTests\Framework\Validator\ValidatorTestBase;
 use StubTests\Sources\Runner\PhpVersionRange;
 use StubTests\Sources\Runner\PhpVersions;
 use StubTests\Sources\Validator\Enums\EnumExistsCheck;
+use StubTests\Sources\Validator\Enums\EnumFinalCheck;
 use StubTests\Sources\Validator\Enums\EnumFinalMethodsCheck;
 use StubTests\Sources\Validator\Enums\EnumInterfacesCheck;
 use StubTests\Sources\Validator\Enums\EnumMethodDeprecationCheck;
@@ -16,6 +17,7 @@ use StubTests\Sources\Validator\Enums\EnumMethodsParameterTypesCheck;
 use StubTests\Sources\Validator\Enums\EnumMethodsParametersCountCheck;
 use StubTests\Sources\Validator\Enums\EnumMethodsReturnTypesCheck;
 use StubTests\Sources\Validator\Enums\EnumMethodsVisibilityCheck;
+use StubTests\Sources\Validator\Enums\EnumConstantsCheck;
 use StubTests\Sources\Validator\Enums\EnumNamespaceCheck;
 use StubTests\Sources\Validator\Enums\EnumStaticMethodsCheck;
 
@@ -84,6 +86,17 @@ class EnumValidatorTest extends ValidatorTestBase
             $enumId,
             $phpVersion,
             "Enum {$enumId} static methods check failed in PHP {$phpVersion}"
+        );
+    }
+
+    #[PhpVersionRange(PhpVersions::PHP_8_1, PhpVersions::LATEST)]
+    public function checkEnumFinal(string $enumId, string $phpVersion): void
+    {
+        $this->executeCheck(
+            new EnumFinalCheck(),
+            $enumId,
+            $phpVersion,
+            "Enum {$enumId} final validation failed in PHP {$phpVersion}"
         );
     }
 
@@ -172,6 +185,17 @@ class EnumValidatorTest extends ValidatorTestBase
             $enumId,
             $phpVersion,
             "Enum {$enumId} interfaces check failed in PHP {$phpVersion}"
+        );
+    }
+
+    #[PhpVersionRange(PhpVersions::PHP_8_1, PhpVersions::LATEST)]
+    public function checkEnumConstants(string $enumId, string $phpVersion): void
+    {
+        $this->executeCheck(
+            new EnumConstantsCheck(),
+            $enumId,
+            $phpVersion,
+            "Enum {$enumId} constants check failed in PHP {$phpVersion}"
         );
     }
 }

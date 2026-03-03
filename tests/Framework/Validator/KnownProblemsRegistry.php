@@ -49,22 +49,27 @@ class KnownProblemsRegistry
 
     /**
      * Index all problems for fast lookup.
+     *
+     * When a problem has a non-empty $entityIds list, each ID in that list
+     * is indexed separately (pointing to the same ProblemDefinition object).
+     * Otherwise the single $entityId is used.
      */
     private function indexProblems(): void
     {
         foreach ($this->provider->getProblems() as $problem) {
             $entityTypeKey = $problem->entityType->value;
-            $entityId = $problem->entityId;
+            $idsToIndex = !empty($problem->entityIds) ? $problem->entityIds : [$problem->entityId];
 
             if (!isset($this->problemsIndex[$entityTypeKey])) {
                 $this->problemsIndex[$entityTypeKey] = [];
             }
 
-            if (!isset($this->problemsIndex[$entityTypeKey][$entityId])) {
-                $this->problemsIndex[$entityTypeKey][$entityId] = [];
+            foreach ($idsToIndex as $entityId) {
+                if (!isset($this->problemsIndex[$entityTypeKey][$entityId])) {
+                    $this->problemsIndex[$entityTypeKey][$entityId] = [];
+                }
+                $this->problemsIndex[$entityTypeKey][$entityId][] = $problem;
             }
-
-            $this->problemsIndex[$entityTypeKey][$entityId][] = $problem;
         }
     }
 
@@ -188,6 +193,11 @@ class KnownProblemsRegistry
             'OptionalParametersCheck'            => CheckType::OPTIONAL_PARAMETERS,
             'InterfaceParentInterfacesCheck'      => CheckType::INTERFACE_PARENT_INTERFACES,
             'EnumInterfacesCheck'                 => CheckType::ENUM_INTERFACES,
+            'ClassFinalCheck'                     => CheckType::CLASS_FINAL,
+            'EnumFinalCheck'                      => CheckType::ENUM_FINAL,
+            'ClassConstantsCheck'                 => CheckType::CLASS_CONSTANTS,
+            'InterfaceConstantsCheck'             => CheckType::INTERFACE_CONSTANTS,
+            'EnumConstantsCheck'                  => CheckType::ENUM_CONSTANTS,
             default => null,
         };
     }

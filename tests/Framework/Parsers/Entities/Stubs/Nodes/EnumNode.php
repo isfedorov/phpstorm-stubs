@@ -56,6 +56,13 @@ interface EnumNode
     public function isFinal(): bool;
 
     /**
+     * Get the enum constants.
+     *
+     * @return ConstantNode[]
+     */
+    public function getConstants(): array;
+
+    /**
      * Get the doc comment, or null if no doc comment.
      */
     public function getDocComment(): ?DocCommentNode;

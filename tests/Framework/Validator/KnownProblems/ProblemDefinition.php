@@ -9,16 +9,22 @@ use StubTests\Sources\Runner\PhpVersionRange;
  *
  * Defines a specific entity (function/method/class) that has known issues
  * with validation for documented reasons.
+ *
+ * When $entityIds is non-empty it lists the specific sub-entity identifiers
+ * (e.g., individual constants like '\PDO::PGSQL_ASSOC') this problem covers.
+ * $entityId then serves as a grouping label (e.g., '\PDO').
+ * When $entityIds is empty, $entityId is the single entity identifier.
  */
 readonly class ProblemDefinition
 {
     /**
-     * @param EntityType $entityType Type of entity (function, method, class)
-     * @param string $entityId Fully qualified entity identifier (e.g., "\dba_fetch", "DateTime::format")
+     * @param EntityType $entityType Type of entity (function, method, class, class_constant, …)
+     * @param string $entityId Fully qualified entity identifier, or a grouping label when $entityIds is non-empty
      * @param ProblemType $type Category of problem
      * @param CheckType[] $affectedChecks List of validator checks that should skip this entity
      * @param PhpVersionRange $versionRange PHP version range where this problem exists
      * @param string $reason Human-readable explanation of why validation is skipped
+     * @param string[] $entityIds When non-empty, the problem applies to each ID in this list instead of $entityId
      */
     public function __construct(
         public EntityType $entityType,
@@ -26,7 +32,8 @@ readonly class ProblemDefinition
         public ProblemType $type,
         public array $affectedChecks,
         public PhpVersionRange $versionRange,
-        public string $reason
+        public string $reason,
+        public array $entityIds = [],
     ) {
         // Validate that affectedChecks only contains CheckType instances
         foreach ($affectedChecks as $check) {
@@ -34,6 +41,11 @@ readonly class ProblemDefinition
                 throw new \InvalidArgumentException(
                     'All affected checks must be instances of CheckType enum'
                 );
+            }
+        }
+        foreach ($entityIds as $id) {
+            if (!is_string($id)) {
+                throw new \InvalidArgumentException('All entityIds must be strings');
             }
         }
     }

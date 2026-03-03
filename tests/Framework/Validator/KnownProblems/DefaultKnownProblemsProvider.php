@@ -775,6 +775,320 @@ class DefaultKnownProblemsProvider implements KnownProblemsProvider
                 versionRange: new PhpVersionRange(PhpVersions::PHP_8_0, PhpVersions::LATEST),
                 reason: 'DatePeriod::__construct has 3 overloaded forms: (start, interval, end, options), (start, interval, recurrences, options), and (isostr, options). Reflection marks $interval and $end as optional due to multi-arity overloading. Stubs express each overload separately.'
             ),
+
+            // ── ClassFinalCheck known problems ──────────────────────────────────────
+            // The `final` modifier cannot be expressed in a version-aware way in stubs,
+            // so the stub must match the latest PHP version.  For classes that became
+            // final after their introduction, the check reports a mismatch for the
+            // older versions where reflection still says non-final.
+
+            // DOMException - became final in PHP 7.0; stubs match PHP 7.0+
+            new ProblemDefinition(
+                entityType: EntityType::CLASS_TYPE,
+                entityId: '\\DOMException',
+                type: ProblemType::INTERNAL_IMPLEMENTATION,
+                affectedChecks: [CheckType::CLASS_FINAL],
+                versionRange: new PhpVersionRange(PhpVersions::PHP_5_6, PhpVersions::PHP_5_6),
+                reason: 'DOMException was made final in PHP 7.0. Stubs declare it final to match PHP 7.0+ behaviour; PHP 5.6 reflection reports non-final.'
+            ),
+
+            // GMP - became final in PHP 8.4; stubs match PHP 8.4
+            new ProblemDefinition(
+                entityType: EntityType::CLASS_TYPE,
+                entityId: '\\GMP',
+                type: ProblemType::INTERNAL_IMPLEMENTATION,
+                affectedChecks: [CheckType::CLASS_FINAL],
+                versionRange: new PhpVersionRange(PhpVersions::EARLIEST, PhpVersions::PHP_8_3),
+                reason: 'GMP was made final in PHP 8.4. Stubs declare it final to match the current PHP behaviour; PHP 5.6–8.3 reflection reports non-final.'
+            ),
+
+            // ReflectionGenerator - introduced in PHP 7.0, became final in PHP 8.0
+            new ProblemDefinition(
+                entityType: EntityType::CLASS_TYPE,
+                entityId: '\\ReflectionGenerator',
+                type: ProblemType::INTERNAL_IMPLEMENTATION,
+                affectedChecks: [CheckType::CLASS_FINAL],
+                versionRange: new PhpVersionRange(PhpVersions::PHP_7_0, PhpVersions::PHP_7_4),
+                reason: 'ReflectionGenerator was made final in PHP 8.0. Stubs declare it final; PHP 7.0–7.4 reflection reports non-final.'
+            ),
+
+            // ReflectionReference - introduced in PHP 7.4, became final in PHP 8.0
+            new ProblemDefinition(
+                entityType: EntityType::CLASS_TYPE,
+                entityId: '\\ReflectionReference',
+                type: ProblemType::INTERNAL_IMPLEMENTATION,
+                affectedChecks: [CheckType::CLASS_FINAL],
+                versionRange: new PhpVersionRange(PhpVersions::PHP_7_4, PhpVersions::PHP_7_4),
+                reason: 'ReflectionReference was introduced in PHP 7.4 and made final in PHP 8.0. Stubs declare it final; PHP 7.4 reflection reports non-final.'
+            ),
+
+            // __PHP_Incomplete_Class - became final in PHP 8.0; stubs match PHP 8.0+
+            new ProblemDefinition(
+                entityType: EntityType::CLASS_TYPE,
+                entityId: '\\__PHP_Incomplete_Class',
+                type: ProblemType::INTERNAL_IMPLEMENTATION,
+                affectedChecks: [CheckType::CLASS_FINAL],
+                versionRange: new PhpVersionRange(PhpVersions::EARLIEST, PhpVersions::PHP_7_4),
+                reason: '__PHP_Incomplete_Class was made final in PHP 8.0. Stubs declare it final; PHP 5.6–7.4 reflection reports non-final.'
+            ),
+
+            // mysqli_sql_exception - became final in PHP 7.0; stubs match PHP 7.0+
+            new ProblemDefinition(
+                entityType: EntityType::CLASS_TYPE,
+                entityId: '\\mysqli_sql_exception',
+                type: ProblemType::INTERNAL_IMPLEMENTATION,
+                affectedChecks: [CheckType::CLASS_FINAL],
+                versionRange: new PhpVersionRange(PhpVersions::PHP_5_6, PhpVersions::PHP_5_6),
+                reason: 'mysqli_sql_exception was made final in PHP 7.0. Stubs declare it final to match PHP 7.0+ behaviour; PHP 5.6 reflection reports non-final.'
+            ),
+
+            // PDO - driver-specific constants not present in standard PHP builds
+            new ProblemDefinition(
+                entityType: EntityType::CLASS_CONSTANT,
+                entityId: '\\PDO',
+                type: ProblemType::INTERNAL_IMPLEMENTATION,
+                affectedChecks: [CheckType::CLASS_CONSTANTS],
+                versionRange: new PhpVersionRange(PhpVersions::EARLIEST, PhpVersions::LATEST),
+                reason: 'PDO stubs include driver-specific constants (PGSQL_*, SQLSRV_*, OCI_*, FB_*) that are only available when the corresponding database driver extension is installed. These constants are absent from reflection in standard PHP builds without those drivers.',
+                entityIds: [
+                    '\\PDO::PGSQL_ASSOC',
+                    '\\PDO::PGSQL_ATTR_DISABLE_NATIVE_PREPARED_STATEMENT',
+                    '\\PDO::PGSQL_ATTR_DISABLE_PREPARES',
+                    '\\PDO::PGSQL_BAD_RESPONSE',
+                    '\\PDO::PGSQL_BOTH',
+                    '\\PDO::PGSQL_TRANSACTION_IDLE',
+                    '\\PDO::PGSQL_TRANSACTION_ACTIVE',
+                    '\\PDO::PGSQL_TRANSACTION_INTRANS',
+                    '\\PDO::PGSQL_TRANSACTION_INERROR',
+                    '\\PDO::PGSQL_TRANSACTION_UNKNOWN',
+                    '\\PDO::PGSQL_CONNECT_ASYNC',
+                    '\\PDO::PGSQL_CONNECT_FORCE_NEW',
+                    '\\PDO::PGSQL_CONNECTION_AUTH_OK',
+                    '\\PDO::PGSQL_CONNECTION_AWAITING_RESPONSE',
+                    '\\PDO::PGSQL_CONNECTION_BAD',
+                    '\\PDO::PGSQL_CONNECTION_OK',
+                    '\\PDO::PGSQL_CONNECTION_MADE',
+                    '\\PDO::PGSQL_CONNECTION_SETENV',
+                    '\\PDO::PGSQL_CONNECTION_SSL_STARTUP',
+                    '\\PDO::PGSQL_CONNECTION_STARTED',
+                    '\\PDO::PGSQL_COMMAND_OK',
+                    '\\PDO::PGSQL_CONV_FORCE_NULL',
+                    '\\PDO::PGSQL_CONV_IGNORE_DEFAULT',
+                    '\\PDO::PGSQL_CONV_IGNORE_NOT_NULL',
+                    '\\PDO::PGSQL_COPY_IN',
+                    '\\PDO::PGSQL_COPY_OUT',
+                    '\\PDO::PGSQL_DIAG_CONTEXT',
+                    '\\PDO::PGSQL_DIAG_INTERNAL_POSITION',
+                    '\\PDO::PGSQL_DIAG_INTERNAL_QUERY',
+                    '\\PDO::PGSQL_DIAG_MESSAGE_DETAIL',
+                    '\\PDO::PGSQL_DIAG_MESSAGE_HINT',
+                    '\\PDO::PGSQL_DIAG_MESSAGE_PRIMARY',
+                    '\\PDO::PGSQL_DIAG_SEVERITY',
+                    '\\PDO::PGSQL_DIAG_SOURCE_FILE',
+                    '\\PDO::PGSQL_DIAG_SOURCE_FUNCTION',
+                    '\\PDO::PGSQL_DIAG_SOURCE_LINE',
+                    '\\PDO::PGSQL_DIAG_SQLSTATE',
+                    '\\PDO::PGSQL_DIAG_STATEMENT_POSITION',
+                    '\\PDO::PGSQL_DML_ASYNC',
+                    '\\PDO::PGSQL_DML_EXEC',
+                    '\\PDO::PGSQL_DML_NO_CONV',
+                    '\\PDO::PGSQL_DML_STRING',
+                    '\\PDO::PGSQL_DML_ESCAPE',
+                    '\\PDO::PGSQL_EMPTY_QUERY',
+                    '\\PDO::PGSQL_ERRORS_DEFAULT',
+                    '\\PDO::PGSQL_ERRORS_TERSE',
+                    '\\PDO::PGSQL_ERRORS_VERBOSE',
+                    '\\PDO::PGSQL_FATAL_ERROR',
+                    '\\PDO::PGSQL_NONFATAL_ERROR',
+                    '\\PDO::PGSQL_NOTICE_ALL',
+                    '\\PDO::PGSQL_NOTICE_CLEAR',
+                    '\\PDO::PGSQL_NOTICE_LAST',
+                    '\\PDO::PGSQL_NUM',
+                    '\\PDO::PGSQL_POLLING_ACTIVE',
+                    '\\PDO::PGSQL_POLLING_FAILED',
+                    '\\PDO::PGSQL_POLLING_OK',
+                    '\\PDO::PGSQL_POLLING_READING',
+                    '\\PDO::PGSQL_POLLING_WRITING',
+                    '\\PDO::PGSQL_SEEK_CUR',
+                    '\\PDO::PGSQL_SEEK_END',
+                    '\\PDO::PGSQL_SEEK_SET',
+                    '\\PDO::PGSQL_STATUS_LONG',
+                    '\\PDO::PGSQL_STATUS_STRING',
+                    '\\PDO::PGSQL_TUPLES_OK',
+                    '\\PDO::SQLSRV_TXN_READ_UNCOMMITTED',
+                    '\\PDO::SQLSRV_TXN_READ_COMMITTED',
+                    '\\PDO::SQLSRV_TXN_REPEATABLE_READ',
+                    '\\PDO::SQLSRV_TXN_SNAPSHOT',
+                    '\\PDO::SQLSRV_TXN_SERIALIZABLE',
+                    '\\PDO::SQLSRV_ENCODING_BINARY',
+                    '\\PDO::SQLSRV_ENCODING_SYSTEM',
+                    '\\PDO::SQLSRV_ENCODING_UTF8',
+                    '\\PDO::SQLSRV_ENCODING_DEFAULT',
+                    '\\PDO::SQLSRV_ATTR_ENCODING',
+                    '\\PDO::SQLSRV_ATTR_QUERY_TIMEOUT',
+                    '\\PDO::SQLSRV_ATTR_DIRECT_QUERY',
+                    '\\PDO::SQLSRV_ATTR_CURSOR_SCROLL_TYPE',
+                    '\\PDO::SQLSRV_ATTR_CLIENT_BUFFER_MAX_KB_SIZE',
+                    '\\PDO::SQLSRV_ATTR_FETCHES_NUMERIC_TYPE',
+                    '\\PDO::SQLSRV_ATTR_FETCHES_DATETIME_TYPE',
+                    '\\PDO::SQLSRV_ATTR_FORMAT_DECIMALS',
+                    '\\PDO::SQLSRV_ATTR_DECIMAL_PLACES',
+                    '\\PDO::SQLSRV_ATTR_DATA_CLASSIFICATION',
+                    '\\PDO::SQLSRV_PARAM_OUT_DEFAULT_SIZE',
+                    '\\PDO::SQLSRV_CURSOR_KEYSET',
+                    '\\PDO::SQLSRV_CURSOR_DYNAMIC',
+                    '\\PDO::SQLSRV_CURSOR_STATIC',
+                    '\\PDO::SQLSRV_CURSOR_BUFFERED',
+                    '\\PDO::OCI_ATTR_ACTION',
+                    '\\PDO::OCI_ATTR_CLIENT_INFO',
+                    '\\PDO::OCI_ATTR_CLIENT_IDENTIFIER',
+                    '\\PDO::OCI_ATTR_MODULE',
+                    '\\PDO::OCI_ATTR_CALL_TIMEOUT',
+                    '\\PDO::FB_ATTR_DATE_FORMAT',
+                    '\\PDO::FB_ATTR_TIME_FORMAT',
+                    '\\PDO::FB_ATTR_TIMESTAMP_FORMAT',
+                    '\\PDO::MYSQL_ATTR_MAX_BUFFER_SIZE',
+                    '\\PDO::MYSQL_ATTR_READ_DEFAULT_FILE',
+                    '\\PDO::MYSQL_ATTR_READ_DEFAULT_GROUP',
+                ],
+            ),
+
+            // Normalizer - ICU-version-dependent constants (NFKC_CF, FORM_KC_CF, OPTION_DEFAULT)
+            new ProblemDefinition(
+                entityType: EntityType::CLASS_CONSTANT,
+                entityId: '\\Normalizer',
+                type: ProblemType::INTERNAL_IMPLEMENTATION,
+                affectedChecks: [CheckType::CLASS_CONSTANTS],
+                versionRange: new PhpVersionRange(PhpVersions::EARLIEST, PhpVersions::LATEST),
+                reason: 'Normalizer::NFKC_CF, FORM_KC_CF, and OPTION_DEFAULT depend on the ICU library version bundled with PHP. These constants require ICU 60+ and are absent from reflection when an older ICU is used.',
+                entityIds: [
+                    '\\Normalizer::NFKC_CF',
+                    '\\Normalizer::FORM_KC_CF',
+                    '\\Normalizer::OPTION_DEFAULT',
+                ],
+            ),
+
+            // Normalizer::NONE - absent from PHP 8.0 reflection (ICU build gap)
+            new ProblemDefinition(
+                entityType: EntityType::CLASS_CONSTANT,
+                entityId: '\\Normalizer::NONE',
+                type: ProblemType::INTERNAL_IMPLEMENTATION,
+                affectedChecks: [CheckType::CLASS_CONSTANTS],
+                versionRange: new PhpVersionRange(PhpVersions::PHP_8_0, PhpVersions::PHP_8_0),
+                reason: 'Normalizer::NONE is absent from reflection in PHP 8.0 builds on this machine. This appears to be an ICU version gap specific to the PHP 8.0 build.',
+            ),
+
+            // NumberFormatter - CURRENCY_ACCOUNTING requires ICU 53+ (not present in PHP 5.6-7.3 builds)
+            new ProblemDefinition(
+                entityType: EntityType::CLASS_CONSTANT,
+                entityId: '\\NumberFormatter::CURRENCY_ACCOUNTING',
+                type: ProblemType::INTERNAL_IMPLEMENTATION,
+                affectedChecks: [CheckType::CLASS_CONSTANTS],
+                versionRange: new PhpVersionRange(PhpVersions::EARLIEST, PhpVersions::PHP_7_3),
+                reason: 'NumberFormatter::CURRENCY_ACCOUNTING requires ICU 53+. PHP 5.6-7.3 builds typically bundle an older ICU version that does not include this constant.',
+            ),
+
+            // IntlDateFormatter - RELATIVE_* constants require ICU 64+ (not present in PHP 5.6-8.3 builds)
+            new ProblemDefinition(
+                entityType: EntityType::CLASS_CONSTANT,
+                entityId: '\\IntlDateFormatter',
+                type: ProblemType::INTERNAL_IMPLEMENTATION,
+                affectedChecks: [CheckType::CLASS_CONSTANTS],
+                versionRange: new PhpVersionRange(PhpVersions::EARLIEST, PhpVersions::PHP_8_3),
+                reason: 'IntlDateFormatter::RELATIVE_FULL, RELATIVE_LONG, RELATIVE_MEDIUM, and RELATIVE_SHORT require ICU 64+. PHP builds before 8.4 typically bundle an older ICU version that does not include these constants.',
+                entityIds: [
+                    '\\IntlDateFormatter::RELATIVE_FULL',
+                    '\\IntlDateFormatter::RELATIVE_LONG',
+                    '\\IntlDateFormatter::RELATIVE_MEDIUM',
+                    '\\IntlDateFormatter::RELATIVE_SHORT',
+                    '\\IntlDateFormatter::PATTERN',
+                ],
+            ),
+
+            // Spoofchecker - ICU-dependent constants absent from PHP 5.6-8.2 builds
+            new ProblemDefinition(
+                entityType: EntityType::CLASS_CONSTANT,
+                entityId: '\\Spoofchecker',
+                type: ProblemType::INTERNAL_IMPLEMENTATION,
+                affectedChecks: [CheckType::CLASS_CONSTANTS],
+                versionRange: new PhpVersionRange(PhpVersions::EARLIEST, PhpVersions::PHP_8_2),
+                reason: 'Spoofchecker::ASCII, HIGHLY_RESTRICTIVE, MODERATELY_RESTRICTIVE, MINIMALLY_RESTRICTIVE, UNRESTRICTIVE, and SINGLE_SCRIPT_RESTRICTIVE depend on the ICU library version. These constants are absent from reflection in PHP 5.6-8.2 builds that bundle older ICU versions.',
+                entityIds: [
+                    '\\Spoofchecker::ASCII',
+                    '\\Spoofchecker::HIGHLY_RESTRICTIVE',
+                    '\\Spoofchecker::MODERATELY_RESTRICTIVE',
+                    '\\Spoofchecker::MINIMALLY_RESTRICTIVE',
+                    '\\Spoofchecker::UNRESTRICTIVE',
+                    '\\Spoofchecker::SINGLE_SCRIPT_RESTRICTIVE',
+                    '\\Spoofchecker::MIXED_NUMBERS',
+                    '\\Spoofchecker::HIDDEN_OVERLAY',
+                ],
+            ),
+
+            // Spoofchecker - MIXED_NUMBERS and HIDDEN_OVERLAY values changed in ICU 75+ (PHP 8.4 build)
+            new ProblemDefinition(
+                entityType: EntityType::CLASS_CONSTANT,
+                entityId: '\\Spoofchecker',
+                type: ProblemType::INTERNAL_IMPLEMENTATION,
+                affectedChecks: [CheckType::CLASS_CONSTANTS],
+                versionRange: new PhpVersionRange(PhpVersions::PHP_8_4, PhpVersions::PHP_8_4),
+                reason: 'Spoofchecker::MIXED_NUMBERS and HIDDEN_OVERLAY values changed from 1/2 to 128/256 in ICU 75+. The PHP 8.4 build on this machine bundles ICU 75+ while the stubs document the older values.',
+                entityIds: [
+                    '\\Spoofchecker::MIXED_NUMBERS',
+                    '\\Spoofchecker::HIDDEN_OVERLAY',
+                ],
+            ),
+
+            // ZipArchive - libzip-version-dependent constants absent from PHP 8.0-8.2 builds
+            new ProblemDefinition(
+                entityType: EntityType::CLASS_CONSTANT,
+                entityId: '\\ZipArchive',
+                type: ProblemType::INTERNAL_IMPLEMENTATION,
+                affectedChecks: [CheckType::CLASS_CONSTANTS],
+                versionRange: new PhpVersionRange(PhpVersions::PHP_8_0, PhpVersions::PHP_8_2),
+                reason: 'Some ZipArchive constants depend on the libzip version bundled with PHP. Constants added in newer libzip releases are absent from reflection in PHP 8.0-8.2 builds that bundle older libzip versions.',
+                entityIds: [
+                    '\\ZipArchive::FL_OPEN_FILE_NOW',
+                    '\\ZipArchive::CM_ZSTD',
+                    '\\ZipArchive::ER_DATA_LENGTH',
+                    '\\ZipArchive::ER_NOT_ALLOWED',
+                    '\\ZipArchive::AFL_RDONLY',
+                    '\\ZipArchive::AFL_IS_TORRENTZIP',
+                    '\\ZipArchive::AFL_WANT_TORRENTZIP',
+                    '\\ZipArchive::AFL_CREATE_OR_KEEP_FILE_FOR_EMPTY_ARCHIVE',
+                    '\\ZipArchive::LENGTH_TO_END',
+                    '\\ZipArchive::LENGTH_UNCHECKED',
+                ],
+            ),
+
+            // IntlCalendar - FIELD_FIELD_COUNT value is ICU-version-dependent
+            new ProblemDefinition(
+                entityType: EntityType::CLASS_CONSTANT,
+                entityId: '\\IntlCalendar::FIELD_FIELD_COUNT',
+                type: ProblemType::INTERNAL_IMPLEMENTATION,
+                affectedChecks: [CheckType::CLASS_CONSTANTS],
+                versionRange: new PhpVersionRange(PhpVersions::PHP_8_4, PhpVersions::PHP_8_4),
+                reason: 'IntlCalendar::FIELD_FIELD_COUNT value depends on the ICU library version. The PHP 8.4 build on this machine uses ICU 75+ which reports 24, while the stubs document the older value of 23.',
+            ),
+
+            // IntlChar - multiple constants have ICU-version-dependent values
+            new ProblemDefinition(
+                entityType: EntityType::CLASS_CONSTANT,
+                entityId: '\\IntlChar',
+                type: ProblemType::INTERNAL_IMPLEMENTATION,
+                affectedChecks: [CheckType::CLASS_CONSTANTS],
+                versionRange: new PhpVersionRange(PhpVersions::PHP_8_4, PhpVersions::PHP_8_4),
+                reason: 'Multiple IntlChar constants (UNICODE_VERSION, PROPERTY_BINARY_LIMIT, PROPERTY_INT_LIMIT, BLOCK_CODE_COUNT) reflect the Unicode/ICU version and change with each ICU update. The PHP 8.4 build on this machine uses ICU 75+ (Unicode 16.0) while the stubs document older values.',
+                entityIds: [
+                    '\\IntlChar::UNICODE_VERSION',
+                    '\\IntlChar::PROPERTY_BINARY_LIMIT',
+                    '\\IntlChar::PROPERTY_INT_LIMIT',
+                    '\\IntlChar::BLOCK_CODE_COUNT',
+                    '\\IntlChar::PROPERTY_OTHER_PROPERTY_LIMIT',
+                    '\\IntlChar::JG_COUNT',
+                    '\\IntlChar::LB_COUNT',
+                ],
+            ),
         ];
 
         return $this->problems;

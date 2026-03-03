@@ -40,7 +40,7 @@ class StubClassParser implements MultiEntityStubParserInterface
         $this->versionParser = $versionParser ?? new DefaultAvailableVersionParser();
         $this->methodParser = new StubMethodParser($phpDocParser, $typeParser, $versionParser);
         $this->propertyParser = new StubPropertyParser($phpDocParser, $typeParser, $versionParser);
-        $this->constantParser = new StubClassConstantParser();
+        $this->constantParser = new StubClassConstantParser($phpDocParser, $versionParser);
     }
 
     /**
@@ -119,7 +119,7 @@ class StubClassParser implements MultiEntityStubParserInterface
 
         // Constants
         foreach ($node->getConstants() as $constantNode) {
-            $phpClass->constants[] = $this->constantParser->parseNode($constantNode);
+            $phpClass->constants[] = $this->constantParser->parseNode($constantNode, $imports);
         }
 
         return $phpClass;

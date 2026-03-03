@@ -124,4 +124,30 @@ enum CheckType: string
      * Validates that directly implemented interfaces in enum stubs match reflection.
      */
     case ENUM_INTERFACES = 'EnumInterfacesCheck';
+
+    /**
+     * Validates that the `final` modifier on a class in stubs matches reflection.
+     * Only meaningful against the latest PHP version, as stubs cannot express version-specific finality.
+     */
+    case CLASS_FINAL = 'ClassFinalCheck';
+
+    /**
+     * Validates that the `final` modifier on an enum in stubs matches reflection.
+     */
+    case ENUM_FINAL = 'EnumFinalCheck';
+
+    /**
+     * Validates that constants (existence, visibility, value) in class stubs match reflection.
+     */
+    case CLASS_CONSTANTS = 'ClassConstantsCheck';
+
+    /**
+     * Validates that constants (existence, visibility, value) in interface stubs match reflection.
+     */
+    case INTERFACE_CONSTANTS = 'InterfaceConstantsCheck';
+
+    /**
+     * Validates that constants (existence, visibility, value) in enum stubs match reflection.
+     */
+    case ENUM_CONSTANTS = 'EnumConstantsCheck';
 }

@@ -41,6 +41,21 @@ enum EntityType: string
     case PROPERTY = 'properties';
 
     /**
+     * Class constants (e.g., DateTime::ATOM)
+     */
+    case CLASS_CONSTANT = 'class_constants';
+
+    /**
+     * Interface constants (e.g., Countable::COUNT)
+     */
+    case INTERFACE_CONSTANT = 'interface_constants';
+
+    /**
+     * Enum constants (e.g., Status::ACTIVE)
+     */
+    case ENUM_CONSTANT = 'enum_constants';
+
+    /**
      * Get entity type from entity ID format.
      *
      * @param string $entityId Entity ID like "\dba_fetch" or "DateTime::format"
