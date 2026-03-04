@@ -424,13 +424,15 @@ class ClassMethodsExistCheckTest extends CheckTestCase
 
     public function testVersionBoundaryRemovedVersionEqualsPhpVersion(): void
     {
-        // removedVersion == phpVersion → version_compare('7.4','7.4','<=') is true → method IS included
+        // removedVersion is the EXCLUSIVE upper bound (first version where element is gone).
+        // removedVersion='7.5' means "available up to and including PHP 7.4".
+        // version_compare('7.4','7.5','<') is true → method IS included for PHP 7.4.
         $className = '\MyClass';
 
         $reflectionMethods = [$this->createMockMethod('lastVersionMethod')];
         $reflectionClass = $this->createMockClassWithProperties($className, null, null, null, $reflectionMethods);
 
-        $stubMethods = [$this->makeMethod('lastVersionMethod', null, '7.4')];  // removed at exactly 7.4
+        $stubMethods = [$this->makeMethod('lastVersionMethod', null, '7.5')];  // excluded from 7.5+, so available in 7.4
         $stubClass = $this->createMockClassWithProperties($className, null, null, null, $stubMethods);
 
         $reflectionProvider = $this->createMockReflectionProvider([], [$reflectionClass]);
@@ -440,7 +442,7 @@ class ClassMethodsExistCheckTest extends CheckTestCase
         $check = new ClassMethodsExistCheck($reflectionProvider);
         $result = $check->run($stubsManager, $className, '7.4');
 
-        $this->assertFalse($result->hasFailures(), 'Method with removedVersion==phpVersion should still be included');
+        $this->assertFalse($result->hasFailures(), 'Method with removedVersion as exclusive boundary should be included at phpVersion < removedVersion');
     }
 
     // ── Interface method traversal ────────────────────────────────────────────

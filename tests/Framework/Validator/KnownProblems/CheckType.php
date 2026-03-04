@@ -157,4 +157,10 @@ enum CheckType: string
      * Validates that constants (existence, visibility, value) in enum stubs match reflection.
      */
     case ENUM_CONSTANTS = 'EnumConstantsCheck';
+
+    /**
+     * Validates that the `readonly` modifier on properties in stubs matches reflection.
+     * Relevant for PHP 8.1+ where readonly properties were introduced.
+     */
+    case CLASS_PROPERTIES_READONLY = 'ClassPropertyReadonlyCheck';
 }

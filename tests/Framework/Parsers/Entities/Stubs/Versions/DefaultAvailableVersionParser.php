@@ -4,6 +4,7 @@ namespace StubTests\Framework\Parsers\Entities\Stubs\Versions;
 
 use StubTests\Framework\Parsers\Entities\Stubs\PhpDoc\ParsedPhpDoc;
 use StubTests\Sources\Parsers\Entities\Stubs\Nodes\AttributeNode;
+use StubTests\Sources\Runner\PhpVersions;
 
 /**
  * Default implementation of available version parser.
@@ -28,7 +29,10 @@ class DefaultAvailableVersionParser implements AvailableVersionParserInterface
             $sinceVersion = $availability['from'];
         }
         if ($availability['to'] !== null) {
-            $removedVersion = $availability['to'];
+            // ElementAvailable(to: X.Y) is inclusive: the element IS available in X.Y.
+            // removedVersion semantics use exclusive comparison (< removedVersion),
+            // so convert X.Y → nextPhpVersion(X.Y) to keep filter logic uniform.
+            $removedVersion = $this->nextPhpVersion($availability['to']);
         }
 
         return [
@@ -101,6 +105,21 @@ class DefaultAvailableVersionParser implements AvailableVersionParserInterface
 
         // Already fully qualified or not aliased
         return $name;
+    }
+
+    /**
+     * Return the next known PHP version after $version.
+     * If $version is not a known version or is the last one, fall back to incrementing the minor part.
+     */
+    private function nextPhpVersion(string $version): string
+    {
+        $versions = array_map(fn(PhpVersions $v) => $v->value, PhpVersions::cases());
+        $idx      = array_search($version, $versions, true);
+        if ($idx !== false && $idx < count($versions) - 1) {
+            return $versions[$idx + 1];
+        }
+        [$major, $minor] = explode('.', $version, 2);
+        return $major . '.' . ((int)$minor + 1);
     }
 
     /**

@@ -38,6 +38,7 @@ class ReflectionPropertyParser implements Parser
         $property = new PHPProperty();
         $property->setName($object->getName());
         $property->setIsStatic($object->isStatic());
+        $property->setIsReadonly($object->isReadonly());
         if ($object->isProtected()) {
             $property->setAccess(new ProtectedAccessModifier());
         } elseif ($object->isPrivate()) {

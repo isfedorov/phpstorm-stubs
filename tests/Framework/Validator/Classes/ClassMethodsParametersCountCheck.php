@@ -58,7 +58,7 @@ class ClassMethodsParametersCountCheck extends AbstractMethodFlagCheck
             $removedVersion = $param->getRemovedVersion();
 
             $available = ($sinceVersion === null || version_compare($phpVersion, $sinceVersion, '>='))
-                && ($removedVersion === null || version_compare($phpVersion, $removedVersion, '<='));
+                && ($removedVersion === null || version_compare($phpVersion, $removedVersion, '<'));
 
             if ($available) {
                 $availableParamNames[$param->getName()] = true;

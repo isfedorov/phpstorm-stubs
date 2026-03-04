@@ -64,7 +64,7 @@ class FunctionOptionalParametersCheck extends AbstractCallableCheck
             $removedVersion = $param->getRemovedVersion();
 
             $available = ($sinceVersion === null || version_compare($phpVersion, $sinceVersion, '>='))
-                && ($removedVersion === null || version_compare($phpVersion, $removedVersion, '<='));
+                && ($removedVersion === null || version_compare($phpVersion, $removedVersion, '<'));
 
             if ($available) {
                 // Last definition wins (handles placeholder + variadic same-name pairs)

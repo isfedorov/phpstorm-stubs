@@ -158,7 +158,7 @@ class ParameterTypesCheck extends AbstractCallableCheck
             $removedVersion = method_exists($param, 'getRemovedVersion') ? $param->getRemovedVersion() : null;
 
             $isAvailableSince = $sinceVersion === null || version_compare($phpVersion, $sinceVersion, '>=');
-            $isNotRemoved     = $removedVersion === null || version_compare($phpVersion, $removedVersion, '<=');
+            $isNotRemoved     = $removedVersion === null || version_compare($phpVersion, $removedVersion, '<');
 
             if ($isAvailableSince && $isNotRemoved) {
                 $filtered[] = $param;

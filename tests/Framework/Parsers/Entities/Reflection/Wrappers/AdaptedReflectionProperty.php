@@ -121,6 +121,12 @@ class AdaptedReflectionProperty extends AbstractReflectionAdapter
         return $this->getData('isDefault', false);
     }
 
+    public function isReadonly()
+    {
+        // PHP's ReflectionProperty method is isReadOnly() (capital O), stored under that key
+        return $this->getData('isReadOnly', false);
+    }
+
     public function getDeclaringClass()
     {
         // Return a minimal wrapper with just the name

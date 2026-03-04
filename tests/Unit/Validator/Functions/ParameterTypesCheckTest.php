@@ -224,7 +224,9 @@ class ParameterTypesCheckTest extends CheckTestCase
 
     public function testParameterIncludedAtBoundaryVersion(): void
     {
-        // Arrange - Parameter with 'to: 8.2' should be included in PHP 8.2
+        // removedVersion is the EXCLUSIVE upper bound (first version where param is gone).
+        // removedVersion='8.3' means "available up to and including PHP 8.2".
+        // version_compare('8.2','8.3','<') is true → param IS included for PHP 8.2.
         $functionName = 'imagerotate';
 
         // Reflection for PHP 8.2 has 4 parameters (including $ignore_transparent)
@@ -236,12 +238,11 @@ class ParameterTypesCheckTest extends CheckTestCase
             $reflectionParam1, $reflectionParam2, $reflectionParam3, $reflectionParam4
         ]);
 
-        // Stubs have same 4 parameters, with last one having removedVersion='8.2'
+        // Stubs have same 4 parameters; last one has removedVersion='8.3' (excluded from 8.3+, available in 8.2)
         $stubParam1 = $this->createMockParameter('image', $this->createType('GdImage'));
         $stubParam2 = $this->createMockParameter('angle', $this->createType('float'));
         $stubParam3 = $this->createMockParameter('background_color', $this->createType('int'));
-        // Parameter available up to and including PHP 8.2 (removed in 8.3)
-        $stubParam4 = $this->createMockParameter('ignore_transparent', $this->createType('bool'), null, '8.2');
+        $stubParam4 = $this->createMockParameter('ignore_transparent', $this->createType('bool'), null, '8.3');
 
         $stubFunction = $this->createMockFunction($functionName, [
             $stubParam1, $stubParam2, $stubParam3, $stubParam4
@@ -253,11 +254,11 @@ class ParameterTypesCheckTest extends CheckTestCase
 
         $check = new ParameterTypesCheck($reflectionProvider);
 
-        // Act - Test with PHP 8.2 (the boundary version)
+        // Act - Test with PHP 8.2 (phpVersion < removedVersion → parameter is included)
         $result = $check->run($stubsManager, $functionName, '8.2');
 
-        // Assert - Should succeed because parameter with 'to: 8.2' is included in PHP 8.2
-        $this->assertFalse($result->hasFailures(), 'Expected no failures when parameter is at boundary version');
+        // Assert - Should succeed because parameter with removedVersion='8.3' is included in PHP 8.2
+        $this->assertFalse($result->hasFailures(), 'Expected no failures when phpVersion < removedVersion (exclusive boundary)');
         $this->assertEquals(1, $result->getSuccessCount());
     }
 

@@ -25,6 +25,7 @@ use StubTests\Sources\Validator\Classes\ClassMethodsOptionalParametersCheck;
 use StubTests\Sources\Validator\Classes\ClassMethodsParameterTypesCheck;
 use StubTests\Sources\Validator\Classes\ClassMethodsParameterNamesCheck;
 use StubTests\Sources\Validator\Classes\ClassMethodsTentativeReturnTypeCheck;
+use StubTests\Sources\Validator\Classes\ClassPropertyReadonlyCheck;
 use StubTests\Sources\Validator\Classes\MethodDeprecationCheck;
 use StubTests\Sources\Validator\Classes\ClassStaticMethodsCheck;
 use StubTests\Sources\Validator\Classes\ClassConstantsCheck;
@@ -301,6 +302,17 @@ class ClassValidatorTest extends ValidatorTestBase
 			$classId,
 			$phpVersion,
 			"Class {$classId} methods tentative return type check failed in PHP {$phpVersion}"
+		);
+	}
+
+	#[PhpVersionRange(PhpVersions::PHP_8_1, PhpVersions::LATEST)]
+	public function checkClassPropertyReadonly(string $classId, string $phpVersion): void
+	{
+		$this->executeCheck(
+			new ClassPropertyReadonlyCheck(),
+			$classId,
+			$phpVersion,
+			"Class {$classId} property readonly check failed in PHP {$phpVersion}"
 		);
 	}
 }

@@ -78,7 +78,7 @@ abstract class AbstractCallableCheck extends AbstractReflectionCheck
             $removedVersion = method_exists($candidate, 'getRemovedVersion') ? $candidate->getRemovedVersion() : null;
 
             $isAvailableSince = $sinceVersion === null || version_compare($phpVersion, $sinceVersion, '>=');
-            $isNotRemoved     = $removedVersion === null || version_compare($phpVersion, $removedVersion, '<=');
+            $isNotRemoved     = $removedVersion === null || version_compare($phpVersion, $removedVersion, '<');
 
             if ($isAvailableSince && $isNotRemoved) {
                 return $candidate;

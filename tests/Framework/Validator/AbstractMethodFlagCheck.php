@@ -143,7 +143,7 @@ abstract class AbstractMethodFlagCheck extends AbstractClassCheck
             $removed = $param->getRemovedVersion();
 
             $available = ($since === null || version_compare($phpVersion, $since, '>='))
-                && ($removed === null || version_compare($phpVersion, $removed, '<='));
+                && ($removed === null || version_compare($phpVersion, $removed, '<'));
 
             if ($available) {
                 $filtered[] = $param;

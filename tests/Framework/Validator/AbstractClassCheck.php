@@ -31,7 +31,7 @@ abstract class AbstractClassCheck extends AbstractReflectionCheck
      *
      * A property is considered available if:
      * - sinceVersion is null OR phpVersion >= sinceVersion
-     * - AND removedVersion is null OR phpVersion <= removedVersion
+     * - AND removedVersion is null OR phpVersion < removedVersion
      *
      * @return array<string, PHPProperty>
      */
@@ -83,7 +83,7 @@ abstract class AbstractClassCheck extends AbstractReflectionCheck
      *
      * A method is considered available if:
      * - sinceVersion is null OR phpVersion >= sinceVersion
-     * - AND removedVersion is null OR phpVersion <= removedVersion
+     * - AND removedVersion is null OR phpVersion < removedVersion
      *
      * @return array<string, PHPMethod>
      */
@@ -197,7 +197,7 @@ abstract class AbstractClassCheck extends AbstractReflectionCheck
             $removedVersion = $method->getRemovedVersion();
 
             $available = ($sinceVersion === null || version_compare($phpVersion, $sinceVersion, '>='))
-                && ($removedVersion === null || version_compare($phpVersion, $removedVersion, '<='));
+                && ($removedVersion === null || version_compare($phpVersion, $removedVersion, '<'));
 
             if (!$available) {
                 continue;

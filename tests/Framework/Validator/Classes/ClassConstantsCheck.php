@@ -77,7 +77,7 @@ class ClassConstantsCheck extends AbstractClassCheck
             $sinceVersion   = $stubConstant->getSinceVersion();
             $removedVersion = $stubConstant->getRemovedVersion();
             $available = ($sinceVersion === null || version_compare($phpVersion, $sinceVersion, '>='))
-                && ($removedVersion === null || version_compare($phpVersion, $removedVersion, '<='));
+                && ($removedVersion === null || version_compare($phpVersion, $removedVersion, '<'));
             if (!$available) {
                 continue;
             }

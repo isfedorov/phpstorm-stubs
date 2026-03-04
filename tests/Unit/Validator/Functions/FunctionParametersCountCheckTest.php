@@ -201,7 +201,9 @@ class FunctionParametersCountCheckTest extends CheckTestCase
 
     public function testParamAtExactRemovedVersionIsStillIncluded(): void
     {
-        // removedVersion=7.1, phpVersion=7.1 → inclusive <=, so still counted
+        // removedVersion is the EXCLUSIVE upper bound (first version where param is gone).
+        // removedVersion='7.2' means "available up to and including PHP 7.1".
+        // version_compare('7.1','7.2','<') is true → param IS counted for PHP 7.1.
         $id = '\\legacy_func';
 
         $provider = $this->createMockReflectionProvider([
@@ -211,13 +213,13 @@ class FunctionParametersCountCheckTest extends CheckTestCase
         $stubs->method('getFunctions')->willReturn([
             $this->makeFunction($id, [
                 $this->makeParam('a'),
-                $this->makeParam('b', null, '7.1'), // last available in 7.1
+                $this->makeParam('b', null, '7.2'), // excluded from 7.2+, available in 7.1
             ]),
         ]);
 
         $result = (new FunctionParametersCountCheck($provider))->run($stubs, $id, '7.1');
 
-        $this->assertFalse($result->hasFailures(), 'removedVersion==phpVersion: param still included (inclusive <=)');
+        $this->assertFalse($result->hasFailures(), 'Param included when phpVersion < removedVersion (exclusive boundary)');
     }
 
     public function testParamAfterRemovedVersionIsExcluded(): void
@@ -245,8 +247,9 @@ class FunctionParametersCountCheckTest extends CheckTestCase
 
     public function testPlaceholderAndVariadicWithSameNameCountAsOne(): void
     {
-        // Stub: f($x, $vals[to:'7.4'], ...$vals)
-        // In PHP 7.4: placeholder+variadic both available → unique names {'x','vals'} = 2
+        // Stub: f($x, $vals[removedVersion:'7.5'], ...$vals)
+        // removedVersion='7.5' means excluded from 7.5+, so placeholder IS available in PHP 7.4.
+        // In PHP 7.4: placeholder+variadic both available → deduplicated to unique names {'x','vals'} = 2
         $id = '\\my_func';
 
         $provider = $this->createMockReflectionProvider([
@@ -256,7 +259,7 @@ class FunctionParametersCountCheckTest extends CheckTestCase
         $stubs->method('getFunctions')->willReturn([
             $this->makeFunction($id, [
                 $this->makeParam('x'),
-                $this->makeParam('vals', null, '7.4'), // placeholder: available until 7.4
+                $this->makeParam('vals', null, '7.5'), // placeholder: excluded from 7.5+, available in 7.4
                 $this->makeParam('vals'),              // variadic: always available
             ]),
         ]);
@@ -268,7 +271,8 @@ class FunctionParametersCountCheckTest extends CheckTestCase
 
     public function testVariadicAloneCountsNormallyWhenPlaceholderExcluded(): void
     {
-        // In PHP 8.0: placeholder excluded (to:'7.4'), variadic 'vals' counts alone → 2 unique
+        // In PHP 8.0: placeholder excluded (removedVersion='7.5' means excluded from 7.5+),
+        // only variadic 'vals' counts → unique names {'x','vals'} = 2
         $id = '\\my_func';
 
         $provider = $this->createMockReflectionProvider([
@@ -278,7 +282,7 @@ class FunctionParametersCountCheckTest extends CheckTestCase
         $stubs->method('getFunctions')->willReturn([
             $this->makeFunction($id, [
                 $this->makeParam('x'),
-                $this->makeParam('vals', null, '7.4'), // excluded in PHP 8.0
+                $this->makeParam('vals', null, '7.5'), // excluded from 7.5+ (including PHP 8.0)
                 $this->makeParam('vals'),              // only this counts in PHP 8.0
             ]),
         ]);
@@ -290,12 +294,12 @@ class FunctionParametersCountCheckTest extends CheckTestCase
 
     public function testVersionWindowParamCountedOnlyWithinRange(): void
     {
-        // Param available from=7.0 to=7.1:
+        // Param available from=7.0, removedVersion=7.2 (exclusive boundary, meaning last included = 7.1):
         //   PHP 7.0 → included (stub=2, refl=2 → ok)
         //   PHP 7.1 → included (stub=2, refl=2 → ok)
         //   PHP 7.2 → excluded (stub=1, refl=1 → ok)
         $id        = '\\range_func';
-        $stubParam = $this->makeParam('b', '7.0', '7.1');
+        $stubParam = $this->makeParam('b', '7.0', '7.2');  // removedVersion='7.2': excluded from 7.2+
 
         foreach (['7.0', '7.1', '7.2'] as $version) {
             $expected = $version === '7.2' ? 1 : 2;
