@@ -199,6 +199,12 @@ class KnownProblemsRegistry
             'ClassConstantsCheck'                 => CheckType::CLASS_CONSTANTS,
             'InterfaceConstantsCheck'             => CheckType::INTERFACE_CONSTANTS,
             'EnumConstantsCheck'                  => CheckType::ENUM_CONSTANTS,
+            'ClassConstantsVisibilityCheck'       => CheckType::CLASS_CONSTANTS_VISIBILITY,
+            'EnumConstantsVisibilityCheck'        => CheckType::ENUM_CONSTANTS_VISIBILITY,
+            'InterfaceConstantsVisibilityCheck'   => CheckType::INTERFACE_CONSTANTS_VISIBILITY,
+            'ClassConstantsValueCheck'            => CheckType::CLASS_CONSTANTS_VALUE,
+            'EnumConstantsValueCheck'             => CheckType::ENUM_CONSTANTS_VALUE,
+            'InterfaceConstantsValueCheck'        => CheckType::INTERFACE_CONSTANTS_VALUE,
             'ClassPropertyReadonlyCheck'          => CheckType::CLASS_PROPERTIES_READONLY,
             default => null,
         };

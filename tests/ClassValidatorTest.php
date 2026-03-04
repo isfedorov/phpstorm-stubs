@@ -29,6 +29,8 @@ use StubTests\Sources\Validator\Classes\ClassPropertyReadonlyCheck;
 use StubTests\Sources\Validator\Classes\MethodDeprecationCheck;
 use StubTests\Sources\Validator\Classes\ClassStaticMethodsCheck;
 use StubTests\Sources\Validator\Classes\ClassConstantsCheck;
+use StubTests\Sources\Validator\Classes\ClassConstantsValueCheck;
+use StubTests\Sources\Validator\Classes\ClassConstantsVisibilityCheck;
 
 /**
  * Validates that classes from reflection exist in stubs.
@@ -280,6 +282,28 @@ class ClassValidatorTest extends ValidatorTestBase
 			$classId,
 			$phpVersion,
 			"Class {$classId} constants check failed in PHP {$phpVersion}"
+		);
+	}
+
+	#[PhpVersionRange(PhpVersions::EARLIEST, PhpVersions::LATEST)]
+	public function checkClassConstantsVisibility(string $classId, string $phpVersion): void
+	{
+		$this->executeCheck(
+			new ClassConstantsVisibilityCheck(),
+			$classId,
+			$phpVersion,
+			"Class {$classId} constants visibility check failed in PHP {$phpVersion}"
+		);
+	}
+
+	#[PhpVersionRange(PhpVersions::EARLIEST, PhpVersions::LATEST)]
+	public function checkClassConstantsValue(string $classId, string $phpVersion): void
+	{
+		$this->executeCheck(
+			new ClassConstantsValueCheck(),
+			$classId,
+			$phpVersion,
+			"Class {$classId} constants value check failed in PHP {$phpVersion}"
 		);
 	}
 

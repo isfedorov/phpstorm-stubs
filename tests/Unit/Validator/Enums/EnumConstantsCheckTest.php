@@ -117,10 +117,11 @@ class EnumConstantsCheckTest extends CheckTestCase
         $this->assertFalse($result->hasFailures());
     }
 
-    // ── Visibility mismatch ───────────────────────────────────────────────────
+    // ── Visibility is not checked here ───────────────────────────────────────
 
-    public function testVisibilityMismatchFails(): void
+    public function testVisibilityMismatchNotCheckedByThisCheck(): void
     {
+        // Visibility is validated by EnumConstantsVisibilityCheck, not here.
         $enumId   = '\\RoundingMode';
         $reflEnum = $this->makeEnum($enumId, [$this->makeConstant('DefaultValue', null, 'public')]);
         $stubEnum = $this->makeEnum($enumId, [$this->makeConstant('DefaultValue', null, 'protected')]);
@@ -131,17 +132,14 @@ class EnumConstantsCheckTest extends CheckTestCase
 
         $result = (new EnumConstantsCheck($provider))->run($stubs, $enumId, '8.1');
 
-        $this->assertTrue($result->hasFailures());
-        $failures = $result->getFailures();
-        $this->assertArrayHasKey($enumId . '::DefaultValue', $failures);
-        $this->assertStringContainsString('Visibility mismatch', $failures[$enumId . '::DefaultValue']);
-        $this->assertStringNotContainsString('Class', $failures[$enumId . '::DefaultValue']);
+        $this->assertFalse($result->hasFailures());
     }
 
-    // ── Value mismatch ────────────────────────────────────────────────────────
+    // ── Value is not checked here ─────────────────────────────────────────────
 
-    public function testValueMismatchFails(): void
+    public function testValueMismatchNotCheckedByThisCheck(): void
     {
+        // Value comparison is handled by EnumConstantsValueCheck, not here.
         $enumId   = '\\RoundingMode';
         $reflEnum = $this->makeEnum($enumId, [$this->makeConstant('DefaultValue', 0)]);
         $stubEnum = $this->makeEnum($enumId, [$this->makeConstant('DefaultValue', 99)]);
@@ -152,10 +150,6 @@ class EnumConstantsCheckTest extends CheckTestCase
 
         $result = (new EnumConstantsCheck($provider))->run($stubs, $enumId, PhpVersions::LATEST->value);
 
-        $this->assertTrue($result->hasFailures());
-        $failures = $result->getFailures();
-        $this->assertArrayHasKey($enumId . '::DefaultValue', $failures);
-        $this->assertStringContainsString('Value mismatch', $failures[$enumId . '::DefaultValue']);
-        $this->assertStringNotContainsString('Class', $failures[$enumId . '::DefaultValue']);
+        $this->assertFalse($result->hasFailures());
     }
 }

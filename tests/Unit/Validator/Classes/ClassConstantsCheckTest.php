@@ -168,10 +168,12 @@ class ClassConstantsCheckTest extends CheckTestCase
         $this->assertFalse($result->hasFailures());
     }
 
-    // ── Visibility mismatch ───────────────────────────────────────────────────
+    // ── Visibility is not checked here ───────────────────────────────────────
 
-    public function testVisibilityMismatchFails(): void
+    public function testVisibilityMismatchNotCheckedByThisCheck(): void
     {
+        // Visibility is validated by ClassConstantsVisibilityCheck, not here.
+        // A visibility mismatch alone must not cause ClassConstantsCheck to fail.
         $classId   = '\\DateTime';
         $reflClass = $this->makeClass($classId, [$this->makeConstant('ATOM', null, 'public')]);
         $stubClass = $this->makeClass($classId, [$this->makeConstant('ATOM', null, 'protected')]);
@@ -182,74 +184,18 @@ class ClassConstantsCheckTest extends CheckTestCase
 
         $result = (new ClassConstantsCheck($provider))->run($stubs, $classId, '8.0');
 
-        $this->assertTrue($result->hasFailures());
-        $failures = $result->getFailures();
-        $this->assertArrayHasKey($classId . '::ATOM', $failures);
-        $this->assertStringContainsString('Visibility mismatch', $failures[$classId . '::ATOM']);
-        $this->assertStringContainsString("reflection='public'", $failures[$classId . '::ATOM']);
-        $this->assertStringContainsString("stub='protected'", $failures[$classId . '::ATOM']);
-    }
-
-    // ── Value mismatch ────────────────────────────────────────────────────────
-
-    public function testValueMismatchFailsOnLatestPhp(): void
-    {
-        $classId   = '\\DateTime';
-        $reflClass = $this->makeClass($classId, [$this->makeConstant('VERSION', 42)]);
-        $stubClass = $this->makeClass($classId, [$this->makeConstant('VERSION', 0)]);
-
-        $provider = $this->createMockReflectionProviderWithClasses([$reflClass]);
-        $stubs    = $this->createMockStorageManager();
-        $stubs->method('getClasses')->willReturn([$stubClass]);
-
-        $result = (new ClassConstantsCheck($provider))->run($stubs, $classId, PhpVersions::LATEST->value);
-
-        $this->assertTrue($result->hasFailures());
-        $failures = $result->getFailures();
-        $this->assertArrayHasKey($classId . '::VERSION', $failures);
-        $this->assertStringContainsString('Value mismatch', $failures[$classId . '::VERSION']);
-        $this->assertStringContainsString("reflection='42'", $failures[$classId . '::VERSION']);
-        $this->assertStringContainsString("stub='0'", $failures[$classId . '::VERSION']);
-    }
-
-    public function testValueMismatchSkippedOnNonLatestPhp(): void
-    {
-        // Constant values change between PHP versions; only checked on the latest PHP
-        $classId   = '\\DateTime';
-        $reflClass = $this->makeClass($classId, [$this->makeConstant('VERSION', 42)]);
-        $stubClass = $this->makeClass($classId, [$this->makeConstant('VERSION', 0)]);
-
-        $provider = $this->createMockReflectionProviderWithClasses([$reflClass]);
-        $stubs    = $this->createMockStorageManager();
-        $stubs->method('getClasses')->willReturn([$stubClass]);
-
-        $result = (new ClassConstantsCheck($provider))->run($stubs, $classId, PhpVersions::PHP_8_0->value);
-
         $this->assertFalse($result->hasFailures());
     }
 
-    public function testNullStubValueSkipsValueCheck(): void
+    // ── Value is not checked here ─────────────────────────────────────────────
+
+    public function testValueMismatchNotCheckedByThisCheck(): void
     {
-        // Stub has null value (complex expression) — value check is skipped
+        // Value comparison is handled by ClassConstantsValueCheck, not here.
+        // A value mismatch alone must not cause ClassConstantsCheck to fail.
         $classId   = '\\DateTime';
         $reflClass = $this->makeClass($classId, [$this->makeConstant('VERSION', 42)]);
-        $stubClass = $this->makeClass($classId, [$this->makeConstant('VERSION', null)]);
-
-        $provider = $this->createMockReflectionProviderWithClasses([$reflClass]);
-        $stubs    = $this->createMockStorageManager();
-        $stubs->method('getClasses')->willReturn([$stubClass]);
-
-        $result = (new ClassConstantsCheck($provider))->run($stubs, $classId, PhpVersions::LATEST->value);
-
-        $this->assertFalse($result->hasFailures());
-    }
-
-    public function testNullReflectionValueSkipsValueCheck(): void
-    {
-        // Reflection has null value — value check is skipped
-        $classId   = '\\DateTime';
-        $reflClass = $this->makeClass($classId, [$this->makeConstant('VERSION', null)]);
-        $stubClass = $this->makeClass($classId, [$this->makeConstant('VERSION', 99)]);
+        $stubClass = $this->makeClass($classId, [$this->makeConstant('VERSION', 0)]);
 
         $provider = $this->createMockReflectionProviderWithClasses([$reflClass]);
         $stubs    = $this->createMockStorageManager();

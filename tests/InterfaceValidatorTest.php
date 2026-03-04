@@ -19,6 +19,8 @@ use StubTests\Sources\Validator\Interfaces\InterfaceMethodsTentativeReturnTypeCh
 use StubTests\Sources\Validator\Interfaces\InterfaceMethodDeprecationCheck;
 use StubTests\Sources\Validator\Interfaces\InterfaceParentInterfacesCheck;
 use StubTests\Sources\Validator\Interfaces\InterfaceConstantsCheck;
+use StubTests\Sources\Validator\Interfaces\InterfaceConstantsValueCheck;
+use StubTests\Sources\Validator\Interfaces\InterfaceConstantsVisibilityCheck;
 
 /**
  * Validates that interfaces from reflection exist in stubs and their methods are correct.
@@ -160,6 +162,28 @@ class InterfaceValidatorTest extends ValidatorTestBase
             $interfaceId,
             $phpVersion,
             "Interface {$interfaceId} constants check failed in PHP {$phpVersion}"
+        );
+    }
+
+    #[PhpVersionRange(PhpVersions::EARLIEST, PhpVersions::LATEST)]
+    public function checkInterfaceConstantsVisibility(string $interfaceId, string $phpVersion): void
+    {
+        $this->executeCheck(
+            new InterfaceConstantsVisibilityCheck(),
+            $interfaceId,
+            $phpVersion,
+            "Interface {$interfaceId} constants visibility check failed in PHP {$phpVersion}"
+        );
+    }
+
+    #[PhpVersionRange(PhpVersions::EARLIEST, PhpVersions::LATEST)]
+    public function checkInterfaceConstantsValue(string $interfaceId, string $phpVersion): void
+    {
+        $this->executeCheck(
+            new InterfaceConstantsValueCheck(),
+            $interfaceId,
+            $phpVersion,
+            "Interface {$interfaceId} constants value check failed in PHP {$phpVersion}"
         );
     }
 

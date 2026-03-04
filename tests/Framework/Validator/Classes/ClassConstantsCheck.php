@@ -2,32 +2,27 @@
 
 namespace StubTests\Sources\Validator\Classes;
 
-use StubTests\Sources\Parsers\Entities\Model\PHPClassConstant;
 use StubTests\Sources\Parsers\Entities\Model\PHPClassLikeObject;
 use StubTests\Sources\Parsers\ParsedDataStorageManager;
-use StubTests\Sources\Runner\PhpVersions;
 use StubTests\Sources\Validator\AbstractClassCheck;
 use StubTests\Sources\Validator\CheckResultSet;
 use StubTests\Sources\Validator\KnownProblems\EntityType;
 
 /**
- * Validates that constants declared in class stubs are consistent with reflection.
+ * Validates that constants declared in class stubs exist in reflection.
  *
  * PHP reflection reports ALL constants of a class including those inherited via the
  * parent-class chain and implemented interfaces.  Stubs only declare constants that are
  * directly introduced (not inherited), so we cannot simply require every reflection
  * constant to appear in the stub.
  *
- * Instead, the check follows the same direction as ClassInterfacesCheck:
- *  - For each constant declared directly in the stub, verify it appears in
- *    reflection's full constant list (which includes all inherited ones).
- *  - Verify visibility matches.
- *  - Verify value matches when both sides provide a non-null scalar value.
+ * For each constant declared directly in the stub, this check verifies it appears in
+ * reflection's full constant list (which includes all inherited ones).
  *
- * This catches:
- *  - Wrong values in stubs (e.g. a constant whose numeric value changed in a PHP release).
- *  - Wrong visibility in stubs.
- *  - Spurious constants declared in stubs that don't exist anywhere in reflection.
+ * This catches spurious constants declared in stubs that don't exist anywhere in reflection.
+ *
+ * Visibility is validated separately by ClassConstantsVisibilityCheck.
+ * Values are validated separately by ClassConstantsValueCheck.
  *
  * InterfaceConstantsCheck and EnumConstantsCheck extend this class and override
  * the entity-lookup and label methods.
@@ -95,13 +90,6 @@ class ClassConstantsCheck extends AbstractClassCheck
                     "Constant '{$name}' is declared in stubs for {$this->getEntityLabel()} {$entityId} but not found in reflection"
                 );
                 $hasFailures = true;
-                continue;
-            }
-
-            $mismatch = $this->compareConstant($reflMap[$name], $stubConstant, $entityId, $name, $phpVersion);
-            if ($mismatch !== null) {
-                $results->addFailure($constantId, $mismatch);
-                $hasFailures = true;
             }
         }
 
@@ -143,30 +131,5 @@ class ClassConstantsCheck extends AbstractClassCheck
     protected function getConstantEntityType(): string
     {
         return EntityType::CLASS_CONSTANT->value;
-    }
-
-    private function compareConstant(
-        PHPClassConstant $refl,
-        PHPClassConstant $stub,
-        string $entityId,
-        string $name,
-        string $phpVersion
-    ): ?string {
-        if ($refl->visibility !== $stub->visibility) {
-            return "Visibility mismatch for constant '{$entityId}::{$name}': "
-                . "reflection='{$refl->visibility}', stub='{$stub->visibility}'";
-        }
-
-        // Constant values change between PHP versions; only compare against the latest PHP reflection
-        // to avoid false positives from historical value changes.
-        if ($phpVersion === PhpVersions::LATEST->value
-            && $refl->value !== null && $stub->value !== null
-            && (string) $refl->value !== (string) $stub->value
-        ) {
-            return "Value mismatch for constant '{$entityId}::{$name}': "
-                . "reflection='{$refl->value}', stub='{$stub->value}'";
-        }
-
-        return null;
     }
 }

@@ -102,10 +102,11 @@ class InterfaceConstantsCheckTest extends CheckTestCase
         $this->assertFalse($result->hasFailures());
     }
 
-    // ── Value mismatch ────────────────────────────────────────────────────────
+    // ── Value is not checked here ─────────────────────────────────────────────
 
-    public function testValueMismatchFails(): void
+    public function testValueMismatchNotCheckedByThisCheck(): void
     {
+        // Value comparison is handled by InterfaceConstantsValueCheck, not here.
         $ifaceId   = '\\Countable';
         $reflIface = $this->makeInterface($ifaceId, [$this->makeConstant('MODE', 1)]);
         $stubIface = $this->makeInterface($ifaceId, [$this->makeConstant('MODE', 2)]);
@@ -116,10 +117,6 @@ class InterfaceConstantsCheckTest extends CheckTestCase
 
         $result = (new InterfaceConstantsCheck($provider))->run($stubs, $ifaceId, PhpVersions::LATEST->value);
 
-        $this->assertTrue($result->hasFailures());
-        $failures = $result->getFailures();
-        $this->assertArrayHasKey($ifaceId . '::MODE', $failures);
-        $this->assertStringContainsString('Value mismatch', $failures[$ifaceId . '::MODE']);
-        $this->assertStringNotContainsString('Class', $failures[$ifaceId . '::MODE']);
+        $this->assertFalse($result->hasFailures());
     }
 }

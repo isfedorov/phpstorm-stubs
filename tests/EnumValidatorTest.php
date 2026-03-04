@@ -20,6 +20,8 @@ use StubTests\Sources\Validator\Enums\EnumMethodsReturnTypesCheck;
 use StubTests\Sources\Validator\Enums\EnumMethodsTentativeReturnTypeCheck;
 use StubTests\Sources\Validator\Enums\EnumMethodsVisibilityCheck;
 use StubTests\Sources\Validator\Enums\EnumConstantsCheck;
+use StubTests\Sources\Validator\Enums\EnumConstantsValueCheck;
+use StubTests\Sources\Validator\Enums\EnumConstantsVisibilityCheck;
 use StubTests\Sources\Validator\Enums\EnumNamespaceCheck;
 use StubTests\Sources\Validator\Enums\EnumStaticMethodsCheck;
 
@@ -198,6 +200,28 @@ class EnumValidatorTest extends ValidatorTestBase
             $enumId,
             $phpVersion,
             "Enum {$enumId} constants check failed in PHP {$phpVersion}"
+        );
+    }
+
+    #[PhpVersionRange(PhpVersions::PHP_8_1, PhpVersions::LATEST)]
+    public function checkEnumConstantsVisibility(string $enumId, string $phpVersion): void
+    {
+        $this->executeCheck(
+            new EnumConstantsVisibilityCheck(),
+            $enumId,
+            $phpVersion,
+            "Enum {$enumId} constants visibility check failed in PHP {$phpVersion}"
+        );
+    }
+
+    #[PhpVersionRange(PhpVersions::PHP_8_1, PhpVersions::LATEST)]
+    public function checkEnumConstantsValue(string $enumId, string $phpVersion): void
+    {
+        $this->executeCheck(
+            new EnumConstantsValueCheck(),
+            $enumId,
+            $phpVersion,
+            "Enum {$enumId} constants value check failed in PHP {$phpVersion}"
         );
     }
 

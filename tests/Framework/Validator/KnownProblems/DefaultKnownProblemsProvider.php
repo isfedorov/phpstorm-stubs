@@ -1030,7 +1030,7 @@ class DefaultKnownProblemsProvider implements KnownProblemsProvider
                 entityType: EntityType::CLASS_CONSTANT,
                 entityId: '\\Spoofchecker',
                 type: ProblemType::INTERNAL_IMPLEMENTATION,
-                affectedChecks: [CheckType::CLASS_CONSTANTS],
+                affectedChecks: [CheckType::CLASS_CONSTANTS_VALUE],
                 versionRange: new PhpVersionRange(PhpVersions::PHP_8_4, PhpVersions::PHP_8_4),
                 reason: 'Spoofchecker::MIXED_NUMBERS and HIDDEN_OVERLAY values changed from 1/2 to 128/256 in ICU 75+. The PHP 8.4 build on this machine bundles ICU 75+ while the stubs document the older values.',
                 entityIds: [
@@ -1066,7 +1066,7 @@ class DefaultKnownProblemsProvider implements KnownProblemsProvider
                 entityType: EntityType::CLASS_CONSTANT,
                 entityId: '\\IntlCalendar::FIELD_FIELD_COUNT',
                 type: ProblemType::INTERNAL_IMPLEMENTATION,
-                affectedChecks: [CheckType::CLASS_CONSTANTS],
+                affectedChecks: [CheckType::CLASS_CONSTANTS_VALUE],
                 versionRange: new PhpVersionRange(PhpVersions::PHP_8_4, PhpVersions::PHP_8_4),
                 reason: 'IntlCalendar::FIELD_FIELD_COUNT value depends on the ICU library version. The PHP 8.4 build on this machine uses ICU 75+ which reports 24, while the stubs document the older value of 23.',
             ),
@@ -1076,7 +1076,7 @@ class DefaultKnownProblemsProvider implements KnownProblemsProvider
                 entityType: EntityType::CLASS_CONSTANT,
                 entityId: '\\IntlChar',
                 type: ProblemType::INTERNAL_IMPLEMENTATION,
-                affectedChecks: [CheckType::CLASS_CONSTANTS],
+                affectedChecks: [CheckType::CLASS_CONSTANTS_VALUE],
                 versionRange: new PhpVersionRange(PhpVersions::PHP_8_4, PhpVersions::PHP_8_4),
                 reason: 'Multiple IntlChar constants (UNICODE_VERSION, PROPERTY_BINARY_LIMIT, PROPERTY_INT_LIMIT, BLOCK_CODE_COUNT) reflect the Unicode/ICU version and change with each ICU update. The PHP 8.4 build on this machine uses ICU 75+ (Unicode 16.0) while the stubs document older values.',
                 entityIds: [

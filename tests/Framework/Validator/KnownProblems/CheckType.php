@@ -144,19 +144,52 @@ enum CheckType: string
     case ENUM_FINAL = 'EnumFinalCheck';
 
     /**
-     * Validates that constants (existence, visibility, value) in class stubs match reflection.
+     * Validates that constants declared in class stubs exist in reflection.
      */
     case CLASS_CONSTANTS = 'ClassConstantsCheck';
 
     /**
-     * Validates that constants (existence, visibility, value) in interface stubs match reflection.
+     * Validates that constants declared in interface stubs exist in reflection.
      */
     case INTERFACE_CONSTANTS = 'InterfaceConstantsCheck';
 
     /**
-     * Validates that constants (existence, visibility, value) in enum stubs match reflection.
+     * Validates that constants declared in enum stubs exist in reflection.
      */
     case ENUM_CONSTANTS = 'EnumConstantsCheck';
+
+    /**
+     * Validates that the visibility (public/protected/private) of constants in class stubs matches reflection.
+     */
+    case CLASS_CONSTANTS_VISIBILITY = 'ClassConstantsVisibilityCheck';
+
+    /**
+     * Validates that the visibility of constants in enum stubs matches reflection.
+     */
+    case ENUM_CONSTANTS_VISIBILITY = 'EnumConstantsVisibilityCheck';
+
+    /**
+     * Validates that the visibility of constants in interface stubs matches reflection.
+     */
+    case INTERFACE_CONSTANTS_VISIBILITY = 'InterfaceConstantsVisibilityCheck';
+
+    /**
+     * Validates that the values of constants in class stubs match reflection.
+     * Value comparison is limited to the latest PHP version to avoid false positives.
+     */
+    case CLASS_CONSTANTS_VALUE = 'ClassConstantsValueCheck';
+
+    /**
+     * Validates that the values of constants in interface stubs match reflection.
+     * Value comparison is limited to the latest PHP version to avoid false positives.
+     */
+    case INTERFACE_CONSTANTS_VALUE = 'InterfaceConstantsValueCheck';
+
+    /**
+     * Validates that the values of constants in enum stubs match reflection.
+     * Value comparison is limited to the latest PHP version to avoid false positives.
+     */
+    case ENUM_CONSTANTS_VALUE = 'EnumConstantsValueCheck';
 
     /**
      * Validates that the `readonly` modifier on properties in stubs matches reflection.
