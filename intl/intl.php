@@ -2391,10 +2391,14 @@ class Transliterator
     public const FORWARD = 0;
     public const REVERSE = 1;
 
+    #[ElementAvailable(to: '8.1')]
+    #[LanguageAware(['8.1' => 'string'], default: '')]
+    public string $id;
+
     /**
      * Starting 8.2 $id is readonly to unlock subclassing it
      */
-    #[LanguageAware(['8.1' => 'string'], default: '')]
+    #[ElementAvailable(from: '8.2')]
     public readonly string $id;
 
     /**
