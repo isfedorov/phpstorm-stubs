@@ -19,6 +19,7 @@ class PHPParameter
     private bool $isPassedByReference;
     private $defaultValue;
     private bool $hasDefaultValue;
+    private ?\Closure $defaultValueEvaluator = null;
     private ?array $languageLevelTypes = null;
     private ?string $defaultType = null;
     private ?string $typeFromPhpDoc = null;
@@ -97,14 +98,28 @@ class PHPParameter
         $this->isPassedByReference = $isPassedByReference;
     }
 
-    public function getDefaultValue()
+    public function getDefaultValue(): mixed
     {
+        if ($this->defaultValueEvaluator !== null) {
+            try {
+                $this->defaultValue = ($this->defaultValueEvaluator)();
+            } catch (\RuntimeException) {
+                $this->defaultValue = null;
+            }
+            $this->defaultValueEvaluator = null;
+        }
         return $this->defaultValue;
     }
 
     public function setDefaultValue($defaultValue): void
     {
         $this->defaultValue = $defaultValue;
+        $this->defaultValueEvaluator = null;
+    }
+
+    public function setDefaultValueEvaluator(\Closure $evaluator): void
+    {
+        $this->defaultValueEvaluator = $evaluator;
     }
 
     public function hasDefaultValue(): bool

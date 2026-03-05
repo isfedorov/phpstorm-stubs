@@ -194,6 +194,7 @@ class KnownProblemsRegistry
             'TentativeReturnTypeCheck'            => CheckType::TENTATIVE_RETURN_TYPE,
             'InterfaceParentInterfacesCheck'      => CheckType::INTERFACE_PARENT_INTERFACES,
             'EnumInterfacesCheck'                 => CheckType::ENUM_INTERFACES,
+            'EnumCasesCheck'                      => CheckType::ENUM_CASES,
             'ClassFinalCheck'                     => CheckType::CLASS_FINAL,
             'EnumFinalCheck'                      => CheckType::ENUM_FINAL,
             'ClassConstantsCheck'                 => CheckType::CLASS_CONSTANTS,

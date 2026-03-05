@@ -133,6 +133,11 @@ enum CheckType: string
     case ENUM_INTERFACES = 'EnumInterfacesCheck';
 
     /**
+     * Validates that all enum cases present in reflection also exist in stubs.
+     */
+    case ENUM_CASES = 'EnumCasesCheck';
+
+    /**
      * Validates that the `final` modifier on a class in stubs matches reflection.
      * Only meaningful against the latest PHP version, as stubs cannot express version-specific finality.
      */

@@ -11,6 +11,16 @@
         "phpDoc": null,
         "sinceVersion": null,
         "removedVersion": null,
+        "cases": [
+            "HalfAwayFromZero",
+            "HalfTowardsZero",
+            "HalfEven",
+            "HalfOdd",
+            "TowardsZero",
+            "AwayFromZero",
+            "NegativeInfinity",
+            "PositiveInfinity"
+        ],
         "constants": [],
         "methods": [
             {
@@ -47,6 +57,12 @@
         "phpDoc": null,
         "sinceVersion": null,
         "removedVersion": null,
+        "cases": [
+            "BeforeBegin",
+            "AfterBegin",
+            "BeforeEnd",
+            "AfterEnd"
+        ],
         "constants": [],
         "methods": [
             {
@@ -150,6 +166,12 @@
         "phpDoc": null,
         "sinceVersion": null,
         "removedVersion": null,
+        "cases": [
+            "ClosedOpen",
+            "ClosedClosed",
+            "OpenClosed",
+            "OpenOpen"
+        ],
         "constants": [],
         "methods": [
             {
@@ -186,6 +208,13 @@
         "phpDoc": null,
         "sinceVersion": null,
         "removedVersion": null,
+        "cases": [
+            "Background",
+            "Utility",
+            "Default",
+            "UserInitiated",
+            "UserInteractive"
+        ],
         "constants": [],
         "methods": [
             {
@@ -222,6 +251,15 @@
         "phpDoc": null,
         "sinceVersion": null,
         "removedVersion": null,
+        "cases": [
+            "NotFound",
+            "String",
+            "Set",
+            "List",
+            "Zset",
+            "Hash",
+            "Stream"
+        ],
         "constants": [],
         "methods": [],
         "interfaces": []
@@ -238,6 +276,10 @@
         "phpDoc": null,
         "sinceVersion": null,
         "removedVersion": null,
+        "cases": [
+            "Get",
+            "Set"
+        ],
         "constants": [],
         "methods": [
             {

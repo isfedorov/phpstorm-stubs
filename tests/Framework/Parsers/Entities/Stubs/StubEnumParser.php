@@ -86,9 +86,8 @@ class StubEnumParser implements MultiEntityStubParserInterface
             $phpEnum->methods[] = $this->methodParser->parseNode($methodNode, $imports, $phpEnum->getNamespace());
         }
 
-        // Note: Enum cases are not currently stored in PHPEnum model
-        // The model appears to focus on methods and interfaces
-        // Case names can be retrieved via $node->getCaseNames() if needed in future
+        // Cases
+        $phpEnum->cases = $node->getCaseNames();
 
         return $phpEnum;
     }

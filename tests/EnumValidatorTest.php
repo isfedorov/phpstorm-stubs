@@ -6,6 +6,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use StubTests\Framework\Validator\ValidatorTestBase;
 use StubTests\Sources\Runner\PhpVersionRange;
 use StubTests\Sources\Runner\PhpVersions;
+use StubTests\Sources\Validator\Enums\EnumCasesCheck;
 use StubTests\Sources\Validator\Enums\EnumExistsCheck;
 use StubTests\Sources\Validator\Enums\EnumFinalCheck;
 use StubTests\Sources\Validator\Enums\EnumFinalMethodsCheck;
@@ -48,6 +49,17 @@ class EnumValidatorTest extends ValidatorTestBase
     protected static function getEntitiesForMethod(string $methodName, $reflection): iterable
     {
         return $reflection->getEnums();
+    }
+
+    #[PhpVersionRange(PhpVersions::PHP_8_1, PhpVersions::LATEST)]
+    public function checkEnumCases(string $enumId, string $phpVersion): void
+    {
+        $this->executeCheck(
+            new EnumCasesCheck(),
+            $enumId,
+            $phpVersion,
+            "Enum {$enumId} cases check failed in PHP {$phpVersion}"
+        );
     }
 
     #[PhpVersionRange(PhpVersions::PHP_8_1, PhpVersions::LATEST)]

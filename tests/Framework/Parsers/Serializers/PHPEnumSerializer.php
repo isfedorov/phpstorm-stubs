@@ -44,6 +44,9 @@ class PHPEnumSerializer implements EntityTypeSerializerInterface
         $data['sinceVersion'] = $this->toJsonSafe($entity->getSinceVersion());
         $data['removedVersion'] = $this->toJsonSafe($entity->getRemovedVersion());
 
+        // Serialize cases
+        $data['cases'] = $entity->cases;
+
         // Serialize constants
         $data['constants'] = [];
         foreach ($entity->constants as $constant) {
@@ -81,6 +84,9 @@ class PHPEnumSerializer implements EntityTypeSerializerInterface
         $enum->setPhpDoc($this->deserializePhpDoc($enumId, $data['phpDoc'] ?? null, $phpDocStorage));
         $enum->setSinceVersion($data['sinceVersion'] ?? null);
         $enum->setRemovedVersion($data['removedVersion'] ?? null);
+
+        // Deserialize cases
+        $enum->cases = isset($data['cases']) && is_array($data['cases']) ? $data['cases'] : [];
 
         // Deserialize constants
         if (isset($data['constants']) && is_array($data['constants'])) {

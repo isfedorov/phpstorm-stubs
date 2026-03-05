@@ -64,16 +64,12 @@ class StubParameterParser
         // Set variadic flag from AST node
         $parameter->setIsVariadic($node->isVariadic());
 
-        // Set hasDefaultValue from AST node and try to evaluate the actual value
+        // Set hasDefaultValue from AST node; defer actual evaluation until the value is needed
         $hasDefault = $node->hasDefaultValue();
         $parameter->setHasDefaultValue($hasDefault);
 
         if ($hasDefault) {
-            try {
-                $parameter->setDefaultValue($node->getDefaultValue());
-            } catch (\RuntimeException) {
-                // Expression could not be evaluated (e.g. unknown constant) — leave defaultValue as null
-            }
+            $parameter->setDefaultValueEvaluator(fn() => $node->getDefaultValue());
         }
 
         // A parameter is optional if it has a default value, is variadic,

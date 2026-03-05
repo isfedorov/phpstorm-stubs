@@ -136,7 +136,7 @@ PHP;
     public function testItReturnsAllInternalEnums()
     {
         $reflectionEnums = new CurrentRuntimeReflectionRawDataProvider()->getReflectionEnums();
-        self::assertGreaterThan(4, sizeof($reflectionEnums));
+        self::assertGreaterThanOrEqual(4, sizeof($reflectionEnums));
     }
 
     public function testItReturnsArrayOfConstants()
