@@ -1090,6 +1090,284 @@ class DefaultKnownProblemsProvider implements KnownProblemsProvider
                 ],
             ),
 
+            // -----------------------------------------------------------------------
+            // Runtime-value constants: values depend on the installed library version
+            // or build/environment configuration and cannot be pinned in stubs.
+            // -----------------------------------------------------------------------
+
+            // ICU library version — reported by the intl extension
+            new ProblemDefinition(
+                entityType: EntityType::GLOBAL_CONSTANT,
+                entityId: 'intl-icu-version',
+                type: ProblemType::RUNTIME_VALUE,
+                affectedChecks: [CheckType::CONSTANT_VALUE],
+                versionRange: new PhpVersionRange(PhpVersions::EARLIEST, PhpVersions::LATEST),
+                reason: 'ICU library version constants depend on the ICU version bundled with the intl extension and differ per installation.',
+                entityIds: [
+                    '\\INTL_ICU_VERSION',
+                    '\\INTL_ICU_DATA_VERSION',
+                    '\\IDNA_DEFAULT',
+                    '\\U_FMT_PARSE_ERROR_LIMIT',
+                ],
+            ),
+
+            // libxml version
+            new ProblemDefinition(
+                entityType: EntityType::GLOBAL_CONSTANT,
+                entityId: 'libxml-version',
+                type: ProblemType::RUNTIME_VALUE,
+                affectedChecks: [CheckType::CONSTANT_VALUE],
+                versionRange: new PhpVersionRange(PhpVersions::EARLIEST, PhpVersions::LATEST),
+                reason: 'libxml version/feature constants depend on the installed libxml2 library version.',
+                entityIds: [
+                    '\\LIBXML_VERSION',
+                    '\\LIBXML_LOADED_VERSION',
+                    '\\LIBXML_DOTTED_VERSION',
+                    '\\LIBXML_BIGLINES',
+                ],
+            ),
+
+            // OpenSSL version
+            new ProblemDefinition(
+                entityType: EntityType::GLOBAL_CONSTANT,
+                entityId: 'openssl-version',
+                type: ProblemType::RUNTIME_VALUE,
+                affectedChecks: [CheckType::CONSTANT_VALUE],
+                versionRange: new PhpVersionRange(PhpVersions::EARLIEST, PhpVersions::LATEST),
+                reason: 'OpenSSL version constants depend on the installed OpenSSL library version.',
+                entityIds: [
+                    '\\OPENSSL_VERSION_NUMBER',
+                    '\\OPENSSL_VERSION_TEXT',
+                ],
+            ),
+
+            // PCRE version
+            new ProblemDefinition(
+                entityType: EntityType::GLOBAL_CONSTANT,
+                entityId: 'pcre-version',
+                type: ProblemType::RUNTIME_VALUE,
+                affectedChecks: [CheckType::CONSTANT_VALUE],
+                versionRange: new PhpVersionRange(PhpVersions::EARLIEST, PhpVersions::LATEST),
+                reason: 'PCRE version constants depend on the PCRE2 library bundled with PHP.',
+                entityIds: [
+                    '\\PCRE_VERSION',
+                    '\\PCRE_VERSION_MINOR',
+                ],
+            ),
+
+            // cURL version/flags
+            new ProblemDefinition(
+                entityType: EntityType::GLOBAL_CONSTANT,
+                entityId: 'curl-version',
+                type: ProblemType::RUNTIME_VALUE,
+                affectedChecks: [CheckType::CONSTANT_VALUE],
+                versionRange: new PhpVersionRange(PhpVersions::EARLIEST, PhpVersions::LATEST),
+                reason: 'cURL constants (debug-callback type flags, CURLVERSION_NOW, CURLINFO_LASTONE) depend on the linked libcurl version.',
+                entityIds: [
+                    '\\CURLINFO_TEXT',
+                    '\\CURLINFO_DATA_IN',
+                    '\\CURLINFO_DATA_OUT',
+                    '\\CURLINFO_SSL_DATA_IN',
+                    '\\CURLINFO_SSL_DATA_OUT',
+                    '\\CURLINFO_LASTONE',
+                    '\\CURLOPT_DEBUGFUNCTION',
+                    '\\CURLVERSION_NOW',
+                ],
+            ),
+
+            // iconv version
+            new ProblemDefinition(
+                entityType: EntityType::GLOBAL_CONSTANT,
+                entityId: '\\ICONV_VERSION',
+                type: ProblemType::RUNTIME_VALUE,
+                affectedChecks: [CheckType::CONSTANT_VALUE],
+                versionRange: new PhpVersionRange(PhpVersions::EARLIEST, PhpVersions::LATEST),
+                reason: 'ICONV_VERSION depends on the iconv library version installed on the system.',
+            ),
+
+            // Oniguruma version
+            new ProblemDefinition(
+                entityType: EntityType::GLOBAL_CONSTANT,
+                entityId: '\\MB_ONIGURUMA_VERSION',
+                type: ProblemType::RUNTIME_VALUE,
+                affectedChecks: [CheckType::CONSTANT_VALUE],
+                versionRange: new PhpVersionRange(PhpVersions::EARLIEST, PhpVersions::LATEST),
+                reason: 'MB_ONIGURUMA_VERSION depends on the Oniguruma regex library bundled with the mbstring extension.',
+            ),
+
+            // libsodium version
+            new ProblemDefinition(
+                entityType: EntityType::GLOBAL_CONSTANT,
+                entityId: 'libsodium-version',
+                type: ProblemType::RUNTIME_VALUE,
+                affectedChecks: [CheckType::CONSTANT_VALUE],
+                versionRange: new PhpVersionRange(PhpVersions::EARLIEST, PhpVersions::LATEST),
+                reason: 'libsodium version constants depend on the libsodium library linked with PHP.',
+                entityIds: [
+                    '\\SODIUM_LIBRARY_VERSION',
+                    '\\SODIUM_LIBRARY_MINOR_VERSION',
+                ],
+            ),
+
+            // libpq (PostgreSQL client) version
+            new ProblemDefinition(
+                entityType: EntityType::GLOBAL_CONSTANT,
+                entityId: 'pgsql-libpq-version',
+                type: ProblemType::RUNTIME_VALUE,
+                affectedChecks: [CheckType::CONSTANT_VALUE],
+                versionRange: new PhpVersionRange(PhpVersions::EARLIEST, PhpVersions::LATEST),
+                reason: 'PGSQL_LIBPQ_VERSION constants depend on the libpq (PostgreSQL client library) version linked with PHP.',
+                entityIds: [
+                    '\\PGSQL_LIBPQ_VERSION',
+                    '\\PGSQL_LIBPQ_VERSION_STR',
+                ],
+            ),
+
+            // zlib version
+            new ProblemDefinition(
+                entityType: EntityType::GLOBAL_CONSTANT,
+                entityId: 'zlib-version',
+                type: ProblemType::RUNTIME_VALUE,
+                affectedChecks: [CheckType::CONSTANT_VALUE],
+                versionRange: new PhpVersionRange(PhpVersions::EARLIEST, PhpVersions::LATEST),
+                reason: 'ZLIB_VERSION and ZLIB_VERNUM depend on the zlib library linked with PHP.',
+                entityIds: [
+                    '\\ZLIB_VERSION',
+                    '\\ZLIB_VERNUM',
+                ],
+            ),
+
+            // fileinfo/libmagic version
+            new ProblemDefinition(
+                entityType: EntityType::GLOBAL_CONSTANT,
+                entityId: '\\FILEINFO_EXTENSION',
+                type: ProblemType::RUNTIME_VALUE,
+                affectedChecks: [CheckType::CONSTANT_VALUE],
+                versionRange: new PhpVersionRange(PhpVersions::EARLIEST, PhpVersions::LATEST),
+                reason: 'FILEINFO_EXTENSION flag value depends on the libmagic version; only available since libmagic 5.34 and the numeric value varies.',
+            ),
+
+            // MySQL/MariaDB driver constant
+            new ProblemDefinition(
+                entityType: EntityType::GLOBAL_CONSTANT,
+                entityId: '\\MYSQLI_IS_MARIADB',
+                type: ProblemType::RUNTIME_VALUE,
+                affectedChecks: [CheckType::CONSTANT_VALUE],
+                versionRange: new PhpVersionRange(PhpVersions::EARLIEST, PhpVersions::LATEST),
+                reason: 'MYSQLI_IS_MARIADB is a boolean/truthy constant reported as an empty string by some MySQL builds and as 0 by others; its value depends on the MySQL/MariaDB driver.',
+            ),
+
+            // PHP version constants — always reflect the current runtime
+            new ProblemDefinition(
+                entityType: EntityType::GLOBAL_CONSTANT,
+                entityId: 'php-version',
+                type: ProblemType::RUNTIME_VALUE,
+                affectedChecks: [CheckType::CONSTANT_VALUE],
+                versionRange: new PhpVersionRange(PhpVersions::EARLIEST, PhpVersions::LATEST),
+                reason: 'PHP version constants reflect the current PHP runtime version and cannot be pinned to a static value in stubs.',
+                entityIds: [
+                    '\\PHP_VERSION',
+                    '\\PHP_MAJOR_VERSION',
+                    '\\PHP_MINOR_VERSION',
+                    '\\PHP_RELEASE_VERSION',
+                    '\\PHP_VERSION_ID',
+                    '\\PHP_EXTRA_VERSION',
+                ],
+            ),
+
+            // PHP build-configuration path constants
+            new ProblemDefinition(
+                entityType: EntityType::GLOBAL_CONSTANT,
+                entityId: 'php-build-paths',
+                type: ProblemType::RUNTIME_VALUE,
+                affectedChecks: [CheckType::CONSTANT_VALUE],
+                versionRange: new PhpVersionRange(PhpVersions::EARLIEST, PhpVersions::LATEST),
+                reason: 'PHP build-configuration path constants depend on where PHP was compiled and installed; they differ per system.',
+                entityIds: [
+                    '\\PHP_BINARY',
+                    '\\PHP_BINDIR',
+                    '\\PHP_CONFIG_FILE_PATH',
+                    '\\PHP_CONFIG_FILE_SCAN_DIR',
+                    '\\PHP_DATADIR',
+                    '\\PHP_EXTENSION_DIR',
+                    '\\PHP_LIBDIR',
+                    '\\PHP_LOCALSTATEDIR',
+                    '\\PHP_MANDIR',
+                    '\\PHP_PREFIX',
+                    '\\PHP_SYSCONFDIR',
+                    '\\DEFAULT_INCLUDE_PATH',
+                    '\\PEAR_INSTALL_DIR',
+                    '\\PEAR_EXTENSION_DIR',
+                ],
+            ),
+
+            // PHP build flags
+            new ProblemDefinition(
+                entityType: EntityType::GLOBAL_CONSTANT,
+                entityId: 'php-build-flags',
+                type: ProblemType::RUNTIME_VALUE,
+                affectedChecks: [CheckType::CONSTANT_VALUE],
+                versionRange: new PhpVersionRange(PhpVersions::EARLIEST, PhpVersions::LATEST),
+                reason: 'PHP_DEBUG and PHP_ZTS depend on whether PHP was compiled with debug mode or ZTS support; value is 0 in standard builds but may be reported as empty string by reflection.',
+                entityIds: [
+                    '\\PHP_DEBUG',
+                    '\\PHP_ZTS',
+                ],
+            ),
+
+            // POSIX resource-limit constants — values differ between Linux and macOS
+            new ProblemDefinition(
+                entityType: EntityType::GLOBAL_CONSTANT,
+                entityId: 'posix-rlimit',
+                type: ProblemType::RUNTIME_VALUE,
+                affectedChecks: [CheckType::CONSTANT_VALUE],
+                versionRange: new PhpVersionRange(PhpVersions::EARLIEST, PhpVersions::LATEST),
+                reason: 'POSIX resource-limit constants use OS-specific numeric values that differ between Linux and macOS.',
+                entityIds: [
+                    '\\POSIX_RLIMIT_AS',
+                    '\\POSIX_RLIMIT_MEMLOCK',
+                    '\\POSIX_RLIMIT_NOFILE',
+                    '\\POSIX_RLIMIT_NPROC',
+                    '\\POSIX_RLIMIT_INFINITY',
+                ],
+            ),
+
+            // CHAR_MAX — system-dependent (signed vs unsigned char)
+            new ProblemDefinition(
+                entityType: EntityType::GLOBAL_CONSTANT,
+                entityId: '\\CHAR_MAX',
+                type: ProblemType::RUNTIME_VALUE,
+                affectedChecks: [CheckType::CONSTANT_VALUE],
+                versionRange: new PhpVersionRange(PhpVersions::EARLIEST, PhpVersions::LATEST),
+                reason: 'CHAR_MAX is 127 on systems with signed char and 255 on systems with unsigned char.',
+            ),
+
+            // TRUE, FALSE, NULL - PHP language keywords reported as constants by runtime reflection
+            new ProblemDefinition(
+                entityType: EntityType::GLOBAL_CONSTANT,
+                entityId: '\\TRUE',
+                type: ProblemType::INTERNAL_IMPLEMENTATION,
+                affectedChecks: [CheckType::CONSTANT_EXISTS],
+                versionRange: new PhpVersionRange(PhpVersions::EARLIEST, PhpVersions::LATEST),
+                reason: '\\TRUE is a PHP language keyword reported as a constant by runtime reflection, but cannot be defined in stubs as a constant declaration.'
+            ),
+            new ProblemDefinition(
+                entityType: EntityType::GLOBAL_CONSTANT,
+                entityId: '\\FALSE',
+                type: ProblemType::INTERNAL_IMPLEMENTATION,
+                affectedChecks: [CheckType::CONSTANT_EXISTS],
+                versionRange: new PhpVersionRange(PhpVersions::EARLIEST, PhpVersions::LATEST),
+                reason: '\\FALSE is a PHP language keyword reported as a constant by runtime reflection, but cannot be defined in stubs as a constant declaration.'
+            ),
+            new ProblemDefinition(
+                entityType: EntityType::GLOBAL_CONSTANT,
+                entityId: '\\NULL',
+                type: ProblemType::INTERNAL_IMPLEMENTATION,
+                affectedChecks: [CheckType::CONSTANT_EXISTS],
+                versionRange: new PhpVersionRange(PhpVersions::EARLIEST, PhpVersions::LATEST),
+                reason: '\\NULL is a PHP language keyword reported as a constant by runtime reflection, but cannot be defined in stubs as a constant declaration.'
+            ),
+
             // Tentative return types that only exist from PHP 8.3+ (DOMDocument methods got tentative in 8.3)
             // Stubs mark them as tentative for all versions; skip the check for 8.1-8.2
             new ProblemDefinition(
@@ -1160,6 +1438,20 @@ class DefaultKnownProblemsProvider implements KnownProblemsProvider
                     '\\mysqli::ssl_set',
                     '\\mysqli_stmt::close',
                 ],
+            ),
+
+            // ── FunctionParameterDefaultValueCheck known problems ─────────────────
+
+            // round() - PHP 8.4 changed $mode default from int PHP_ROUND_HALF_UP (0) to
+            // the pure enum RoundingMode::HalfAwayFromZero. Stubs cannot represent enum
+            // defaults in a version-aware way, so the stub keeps 0 for all versions.
+            new ProblemDefinition(
+                entityType: EntityType::FUNCTION,
+                entityId: '\\round',
+                type: ProblemType::RUNTIME_VALUE,
+                affectedChecks: [CheckType::PARAMETER_DEFAULT_VALUE],
+                versionRange: new PhpVersionRange(PhpVersions::LATEST, PhpVersions::LATEST),
+                reason: 'PHP 8.4 changed the $mode default from int 0 (PHP_ROUND_HALF_UP) to RoundingMode::HalfAwayFromZero (pure enum). Stubs have no version-aware default mechanism, so 0 is kept for all versions.'
             ),
         ];
 

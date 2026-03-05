@@ -11,6 +11,7 @@ use StubTests\Sources\Validator\Functions\FunctionExistsCheck;
 use StubTests\Sources\Validator\Functions\FunctionOptionalParametersCheck;
 use StubTests\Sources\Validator\Functions\FunctionParametersCountCheck;
 use StubTests\Sources\Validator\Functions\FunctionTentativeReturnTypeCheck;
+use StubTests\Sources\Validator\Functions\FunctionParameterDefaultValueCheck;
 use StubTests\Sources\Validator\Functions\ParameterNamesCheck;
 use StubTests\Sources\Validator\Functions\ParameterTypesCheck;
 use StubTests\Sources\Validator\Functions\FunctionReturnTypesCheck;
@@ -162,6 +163,23 @@ class FunctionValidatorTest extends ValidatorTestBase
             $functionId,
             $phpVersion,
             "Function {$functionId} tentative return type check failed in PHP {$phpVersion}"
+        );
+    }
+
+    /**
+     * Check that default parameter values match between reflection and stubs.
+     *
+     * Only runs against the latest PHP version since stubs do not support
+     * version-aware default values.
+     */
+    #[PhpVersionRange(PhpVersions::LATEST, PhpVersions::LATEST)]
+    public function checkFunctionParameterDefaultValue(string $functionId, string $phpVersion): void
+    {
+        $this->executeCheck(
+            new FunctionParameterDefaultValueCheck(),
+            $functionId,
+            $phpVersion,
+            "Function {$functionId} parameter default value check failed in PHP {$phpVersion}"
         );
     }
 }

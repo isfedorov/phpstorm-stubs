@@ -53,4 +53,45 @@ class NikicParameterNode implements ParameterNode
     {
         return $this->param->default !== null;
     }
+
+    public function getDefaultValue(): mixed
+    {
+        if ($this->param->default === null) {
+            throw new \RuntimeException('Parameter has no default value');
+        }
+
+        $evaluator = new \PhpParser\ConstExprEvaluator(
+            function (\PhpParser\Node\Expr $node): mixed {
+                if ($node instanceof \PhpParser\Node\Expr\ConstFetch) {
+                    $name = $node->name->toString();
+                    if (@defined($name)) {
+                        return @constant($name);
+                    }
+                } elseif ($node instanceof \PhpParser\Node\Expr\ClassConstFetch) {
+                    if ($node->class instanceof \PhpParser\Node\Name
+                        && $node->name instanceof \PhpParser\Node\Identifier
+                    ) {
+                        $class = $node->class->toString();
+                        $const = $node->name->toString();
+                        if ($const === 'class') {
+                            return $class;
+                        }
+                        $fqn = $class . '::' . $const;
+                        if (@defined($fqn)) {
+                            return @constant($fqn);
+                        }
+                    }
+                }
+                throw new \PhpParser\ConstExprEvaluationException(
+                    'Expression of type ' . get_class($node) . ' cannot be evaluated'
+                );
+            }
+        );
+
+        try {
+            return $evaluator->evaluateDirectly($this->param->default);
+        } catch (\PhpParser\ConstExprEvaluationException $e) {
+            throw new \RuntimeException('Cannot evaluate default value: ' . $e->getMessage(), 0, $e);
+        }
+    }
 }

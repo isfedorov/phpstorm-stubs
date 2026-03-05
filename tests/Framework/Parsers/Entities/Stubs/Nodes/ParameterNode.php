@@ -37,4 +37,15 @@ interface ParameterNode
      * @return bool True if the parameter has an explicit default value
      */
     public function hasDefaultValue(): bool;
+
+    /**
+     * Evaluate and return the default value of the parameter.
+     *
+     * Implementations should evaluate the default expression to a PHP value,
+     * resolving named constants (e.g. SORT_REGULAR) via PHP's runtime.
+     *
+     * @return mixed The evaluated PHP default value
+     * @throws \RuntimeException if there is no default or the expression cannot be evaluated
+     */
+    public function getDefaultValue(): mixed;
 }

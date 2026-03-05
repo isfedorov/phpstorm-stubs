@@ -196,4 +196,24 @@ enum CheckType: string
      * Relevant for PHP 8.1+ where readonly properties were introduced.
      */
     case CLASS_PROPERTIES_READONLY = 'ClassPropertyReadonlyCheck';
+
+    /**
+     * Validates that global constants from reflection exist in stubs.
+     */
+    case CONSTANT_EXISTS = 'ConstantExistsCheck';
+
+    /**
+     * Validates that the values of global constants in stubs match reflection.
+     * Value comparison is limited to the latest PHP version to avoid false positives.
+     */
+    case CONSTANT_VALUE = 'ConstantValueCheck';
+
+    /**
+     * Validates that default parameter values in stubs match reflection.
+     * Only checked against the latest PHP version since stubs do not support
+     * version-aware default values (no LanguageLevelTypeAware equivalent for defaults).
+     * Comparison is skipped when either side's value is null to avoid false positives
+     * from unevaluable constant expressions.
+     */
+    case PARAMETER_DEFAULT_VALUE = 'ParameterDefaultValueCheck';
 }

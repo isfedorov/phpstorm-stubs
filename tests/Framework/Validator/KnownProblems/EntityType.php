@@ -56,6 +56,11 @@ enum EntityType: string
     case ENUM_CONSTANT = 'enum_constants';
 
     /**
+     * Global constants (e.g., \PHP_INT_MAX, \STDIN)
+     */
+    case GLOBAL_CONSTANT = 'global_constants';
+
+    /**
      * Get entity type from entity ID format.
      *
      * @param string $entityId Entity ID like "\dba_fetch" or "DateTime::format"

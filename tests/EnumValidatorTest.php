@@ -15,6 +15,7 @@ use StubTests\Sources\Validator\Enums\EnumMethodsExistCheck;
 use StubTests\Sources\Validator\Enums\EnumMethodsOptionalParametersCheck;
 use StubTests\Sources\Validator\Enums\EnumMethodsParameterTypesCheck;
 use StubTests\Sources\Validator\Enums\EnumMethodsParametersCountCheck;
+use StubTests\Sources\Validator\Enums\EnumMethodsParameterDefaultValueCheck;
 use StubTests\Sources\Validator\Enums\EnumMethodsParameterNamesCheck;
 use StubTests\Sources\Validator\Enums\EnumMethodsReturnTypesCheck;
 use StubTests\Sources\Validator\Enums\EnumMethodsTentativeReturnTypeCheck;
@@ -244,6 +245,17 @@ class EnumValidatorTest extends ValidatorTestBase
             $enumId,
             $phpVersion,
             "Enum {$enumId} methods tentative return type check failed in PHP {$phpVersion}"
+        );
+    }
+
+    #[PhpVersionRange(PhpVersions::LATEST, PhpVersions::LATEST)]
+    public function checkEnumMethodsParameterDefaultValue(string $enumId, string $phpVersion): void
+    {
+        $this->executeCheck(
+            new EnumMethodsParameterDefaultValueCheck(),
+            $enumId,
+            $phpVersion,
+            "Enum {$enumId} methods parameter default value check failed in PHP {$phpVersion}"
         );
     }
 }

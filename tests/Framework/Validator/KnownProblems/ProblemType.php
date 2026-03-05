@@ -53,4 +53,19 @@ enum ProblemType: string
      * - IntlCalendar::isSet() → IntlCalendar::PS_UNRESERVE_PREFIX_isSet()
      */
     case RESERVED_KEYWORD_CONFLICT = 'reserved_keyword_conflict';
+
+    /**
+     * The constant value depends on the runtime environment and therefore
+     * cannot be pinned to a single value in the stubs.
+     *
+     * Examples include:
+     * - Library version strings (OpenSSL, libxml, ICU, zlib, libsodium …)
+     * - OS-specific numeric constants (POSIX resource limits)
+     * - PHP build-configuration paths (PHP_BINARY, PHP_PREFIX, …)
+     * - PHP version itself (PHP_VERSION, PHP_MAJOR_VERSION, …)
+     *
+     * The stub holds a representative / historically-correct value that is
+     * likely to differ from the value produced by the current runtime.
+     */
+    case RUNTIME_VALUE = 'runtime_value';
 }

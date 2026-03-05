@@ -23,6 +23,7 @@ use StubTests\Sources\Validator\Classes\ClassMethodsParametersCountCheck;
 use StubTests\Sources\Validator\Classes\ClassMethodsReturnTypesCheck;
 use StubTests\Sources\Validator\Classes\ClassMethodsOptionalParametersCheck;
 use StubTests\Sources\Validator\Classes\ClassMethodsParameterTypesCheck;
+use StubTests\Sources\Validator\Classes\ClassMethodsParameterDefaultValueCheck;
 use StubTests\Sources\Validator\Classes\ClassMethodsParameterNamesCheck;
 use StubTests\Sources\Validator\Classes\ClassMethodsTentativeReturnTypeCheck;
 use StubTests\Sources\Validator\Classes\ClassPropertyReadonlyCheck;
@@ -337,6 +338,17 @@ class ClassValidatorTest extends ValidatorTestBase
 			$classId,
 			$phpVersion,
 			"Class {$classId} property readonly check failed in PHP {$phpVersion}"
+		);
+	}
+
+	#[PhpVersionRange(PhpVersions::LATEST, PhpVersions::LATEST)]
+	public function checkClassMethodsParameterDefaultValue(string $classId, string $phpVersion): void
+	{
+		$this->executeCheck(
+			new ClassMethodsParameterDefaultValueCheck(),
+			$classId,
+			$phpVersion,
+			"Class {$classId} methods parameter default value check failed in PHP {$phpVersion}"
 		);
 	}
 }
