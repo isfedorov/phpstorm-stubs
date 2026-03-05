@@ -1863,7 +1863,7 @@
                         "isPassedByReference": false,
                         "hasDefaultValue": true,
                         "type": "string",
-                        "defaultValue": null,
+                        "defaultValue": "",
                         "typeFromPhpDoc": "string",
                         "languageLevelTypes": null,
                         "defaultType": null,
@@ -2812,7 +2812,7 @@
                         "isPassedByReference": false,
                         "hasDefaultValue": true,
                         "type": "",
-                        "defaultValue": null,
+                        "defaultValue": false,
                         "typeFromPhpDoc": "bool",
                         "languageLevelTypes": {
                             "8.0": "bool"
@@ -9419,7 +9419,7 @@
                         "isPassedByReference": false,
                         "hasDefaultValue": true,
                         "type": "",
-                        "defaultValue": null,
+                        "defaultValue": "",
                         "typeFromPhpDoc": "mixed",
                         "languageLevelTypes": null,
                         "defaultType": null,
