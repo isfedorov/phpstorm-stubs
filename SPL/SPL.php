@@ -1969,7 +1969,7 @@ class ArrayIterator implements SeekableIterator, ArrayAccess, Serializable, Coun
     /**
      * Set behaviour flags
      * @link https://php.net/manual/en/arrayiterator.setflags.php
-     * @param string $flags <p>
+     * @param int $flags <p>
      * A bitmask as follows:
      * 0 = Properties of the object have their normal functionality
      * when accessed as list (var_dump, foreach, etc.).

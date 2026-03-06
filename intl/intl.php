@@ -3217,7 +3217,7 @@ class IntlCalendar
      * (PHP 5 &gt;=5.5.0 PECL intl &gt;= 3.0.0a1)<br/>
      * Get time of the day at which weekend begins or ends
      * @link https://secure.php.net/manual/en/intlcalendar.getweekendtransition.php
-     * @param string $dayOfWeek <p>
+     * @param int $dayOfWeek <p>
      * One of the constants <b>IntlCalendar::DOW_SUNDAY</b>,
      * <b>IntlCalendar::DOW_MONDAY</b>, ...,
      * <b>IntlCalendar::DOW_SATURDAY</b>.
@@ -7307,7 +7307,7 @@ class IntlBreakIterator implements IteratorAggregate
      * (PHP 5 &gt;=5.5.0)<br/>
      * Get the locale associated with the object
      * @link https://secure.php.net/manual/en/intlbreakiterator.getlocale.php
-     * @param string $type
+     * @param int $type
      */
     #[Pure]
     #[TentativeType]
@@ -7317,7 +7317,7 @@ class IntlBreakIterator implements IteratorAggregate
      * (PHP 5 &gt;=5.5.0)<br/>
      * Create iterator for navigating fragments between boundaries
      * @link https://secure.php.net/manual/en/intlbreakiterator.getpartsiterator.php
-     * @param int $type [optional]
+     * @param string $type [optional]
      * <p>
      * Optional key type. Possible values are:
      * </p><ul>
@@ -7420,7 +7420,7 @@ class IntlRuleBasedBreakIterator extends IntlBreakIterator implements Traversabl
      * (PHP 5 &gt;=5.5.0)<br/>
      * @link https://secure.php.net/manual/en/intlbreakiterator.construct.php
      * @param string $rules
-     * @param string $compiled [optional]
+     * @param bool $compiled [optional]
      */
     #[Pure]
     public function __construct(
@@ -7585,8 +7585,8 @@ class UConverter
      * Default "from" callback function
      * @link https://php.net/manual/en/uconverter.fromucallback.php
      * @param int $reason
-     * @param string $source
-     * @param string $codePoint
+     * @param array $source
+     * @param int $codePoint
      * @param int &$error
      * @return array|string|int|null
      */

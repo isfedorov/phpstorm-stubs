@@ -541,7 +541,7 @@ class Phar extends RecursiveDirectoryIterator implements RecursiveIterator, Seek
      * @param string $localName <p>
      * The filename (relative path) to modify in a Phar.
      * </p>
-     * @return bool <b>TRUE</b> on success or <b>FALSE</b> on failure.
+     * @return void
      */
     #[TentativeType]
     public function offsetUnset($localName): void {}

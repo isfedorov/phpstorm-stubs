@@ -1578,7 +1578,7 @@ class DOMCharacterData extends DOMNode implements DOMChildNode
      * offset and count exceeds
      * the length, then all characters to the end of the data are deleted.
      * </p>
-     * @return void
+     * @return bool
      */
     #[TentativeType]
     public function deleteData(
@@ -1920,7 +1920,7 @@ class DOMElement extends DOMNode implements DOMParentNode, DOMChildNode
      * @param string $localName <p>
      * The local name.
      * </p>
-     * @return bool true on success or false on failure.
+     * @return void
      */
     #[TentativeType]
     public function removeAttributeNS(
