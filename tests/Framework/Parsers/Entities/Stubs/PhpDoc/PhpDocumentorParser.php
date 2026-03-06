@@ -108,9 +108,9 @@ class PhpDocumentorParser implements PhpDocParserInterface
     }
 
     /**
-     * Extract names of parameters marked as [optional] in their @param description.
+     * Extract names of parameters marked as [optional] in their param description.
      *
-     * Stubs use the pattern `@param type $name [optional] description` to indicate
+     * Stubs use the pattern `param type $name [optional] description` to indicate
      * that a parameter is optional even when it has no default value in the signature.
      *
      * @return string[] List of parameter names (without $) marked as [optional]

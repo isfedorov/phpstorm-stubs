@@ -7,6 +7,7 @@ use StubTests\Sources\Parsers\Entities\Model\PHPClassLikeObject;
 use StubTests\Sources\Parsers\Entities\Model\PHPEnum;
 use StubTests\Sources\Parsers\Entities\Model\PHPInterface;
 use StubTests\Sources\Parsers\Entities\Model\PHPMethod;
+use StubTests\Sources\Parsers\Entities\Model\PHPParameter;
 use StubTests\Sources\Parsers\Entities\Model\PHPProperty;
 use StubTests\Sources\Parsers\ParsedDataStorageManager;
 
@@ -211,6 +212,49 @@ abstract class AbstractClassCheck extends AbstractReflectionCheck
                 $methodMap[$effectiveName] = $method;
             }
         }
+    }
+
+    /**
+     * Filter parameters by version availability, then deduplicate consecutive same-named
+     * parameters where the second is variadic (the stub workaround for non-optional variadics).
+     *
+     * @param  PHPParameter[] $params
+     * @return PHPParameter[]
+     */
+    protected function filterAndDeduplicateParams(array $params, string $phpVersion): array
+    {
+        $filtered = [];
+        foreach ($params as $param) {
+            $since   = $param->getSinceVersion();
+            $removed = $param->getRemovedVersion();
+
+            $available = ($since === null || version_compare($phpVersion, $since, '>='))
+                && ($removed === null || version_compare($phpVersion, $removed, '<'));
+
+            if ($available) {
+                $filtered[] = $param;
+            }
+        }
+
+        // Merge consecutive same-named params where the second is variadic
+        $merged = [];
+        $count  = count($filtered);
+        for ($i = 0; $i < $count; $i++) {
+            $current = $filtered[$i];
+            $next    = $filtered[$i + 1] ?? null;
+
+            if ($next !== null
+                && $current->getName() === $next->getName()
+                && $next->isVariadic()
+            ) {
+                $merged[] = $next;
+                $i++;
+            } else {
+                $merged[] = $current;
+            }
+        }
+
+        return $merged;
     }
 
     /**

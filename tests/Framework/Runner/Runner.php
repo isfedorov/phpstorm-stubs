@@ -7,6 +7,7 @@ use StubTests\Sources\Parsers\Serializers\StubsEntitySerializer;
 use StubTests\Sources\DataProvider\AllStubsDataProvider;
 use StubTests\Sources\DataProvider\CurrentRuntimeReflectionRawDataProvider;
 use StubTests\Sources\Parsers\ClassHierarchyResolver;
+use StubTests\Sources\Parsers\InheritDocVersionResolver;
 use StubTests\Sources\Parsers\DefaultParsedDataStorageManager;
 use StubTests\Sources\Parsers\Entities\Reflection\AllReflectionParser;
 use StubTests\Sources\Parsers\Entities\Stubs\AllStubsParser;
@@ -119,6 +120,9 @@ class Runner
 
         // Resolve parent class, interface, and enum interface references to actual objects
         (new ClassHierarchyResolver())->resolve($manager->getClasses(), $manager->getInterfaces(), $manager->getEnums());
+
+        // Inherit sinceVersion from parent interface/class for methods with {@inheritDoc}
+        (new InheritDocVersionResolver())->resolve($manager->getClasses(), $manager->getInterfaces(), $manager->getEnums());
 
         // Store in in-memory cache
         self::$stubsCache = $manager;

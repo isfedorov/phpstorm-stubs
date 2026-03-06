@@ -16,6 +16,7 @@ use StubTests\Sources\Validator\Functions\ParameterNamesCheck;
 use StubTests\Sources\Validator\Functions\ParameterTypesCheck;
 use StubTests\Sources\Validator\Functions\FunctionReturnTypesCheck;
 use StubTests\Sources\Validator\Functions\FunctionPhpDocConformsSignatureCheck;
+use StubTests\Sources\Validator\Functions\FunctionSpecialTypeHintsCheck;
 
 /**
  * Validates that functions from reflection match stubs.
@@ -195,6 +196,29 @@ class FunctionValidatorTest extends ValidatorTestBase
             $functionId,
             $phpVersion,
             "Function {$functionId} PhpDoc/signature type mismatch in PHP {$phpVersion}"
+        );
+    }
+
+    /**
+     * Check that \end, \prev, \next, \reset, \current declare 'mixed|false' in their PhpDoc
+     * @return type.
+     *
+     * These array-traversal functions return the current element on success and false for an
+     * empty array or exhausted pointer.  The PHP 8 signature uses the broad 'mixed' type, which
+     * erases the 'false' case and prevents IDEs from narrowing the return type correctly.
+     * The PhpDoc must therefore explicitly state 'mixed|false' so that tools can model both
+     * outcomes (see https://youtrack.jetbrains.com/issue/WI-57991).
+     *
+     * The check is a no-op for all other functions.
+     */
+    #[PhpVersionRange(PhpVersions::EARLIEST, PhpVersions::LATEST)]
+    public function checkSpecialTypeHints(string $functionId, string $phpVersion): void
+    {
+        $this->executeCheck(
+            new FunctionSpecialTypeHintsCheck(),
+            $functionId,
+            $phpVersion,
+            "Function {$functionId} special type hints check failed in PHP {$phpVersion}"
         );
     }
 }

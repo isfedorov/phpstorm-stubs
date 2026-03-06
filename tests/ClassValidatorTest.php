@@ -32,6 +32,9 @@ use StubTests\Sources\Validator\Classes\ClassStaticMethodsCheck;
 use StubTests\Sources\Validator\Classes\ClassConstantsCheck;
 use StubTests\Sources\Validator\Classes\ClassConstantsValueCheck;
 use StubTests\Sources\Validator\Classes\ClassConstantsVisibilityCheck;
+use StubTests\Sources\Validator\Classes\ClassMethodsNullableTypeForbiddenCheck;
+use StubTests\Sources\Validator\Classes\ClassMethodsReturnTypeForbiddenCheck;
+use StubTests\Sources\Validator\Classes\ClassMethodsUnionTypeForbiddenCheck;
 use StubTests\Sources\Validator\Classes\ClassMethodsPhpDocConformsSignatureCheck;
 
 /**
@@ -361,6 +364,55 @@ class ClassValidatorTest extends ValidatorTestBase
 			$classId,
 			$phpVersion,
 			"Class {$classId} PhpDoc/signature type mismatch in PHP {$phpVersion}"
+		);
+	}
+
+	/**
+	 * Check that overridable class methods available before PHP 7.0 do not declare any
+	 * return type hints, since return type hints were introduced in PHP 7.0.
+	 */
+	#[PhpVersionRange(PhpVersions::EARLIEST, PhpVersions::EARLIEST)]
+	public function checkMethodDoesNotHaveReturnTypeHint(string $classId, string $phpVersion): void
+	{
+		$this->executeCheck(
+			new ClassMethodsReturnTypeForbiddenCheck(),
+			$classId,
+			$phpVersion,
+			"Class {$classId} has overridable method with return type hint available before PHP 7.0 in PHP {$phpVersion}"
+		);
+	}
+
+	/**
+	 * Check that overridable class methods available before PHP 7.1 do not declare nullable
+	 * return type hints, since child classes targeting PHP 5.6/7.0 cannot use ?T syntax.
+	 *
+	 * The check's supports() already restricts execution to PHP versions < 7.1,
+	 * so the EARLIEST–LATEST range here ensures every entity is considered for
+	 * all versions where the check is relevant.
+	 */
+	#[PhpVersionRange(PhpVersions::EARLIEST, PhpVersions::PHP_7_0)]
+	public function checkMethodDoesNotHaveNullableTypeHint(string $classId, string $phpVersion): void
+	{
+		$this->executeCheck(
+			new ClassMethodsNullableTypeForbiddenCheck(),
+			$classId,
+			$phpVersion,
+			"Class {$classId} has overridable method with nullable type hint available before PHP 7.1 in PHP {$phpVersion}"
+		);
+	}
+
+	/**
+	 * Check that overridable class methods available before PHP 8.0 do not declare union
+	 * type hints (T1|T2), since child classes targeting PHP 5.6–7.4 cannot use that syntax.
+	 */
+	#[PhpVersionRange(PhpVersions::EARLIEST, PhpVersions::PHP_7_4)]
+	public function checkMethodDoesNotHaveUnionTypeHint(string $classId, string $phpVersion): void
+	{
+		$this->executeCheck(
+			new ClassMethodsUnionTypeForbiddenCheck(),
+			$classId,
+			$phpVersion,
+			"Class {$classId} has overridable method with union type hint available before PHP 8.0 in PHP {$phpVersion}"
 		);
 	}
 }

@@ -5,9 +5,9 @@ namespace StubTests\Sources\Parsers\Entities\Model;
 class PHPMethod extends PHPFunction
 {
     private $accessModifier;
-    private bool $isStatic;
-    private bool $isFinal;
-    private bool $isAbstract;
+    private bool $isStatic = false;
+    private bool $isFinal = false;
+    private bool $isAbstract = false;
 
     public function getAccess()
     {

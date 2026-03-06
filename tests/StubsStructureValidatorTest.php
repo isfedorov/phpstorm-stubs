@@ -81,4 +81,114 @@ class StubsStructureValidatorTest extends TestCase
             "tests/Framework/DataProvider/StubCategory.php."
         );
     }
+
+    /**
+     * Assert that tests/Framework/Tools/generate-stubs-map.php generates a valid PhpStormStubsMap
+     * to the project root when called without arguments.
+     *
+     * Verifies:
+     * 1. The generator script exists.
+     * 2. PhpStormStubsMap.php exists in the project root.
+     * 3. The default output path baked into the script resolves to the project root.
+     * 4. Running the script exits cleanly (exit code 0).
+     * 5. The generated output has the expected PHP structure (namespace, class, array constants).
+     * 6. All paths in the map are relative — no absolute filesystem paths.
+     */
+    #[Test]
+    public function checkGenerateStubsMapScript(): void
+    {
+        $projectRoot = dirname(__DIR__);
+        $scriptPath  = $projectRoot . '/tests/Framework/Tools/generate-stubs-map.php';
+        $existingMap = $projectRoot . '/PhpStormStubsMap.php';
+        $tempOutput  = sys_get_temp_dir() . '/phpstorm-stubs-map-' . uniqid() . '.php';
+
+        self::assertFileExists($scriptPath, 'Generator script missing: tests/Framework/Tools/generate-stubs-map.php');
+        self::assertFileExists($existingMap, 'PhpStormStubsMap.php must exist in the project root');
+
+        // The default output path baked into the script must resolve to the project root.
+        // $mapFile = __DIR__ . '/../../../PhpStormStubsMap.php' (script is 3 levels deep in tests/)
+        $scriptDefaultOutput = realpath(dirname($scriptPath) . '/../../../PhpStormStubsMap.php');
+        self::assertSame(
+            realpath($existingMap),
+            $scriptDefaultOutput,
+            'The default output path inside generate-stubs-map.php must resolve to PhpStormStubsMap.php in the project root.'
+        );
+
+        exec(
+            sprintf('php %s %s 2>&1', escapeshellarg($scriptPath), escapeshellarg($tempOutput)),
+            $execOutput,
+            $exitCode
+        );
+
+        try {
+            self::assertSame(
+                0,
+                $exitCode,
+                "Generator script exited with code $exitCode:\n" . implode("\n", $execOutput)
+            );
+
+            self::assertFileExists($tempOutput, 'Generator must create the output file');
+
+            $generated = file_get_contents($tempOutput);
+
+            self::assertStringContainsString("namespace JetBrains\\PHPStormStub;", $generated);
+            self::assertStringContainsString('final class PhpStormStubsMap', $generated);
+            self::assertStringContainsString('const CLASSES', $generated);
+            self::assertStringContainsString('const FUNCTIONS', $generated);
+            self::assertStringContainsString('const CONSTANTS', $generated);
+
+            self::assertStringNotContainsString(
+                $projectRoot,
+                $generated,
+                'PhpStormStubsMap.php must store relative paths, not absolute ones.'
+            );
+        } finally {
+            if (file_exists($tempOutput)) {
+                unlink($tempOutput);
+            }
+        }
+    }
+
+    /**
+     * Assert that PhpStormStubsMap.php in the project root is up to date with the current stubs.
+     *
+     * Generates a fresh map into a temporary file using generate-stubs-map.php and compares its
+     * content byte-for-byte against the committed PhpStormStubsMap.php. Any discrepancy means a
+     * stub file was added, removed, or renamed without regenerating the map.
+     *
+     * Fix: run php tests/Framework/Tools/generate-stubs-map.php from the project root.
+     */
+    #[Test]
+    public function checkStubMapIsUpToDate(): void
+    {
+        $projectRoot = dirname(__DIR__);
+        $scriptPath  = $projectRoot . '/tests/Framework/Tools/generate-stubs-map.php';
+        $existingMap = $projectRoot . '/PhpStormStubsMap.php';
+        $tempOutput  = sys_get_temp_dir() . '/phpstorm-stubs-map-' . uniqid() . '.php';
+
+        exec(
+            sprintf('php %s %s 2>&1', escapeshellarg($scriptPath), escapeshellarg($tempOutput)),
+            $execOutput,
+            $exitCode
+        );
+
+        try {
+            self::assertSame(
+                0,
+                $exitCode,
+                "Generator script failed with exit code $exitCode:\n" . implode("\n", $execOutput)
+            );
+
+            self::assertSame(
+                file_get_contents($existingMap),
+                file_get_contents($tempOutput),
+                'PhpStormStubsMap.php is out of date. ' .
+                'Regenerate it by running: php tests/Framework/Tools/generate-stubs-map.php'
+            );
+        } finally {
+            if (file_exists($tempOutput)) {
+                unlink($tempOutput);
+            }
+        }
+    }
 }

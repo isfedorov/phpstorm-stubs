@@ -230,4 +230,36 @@ enum CheckType: string
      * and bool/false splitting are all accepted.
      */
     case PHPDOC_CONFORMS_SIGNATURE = 'PhpDocConformsSignatureCheck';
+
+    /**
+     * Validates that overridable methods available before PHP 7.0 do not declare any
+     * return type hint. Return type hints were introduced in PHP 7.0; using them on
+     * pre-7.0 methods prevents child classes targeting PHP 5.6 from providing a matching
+     * override. Only return types are checked — parameter type hints for class names,
+     * array, and callable were valid in PHP 5.x.
+     * Used by ClassMethodsReturnTypeForbiddenCheck, InterfaceMethodsReturnTypeForbiddenCheck,
+     * and EnumMethodsReturnTypeForbiddenCheck.
+     */
+    case RETURN_TYPE_FORBIDDEN = 'ReturnTypeForbiddenCheck';
+
+    /**
+     * Validates that overridable methods available before PHP 7.1 do not declare nullable
+     * type hints (?T) — on either the return type or any parameter. Nullable type hints were
+     * introduced in PHP 7.1; using them on pre-7.1 methods prevents child classes targeting
+     * PHP 5.6/7.0 from providing a matching override.
+     * Used by ClassMethodsNullableTypeForbiddenCheck, InterfaceMethodsNullableTypeForbiddenCheck,
+     * and EnumMethodsNullableTypeForbiddenCheck.
+     */
+    case NULLABLE_TYPE_FORBIDDEN = 'NullableTypeForbiddenCheck';
+
+    /**
+     * Validates that overridable methods available before PHP 8.0 do not declare union
+     * type hints (T1|T2) — on either the return type or any parameter. Union type hints
+     * were introduced in PHP 8.0; using them on pre-8.0 methods prevents child classes
+     * targeting PHP 5.6–7.4 from providing a matching override.
+     * Note: nullable ?T syntax (serialised as T|null) is excluded — it is valid from PHP 7.1.
+     * Used by ClassMethodsUnionTypeForbiddenCheck, InterfaceMethodsUnionTypeForbiddenCheck,
+     * and EnumMethodsUnionTypeForbiddenCheck.
+     */
+    case UNION_TYPE_FORBIDDEN = 'UnionTypeForbiddenCheck';
 }

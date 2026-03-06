@@ -29,7 +29,7 @@ class ParsedPhpDoc
     public bool $isDeprecated = false;
 
     /**
-     * Names of parameters marked as [optional] in @param PhpDoc descriptions.
+     * Names of parameters marked as [optional] in param PhpDoc descriptions.
      * These parameters are optional even without a default value in the signature.
      *
      * @var string[]

@@ -22,6 +22,9 @@ use StubTests\Sources\Validator\Interfaces\InterfaceParentInterfacesCheck;
 use StubTests\Sources\Validator\Interfaces\InterfaceConstantsCheck;
 use StubTests\Sources\Validator\Interfaces\InterfaceConstantsValueCheck;
 use StubTests\Sources\Validator\Interfaces\InterfaceConstantsVisibilityCheck;
+use StubTests\Sources\Validator\Interfaces\InterfaceMethodsNullableTypeForbiddenCheck;
+use StubTests\Sources\Validator\Interfaces\InterfaceMethodsReturnTypeForbiddenCheck;
+use StubTests\Sources\Validator\Interfaces\InterfaceMethodsUnionTypeForbiddenCheck;
 use StubTests\Sources\Validator\Interfaces\InterfaceMethodsPhpDocConformsSignatureCheck;
 
 /**
@@ -230,6 +233,51 @@ class InterfaceValidatorTest extends ValidatorTestBase
             $interfaceId,
             $phpVersion,
             "Interface {$interfaceId} PhpDoc/signature type mismatch in PHP {$phpVersion}"
+        );
+    }
+
+    /**
+     * Check that interface methods available before PHP 7.0 do not declare any
+     * return type hints, since return type hints were introduced in PHP 7.0.
+     */
+    #[PhpVersionRange(PhpVersions::EARLIEST, PhpVersions::EARLIEST)]
+    public function checkMethodDoesNotHaveReturnTypeHint(string $interfaceId, string $phpVersion): void
+    {
+        $this->executeCheck(
+            new InterfaceMethodsReturnTypeForbiddenCheck(),
+            $interfaceId,
+            $phpVersion,
+            "Interface {$interfaceId} has method with return type hint available before PHP 7.0 in PHP {$phpVersion}"
+        );
+    }
+
+    /**
+     * Check that interface methods available before PHP 7.1 do not declare nullable
+     * type hints, since implementations targeting PHP 5.6/7.0 cannot use ?T syntax.
+     */
+    #[PhpVersionRange(PhpVersions::EARLIEST, PhpVersions::PHP_7_0)]
+    public function checkMethodDoesNotHaveNullableTypeHint(string $interfaceId, string $phpVersion): void
+    {
+        $this->executeCheck(
+            new InterfaceMethodsNullableTypeForbiddenCheck(),
+            $interfaceId,
+            $phpVersion,
+            "Interface {$interfaceId} has method with nullable type hint available before PHP 7.1 in PHP {$phpVersion}"
+        );
+    }
+
+    /**
+     * Check that interface methods available before PHP 8.0 do not declare union
+     * type hints, since implementations targeting PHP 5.6–7.4 cannot use T1|T2 syntax.
+     */
+    #[PhpVersionRange(PhpVersions::EARLIEST, PhpVersions::PHP_7_4)]
+    public function checkMethodDoesNotHaveUnionTypeHint(string $interfaceId, string $phpVersion): void
+    {
+        $this->executeCheck(
+            new InterfaceMethodsUnionTypeForbiddenCheck(),
+            $interfaceId,
+            $phpVersion,
+            "Interface {$interfaceId} has method with union type hint available before PHP 8.0 in PHP {$phpVersion}"
         );
     }
 }
