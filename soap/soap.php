@@ -545,7 +545,7 @@ class SoapVar
      * @param string $nodeNamespace [optional] <p>
      * The XML node namespace.
      * </p>
-     * @since 5.0.1
+     * @since 5.0
      */
     public function __construct(
         #[LanguageLevelTypeAware(["8.0" => 'mixed'], default: '')] $data,
@@ -577,7 +577,7 @@ class SoapVar
      * @param string $node_namespace [optional] <p>
      * The XML node namespace.
      * </p>
-     * @since 5.0.1
+     * @since 5.0
      * @removed 8.0
      */
     public function SoapVar($data, $encoding, $type_name = '', $type_namespace = '', $node_name = '', $node_namespace = '') {}
