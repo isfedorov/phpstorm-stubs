@@ -15,6 +15,7 @@ use StubTests\Sources\Validator\Functions\FunctionParameterDefaultValueCheck;
 use StubTests\Sources\Validator\Functions\ParameterNamesCheck;
 use StubTests\Sources\Validator\Functions\ParameterTypesCheck;
 use StubTests\Sources\Validator\Functions\FunctionReturnTypesCheck;
+use StubTests\Sources\Validator\Functions\FunctionPhpDocConformsSignatureCheck;
 
 /**
  * Validates that functions from reflection match stubs.
@@ -180,6 +181,20 @@ class FunctionValidatorTest extends ValidatorTestBase
             $functionId,
             $phpVersion,
             "Function {$functionId} parameter default value check failed in PHP {$phpVersion}"
+        );
+    }
+
+    /**
+     * Check that PhpDoc types are compatible with signature types.
+     */
+    #[PhpVersionRange(PhpVersions::EARLIEST, PhpVersions::LATEST)]
+    public function checkFunctionPhpDocConformsSignature(string $functionId, string $phpVersion): void
+    {
+        $this->executeCheck(
+            new FunctionPhpDocConformsSignatureCheck(),
+            $functionId,
+            $phpVersion,
+            "Function {$functionId} PhpDoc/signature type mismatch in PHP {$phpVersion}"
         );
     }
 }

@@ -1453,6 +1453,31 @@ class DefaultKnownProblemsProvider implements KnownProblemsProvider
                 versionRange: new PhpVersionRange(PhpVersions::LATEST, PhpVersions::LATEST),
                 reason: 'PHP 8.4 changed the $mode default from int 0 (PHP_ROUND_HALF_UP) to RoundingMode::HalfAwayFromZero (pure enum). Stubs have no version-aware default mechanism, so 0 is kept for all versions.'
             ),
+
+            // ── PhpDocConformsSignatureCheck known problems ───────────────────────
+
+            // get_headers() $associative: PHP 7.x sig=int, but PhpDoc says bool (modern type).
+            // PHP 8.0 changed the type to bool; PhpDoc was written for PHP 8.0+ behaviour.
+            new ProblemDefinition(
+                entityType: EntityType::FUNCTION,
+                entityId: '\\get_headers',
+                type: ProblemType::RUNTIME_VALUE,
+                affectedChecks: [CheckType::PHPDOC_CONFORMS_SIGNATURE],
+                versionRange: new PhpVersionRange(PhpVersions::EARLIEST, PhpVersions::PHP_7_4),
+                reason: 'get_headers() $associative was int before PHP 8.0; PhpDoc documents the PHP 8.0+ bool type. The int→bool change is intentional; the PhpDoc is correct for current PHP.'
+            ),
+
+            // imap_sort() $reverse: PHP 7.x sig=int, but PhpDoc says bool (modern type).
+            // PHP 8.0 changed the type to bool; PhpDoc was written for PHP 8.0+ behaviour.
+            new ProblemDefinition(
+                entityType: EntityType::FUNCTION,
+                entityId: '\\imap_sort',
+                type: ProblemType::RUNTIME_VALUE,
+                affectedChecks: [CheckType::PHPDOC_CONFORMS_SIGNATURE],
+                versionRange: new PhpVersionRange(PhpVersions::EARLIEST, PhpVersions::PHP_7_4),
+                reason: 'imap_sort() $reverse was int before PHP 8.0; PhpDoc documents the PHP 8.0+ bool type. The int→bool change is intentional; the PhpDoc is correct for current PHP.'
+            ),
+
         ];
 
         return $this->problems;

@@ -32,6 +32,7 @@ use StubTests\Sources\Validator\Classes\ClassStaticMethodsCheck;
 use StubTests\Sources\Validator\Classes\ClassConstantsCheck;
 use StubTests\Sources\Validator\Classes\ClassConstantsValueCheck;
 use StubTests\Sources\Validator\Classes\ClassConstantsVisibilityCheck;
+use StubTests\Sources\Validator\Classes\ClassMethodsPhpDocConformsSignatureCheck;
 
 /**
  * Validates that classes from reflection exist in stubs.
@@ -349,6 +350,17 @@ class ClassValidatorTest extends ValidatorTestBase
 			$classId,
 			$phpVersion,
 			"Class {$classId} methods parameter default value check failed in PHP {$phpVersion}"
+		);
+	}
+
+	#[PhpVersionRange(PhpVersions::EARLIEST, PhpVersions::LATEST)]
+	public function checkClassMethodsPhpDocConformsSignature(string $classId, string $phpVersion): void
+	{
+		$this->executeCheck(
+			new ClassMethodsPhpDocConformsSignatureCheck(),
+			$classId,
+			$phpVersion,
+			"Class {$classId} PhpDoc/signature type mismatch in PHP {$phpVersion}"
 		);
 	}
 }

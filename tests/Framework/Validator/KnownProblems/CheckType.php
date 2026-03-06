@@ -221,4 +221,13 @@ enum CheckType: string
      * from unevaluable constant expressions.
      */
     case PARAMETER_DEFAULT_VALUE = 'ParameterDefaultValueCheck';
+
+    /**
+     * Validates that PhpDoc types in stubs are compatible with their signature types.
+     * Used by FunctionPhpDocConformsSignatureCheck, ClassMethodsPhpDocConformsSignatureCheck,
+     * EnumMethodsPhpDocConformsSignatureCheck, and InterfaceMethodsPhpDocConformsSignatureCheck.
+     * The check is permissive: typed-array narrowing, phpstan generics, resource widening,
+     * and bool/false splitting are all accepted.
+     */
+    case PHPDOC_CONFORMS_SIGNATURE = 'PhpDocConformsSignatureCheck';
 }

@@ -210,6 +210,7 @@ class KnownProblemsRegistry
             'ConstantExistsCheck'                 => CheckType::CONSTANT_EXISTS,
             'ConstantValueCheck'                  => CheckType::CONSTANT_VALUE,
             'ParameterDefaultValueCheck'          => CheckType::PARAMETER_DEFAULT_VALUE,
+            'PhpDocConformsSignatureCheck'        => CheckType::PHPDOC_CONFORMS_SIGNATURE,
             default => null,
         };
     }

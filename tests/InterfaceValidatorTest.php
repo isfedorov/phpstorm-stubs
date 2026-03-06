@@ -22,6 +22,7 @@ use StubTests\Sources\Validator\Interfaces\InterfaceParentInterfacesCheck;
 use StubTests\Sources\Validator\Interfaces\InterfaceConstantsCheck;
 use StubTests\Sources\Validator\Interfaces\InterfaceConstantsValueCheck;
 use StubTests\Sources\Validator\Interfaces\InterfaceConstantsVisibilityCheck;
+use StubTests\Sources\Validator\Interfaces\InterfaceMethodsPhpDocConformsSignatureCheck;
 
 /**
  * Validates that interfaces from reflection exist in stubs and their methods are correct.
@@ -218,6 +219,17 @@ class InterfaceValidatorTest extends ValidatorTestBase
             $interfaceId,
             $phpVersion,
             "Interface {$interfaceId} methods parameter default value check failed in PHP {$phpVersion}"
+        );
+    }
+
+    #[PhpVersionRange(PhpVersions::EARLIEST, PhpVersions::LATEST)]
+    public function checkInterfaceMethodsPhpDocConformsSignature(string $interfaceId, string $phpVersion): void
+    {
+        $this->executeCheck(
+            new InterfaceMethodsPhpDocConformsSignatureCheck(),
+            $interfaceId,
+            $phpVersion,
+            "Interface {$interfaceId} PhpDoc/signature type mismatch in PHP {$phpVersion}"
         );
     }
 }

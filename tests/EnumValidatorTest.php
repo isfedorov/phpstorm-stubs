@@ -25,6 +25,7 @@ use StubTests\Sources\Validator\Enums\EnumConstantsCheck;
 use StubTests\Sources\Validator\Enums\EnumConstantsValueCheck;
 use StubTests\Sources\Validator\Enums\EnumConstantsVisibilityCheck;
 use StubTests\Sources\Validator\Enums\EnumNamespaceCheck;
+use StubTests\Sources\Validator\Enums\EnumMethodsPhpDocConformsSignatureCheck;
 use StubTests\Sources\Validator\Enums\EnumStaticMethodsCheck;
 
 /**
@@ -268,6 +269,17 @@ class EnumValidatorTest extends ValidatorTestBase
             $enumId,
             $phpVersion,
             "Enum {$enumId} methods parameter default value check failed in PHP {$phpVersion}"
+        );
+    }
+
+    #[PhpVersionRange(PhpVersions::PHP_8_1, PhpVersions::LATEST)]
+    public function checkEnumMethodsPhpDocConformsSignature(string $enumId, string $phpVersion): void
+    {
+        $this->executeCheck(
+            new EnumMethodsPhpDocConformsSignatureCheck(),
+            $enumId,
+            $phpVersion,
+            "Enum {$enumId} PhpDoc/signature type mismatch in PHP {$phpVersion}"
         );
     }
 }
