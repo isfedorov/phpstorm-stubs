@@ -220,15 +220,16 @@ class ClassMethodsNullableTypeForbiddenCheckTest extends CheckTestCase
         $this->assertArrayHasKey($className . '::get', $result->getFailures());
     }
 
-    public function testNullableReturnTypeViaLLADefaultIsFailure(): void
+    public function testNullableReturnTypeViaLLADefaultSucceeds(): void
     {
-        // LanguageLevelTypeAware with default: '?string' → getReturnTypeString returns '?string' → flagged
+        // LanguageLevelTypeAware with default: '?string' — LLA is IDE metadata, not a PHP signature type.
+        // The check must NOT flag this: no actual ?T in the PHP signature → no compatibility issue.
         $className  = '\MyClass';
         $method     = new PHPMethod();
         $method->setName('getStr');
         $method->setAccess('public');
         $method->setLanguageLevelTypes([]);    // no version-specific entries
-        $method->setDefaultType('?string');    // '?string' raw string as default
+        $method->setDefaultType('?string');    // LLA attribute default — IDE metadata only
 
         $stubClass = $this->createMockClassWithProperties(
             $className, null, null, null, [$method]
@@ -239,8 +240,7 @@ class ClassMethodsNullableTypeForbiddenCheckTest extends CheckTestCase
 
         $result = $this->check->run($stubs, $className, PhpVersions::PHP_7_0->value);
 
-        $this->assertTrue($result->hasFailures());
-        $this->assertArrayHasKey($className . '::getStr', $result->getFailures());
+        $this->assertFalse($result->hasFailures(), 'Nullable type only in LLA default must not be flagged');
     }
 
     public function testNullableReturnTypeRestrictedToPhp71ViaLLASucceeds(): void
@@ -448,9 +448,10 @@ class ClassMethodsNullableTypeForbiddenCheckTest extends CheckTestCase
         $this->assertFalse($result->hasFailures());
     }
 
-    public function testNullableParamTypeViaLLADefaultIsFailure(): void
+    public function testNullableParamTypeViaLLADefaultSucceeds(): void
     {
-        // LanguageLevelTypeAware with default: '?string' → getParamTypeString returns '?string' → flagged
+        // LanguageLevelTypeAware with default: '?string' — LLA is IDE metadata, not a PHP signature type.
+        // The check must NOT flag this: no actual ?T in the PHP signature → no compatibility issue.
         $className = '\MyClass';
         $param     = $this->makeParam('val', null, [], '?string');
         $method    = $this->makeMethod('doSomething', null, null, null, 'public', false, false, [$param]);
@@ -461,8 +462,7 @@ class ClassMethodsNullableTypeForbiddenCheckTest extends CheckTestCase
 
         $result = $this->check->run($stubs, $className, PhpVersions::PHP_7_0->value);
 
-        $this->assertTrue($result->hasFailures());
-        $this->assertArrayHasKey($className . '::doSomething::$val', $result->getFailures());
+        $this->assertFalse($result->hasFailures(), 'Nullable type only in LLA default must not be flagged');
     }
 
     public function testNullableParamTypeRestrictedToPhp71ViaLLASucceeds(): void

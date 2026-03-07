@@ -34,6 +34,7 @@ use StubTests\Sources\Validator\Classes\ClassConstantsValueCheck;
 use StubTests\Sources\Validator\Classes\ClassConstantsVisibilityCheck;
 use StubTests\Sources\Validator\Classes\ClassMethodsNullableTypeForbiddenCheck;
 use StubTests\Sources\Validator\Classes\ClassMethodsReturnTypeForbiddenCheck;
+use StubTests\Sources\Validator\Classes\ClassMethodsScalarTypeForbiddenCheck;
 use StubTests\Sources\Validator\Classes\ClassMethodsUnionTypeForbiddenCheck;
 use StubTests\Sources\Validator\Classes\ClassMethodsPhpDocConformsSignatureCheck;
 
@@ -379,6 +380,21 @@ class ClassValidatorTest extends ValidatorTestBase
 			$classId,
 			$phpVersion,
 			"Class {$classId} has overridable method with return type hint available before PHP 7.0 in PHP {$phpVersion}"
+		);
+	}
+
+	/**
+	 * Check that overridable class methods available before PHP 7.0 do not declare scalar
+	 * parameter type hints (int, float, string, bool), since those were introduced in PHP 7.0.
+	 */
+	#[PhpVersionRange(PhpVersions::EARLIEST, PhpVersions::EARLIEST)]
+	public function checkMethodDoesNotHaveScalarParamTypeHint(string $classId, string $phpVersion): void
+	{
+		$this->executeCheck(
+			new ClassMethodsScalarTypeForbiddenCheck(),
+			$classId,
+			$phpVersion,
+			"Class {$classId} has overridable method with scalar parameter type hint available before PHP 7.0 in PHP {$phpVersion}"
 		);
 	}
 

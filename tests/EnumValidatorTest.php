@@ -28,6 +28,7 @@ use StubTests\Sources\Validator\Enums\EnumNamespaceCheck;
 use StubTests\Sources\Validator\Enums\EnumMethodsNullableTypeForbiddenCheck;
 use StubTests\Sources\Validator\Enums\EnumMethodsPhpDocConformsSignatureCheck;
 use StubTests\Sources\Validator\Enums\EnumMethodsReturnTypeForbiddenCheck;
+use StubTests\Sources\Validator\Enums\EnumMethodsScalarTypeForbiddenCheck;
 use StubTests\Sources\Validator\Enums\EnumMethodsUnionTypeForbiddenCheck;
 use StubTests\Sources\Validator\Enums\EnumStaticMethodsCheck;
 
@@ -298,6 +299,21 @@ class EnumValidatorTest extends ValidatorTestBase
             $enumId,
             $phpVersion,
             "Enum {$enumId} has method with return type hint available before PHP 7.0 in PHP {$phpVersion}"
+        );
+    }
+
+    /**
+     * Check that enum methods available before PHP 7.0 do not declare scalar
+     * parameter type hints. In practice enums are PHP 8.1+, so this is always a no-op.
+     */
+    #[PhpVersionRange(PhpVersions::EARLIEST, PhpVersions::EARLIEST)]
+    public function checkMethodDoesNotHaveScalarParamTypeHint(string $enumId, string $phpVersion): void
+    {
+        $this->executeCheck(
+            new EnumMethodsScalarTypeForbiddenCheck(),
+            $enumId,
+            $phpVersion,
+            "Enum {$enumId} has method with scalar parameter type hint available before PHP 7.0 in PHP {$phpVersion}"
         );
     }
 

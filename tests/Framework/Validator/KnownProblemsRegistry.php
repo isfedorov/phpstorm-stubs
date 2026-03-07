@@ -213,7 +213,8 @@ class KnownProblemsRegistry
             'PhpDocConformsSignatureCheck'        => CheckType::PHPDOC_CONFORMS_SIGNATURE,
             'ReturnTypeForbiddenCheck'             => CheckType::RETURN_TYPE_FORBIDDEN,
             'NullableTypeForbiddenCheck'           => CheckType::NULLABLE_TYPE_FORBIDDEN,
-            'UnionTypeForbiddenCheck'             => CheckType::UNION_TYPE_FORBIDDEN,
+            'UnionTypeForbiddenCheck'              => CheckType::UNION_TYPE_FORBIDDEN,
+            'ScalarTypeForbiddenCheck'             => CheckType::SCALAR_TYPE_FORBIDDEN,
             default => null,
         };
     }

@@ -262,4 +262,15 @@ enum CheckType: string
      * and EnumMethodsUnionTypeForbiddenCheck.
      */
     case UNION_TYPE_FORBIDDEN = 'UnionTypeForbiddenCheck';
+
+    /**
+     * Validates that overridable methods available before PHP 7.0 do not declare scalar
+     * parameter type hints (int, float, string, bool). Scalar type hints were introduced
+     * in PHP 7.0; using them on pre-7.0 method parameters prevents child classes targeting
+     * PHP 5.6 from providing a matching override.
+     * Note: return type hints are already fully covered by RETURN_TYPE_FORBIDDEN.
+     * Used by ClassMethodsScalarTypeForbiddenCheck, InterfaceMethodsScalarTypeForbiddenCheck,
+     * and EnumMethodsScalarTypeForbiddenCheck.
+     */
+    case SCALAR_TYPE_FORBIDDEN = 'ScalarTypeForbiddenCheck';
 }

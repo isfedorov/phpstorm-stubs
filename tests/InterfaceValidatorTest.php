@@ -24,6 +24,7 @@ use StubTests\Sources\Validator\Interfaces\InterfaceConstantsValueCheck;
 use StubTests\Sources\Validator\Interfaces\InterfaceConstantsVisibilityCheck;
 use StubTests\Sources\Validator\Interfaces\InterfaceMethodsNullableTypeForbiddenCheck;
 use StubTests\Sources\Validator\Interfaces\InterfaceMethodsReturnTypeForbiddenCheck;
+use StubTests\Sources\Validator\Interfaces\InterfaceMethodsScalarTypeForbiddenCheck;
 use StubTests\Sources\Validator\Interfaces\InterfaceMethodsUnionTypeForbiddenCheck;
 use StubTests\Sources\Validator\Interfaces\InterfaceMethodsPhpDocConformsSignatureCheck;
 
@@ -248,6 +249,21 @@ class InterfaceValidatorTest extends ValidatorTestBase
             $interfaceId,
             $phpVersion,
             "Interface {$interfaceId} has method with return type hint available before PHP 7.0 in PHP {$phpVersion}"
+        );
+    }
+
+    /**
+     * Check that interface methods available before PHP 7.0 do not declare scalar
+     * parameter type hints (int, float, string, bool), since those were introduced in PHP 7.0.
+     */
+    #[PhpVersionRange(PhpVersions::EARLIEST, PhpVersions::EARLIEST)]
+    public function checkMethodDoesNotHaveScalarParamTypeHint(string $interfaceId, string $phpVersion): void
+    {
+        $this->executeCheck(
+            new InterfaceMethodsScalarTypeForbiddenCheck(),
+            $interfaceId,
+            $phpVersion,
+            "Interface {$interfaceId} has method with scalar parameter type hint available before PHP 7.0 in PHP {$phpVersion}"
         );
     }
 
