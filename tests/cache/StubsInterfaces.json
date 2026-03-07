@@ -13115,7 +13115,7 @@
         "duplicates": [],
         "namespace": "\\",
         "phpDoc": null,
-        "sinceVersion": "5.5.1",
+        "sinceVersion": "5.5",
         "removedVersion": null,
         "methods": [
             {
