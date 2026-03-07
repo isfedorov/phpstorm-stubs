@@ -672,7 +672,7 @@ function gmp_hamdist(GMP|string|int $num1, GMP|string|int $num2): int {}
  * data. This is mainly used in conjunction with the options parameter.</p>
  * @param int $flags Default value is GMP_MSW_FIRST | GMP_NATIVE_ENDIAN.
  * @return GMP|false Returns a GMP number or FALSE on failure.
- * @since 5.6.1
+ * @since 5.6
  */
 #[Pure]
 function gmp_import(string $data, int $word_size = 1, int $flags = GMP_MSW_FIRST|GMP_NATIVE_ENDIAN): GMP {}
@@ -685,7 +685,7 @@ function gmp_import(string $data, int $word_size = 1, int $flags = GMP_MSW_FIRST
  * data. This is mainly used in conjunction with the options parameter.</p>
  * @param int $flags Default value is GMP_MSW_FIRST | GMP_NATIVE_ENDIAN.
  * @return string|false Returns a string or FALSE on failure.
- * @since 5.6.1
+ * @since 5.6
  */
 #[Pure]
 function gmp_export(GMP|string|int $num, int $word_size = 1, int $flags = GMP_MSW_FIRST|GMP_NATIVE_ENDIAN): string {}

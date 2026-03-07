@@ -949,7 +949,7 @@ class DateInterval
 
     /**
      * Number of microseconds
-     * @since 7.1.0
+     * @since 7.1
      * @var float
      */
     public $f;

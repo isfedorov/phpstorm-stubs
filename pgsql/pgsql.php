@@ -1524,7 +1524,7 @@ function pg_escape_bytea(
  * A string containing text to be escaped.
  * </p>
  * @return string|false A string containing the escaped data.
- * @since 5.4.4
+ * @since 5.4
  */
 function pg_escape_identifier(
     #[PhpStormStubsElementAvailable(from: '5.4', to: '7.4')] $connection = null,
@@ -1545,7 +1545,7 @@ function pg_escape_identifier(
  * A string containing text to be escaped.
  * </p>
  * @return string|false A string containing the escaped data.
- * @since 5.4.4
+ * @since 5.4
  */
 function pg_escape_literal(
     #[PhpStormStubsElementAvailable(from: '5.4', to: '7.4')] $connection = null,

@@ -86,7 +86,7 @@ namespace {
 
         /**
          * Specifies that a function created with PDO::sqliteCreateFunction() is deterministic, i.e. it always returns the same result given the same inputs within a single SQL statement.
-         * @since 7.1.4
+         * @since 7.1
          * @link https://php.net/manual/en/pdo.constants.php#pdo.constants.sqlite-deterministic
          */
         public const SQLITE_DETERMINISTIC = 2048;
@@ -262,7 +262,7 @@ namespace {
         /**
          * Fetch a two-column result into an array where the first column is a key and the second column
          * is the value.
-         * @since 5.2.3
+         * @since 5.2
          * @link https://php.net/manual/en/pdo.constants.php#pdo.constants.fetch-key-pair
          */
         public const FETCH_KEY_PAIR = 12;
@@ -437,7 +437,7 @@ namespace {
 
         /**
          * @link https://php.net/manual/en/pdo.constants.php#pdo.constants.attr-emulate-prepares
-         * @since 5.1.3
+         * @since 5.1
          */
         public const ATTR_EMULATE_PREPARES = 20;
 
@@ -554,7 +554,7 @@ namespace {
 
         /**
          * Specifies that the default fetch mode shall be used.
-         * @since 8.0.7
+         * @since 8.0
          * @link https://php.net/manual/en/pdo.constants.php#pdo.constants.fetch-default
          */
         public const FETCH_DEFAULT = 0;
@@ -690,7 +690,7 @@ namespace {
          * <p>
          * The file path to the SSL key.
          * </p>
-         * @since 5.3.7
+         * @since 5.3
          * @link https://php.net/manual/en/ref.pdo-mysql.php#pdo.constants.mysql-attr-ssl-key
          */
         public const MYSQL_ATTR_SSL_KEY = 1007;
@@ -699,7 +699,7 @@ namespace {
          * <p>
          * The file path to the SSL certificate.
          * </p>
-         * @since 5.3.7
+         * @since 5.3
          * @link https://php.net/manual/en/ref.pdo-mysql.php#pdo.constants.mysql-attr-ssl-cert
          */
         public const MYSQL_ATTR_SSL_CERT = 1008;
@@ -708,7 +708,7 @@ namespace {
          * <p>
          * The file path to the SSL certificate authority.
          * </p>
-         * @since 5.3.7
+         * @since 5.3
          * @link https://php.net/manual/en/ref.pdo-mysql.php#pdo.constants.mysql-attr-ssl-ca
          */
         public const MYSQL_ATTR_SSL_CA = 1009;
@@ -718,7 +718,7 @@ namespace {
          * The file path to the directory that contains the trusted SSL
          * CA certificates, which are stored in PEM format.
          * </p>
-         * @since 5.3.7
+         * @since 5.3
          * @link https://php.net/manual/en/ref.pdo-mysql.php#pdo.constants.mysql-attr-ssl-capath
          */
         public const MYSQL_ATTR_SSL_CAPATH = 1010;
@@ -729,7 +729,7 @@ namespace {
          * in a format understood by OpenSSL.
          * For example: DHE-RSA-AES256-SHA:AES128-SHA
          * </p>
-         * @since 5.3.7
+         * @since 5.3
          * @link https://php.net/manual/en/ref.pdo-mysql.php#pdo.constants.mysql-attr-cipher
          */
         public const MYSQL_ATTR_SSL_CIPHER = 1011;
@@ -741,7 +741,7 @@ namespace {
          * <p>
          * Note, this constant can only be used in the driver_options array when constructing a new database handle.
          * </p>
-         * @since 5.5.21
+         * @since 5.5
          * @link https://php.net/manual/en/ref.pdo-mysql.php#pdo.constants.mysql-attr-multi-statements
          */
         public const MYSQL_ATTR_MULTI_STATEMENTS = 1013;
@@ -750,8 +750,8 @@ namespace {
          * <p>
          * Disables SSL peer verification when set to FALSE.
          * </p>
-         * @since 7.0.18
-         * @since 7.1.4
+         * @since 7.0
+         * @since 7.1
          * @link https://bugs.php.net/bug.php?id=71003
          */
         public const MYSQL_ATTR_SSL_VERIFY_SERVER_CERT = 1014;
@@ -871,29 +871,29 @@ namespace {
 
         /**
          * Provides a way to specify the action on the database session.
-         * @since 7.2.16
-         * @since 7.3.3
+         * @since 7.2
+         * @since 7.3
          */
         public const OCI_ATTR_ACTION = 1000;
 
         /**
          * Provides a way to specify the client info on the database session.
-         * @since 7.2.16
-         * @since 7.3.3
+         * @since 7.2
+         * @since 7.3
          */
         public const OCI_ATTR_CLIENT_INFO = 1001;
 
         /**
          * Provides a way to specify the client identifier on the database session.
-         * @since 7.2.16
-         * @since 7.3.3
+         * @since 7.2
+         * @since 7.3
          */
         public const OCI_ATTR_CLIENT_IDENTIFIER = 1002;
 
         /**
          * Provides a way to specify the module on the database session.
-         * @since 7.2.16
-         * @since 7.3.3
+         * @since 7.2
+         * @since 7.3
          */
         public const OCI_ATTR_MODULE = 1003;
 

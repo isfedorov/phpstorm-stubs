@@ -184,7 +184,7 @@ class SQLite3
      * or equal to zero, will turn off an already set timeout handler.
      * </p>
      * @return bool <b>TRUE</b> on success, <b>FALSE</b> on failure.
-     * @since 5.3.3
+     * @since 5.3
      */
     #[TentativeType]
     public function busyTimeout(#[LanguageLevelTypeAware(['8.0' => 'int'], default: '')] $milliseconds): bool {}
@@ -348,7 +348,7 @@ class SQLite3
      * equal to the second.
      * </p>
      * @return bool <b>TRUE</b> on success or <b>FALSE</b> on failure.
-     * @since 5.3.11
+     * @since 5.3
      */
     #[TentativeType]
     public function createCollation(#[LanguageLevelTypeAware(['8.0' => 'string'], default: '')] $name, callable $callback): bool {}
@@ -731,7 +731,7 @@ define('SQLITE3_OPEN_CREATE', 4);
 /**
  * Specifies that a function created with {@see SQLite3::createFunction()} is deterministic,
  * i.e. it always returns the same result given the same inputs within a single SQL statement.
- * @since 7.1.4
+ * @since 7.1
  * @link https://php.net/manual/en/sqlite.constants.php
  */
 define('SQLITE3_DETERMINISTIC', 2048);
