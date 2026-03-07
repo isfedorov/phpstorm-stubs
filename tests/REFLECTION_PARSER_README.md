@@ -1,261 +1,114 @@
 # Reflection Parser Scripts
 
-This directory contains scripts for parsing PHP reflection data across multiple PHP versions using Docker containers.
+Scripts for generating the per-version PHP reflection cache files (`tests/cache/Reflection{version}.json`).
+These JSON files are the ground-truth used by validator tests.
 
 ## Overview
 
-The reflection parser system extracts runtime PHP information (classes, functions, interfaces, enums, constants) and saves it to JSON files for testing and comparison purposes.
+Generating reflection data is a two-stage pipeline:
+
+1. **Stage 1 — legacy adapter** (`tests/adapt-legacy-reflection.php`)
+   Runs inside a per-version Docker container (PHP 5.6 – 8.4).
+   Uses the old-style reflection API compatible with that PHP version.
+   Outputs a raw serialized data file to `tests/cache/.tmp-reflection-{version}.dat`.
+
+2. **Stage 2 — modern processor** (`tests/run-reflection-processor.php`)
+   Runs in the `test_runner` container (latest stable PHP).
+   Reads the Stage 1 data file and converts it to the canonical JSON format.
+   Outputs `tests/cache/Reflection{version}.json`.
 
 ## Available Scripts
 
-### 1. `run-reflection-parser.php`
-**Purpose**: Parse reflection data for the current PHP runtime
+### `tests/run-all-reflection-parsers.sh`
 
-**Usage**:
+Runs the two-stage pipeline for **all** PHP versions (5.6 – 8.4) using Docker.
+
 ```bash
-# Use current PHP version
-php tests/run-reflection-parser.php
-
-# Specify version
-php tests/run-reflection-parser.php 8.3
-```
-
-**Output**: `tests/cache/Reflection{version}.json`
-
-### 2. `run-reflection-docker.sh`
-**Purpose**: Parse reflection data for a single PHP version using Docker
-
-**Usage**:
-```bash
-# Build and run for PHP 8.3
-./tests/run-reflection-docker.sh 8.3
-
-# Skip build (use existing image)
-./tests/run-reflection-docker.sh 8.3 --skip-build
-```
-
-**Features**:
-- Builds Docker image for specified PHP version
-- Runs reflection parser inside container
-- Verifies output and shows statistics
-- Color-coded output for easy reading
-
-### 3. `run-all-reflection-parsers.sh`
-**Purpose**: Parse reflection data for ALL PHP versions (5.6 - 8.4)
-
-**Usage**:
-```bash
-# Build and run for all versions
+# Build Docker images and run all versions
 ./tests/run-all-reflection-parsers.sh
 
-# Skip build (use existing images)
+# Skip Docker build (use existing images)
 ./tests/run-all-reflection-parsers.sh --skip-build
 ```
 
-**Features**:
-- Processes PHP versions: 5.6, 7.0, 7.1, 7.2, 7.3, 7.4, 8.0, 8.1, 8.2, 8.3, 8.4
-- Shows progress for each version
-- Provides summary statistics
-- Lists successful and failed versions
-- Color-coded output
+Outputs: `tests/cache/Reflection{version}.json` for each successfully processed version.
 
-**Output**: Multiple files in `tests/cache/`:
-- `Reflection5.6.json`
-- `Reflection7.0.json`
-- `Reflection7.1.json`
-- ... and so on
+### `tests/run-stubs-parser.php`
 
-### 4. `run-stubs-parser.php`
-**Purpose**: Parse all PHP stub files from the project
+Parses all PHP stub files in the project and produces a stubs cache file.
 
-**Usage**:
 ```bash
-# Use current PHP version
-php tests/run-stubs-parser.php
-
-# Specify version
-php tests/run-stubs-parser.php 8.3
+php tests/run-stubs-parser.php [version]
 ```
 
-**Output**: `tests/cache/Stubs{version}.json`
-
-## Output Format
-
-All scripts generate JSON files with the following structure:
-
-```json
-[
-  {
-    "_type": "PHPClass",
-    "name": "Exception",
-    "id": "\\Exception",
-    "namespace": "\\",
-    "isFinal": false,
-    "isReadonly": false
-  },
-  {
-    "_type": "PHPFunction",
-    "name": "strlen",
-    "id": "\\strlen",
-    "namespace": "\\",
-    "isDeprecated": false,
-    "returnType": "int",
-    "parameters": [...]
-  },
-  ...
-]
-```
-
-Supported entity types:
-- `PHPClass` - Classes
-- `PHPFunction` - Functions
-- `PHPInterface` - Interfaces
-- `PHPEnum` - Enums (PHP 8.1+)
-- `PHPConstant` - Constants
+Output: `tests/cache/Stubs{version}.json`
 
 ## Docker Setup
 
-### Available PHP Versions
+Docker images are defined in `tests/DockerImages/`:
 
-Docker images are available in `tests/DockerImages/`:
-- 5.6
-- 7.0, 7.1, 7.2, 7.3, 7.4
-- 8.0, 8.1, 8.2, 8.3, 8.4
+```
+tests/DockerImages/
+├── 5.6/Dockerfile
+├── 7.0/Dockerfile
+├── ...
+└── 8.4/Dockerfile
+```
 
-### Docker Compose Configuration
-
-The scripts use `docker-compose.yml` which defines:
-- `php_under_test` service for running PHP code
-- Volume mounting: `.:/opt/project/phpstorm-stubs`
-- Environment variable: `PHP_VERSION`
-
-### Manual Docker Commands
-
-If you prefer manual control:
+The `docker-compose.yml` in the project root defines two services:
+- `php_under_test` — per-version image used for Stage 1
+- `test_runner` — latest PHP image used for Stage 2 and running PHPUnit
 
 ```bash
-# Build specific version
+# Manually build a specific PHP version image
 PHP_VERSION=8.3 docker compose build php_under_test
 
-# Run reflection parser
+# Manually run Stage 1 for PHP 8.3
 PHP_VERSION=8.3 docker compose run --rm php_under_test \
-  php tests/run-reflection-parser.php 8.3
+  php tests/adapt-legacy-reflection.php 8.3 \
+  "/opt/project/phpstorm-stubs/tests/cache/.tmp-reflection-8.3.dat"
 
-# Run stubs parser
-PHP_VERSION=8.3 docker compose run --rm php_under_test \
-  php tests/run-stubs-parser.php 8.3
+# Manually run Stage 2
+docker compose run --rm test_runner \
+  php tests/run-reflection-processor.php \
+  "/opt/project/phpstorm-stubs/tests/cache/.tmp-reflection-8.3.dat" \
+  "/opt/project/phpstorm-stubs/tests/cache/Reflection8.3.json"
 ```
 
-## Examples
+## Output Format
 
-### Example 1: Parse reflection for PHP 8.3
-```bash
-./tests/run-reflection-docker.sh 8.3
+Each `Reflection{version}.json` is a flat JSON array of entity objects.
+Each object has a `_type` discriminator field:
+
+```json
+[
+  { "_type": "PHPClass",    "name": "Exception", "id": "\\Exception", ... },
+  { "_type": "PHPFunction", "name": "strlen",    "id": "\\strlen",    ... },
+  { "_type": "PHPInterface","name": "Countable", "id": "\\Countable", ... },
+  { "_type": "PHPEnum",     "name": "Suit",      "id": "\\Suit",      ... },
+  { "_type": "PHPConstant", "name": "PHP_EOL",   "id": "\\PHP_EOL",   ... }
+]
 ```
-
-Output:
-```
-========================================
-PHP Reflection Parser - Docker
-========================================
-PHP Version: 8.3
-...
-[1/3] Building Docker image for PHP 8.3...
-      ✓ Docker image built successfully
-
-[2/3] Running reflection parser for PHP 8.3...
-      ✓ Reflection parsing completed
-
-[3/3] Verifying output file...
-      ✓ Output file created: Reflection8.3.json
-      File Size: 2.3M
-      Entities: 3847
-...
-```
-
-### Example 2: Parse all versions
-```bash
-./tests/run-all-reflection-parsers.sh
-```
-
-This will process all 11 PHP versions and show a summary:
-```
-========================================
-Summary
-========================================
-Total Versions: 11
-Success: 11
-Failed: 0
-Skipped: 0
-========================================
-```
-
-### Example 3: Quick update (skip build)
-```bash
-# If images are already built, skip rebuild for faster execution
-./tests/run-all-reflection-parsers.sh --skip-build
-```
-
-## Troubleshooting
-
-### Error: "Dockerfile not found"
-**Solution**: Ensure you're running from the project root or tests directory.
-
-### Error: "Docker image build failed"
-**Solution**:
-1. Check Docker is running: `docker ps`
-2. Check Dockerfile exists: `ls tests/DockerImages/{version}/Dockerfile`
-3. Try building manually: `PHP_VERSION=8.3 docker compose build php_under_test`
-
-### Error: "Output file not found"
-**Solution**:
-1. Check script had write permissions
-2. Ensure cache directory exists: `mkdir -p tests/cache`
-3. Check for errors in parser output
-
-### Missing extensions in reflection data
-**Solution**: The Docker images include many common extensions. To add more:
-1. Edit `tests/DockerImages/{version}/Dockerfile`
-2. Add `docker-php-ext-install {extension}`
-3. Rebuild: `PHP_VERSION={version} docker compose build php_under_test`
-
-## Performance
-
-Typical execution times:
-- Single version (with build): ~2-5 minutes
-- Single version (skip build): ~10-30 seconds
-- All versions (with build): ~30-60 minutes
-- All versions (skip build): ~5-10 minutes
 
 ## Integration with Tests
 
-The generated JSON files are automatically used by:
-- `Runner::getReflection($version)` - Loads from cache
-- Test suites comparing stubs vs reflection
-- Type validation tests
+The generated files are loaded by:
+- `Runner::getReflection($version)` — returns a `ParsedDataStorageManager` hydrated from cache
+- `ValidatorTestBase::entityProvider()` — iterates over all versions and entities
+- All `*ValidatorTest.php` integration tests in `tests/`
 
-## File Structure
+## Troubleshooting
 
-```
-tests/
-├── cache/                          # Generated JSON files
-│   ├── Reflection5.6.json
-│   ├── Reflection7.0.json
-│   ├── ...
-│   └── Stubs8.3.json
-├── DockerImages/                   # Docker configurations
-│   ├── 5.6/Dockerfile
-│   ├── 7.0/Dockerfile
-│   ├── ...
-│   └── 8.4/Dockerfile
-├── run-reflection-parser.php       # PHP script (single version)
-├── run-reflection-docker.sh        # Bash script (single version in Docker)
-├── run-all-reflection-parsers.sh   # Bash script (all versions in Docker)
-└── run-stubs-parser.php           # PHP script (parse stubs)
-```
+### "Dockerfile not found"
+Run from the project root. Docker image dirs live at `tests/DockerImages/{version}/Dockerfile`.
 
-## See Also
+### "Docker image build failed"
+1. Check Docker is running: `docker ps`
+2. Try building manually: `PHP_VERSION=8.3 docker compose build php_under_test`
 
-- Main test runner: `docker compose -f docker-compose.yml run test_runner`
-- PHPUnit tests: `vendor/bin/phpunit`
-- Stub map generator: `php tests/Tools/generate-stub-map`
+### "Output file not found"
+1. Ensure `tests/cache/` exists: `mkdir -p tests/cache`
+2. Check for errors in Stage 1 or Stage 2 output
+
+### Missing extensions in reflection data
+Edit `tests/DockerImages/{version}/Dockerfile`, add `docker-php-ext-install {extension}`, rebuild.

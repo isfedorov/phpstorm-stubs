@@ -1,167 +1,63 @@
 # Validator Unit Tests
 
-This directory contains unit tests for the validator check classes used to validate PHP stubs against reflection data.
+Unit tests for all validator check classes. Each test class verifies a single `CheckInterface`
+implementation in isolation using mocks — no file I/O, no parsing, no reflection cache.
 
-## Test Files
+## Running
 
-### CheckTestCase.php
-Base test case providing helper methods for creating mock entities:
-- `createMockStorageManager()` - Mock ParsedDataStorageManager
-- `createMockFunction()` - Mock PHPFunction with parameters and return types
-- `createMockClass()` - Mock PHPClass with methods
-- `createMockMethod()` - Mock PHPMethod with parameters and return types
-- `createMockParameter()` - Mock PHPParameter with name and type
-- `createType()` - Create StandaloneType instances
-- `createMockType()` - Create mock type objects with string representation
-
-### FunctionExistsCheckTest.php
-Tests for `FunctionExistsCheck` validator:
-- ✅ PHP version support validation
-- ✅ Function exists in stubs (success case)
-- ✅ Function not found in stubs (failure case)
-- ✅ Finding functions among multiple functions
-- ✅ Empty functions array handling
-- ✅ Function lookup by getId() and getName()
-
-**Status**: 7 tests, all passing
-
-### ClassExistsCheckTest.php
-Tests for `ClassExistsCheck` validator:
-- ✅ PHP version support validation
-- ✅ Class exists in stubs (success case)
-- ✅ Class not found in stubs (failure case)
-- ✅ Namespaced class handling
-- ✅ Error message PHP version validation
-
-**Status**: 5 tests, all passing
-
-### MethodExistsCheckTest.php
-Tests for `MethodExistsCheck` validator:
-- ✅ PHP version support validation
-- ✅ Method exists in class (success case)
-- ✅ Method not found in class (failure case)
-- ✅ Class not found in stubs (failure case)
-- ✅ Invalid method ID format handling
-- ✅ Namespaced class and method handling
-- ✅ Finding methods among multiple methods
-- ✅ Method lookup by getId() and getName()
-
-**Status**: 10 tests, all passing
-
-### ParameterNamesCheckTest.php
-Tests for `ParameterNamesCheck` validator:
-- ✅ PHP version support (8.0+)
-- ⚠️ Other tests skipped - requires refactoring
-
-**Status**: 1 test passing, 6 skipped
-**Note**: Full testing requires refactoring `ParameterNamesCheck` to accept reflection manager as a dependency instead of using `Runner::getReflection()` static call.
-
-### ParameterTypesCheckTest.php
-Tests for `ParameterTypesCheck` validator:
-- ✅ PHP version support (7.0+)
-- ⚠️ Other tests skipped - requires refactoring
-
-**Status**: 1 test passing, 7 skipped
-**Note**: Full testing requires refactoring `ParameterTypesCheck` to accept reflection manager as a dependency instead of using `Runner::getReflection()` static call.
-
-### ReturnTypesCheckTest.php
-Tests for `ReturnTypesCheck` validator:
-- ✅ PHP version support (7.0+)
-- ⚠️ Other tests skipped - requires refactoring
-
-**Status**: 1 test passing, 8 skipped
-**Note**: Full testing requires refactoring `ReturnTypesCheck` to accept reflection manager as a dependency instead of using `Runner::getReflection()` static call.
-
-## Running Tests
-
-Run all validator unit tests:
 ```bash
+# All validator unit tests (~1 second)
 vendor/bin/phpunit tests/Unit/Validator/
+
+# Specific entity group
+vendor/bin/phpunit tests/Unit/Validator/Classes/
+vendor/bin/phpunit tests/Unit/Validator/Functions/
+vendor/bin/phpunit tests/Unit/Validator/Interfaces/
+vendor/bin/phpunit tests/Unit/Validator/Enums/
+vendor/bin/phpunit tests/Unit/Validator/Constants/
+vendor/bin/phpunit tests/Unit/Validator/PhpDoc/
 ```
 
-Run a specific test file:
-```bash
-vendor/bin/phpunit tests/Unit/Validator/FunctionExistsCheckTest.php
+## Structure
+
+```
+Unit/Validator/
+├── CheckTestCase.php          — base class with mock helpers (see below)
+├── KnownProblemsRegistryTest.php
+├── Classes/                   — 32 test files (ClassMethodsReturnTypesCheck, etc.)
+├── Functions/                 — 10 test files (FunctionExistsCheck, ParameterNamesCheck, etc.)
+├── Interfaces/                — 16 test files
+├── Enums/                     — 20 test files
+├── Constants/                 — 2 test files
+└── PhpDoc/                    — 3 test files (Links, Tags, VersionFormat)
 ```
 
-Run with test documentation:
-```bash
-vendor/bin/phpunit tests/Unit/Validator/ --testdox
-```
+Current count: **~1083 tests, all passing, 0 skipped**.
 
-## Test Coverage Summary
+## CheckTestCase helpers
 
-| Validator Check | Tests | Passing | Skipped | Status |
-|----------------|-------|---------|---------|--------|
-| FunctionExistsCheck | 7 | 7 | 0 | ✅ Complete |
-| ClassExistsCheck | 5 | 5 | 0 | ✅ Complete |
-| MethodExistsCheck | 10 | 10 | 0 | ✅ Complete |
-| ParameterNamesCheck | 7 | 1 | 6 | ⚠️ Requires refactoring |
-| ParameterTypesCheck | 8 | 1 | 7 | ⚠️ Requires refactoring |
-| ReturnTypesCheck | 9 | 1 | 8 | ⚠️ Requires refactoring |
-| **Total** | **46** | **25** | **21** | **54% Complete** |
+`CheckTestCase extends TestCase` provides:
 
-## Future Improvements
+| Method | Returns | Notes |
+|---|---|---|
+| `createMockStorageManager()` | `ParsedDataStorageManager` | mock |
+| `createMockFunction($name, $params, $returnType)` | `PHPFunction` | mock |
+| `createMockClass($name, $methods)` | `PHPClass` | mock |
+| `createMockClassWithProperties(...)` | `PHPClass` | mock with namespace/final/readonly/parent |
+| `createMockMethod($name, $params, $returnType)` | `PHPMethod` | mock |
+| `createMockParameter($name, $type, $since, $removed)` | `PHPParameter` | mock |
+| `createMockProperty($name, $since, $removed)` | `PHPProperty` | mock |
+| `createType($typeName)` | `StandaloneType` | real object |
+| `createUnionType(...$types)` | `UnionType` | real object |
+| `createNullableType($base)` | `NullableType` | real object |
+| `createMockType($typeString)` | `object` | anonymous class with `__toString`/`getTypeName` |
+| `createMockReflectionProvider($functions, $classes)` | `ReflectionProviderInterface` | mock |
 
-### Refactoring for Better Testability
+## Adding a new test file
 
-Three validator classes currently have limited test coverage due to their dependency on `Runner::getReflection()` static calls:
-- `ParameterNamesCheck`
-- `ParameterTypesCheck`
-- `ReturnTypesCheck`
-
-**Recommended refactoring approaches:**
-
-1. **Constructor Dependency Injection** (Recommended)
-   ```php
-   class ParameterNamesCheck implements CheckInterface
-   {
-       private ParsedDataStorageManager $reflectionManager;
-
-       public function __construct(ParsedDataStorageManager $reflectionManager)
-       {
-           $this->reflectionManager = $reflectionManager;
-       }
-
-       public function run(ParsedDataStorageManager $stubs, string $entityId, string $phpVersion): CheckResultSet
-       {
-           // Use $this->reflectionManager instead of Runner::getReflection($phpVersion)
-       }
-   }
-   ```
-
-2. **Runner Wrapper** (Alternative)
-   Create a `RunnerInterface` that can be mocked in tests.
-
-3. **Method Parameter** (Simplest)
-   Pass reflection manager as a parameter to the `run()` method.
-
-### Additional Test Scenarios
-
-Once refactoring is complete, add tests for:
-- Union types handling
-- Intersection types handling
-- Nullable types handling
-- Mixed type handling
-- Parameter with default values
-- Variadic parameters
-- Pass by reference parameters
-- Complex type mismatches
-- Edge cases with empty parameter lists
-
-## Benefits of These Unit Tests
-
-1. **Fast Execution**: Tests run in ~0.08 seconds (no file I/O or parsing)
-2. **Isolated**: Each test validates only the validator logic
-3. **Maintainable**: Mock data is easy to understand and modify
-4. **Comprehensive**: Cover success cases, failure cases, and edge cases
-5. **Debugging**: Failed tests immediately identify the specific scenario that broke
-6. **Regression Prevention**: Catch bugs before they reach integration tests
-
-## Integration with CI/CD
-
-These unit tests should run as part of the test suite:
-- Fast feedback during development
-- Pre-commit validation
-- CI pipeline checks
-- Complement (not replace) integration tests in `FunctionValidatorTest.php`
+1. Create `Tests/Unit/Validator/{Group}/YourCheckTest.php`
+2. Extend `CheckTestCase`
+3. Use `createMock*` helpers; instantiate the check directly with a
+   `createMockReflectionProvider()` if it takes one
+4. Test: `supports()` returns true/false for specific versions,
+   `run()` returns failures for invalid stubs, successes for valid ones

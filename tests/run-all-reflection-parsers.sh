@@ -27,8 +27,19 @@ NC='\033[0m' # No Color
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 
-# PHP versions to process
-PHP_VERSIONS=("5.6" "7.0" "7.1" "7.2" "7.3" "7.4" "8.0" "8.1" "8.2" "8.3" "8.4")
+# Derive PHP version list from the canonical PhpVersions.php enum.
+# This ensures the script stays in sync with the test framework automatically
+# when new PHP versions are added.
+PHP_ENUM_FILE="$SCRIPT_DIR/Framework/Runner/PhpVersions.php"
+if [ ! -f "$PHP_ENUM_FILE" ]; then
+    echo -e "${RED}✗ Cannot find PhpVersions.php: $PHP_ENUM_FILE${NC}"
+    exit 1
+fi
+PHP_VERSIONS=($(sed -n "s/.*case PHP_[A-Z0-9_]* = '\([0-9.]*\)'.*/\1/p" "$PHP_ENUM_FILE"))
+if [ ${#PHP_VERSIONS[@]} -eq 0 ]; then
+    echo -e "${RED}✗ No PHP versions found in $PHP_ENUM_FILE${NC}"
+    exit 1
+fi
 
 # Parse arguments
 SKIP_BUILD=false
