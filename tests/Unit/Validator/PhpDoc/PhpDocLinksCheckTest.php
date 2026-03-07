@@ -15,6 +15,7 @@ use StubTests\Sources\Runner\PhpVersionRange;
 use StubTests\Sources\Validator\KnownProblems\KnownProblemsProvider;
 use StubTests\Sources\Validator\KnownProblemsRegistry;
 use StubTests\Sources\Validator\PhpDoc\PhpDocLinksCheck;
+use StubTests\Unit\Validator\CheckTestCase;
 
 class PhpDocLinksCheckTest extends CheckTestCase
 {

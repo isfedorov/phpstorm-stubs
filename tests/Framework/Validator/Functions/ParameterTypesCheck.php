@@ -108,8 +108,19 @@ class ParameterTypesCheck extends AbstractCallableCheck
      */
     private function getParameterTypeString($param): string
     {
+        // PHPParameter (stubs/reflection models) exposes getDeclaredType()
+        if (method_exists($param, 'getDeclaredType')) {
+            $type = $param->getDeclaredType();
+            if ($type !== null && method_exists($type, 'toString')) {
+                $typeString = $type->toString();
+                // NoType returns empty string — treat as no type information
+                return $typeString === '' ? 'mixed' : $typeString;
+            }
+        }
+
+        // Fallback for raw reflection objects (ReflectionParameter::getType)
         if (!method_exists($param, 'getType')) {
-            return 'mixed'; // No type information
+            return 'mixed';
         }
 
         $type = $param->getType();
@@ -118,18 +129,12 @@ class ParameterTypesCheck extends AbstractCallableCheck
             return 'mixed';
         }
 
-        // Handle different type objects
         if (is_object($type)) {
             if (method_exists($type, '__toString')) {
                 return (string) $type;
             }
-            if (method_exists($type, 'toString')) {
-                $typeString = $type->toString();
-                // NoType returns empty string, which should be treated as 'mixed'
-                return $typeString === '' ? 'mixed' : $typeString;
-            }
-            if (method_exists($type, 'getTypeName')) {
-                return $type->getTypeName();
+            if (method_exists($type, 'getName')) {
+                return $type->getName();
             }
         }
 

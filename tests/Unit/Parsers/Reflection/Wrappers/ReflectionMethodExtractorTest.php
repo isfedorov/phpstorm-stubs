@@ -12,11 +12,12 @@ class ReflectionMethodExtractorTest extends TestCase
 
     public function testItExtractsMethodsWithCorrectPrefixes()
     {
-        $mockObject = $this->getMockBuilder(\stdClass::class)->addMethods(['getName', 'isActive', 'hasItems', 'getCount'])->getMock();
-        $mockObject->method('getName')->willReturn('TestName');
-        $mockObject->method('isActive')->willReturn(true);
-        $mockObject->method('hasItems')->willReturn(false);
-        $mockObject->method('getCount')->willReturn(5);
+        $mockObject = new class {
+            public function getName(): string { return 'TestName'; }
+            public function isActive(): bool { return true; }
+            public function hasItems(): bool { return false; }
+            public function getCount(): int { return 5; }
+        };
 
         $config = ['methodPrefixes' => ['is', 'has', 'get']];
         $result = ReflectionMethodExtractor::extractData($mockObject, $config);
@@ -33,13 +34,12 @@ class ReflectionMethodExtractorTest extends TestCase
 
     public function testItExtractsMethodsWithAllConfiguredPrefixes()
     {
-        $mockObject = $this->getMockBuilder(\stdClass::class)
-            ->addMethods(['allowsNull', 'canExecute', 'inNamespace', 'returnsReference'])
-            ->getMock();
-        $mockObject->method('allowsNull')->willReturn(true);
-        $mockObject->method('canExecute')->willReturn(false);
-        $mockObject->method('inNamespace')->willReturn(true);
-        $mockObject->method('returnsReference')->willReturn(false);
+        $mockObject = new class {
+            public function allowsNull(): bool { return true; }
+            public function canExecute(): bool { return false; }
+            public function inNamespace(): bool { return true; }
+            public function returnsReference(): bool { return false; }
+        };
 
         $config = ['methodPrefixes' => ['allows', 'can', 'in', 'returns']];
         $result = ReflectionMethodExtractor::extractData($mockObject, $config);
@@ -82,9 +82,10 @@ class ReflectionMethodExtractorTest extends TestCase
 
     public function testItRespectsSkipMethodsConfiguration()
     {
-        $mockObject = $this->getMockBuilder(\stdClass::class)->addMethods(['getName', 'getValue'])->getMock();
-        $mockObject->method('getName')->willReturn('TestName');
-        $mockObject->method('getValue')->willReturn('TestValue');
+        $mockObject = new class {
+            public function getName(): string { return 'TestName'; }
+            public function getValue(): string { return 'TestValue'; }
+        };
 
         $config = [
             'methodPrefixes' => ['get'],
@@ -98,8 +99,9 @@ class ReflectionMethodExtractorTest extends TestCase
 
     public function testItHandlesCustomHandlers()
     {
-        $mockObject = $this->getMockBuilder(\stdClass::class)->addMethods(['getName'])->getMock();
-        $mockObject->method('getName')->willReturn('OriginalName');
+        $mockObject = new class {
+            public function getName(): string { return 'OriginalName'; }
+        };
 
         $config = [
             'methodPrefixes' => ['get'],
@@ -116,9 +118,10 @@ class ReflectionMethodExtractorTest extends TestCase
 
     public function testItCatchesExceptionsGracefully()
     {
-        $mockObject = $this->getMockBuilder(\stdClass::class)->addMethods(['getName', 'getError'])->getMock();
-        $mockObject->method('getName')->willReturn('ValidName');
-        $mockObject->method('getError')->willThrowException(new \Exception('Test exception'));
+        $mockObject = new class {
+            public function getName(): string { return 'ValidName'; }
+            public function getError(): string { throw new \Exception('Test exception'); }
+        };
 
         $config = ['methodPrefixes' => ['get']];
         $result = ReflectionMethodExtractor::extractData($mockObject, $config);

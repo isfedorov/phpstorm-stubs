@@ -3,6 +3,8 @@
 namespace StubTests\Sources\Validator\PhpDoc;
 
 use StubTests\Sources\Parsers\ParsedDataStorageManager;
+use StubTests\Sources\Validator\AbstractReflectionCheck;
+use StubTests\Sources\Validator\CheckResultSet;
 use StubTests\Sources\Validator\KnownProblems\EntityType;
 
 /**

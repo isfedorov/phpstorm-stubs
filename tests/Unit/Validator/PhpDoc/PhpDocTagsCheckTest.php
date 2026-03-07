@@ -14,6 +14,7 @@ use StubTests\Sources\Validator\KnownProblems\ProblemDefinition;
 use StubTests\Sources\Validator\KnownProblems\ProblemType;
 use StubTests\Sources\Validator\KnownProblemsRegistry;
 use StubTests\Sources\Validator\PhpDoc\PhpDocTagsCheck;
+use StubTests\Unit\Validator\CheckTestCase;
 
 class PhpDocTagsCheckTest extends CheckTestCase
 {

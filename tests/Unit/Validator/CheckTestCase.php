@@ -35,7 +35,6 @@ abstract class CheckTestCase extends TestCase
     {
         $function = $this->getMockBuilder(PHPFunction::class)
             ->disableOriginalConstructor()
-            ->addMethods(['getReturnType'])
             ->onlyMethods(['getId', 'getName', 'getParameters', 'getReturnTypeFromSignature'])
             ->getMock();
 
@@ -45,7 +44,6 @@ abstract class CheckTestCase extends TestCase
 
         if ($returnType !== null) {
             $function->method('getReturnTypeFromSignature')->willReturn($returnType);
-            $function->method('getReturnType')->willReturn($returnType);
         }
 
         return $function;
@@ -137,7 +135,6 @@ abstract class CheckTestCase extends TestCase
     {
         $method = $this->getMockBuilder(PHPMethod::class)
             ->disableOriginalConstructor()
-            ->addMethods(['getReturnType'])
             ->onlyMethods(['getName', 'getParameters', 'getReturnTypeFromSignature'])
             ->getMock();
 
@@ -146,7 +143,6 @@ abstract class CheckTestCase extends TestCase
 
         if ($returnType !== null) {
             $method->method('getReturnTypeFromSignature')->willReturn($returnType);
-            $method->method('getReturnType')->willReturn($returnType);
         }
 
         return $method;
@@ -167,7 +163,6 @@ abstract class CheckTestCase extends TestCase
     {
         $parameter = $this->getMockBuilder(PHPParameter::class)
             ->disableOriginalConstructor()
-            ->addMethods(['getType'])
             ->onlyMethods(['getName', 'getDeclaredType', 'getSinceVersion', 'getRemovedVersion', 'isVariadic', 'isOptional', 'isPassedByReference'])
             ->getMock();
 
@@ -175,20 +170,11 @@ abstract class CheckTestCase extends TestCase
         $parameter->method('getSinceVersion')->willReturn($sinceVersion);
         $parameter->method('getRemovedVersion')->willReturn($removedVersion);
 
-        // Mock typed property accessor methods with default values
         $parameter->method('isVariadic')->willReturn(false);
         $parameter->method('isOptional')->willReturn(false);
         $parameter->method('isPassedByReference')->willReturn(false);
 
-        // Support both getDeclaredType() and getType() for different validators
-        if ($type !== null) {
-            $parameter->method('getDeclaredType')->willReturn($type);
-            $parameter->method('getType')->willReturn($type);
-        } else {
-            $noType = new NoType();
-            $parameter->method('getDeclaredType')->willReturn($noType);
-            $parameter->method('getType')->willReturn($noType);
-        }
+        $parameter->method('getDeclaredType')->willReturn($type ?? new NoType());
 
         return $parameter;
     }
@@ -204,16 +190,13 @@ abstract class CheckTestCase extends TestCase
     /**
      * Create a mock type that returns a string representation.
      */
-    protected function createMockType(string $typeString)
+    protected function createMockType(string $typeString): object
     {
-        $type = $this->getMockBuilder(\stdClass::class)
-            ->addMethods(['__toString', 'getTypeName'])
-            ->getMock();
-
-        $type->method('__toString')->willReturn($typeString);
-        $type->method('getTypeName')->willReturn($typeString);
-
-        return $type;
+        return new class($typeString) {
+            public function __construct(private readonly string $typeName) {}
+            public function __toString(): string { return $this->typeName; }
+            public function getTypeName(): string { return $this->typeName; }
+        };
     }
 
     /**
