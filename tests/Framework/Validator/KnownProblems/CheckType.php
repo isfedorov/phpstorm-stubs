@@ -273,4 +273,42 @@ enum CheckType: string
      * and EnumMethodsScalarTypeForbiddenCheck.
      */
     case SCALAR_TYPE_FORBIDDEN = 'ScalarTypeForbiddenCheck';
+
+    /**
+     * Validates that PhpDoc comments in stubs contain only recognized tag names.
+     * Valid tags are phpDocumentor v3 standard tags, PHPStan non-prefixed tags,
+     * and a small set of custom tags used in phpstorm-stubs (@removed, @xglobal, @meta).
+     * Tags with phpstan-*, psalm-*, or phan-* prefixes are invalid.
+     * Used by PhpDocTagsCheck for functions, classes, interfaces, and enums.
+     */
+    case PHPDOC_TAGS = 'PhpDocTagsCheck';
+
+    /**
+     * Validates that @since, @deprecated, and @removed phpDoc tags use
+     * "major.minor" version format (e.g. "8.0") rather than "major.minor.patch"
+     * (e.g. "8.0.1") for style consistency.
+     * Only purely numeric three-or-more-component versions are flagged.
+     * Used by PhpDocVersionFormatCheck for functions, classes, interfaces, and enums.
+     */
+    case PHPDOC_VERSION_FORMAT = 'PhpDocVersionFormatCheck';
+
+    /**
+     * Validates that every @link URL in phpDoc comments uses the https scheme
+     * and, when CHECK_LINKS=true, that the URL is reachable (not a dead link).
+     * Only entries starting with "http://" or "https://" are examined; plain
+     * cross-references like "ClassName::method" are ignored.
+     * Used by PhpDocLinksCheck for functions, classes, interfaces, and enums.
+     */
+    case PHPDOC_LINKS = 'PhpDocLinksCheck';
+
+    /**
+     * Validates that Reflection API methods which return type information
+     * (e.g. getReturnType, getType) declare LanguageLevelTypeAware version
+     * entries with concrete subtypes (ReflectionNamedType, ReflectionUnionType,
+     * ReflectionIntersectionType) rather than only the abstract ReflectionType base.
+     * This is a regression guard against inadvertent removal of version-specific
+     * type narrowing that the IDE uses for precise type inference.
+     * See: https://youtrack.jetbrains.com/issue/WI-61052
+     */
+    case REFLECTION_SPECIAL_TYPE_HINTS = 'ReflectionMethodSpecialTypeHintsCheck';
 }

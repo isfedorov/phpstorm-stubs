@@ -215,6 +215,10 @@ class KnownProblemsRegistry
             'NullableTypeForbiddenCheck'           => CheckType::NULLABLE_TYPE_FORBIDDEN,
             'UnionTypeForbiddenCheck'              => CheckType::UNION_TYPE_FORBIDDEN,
             'ScalarTypeForbiddenCheck'             => CheckType::SCALAR_TYPE_FORBIDDEN,
+            'PhpDocTagsCheck'                      => CheckType::PHPDOC_TAGS,
+            'PhpDocVersionFormatCheck'             => CheckType::PHPDOC_VERSION_FORMAT,
+            'PhpDocLinksCheck'                     => CheckType::PHPDOC_LINKS,
+            'ReflectionMethodSpecialTypeHintsCheck' => CheckType::REFLECTION_SPECIAL_TYPE_HINTS,
             default => null,
         };
     }

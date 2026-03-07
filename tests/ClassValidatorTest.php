@@ -37,6 +37,7 @@ use StubTests\Sources\Validator\Classes\ClassMethodsReturnTypeForbiddenCheck;
 use StubTests\Sources\Validator\Classes\ClassMethodsScalarTypeForbiddenCheck;
 use StubTests\Sources\Validator\Classes\ClassMethodsUnionTypeForbiddenCheck;
 use StubTests\Sources\Validator\Classes\ClassMethodsPhpDocConformsSignatureCheck;
+use StubTests\Sources\Validator\Classes\ReflectionMethodSpecialTypeHintsCheck;
 
 /**
  * Validates that classes from reflection exist in stubs.
@@ -406,6 +407,26 @@ class ClassValidatorTest extends ValidatorTestBase
 	 * so the EARLIEST–LATEST range here ensures every entity is considered for
 	 * all versions where the check is relevant.
 	 */
+	/**
+	 * Check that Reflection API methods declaring type-return information
+	 * include version-aware LanguageLevelTypeAware entries with concrete
+	 * subtypes (ReflectionNamedType, ReflectionUnionType, ReflectionIntersectionType)
+	 * rather than only the abstract ReflectionType base.
+	 *
+	 * This is a stubs-only regression guard — reflection data is not used.
+	 * See: https://youtrack.jetbrains.com/issue/WI-61052
+	 */
+	#[PhpVersionRange(PhpVersions::LATEST, PhpVersions::LATEST)]
+	public function checkClassMethodsReflectionTypeHints(string $classId, string $phpVersion): void
+	{
+		$this->executeCheck(
+			new ReflectionMethodSpecialTypeHintsCheck(),
+			$classId,
+			$phpVersion,
+			"Class {$classId} Reflection method special type hints check failed in PHP {$phpVersion}"
+		);
+	}
+
 	#[PhpVersionRange(PhpVersions::EARLIEST, PhpVersions::PHP_7_0)]
 	public function checkMethodDoesNotHaveNullableTypeHint(string $classId, string $phpVersion): void
 	{

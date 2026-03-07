@@ -1,0 +1,24 @@
+<phpunit bootstrap="vendor/autoload.php" failOnWarning="true">
+    <php>
+        <!--
+            Bump the memory limit so the stubs data set (≈300 MB) fits comfortably
+            alongside PHPUnit's own overhead and the in-process URL cache.
+        -->
+        <ini name="memory_limit" value="512M"/>
+        <!--
+            Enable the live link-reachability check.
+            Remove this line (or set to "false") to run only the https-scheme check.
+        -->
+        <env name="CHECK_LINKS" value="true"/>
+    </php>
+    <testsuites>
+        <!--
+            Only PhpDocValidatorTest::checkPhpDocLinks uses CHECK_LINKS.
+            Restricting to this file prevents loading all reflection data sets
+            (9 PHP versions × large object graphs) that the full suite requires.
+        -->
+        <testsuite name="PhpDocLinks">
+            <file>tests/PhpDocValidatorTest.php</file>
+        </testsuite>
+    </testsuites>
+</phpunit>
