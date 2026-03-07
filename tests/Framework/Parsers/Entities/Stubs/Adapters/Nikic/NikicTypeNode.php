@@ -39,6 +39,12 @@ class NikicTypeNode implements TypeNode
             return implode('|', $types);
         } elseif ($typeNode instanceof \PhpParser\Node\NullableType) {
             return $this->parseType($typeNode->type) . '|null';
+        } elseif ($typeNode instanceof \PhpParser\Node\IntersectionType) {
+            $types = [];
+            foreach ($typeNode->types as $type) {
+                $types[] = $this->parseType($type);
+            }
+            return '(' . implode('&', $types) . ')';
         }
 
         return '';

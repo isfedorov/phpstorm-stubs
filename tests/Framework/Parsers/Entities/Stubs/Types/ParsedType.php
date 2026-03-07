@@ -2,6 +2,7 @@
 
 namespace StubTests\Framework\Parsers\Entities\Stubs\Types;
 
+use StubTests\Sources\Parsers\Entities\Model\Types\IntersectionType;
 use StubTests\Sources\Parsers\Entities\Model\Types\NoType;
 use StubTests\Sources\Parsers\Entities\Model\Types\NullableType;
 use StubTests\Sources\Parsers\Entities\Model\Types\StandaloneType;
@@ -19,7 +20,7 @@ class ParsedType
     /**
      * Type object from the actual PHP signature/declaration
      */
-    public StandaloneType|UnionType|NullableType|NoType|null $typeFromSignature = null;
+    public StandaloneType|UnionType|NullableType|NoType|IntersectionType|null $typeFromSignature = null;
 
     /**
      * Type extracted from PhpDoc (@var, @param, @return)

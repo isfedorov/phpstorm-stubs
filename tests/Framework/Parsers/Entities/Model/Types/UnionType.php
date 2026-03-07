@@ -4,25 +4,37 @@ namespace StubTests\Sources\Parsers\Entities\Model\Types;
 
 class UnionType
 {
-    private array $types;
-    public function addType(StandaloneType $type)
+    /** @var array<StandaloneType|IntersectionType> */
+    private array $types = [];
+
+    public function addType(StandaloneType|IntersectionType $type): void
     {
-        $this->types []= $type;
+        $this->types[] = $type;
     }
 
-    public function toString()
+    public function toString(): string
     {
-        return implode('|', array_map(fn(StandaloneType $type) => $type->toString(), $this->types));
+        return implode('|', array_map(
+            fn(StandaloneType|IntersectionType $type) => $type instanceof IntersectionType
+                ? '(' . $type->toString() . ')'
+                : $type->toString(),
+            $this->types
+        ));
     }
 
-    public function containsTypes(string ...$types)
+    public function containsTypes(string ...$types): bool
     {
+        $standaloneNames = array_filter(
+            array_map(
+                fn($t) => $t instanceof StandaloneType ? $t->toString() : null,
+                $this->types
+            )
+        );
         foreach ($types as $type) {
-            if (!in_array($type, array_map(fn(StandaloneType $type) => $type->toString(), $this->types))) {
+            if (!in_array($type, $standaloneNames, true)) {
                 return false;
             }
         }
         return true;
     }
-    //TODO: add support for union+intersection type type1|(type2&type3)
 }

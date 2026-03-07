@@ -352,12 +352,14 @@ trait SerializerHelperTrait
      * Parse a type string back into the correct type object.
      *
      * Rules:
-     *   ""            → NoType
-     *   "A&B"         → IntersectionType
-     *   "A|null"      → NullableType  (exactly 2 parts, one is "null")
-     *   "A|B|..."     → UnionType
-     *   "?A"          → NullableType
-     *   "A"           → StandaloneType
+     *   ""              → NoType
+     *   "A&B"           → IntersectionType
+     *   "(A&B)"         → IntersectionType  (parenthesised pure intersection)
+     *   "A|null"        → NullableType  (exactly 2 parts, one is "null")
+     *   "int|(A&B)|..."  → UnionType with IntersectionType member (DNF)
+     *   "A|B|..."       → UnionType
+     *   "?A"            → NullableType
+     *   "A"             → StandaloneType
      */
     protected function parseType(?string $typeStr): StandaloneType|UnionType|NullableType|NoType|IntersectionType
     {
@@ -365,26 +367,34 @@ trait SerializerHelperTrait
             return new NoType();
         }
 
-        if (str_contains($typeStr, '&')) {
-            $type = new IntersectionType();
-            foreach (explode('&', $typeStr) as $part) {
-                $type->addType(new StandaloneType($part));
-            }
-            return $type;
+        // Pure intersection type (no union): "A&B" or "(A&B)"
+        if (str_starts_with($typeStr, '(') && str_ends_with($typeStr, ')') && !str_contains($typeStr, '|')) {
+            return $this->parseIntersectionGroup(substr($typeStr, 1, -1));
+        }
+
+        if (!str_contains($typeStr, '|') && str_contains($typeStr, '&')) {
+            return $this->parseIntersectionGroup($typeStr);
         }
 
         if (str_contains($typeStr, '|')) {
-            $parts = explode('|', $typeStr);
+            $parts = $this->splitUnionParts($typeStr);
             $nullIndex = array_search('null', $parts, true);
+            // Nullable: exactly 2 parts where one is "null" and the other is not a group
             if (count($parts) === 2 && $nullIndex !== false) {
                 $basicPart = $parts[$nullIndex === 0 ? 1 : 0];
-                $nullable = new NullableType();
-                $nullable->addBasicType(new StandaloneType($basicPart));
-                return $nullable;
+                if (!str_starts_with($basicPart, '(')) {
+                    $nullable = new NullableType();
+                    $nullable->addBasicType(new StandaloneType($basicPart));
+                    return $nullable;
+                }
             }
             $union = new UnionType();
             foreach ($parts as $part) {
-                $union->addType(new StandaloneType($part));
+                if (str_starts_with($part, '(') && str_ends_with($part, ')')) {
+                    $union->addType($this->parseIntersectionGroup(substr($part, 1, -1)));
+                } else {
+                    $union->addType(new StandaloneType($part));
+                }
             }
             return $union;
         }
@@ -396,5 +406,46 @@ trait SerializerHelperTrait
         }
 
         return new StandaloneType($typeStr);
+    }
+
+    private function parseIntersectionGroup(string $inner): IntersectionType
+    {
+        $type = new IntersectionType();
+        foreach (explode('&', $inner) as $part) {
+            $type->addType(new StandaloneType(trim($part)));
+        }
+        return $type;
+    }
+
+    /**
+     * Split a union type string on '|' while respecting parenthesised groups.
+     * e.g. "int|(Foo&Bar)|null" → ["int", "(Foo&Bar)", "null"]
+     *
+     * @return string[]
+     */
+    private function splitUnionParts(string $typeString): array
+    {
+        $parts = [];
+        $depth = 0;
+        $current = '';
+        for ($i = 0, $len = strlen($typeString); $i < $len; $i++) {
+            $c = $typeString[$i];
+            if ($c === '(') {
+                $depth++;
+                $current .= $c;
+            } elseif ($c === ')') {
+                $depth--;
+                $current .= $c;
+            } elseif ($c === '|' && $depth === 0) {
+                $parts[] = trim($current);
+                $current = '';
+            } else {
+                $current .= $c;
+            }
+        }
+        if ($current !== '') {
+            $parts[] = trim($current);
+        }
+        return $parts;
     }
 }

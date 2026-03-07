@@ -2,6 +2,7 @@
 
 namespace StubTests\Framework\Parsers\Entities\Stubs\Types;
 
+use StubTests\Sources\Parsers\Entities\Model\Types\IntersectionType;
 use StubTests\Sources\Parsers\Entities\Model\Types\NoType;
 use StubTests\Sources\Parsers\Entities\Model\Types\NullableType;
 use StubTests\Sources\Parsers\Entities\Model\Types\StandaloneType;
@@ -32,9 +33,9 @@ class TypeNodeConverter
      * Convert a TypeNode to a type object.
      *
      * @param TypeNode|null $typeNode The type node from stub AST
-     * @return StandaloneType|UnionType|NullableType|NoType The corresponding type object
+     * @return StandaloneType|UnionType|NullableType|NoType|IntersectionType The corresponding type object
      */
-    public function convert(?TypeNode $typeNode): StandaloneType|UnionType|NullableType|NoType
+    public function convert(?TypeNode $typeNode): StandaloneType|UnionType|NullableType|NoType|IntersectionType
     {
         if ($typeNode === null) {
             return new NoType();
@@ -51,16 +52,31 @@ class TypeNodeConverter
 
     /**
      * Parse a type string into type objects.
-     * Handles union types (string|int), nullable types (string|null), and standalone types (string).
+     * Handles:
+     * - union types (string|int), including DNF (int|(Foo&Bar))
+     * - nullable types (string|null or ?string rendered as string|null)
+     * - intersection types ((Foo&Bar) or Foo&Bar)
+     * - standalone types (string)
      *
      * @param string $typeString The type string to parse
-     * @return StandaloneType|UnionType|NullableType|NoType
+     * @return StandaloneType|UnionType|NullableType|NoType|IntersectionType
      */
-    private function parseTypeString(string $typeString): StandaloneType|UnionType|NullableType|NoType
+    private function parseTypeString(string $typeString): StandaloneType|UnionType|NullableType|NoType|IntersectionType
     {
-        // Check if it's a union type (contains |)
+        // Parenthesised intersection group: (Foo&Bar) — pure intersection type, no union wrapper
+        if (str_starts_with($typeString, '(') && str_ends_with($typeString, ')')) {
+            return $this->parseIntersectionGroup(substr($typeString, 1, -1));
+        }
+
+        // Union type (may contain DNF groups like int|(Foo&Bar)): check | before &
+        // so DNF strings aren't misrouted to intersection parsing
         if (str_contains($typeString, '|')) {
             return $this->parseUnionType($typeString);
+        }
+
+        // Pure intersection type without parens: Foo&Bar
+        if (str_contains($typeString, '&')) {
+            return $this->parseIntersectionGroup($typeString);
         }
 
         // Standalone type - resolve it using imports
@@ -70,38 +86,81 @@ class TypeNodeConverter
 
     /**
      * Parse a union type string into UnionType or NullableType.
-     * Examples: "string|int" -> UnionType, "string|null" -> NullableType
-     *
-     * @param string $typeString The union type string
-     * @return UnionType|NullableType
+     * Splits on '|' only outside parenthesised groups, so DNF types like
+     * int|(Foo&Bar) are handled correctly.
      */
     private function parseUnionType(string $typeString): UnionType|NullableType
     {
-        $types = explode('|', $typeString);
-        $types = array_map('trim', $types);
+        $parts = $this->splitUnionParts($typeString);
 
-        // Check if it's a nullable type (exactly 2 types, one is 'null')
-        if (count($types) === 2 && in_array('null', $types, true)) {
-            $nonNullType = $types[0] === 'null' ? $types[1] : $types[0];
-            
-            // Resolve the non-null type
-            $resolvedType = $this->resolveTypeName($nonNullType);
-
-            $nullableType = new NullableType();
-            $nullableType->addBasicType(new StandaloneType($resolvedType));
-            return $nullableType;
+        // Nullable type: exactly 2 parts, one is 'null', the other is not a group
+        if (count($parts) === 2 && in_array('null', $parts, true)) {
+            $nonNullPart = $parts[0] === 'null' ? $parts[1] : $parts[0];
+            if (!str_starts_with($nonNullPart, '(')) {
+                $resolvedType = $this->resolveTypeName($nonNullPart);
+                $nullableType = new NullableType();
+                $nullableType->addBasicType(new StandaloneType($resolvedType));
+                return $nullableType;
+            }
         }
 
-        //TODO: add support for union+intersection type type1|(type2&type3)
-
-        // General union type - resolve each component
+        // General union type — each part is either a standalone type or a (Foo&Bar) group
         $unionType = new UnionType();
-        foreach ($types as $type) {
-            $resolvedType = $this->resolveTypeName($type);
-            $unionType->addType(new StandaloneType($resolvedType));
+        foreach ($parts as $part) {
+            if (str_starts_with($part, '(') && str_ends_with($part, ')')) {
+                $unionType->addType($this->parseIntersectionGroup(substr($part, 1, -1)));
+            } else {
+                $resolvedType = $this->resolveTypeName($part);
+                $unionType->addType(new StandaloneType($resolvedType));
+            }
         }
 
         return $unionType;
+    }
+
+    /**
+     * Parse an intersection type string like "Foo&Bar" (without outer parentheses).
+     */
+    private function parseIntersectionGroup(string $inner): IntersectionType
+    {
+        $intersectionType = new IntersectionType();
+        foreach (explode('&', $inner) as $part) {
+            $resolvedType = $this->resolveTypeName(trim($part));
+            $intersectionType->addType(new StandaloneType($resolvedType));
+        }
+        return $intersectionType;
+    }
+
+    /**
+     * Split a union type string on '|' while respecting parenthesised groups.
+     * e.g. "int|(Foo&Bar)|null" → ["int", "(Foo&Bar)", "null"]
+     *
+     * @return string[]
+     */
+    private function splitUnionParts(string $typeString): array
+    {
+        $parts = [];
+        $depth = 0;
+        $current = '';
+        for ($i = 0, $len = strlen($typeString); $i < $len; $i++) {
+            $c = $typeString[$i];
+            if ($c === '(') {
+                $depth++;
+                $current .= $c;
+            } elseif ($c === ')') {
+                $depth--;
+                $current .= $c;
+            } elseif ($c === '|' && $depth === 0) {
+                $parts[] = trim($current);
+                $current = '';
+            } else {
+                $current .= $c;
+            }
+        }
+        if ($current !== '') {
+            $parts[] = trim($current);
+        }
+        return $parts;
     }
 
     /**
