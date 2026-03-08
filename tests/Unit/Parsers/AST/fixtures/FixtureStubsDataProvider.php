@@ -26,6 +26,11 @@ class FixtureStubsDataProvider implements StubsDataProvider
         return $files;
     }
 
+    public function getStubsRootPath(): string
+    {
+        return $this->fixturesBasePath;
+    }
+
     public function getStubFileContent(string $path): string
     {
         // If path is already absolute, use it directly
