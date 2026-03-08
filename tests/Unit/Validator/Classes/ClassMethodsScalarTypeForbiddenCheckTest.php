@@ -46,7 +46,7 @@ class ClassMethodsScalarTypeForbiddenCheckTest extends CheckTestCase
     ): PHPMethod {
         $method = new PHPMethod();
         $method->setName($name);
-        $method->setAccess($access);
+        $method->setAccess($this->createAccessModifier($access));
         $method->setIsFinal($isFinal);
         $method->setHasTentativeReturnType($isTentative);
         if ($sinceVersion !== null) {

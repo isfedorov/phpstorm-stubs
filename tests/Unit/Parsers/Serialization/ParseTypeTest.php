@@ -209,8 +209,7 @@ class ParseTypeTest extends TestCase
 
     public function testNullableTypeRoundTrip(): void
     {
-        $original = new NullableType();
-        $original->addBasicType(new StandaloneType('string'));
+        $original = new NullableType(new StandaloneType('string'));
 
         $reparsed = $this->helper->parse($original->toString());
         self::assertInstanceOf(NullableType::class, $reparsed);

@@ -10,7 +10,7 @@ class StandaloneType
         $this->typeName = $typeName;
     }
 
-    public function toString()
+    public function toString(): string
     {
         return $this->typeName;
     }

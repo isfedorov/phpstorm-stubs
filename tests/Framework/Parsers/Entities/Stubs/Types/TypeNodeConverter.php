@@ -98,9 +98,7 @@ class TypeNodeConverter
             $nonNullPart = $parts[0] === 'null' ? $parts[1] : $parts[0];
             if (!str_starts_with($nonNullPart, '(')) {
                 $resolvedType = $this->resolveTypeName($nonNullPart);
-                $nullableType = new NullableType();
-                $nullableType->addBasicType(new StandaloneType($resolvedType));
-                return $nullableType;
+                return new NullableType(new StandaloneType($resolvedType));
             }
         }
 

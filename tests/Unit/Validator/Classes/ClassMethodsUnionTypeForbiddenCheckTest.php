@@ -51,7 +51,7 @@ class ClassMethodsUnionTypeForbiddenCheckTest extends CheckTestCase
     ): PHPMethod {
         $method = new PHPMethod();
         $method->setName($name);
-        $method->setAccess($access);
+        $method->setAccess($this->createAccessModifier($access));
         $method->setIsFinal($isFinal);
         $method->setHasTentativeReturnType($isTentative);
         if ($returnType !== null) {
@@ -257,7 +257,7 @@ class ClassMethodsUnionTypeForbiddenCheckTest extends CheckTestCase
         $className = '\MyClass';
         $method    = new PHPMethod();
         $method->setName('getValue');
-        $method->setAccess('public');
+        $method->setAccess($this->createAccessModifier('public'));
         $method->setLanguageLevelTypes([]);
         $method->setDefaultType('string|int');
 
@@ -280,7 +280,7 @@ class ClassMethodsUnionTypeForbiddenCheckTest extends CheckTestCase
         $className = '\MyClass';
         $method    = new PHPMethod();
         $method->setName('getValue');
-        $method->setAccess('public');
+        $method->setAccess($this->createAccessModifier('public'));
         $method->setLanguageLevelTypes(['8.0' => 'string|int']);
         $method->setDefaultType('string');
 

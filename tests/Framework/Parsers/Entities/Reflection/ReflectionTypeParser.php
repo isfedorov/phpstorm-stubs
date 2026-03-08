@@ -99,9 +99,7 @@ class ReflectionTypeParser
         if ($typeName === null) {
             return new NoType();
         }
-        $nullableType = new NullableType();
-        $nullableType->addBasicType(new StandaloneType($typeName));
-        return $nullableType;
+        return new NullableType(new StandaloneType($typeName));
     }
 
     /**

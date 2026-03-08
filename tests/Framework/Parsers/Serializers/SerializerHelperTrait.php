@@ -383,9 +383,7 @@ trait SerializerHelperTrait
             if (count($parts) === 2 && $nullIndex !== false) {
                 $basicPart = $parts[$nullIndex === 0 ? 1 : 0];
                 if (!str_starts_with($basicPart, '(')) {
-                    $nullable = new NullableType();
-                    $nullable->addBasicType(new StandaloneType($basicPart));
-                    return $nullable;
+                    return new NullableType(new StandaloneType($basicPart));
                 }
             }
             $union = new UnionType();
@@ -400,9 +398,7 @@ trait SerializerHelperTrait
         }
 
         if (str_starts_with($typeStr, '?')) {
-            $nullable = new NullableType();
-            $nullable->addBasicType(new StandaloneType(substr($typeStr, 1)));
-            return $nullable;
+            return new NullableType(new StandaloneType(substr($typeStr, 1)));
         }
 
         return new StandaloneType($typeStr);

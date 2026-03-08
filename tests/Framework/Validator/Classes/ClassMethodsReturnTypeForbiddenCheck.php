@@ -113,7 +113,7 @@ class ClassMethodsReturnTypeForbiddenCheck extends AbstractClassCheck
             // Only overridable methods matter: child classes cannot override private or final
             // methods, so return type hints on such methods are not a compatibility issue.
             $access = method_exists($method, 'getAccess') ? $method->getAccess() : null;
-            if ($access === 'private') {
+            if ($access?->toString() === 'private') {
                 continue;
             }
             if (method_exists($method, 'isFinal') && $method->isFinal()) {

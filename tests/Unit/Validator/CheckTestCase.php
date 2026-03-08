@@ -3,6 +3,10 @@
 namespace StubTests\Unit\Validator;
 
 use PHPUnit\Framework\TestCase;
+use StubTests\Framework\Parsers\Entities\Model\Access\AccessModifier;
+use StubTests\Framework\Parsers\Entities\Model\Access\PrivateAccessModifier;
+use StubTests\Framework\Parsers\Entities\Model\Access\ProtectedAccessModifier;
+use StubTests\Framework\Parsers\Entities\Model\Access\PublicAccessModifier;
 use StubTests\Sources\Parsers\Entities\Model\PHPClass;
 use StubTests\Sources\Parsers\Entities\Model\PHPFunction;
 use StubTests\Sources\Parsers\Entities\Model\PHPMethod;
@@ -216,9 +220,23 @@ abstract class CheckTestCase extends TestCase
      */
     protected function createNullableType(string $baseType): NullableType
     {
-        $nullableType = new NullableType();
-        $nullableType->addBasicType(new StandaloneType($baseType));
-        return $nullableType;
+        return new NullableType(new StandaloneType($baseType));
+    }
+
+    /**
+     * Convert a string access modifier to an AccessModifier object.
+     * Helper for test compatibility.
+     *
+     * @param string $access One of: 'public', 'protected', 'private'
+     * @return AccessModifier
+     */
+    protected function createAccessModifier(string $access): AccessModifier
+    {
+        return match ($access) {
+            'private' => new PrivateAccessModifier(),
+            'protected' => new ProtectedAccessModifier(),
+            default => new PublicAccessModifier(),
+        };
     }
 
     /**

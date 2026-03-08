@@ -6,23 +6,24 @@ class NullableType
 {
     private StandaloneType $basicType;
 
-    public function toString()
+    public function __construct(StandaloneType $basicType)
     {
-        return $this->basicType->toString() != 'mixed' ? "{$this->basicType->toString()}|null" : $this->basicType->toString();
+        $this->basicType = $basicType;
     }
 
-    public function toArray()
+    public function toString(): string
+    {
+        // PHP 8.0+: 'mixed' type already includes null, so don't add '|null'
+        return $this->basicType->toString() !== 'mixed' ? "{$this->basicType->toString()}|null" : $this->basicType->toString();
+    }
+
+    public function toArray(): array
     {
         return [$this->basicType->toString(), 'null'];
     }
 
-    public function addBasicType(StandaloneType $param)
+	public function hasBasicType(string $type): bool
     {
-        $this->basicType = $param;
-    }
-
-    public function hasBasicType(string $type): bool
-    {
-        return $this->basicType->toString() == $type;
+        return $this->basicType->toString() === $type;
     }
 }

@@ -44,7 +44,7 @@ class ClassMethodsReturnTypeForbiddenCheckTest extends CheckTestCase
     ): PHPMethod {
         $method = new PHPMethod();
         $method->setName($name);
-        $method->setAccess($access);
+        $method->setAccess($this->createAccessModifier($access));
         $method->setIsFinal($isFinal);
         $method->setHasTentativeReturnType($isTentative);
         if ($returnType !== null) {
@@ -142,7 +142,7 @@ class ClassMethodsReturnTypeForbiddenCheckTest extends CheckTestCase
         $className = '\MyClass';
         $method    = new PHPMethod();
         $method->setName('getString');
-        $method->setAccess('public');
+        $method->setAccess($this->createAccessModifier('public'));
         $method->setLanguageLevelTypes([]);
         $method->setDefaultType('string');
 
@@ -165,7 +165,7 @@ class ClassMethodsReturnTypeForbiddenCheckTest extends CheckTestCase
         $className = '\MyClass';
         $method    = new PHPMethod();
         $method->setName('getString');
-        $method->setAccess('public');
+        $method->setAccess($this->createAccessModifier('public'));
         $method->setLanguageLevelTypes(['7.0' => 'string']);
         $method->setDefaultType('');
 

@@ -51,7 +51,7 @@ class ClassMethodsNullableTypeForbiddenCheckTest extends CheckTestCase
     ): PHPMethod {
         $method = new PHPMethod();
         $method->setName($name);
-        $method->setAccess($access);
+        $method->setAccess($this->createAccessModifier($access));
         $method->setIsFinal($isFinal);
         $method->setHasTentativeReturnType($isTentative);
         if ($returnType !== null) {
@@ -227,7 +227,7 @@ class ClassMethodsNullableTypeForbiddenCheckTest extends CheckTestCase
         $className  = '\MyClass';
         $method     = new PHPMethod();
         $method->setName('getStr');
-        $method->setAccess('public');
+        $method->setAccess($this->createAccessModifier('public'));
         $method->setLanguageLevelTypes([]);    // no version-specific entries
         $method->setDefaultType('?string');    // LLA attribute default — IDE metadata only
 
@@ -249,7 +249,7 @@ class ClassMethodsNullableTypeForbiddenCheckTest extends CheckTestCase
         $className = '\MyClass';
         $method    = new PHPMethod();
         $method->setName('getStr');
-        $method->setAccess('public');
+        $method->setAccess($this->createAccessModifier('public'));
         $method->setLanguageLevelTypes(['7.1' => '?string']);
         $method->setDefaultType('');   // no type for pre-7.1
 
