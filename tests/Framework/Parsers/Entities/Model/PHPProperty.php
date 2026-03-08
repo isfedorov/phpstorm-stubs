@@ -2,6 +2,7 @@
 
 namespace StubTests\Sources\Parsers\Entities\Model;
 
+use StubTests\Framework\Parsers\Entities\Model\Access\AccessModifier;
 use StubTests\Sources\Parsers\Entities\Model\Types\IntersectionType;
 use StubTests\Sources\Parsers\Entities\Model\Types\NoType;
 use StubTests\Sources\Parsers\Entities\Model\Types\NullableType;
@@ -10,7 +11,7 @@ use StubTests\Sources\Parsers\Entities\Model\Types\UnionType;
 
 class PHPProperty extends BasePHPElement
 {
-    private $accessModifier;
+    private ?AccessModifier $accessModifier = null;
     private bool $isStatic = false;
     private bool $isReadonly = false;
     private StandaloneType|UnionType|NullableType|NoType|IntersectionType|null $type = null;
@@ -19,12 +20,12 @@ class PHPProperty extends BasePHPElement
     private ?string $defaultType = null;
     private ?string $typeFromPhpDoc = null;
 
-    public function getAccess()
+    public function getAccess(): ?AccessModifier
     {
         return $this->accessModifier;
     }
 
-    public function setAccess($accessModifier)
+    public function setAccess(AccessModifier $accessModifier): void
     {
         $this->accessModifier = $accessModifier;
     }

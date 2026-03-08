@@ -2,7 +2,7 @@
 
 namespace StubTests\Framework\Parsers\Entities\Model\Access;
 
-class PrivateAccessModifier
+class PrivateAccessModifier implements AccessModifier
 {
     public function toString(): string
     {

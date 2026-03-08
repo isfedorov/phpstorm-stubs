@@ -2,9 +2,9 @@
 
 namespace StubTests\Framework\Parsers\Entities\Model\Access;
 
-class ProtectedAccessModifier
+class ProtectedAccessModifier implements AccessModifier
 {
-    public function toString()
+    public function toString(): string
     {
         return 'protected';
     }

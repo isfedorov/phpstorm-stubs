@@ -2,19 +2,21 @@
 
 namespace StubTests\Sources\Parsers\Entities\Model;
 
+use StubTests\Framework\Parsers\Entities\Model\Access\AccessModifier;
+
 class PHPMethod extends PHPFunction
 {
-    private $accessModifier;
+    private ?AccessModifier $accessModifier = null;
     private bool $isStatic = false;
     private bool $isFinal = false;
     private bool $isAbstract = false;
 
-    public function getAccess()
+    public function getAccess(): ?AccessModifier
     {
         return $this->accessModifier;
     }
 
-    public function setAccess($accessModifier)
+    public function setAccess(AccessModifier $accessModifier): void
     {
         $this->accessModifier = $accessModifier;
     }
