@@ -1197,4 +1197,4 @@ function getmxrr(string $hostname, &$hosts, &$weights): bool {}
  * </tr>
  * </table>
  */
-function dns_get_record(string $hostname, int $type = DNS_ANY, &$authoritative_name_servers, &$additional_records, bool $raw = false): array|false {}
+function dns_get_record(string $hostname, int $type = DNS_ANY, ?array &$authoritative_name_servers = null, ?array &$additional_records = null, bool $raw = false): array|false {}

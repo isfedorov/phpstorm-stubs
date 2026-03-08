@@ -2398,7 +2398,7 @@ function mysqli_ping(mysqli $mysql): bool {}
  * @param int $microseconds [optional]
  * @return int|false number of ready connections upon success, FALSE otherwise.
  */
-function mysqli_poll(?array &$read, ?array &$error, array &$reject, int $seconds, int $microseconds = 0): int|false {}
+function mysqli_poll(?array &$read, ?array &$error, #[LanguageLevelTypeAware(['7.1' => 'array|null', '8.0' => 'array'], default: '')] &$reject, int $seconds, int $microseconds = 0): int|false {}
 
 /**
  * Prepares an SQL statement for execution

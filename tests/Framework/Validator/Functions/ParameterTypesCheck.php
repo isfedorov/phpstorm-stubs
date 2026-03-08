@@ -5,6 +5,7 @@ namespace StubTests\Sources\Validator\Functions;
 use StubTests\Sources\Parsers\ParsedDataStorageManager;
 use StubTests\Sources\Validator\AbstractCallableCheck;
 use StubTests\Sources\Validator\CheckResultSet;
+use StubTests\Sources\Validator\TypeHelperTrait;
 
 /**
  * Validates that parameter types in stubs match those in reflection.
@@ -13,6 +14,7 @@ use StubTests\Sources\Validator\CheckResultSet;
  */
 class ParameterTypesCheck extends AbstractCallableCheck
 {
+    use TypeHelperTrait;
     public function supports(string $phpVersion): bool
     {
         // Type hints were introduced gradually:
@@ -71,29 +73,32 @@ class ParameterTypesCheck extends AbstractCallableCheck
             return $results;
         }
 
-        // Compare parameter types
+        // Compare parameter types; collect all mismatches before reporting
+        $mismatches = [];
         foreach ($reflectionParams as $index => $reflectionParam) {
-            $stubParam = $stubParams[$index] ?? null;
+            $reflType = $this->getParamTypeString($reflectionParam, $phpVersion);
 
-            if ($stubParam === null) {
-                $results->addFailure($entityId, "Parameter #{$index} missing in stubs");
+            // Reflection has no type — stubs may document one; skip this param.
+            // This also covers PHP < 8.0 where built-in functions lacked type hints.
+            if ($reflType === null) {
                 continue;
             }
 
-            $reflectionType = $this->getParameterTypeString($reflectionParam);
-            $stubType = $this->getParameterTypeString($stubParam);
+            $stubParam   = $stubParams[$index] ?? null;
+            $stubType    = $stubParam !== null ? $this->getParamTypeString($stubParam, $phpVersion) : null;
+            $normalRefl  = $this->normalizeType($reflType);
+            $normalStub  = $this->normalizeType($stubType);
 
-            if ($reflectionType !== $stubType) {
-                $paramName = method_exists($reflectionParam, 'getName') ? $reflectionParam->getName() : "#{$index}";
-                $results->addFailure(
-                    $entityId,
-                    "Parameter '{$paramName}' type mismatch: reflection has '{$reflectionType}', " .
-                    "stubs have '{$stubType}'"
-                );
+            if ($normalRefl !== $normalStub) {
+                $paramName    = method_exists($reflectionParam, 'getName') ? $reflectionParam->getName() : "#{$index}";
+                $mismatches[] = "Parameter '{$paramName}' type mismatch: reflection has '{$reflType}', " .
+                    "stubs have '" . ($stubType ?? 'none') . "'";
             }
         }
 
-        if (!$results->hasFailures()) {
+        if (!empty($mismatches)) {
+            $results->addFailure($entityId, implode("\n", $mismatches));
+        } else {
             $results->addSuccess($entityId);
         }
 
@@ -101,44 +106,31 @@ class ParameterTypesCheck extends AbstractCallableCheck
     }
 
     /**
-     * Get the type string representation from a parameter.
+     * Resolve the effective type string for a parameter at the given PHP version.
      *
-     * @param mixed $param
-     * @return string
+     * Priority:
+     * 1. Signature type from getDeclaredType() — if non-empty (not NoType), returned directly.
+     * 2. LanguageLevelTypeAware — highest version entry <= $phpVersion, or defaultType.
+     *    (Only populated for stub params; reflection params have null here → returns null.)
+     *
+     * Returns null when no type information is available.
      */
-    private function getParameterTypeString($param): string
+    private function getParamTypeString(mixed $param, string $phpVersion): ?string
     {
-        // PHPParameter (stubs/reflection models) exposes getDeclaredType()
         if (method_exists($param, 'getDeclaredType')) {
-            $type = $param->getDeclaredType();
-            if ($type !== null && method_exists($type, 'toString')) {
-                $typeString = $type->toString();
-                // NoType returns empty string — treat as no type information
-                return $typeString === '' ? 'mixed' : $typeString;
+            $type       = $param->getDeclaredType();
+            $typeString = method_exists($type, 'toString') ? $type->toString() : '';
+            if ($typeString !== '') {
+                return $typeString;
             }
         }
 
-        // Fallback for raw reflection objects (ReflectionParameter::getType)
-        if (!method_exists($param, 'getType')) {
-            return 'mixed';
+        $versionAwareType = $this->resolveVersionAwareType($param, $phpVersion);
+        if ($versionAwareType !== null && $versionAwareType !== '') {
+            return $versionAwareType;
         }
 
-        $type = $param->getType();
-
-        if ($type === null) {
-            return 'mixed';
-        }
-
-        if (is_object($type)) {
-            if (method_exists($type, '__toString')) {
-                return (string) $type;
-            }
-            if (method_exists($type, 'getName')) {
-                return $type->getName();
-            }
-        }
-
-        return (string) $type;
+        return null;
     }
 
     /**

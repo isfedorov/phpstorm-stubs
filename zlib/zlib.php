@@ -432,7 +432,7 @@ function ob_gzhandler(string $data, int $flags): string|false {}
  */
 #[Pure]
 #[LanguageLevelTypeAware(["8.0" => "DeflateContext|false"], default: "resource|false")]
-function deflate_init(int $encoding, array $options = []) {}
+function deflate_init(int $encoding, #[LanguageLevelTypeAware(['8.3' => 'object|array'], default: 'array')] $options = []) {}
 
 /**
  * Incrementally deflate data
@@ -480,7 +480,7 @@ function deflate_add(#[LanguageLevelTypeAware(["8.0" => "DeflateContext"], defau
  */
 #[Pure]
 #[LanguageLevelTypeAware(["8.0" => "InflateContext|false"], default: "resource|false")]
-function inflate_init(int $encoding, array $options = []) {}
+function inflate_init(int $encoding, #[LanguageLevelTypeAware(['8.3' => 'object|array'], default: 'array')] $options = []) {}
 
 /**
  * Incrementally inflate encoded data
