@@ -311,4 +311,14 @@ enum CheckType: string
      * See: https://youtrack.jetbrains.com/issue/WI-61052
      */
     case REFLECTION_SPECIAL_TYPE_HINTS = 'ReflectionMethodSpecialTypeHintsCheck';
+
+    /**
+     * Validates that overridable methods available before PHP 7.1 do not declare
+     * nullable return type hints (?T). Unlike NULLABLE_TYPE_FORBIDDEN (which checks
+     * both return types and parameters), this check focuses only on the return type
+     * and uses LanguageLevelTypeAware resolution to detect nullable types.
+     * Used by ClassMethodsNullableReturnTypeCheck, InterfaceMethodsNullableReturnTypeCheck,
+     * and EnumMethodsNullableReturnTypeCheck.
+     */
+    case NULLABLE_RETURN_TYPE = 'NullableReturnTypeCheck';
 }

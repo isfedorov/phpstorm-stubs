@@ -81,7 +81,7 @@ class StubsEntitySerializerTest extends TestCase
         $method->setLanguageLevelTypes(['8.0' => 'string', '7.4' => 'string|false']);
         $method->setDefaultType('string');
 
-        $class->methods[] = $method;
+        $class->addMethod($method);
 
         $result = $this->serializer->serialize($class);
 
@@ -130,7 +130,7 @@ class StubsEntitySerializerTest extends TestCase
         $class = new PHPClass();
         $class->setName('TestClass');
         $class->setId('TestClass');
-        $class->methods[] = $method;
+        $class->addMethod($method);
 
         $result = $this->serializer->serialize($class);
 
@@ -355,9 +355,9 @@ class StubsEntitySerializerTest extends TestCase
         $result = $this->serializer->deserialize($data);
 
         self::assertInstanceOf(PHPClass::class, $result);
-        self::assertCount(1, $result->methods);
+        self::assertCount(1, $result->getMethods());
 
-        $method = $result->methods[0];
+        $method = $result->getMethods()[0];
         self::assertEquals('testMethod', $method->getName());
         self::assertTrue($method->isDeprecated());
         self::assertEquals('/** @return string */', $method->getPhpDoc());
@@ -409,8 +409,8 @@ class StubsEntitySerializerTest extends TestCase
 
         $result = $this->serializer->deserialize($data);
 
-        self::assertCount(1, $result->methods);
-        $parameters = $result->methods[0]->getParameters();
+        self::assertCount(1, $result->getMethods());
+        $parameters = $result->getMethods()[0]->getParameters();
         self::assertCount(1, $parameters);
 
         $param = $parameters[0];
@@ -540,7 +540,7 @@ class StubsEntitySerializerTest extends TestCase
         $method->setParameters([]);
         $method->setPhpDoc('/** @return string */');
         $method->setSinceVersion('8.0');
-        $class->methods[] = $method;
+        $class->addMethod($method);
 
         // Serialize then deserialize
         $serialized = $this->serializer->serialize($class);
@@ -550,10 +550,10 @@ class StubsEntitySerializerTest extends TestCase
         self::assertEquals($class->getName(), $deserialized->getName());
         self::assertEquals($class->getPhpDoc(), $deserialized->getPhpDoc());
         self::assertEquals($class->getSinceVersion(), $deserialized->getSinceVersion());
-        self::assertCount(1, $deserialized->methods);
-        self::assertEquals('testMethod', $deserialized->methods[0]->getName());
-        self::assertEquals('/** @return string */', $deserialized->methods[0]->getPhpDoc());
-        self::assertEquals('8.0', $deserialized->methods[0]->getSinceVersion());
+        self::assertCount(1, $deserialized->getMethods());
+        self::assertEquals('testMethod', $deserialized->getMethods()[0]->getName());
+        self::assertEquals('/** @return string */', $deserialized->getMethods()[0]->getPhpDoc());
+        self::assertEquals('8.0', $deserialized->getMethods()[0]->getSinceVersion());
     }
 
     public function testRoundTripSerializationFunctionWithStubMetadata(): void

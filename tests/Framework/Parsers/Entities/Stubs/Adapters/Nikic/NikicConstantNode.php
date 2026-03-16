@@ -28,9 +28,41 @@ class NikicConstantNode implements ConstantNode
         return $this->constant->name->toString();
     }
 
-    public function getValue()
+    public function getValue(): mixed
     {
-        return $this->constant->value;
+        return self::resolveExprValue($this->constant->value);
+    }
+
+    /**
+     * Resolves a PhpParser expression node to a plain PHP value.
+     * Returns null for complex expressions (arrays, operations, etc.) that cannot be statically evaluated.
+     */
+    private static function resolveExprValue(\PhpParser\Node\Expr $expr): mixed
+    {
+        if ($expr instanceof \PhpParser\Node\Scalar\String_) {
+            return $expr->value;
+        }
+        if ($expr instanceof \PhpParser\Node\Scalar\LNumber) {
+            return $expr->value;
+        }
+        if ($expr instanceof \PhpParser\Node\Scalar\DNumber) {
+            return $expr->value;
+        }
+        if ($expr instanceof \PhpParser\Node\Expr\UnaryMinus) {
+            if ($expr->expr instanceof \PhpParser\Node\Scalar\LNumber
+                || $expr->expr instanceof \PhpParser\Node\Scalar\DNumber) {
+                return -$expr->expr->value;
+            }
+            return null;
+        }
+        if ($expr instanceof \PhpParser\Node\Expr\UnaryPlus) {
+            if ($expr->expr instanceof \PhpParser\Node\Scalar\LNumber
+                || $expr->expr instanceof \PhpParser\Node\Scalar\DNumber) {
+                return $expr->expr->value;
+            }
+            return null;
+        }
+        return null;
     }
 
     public function isPublic(): bool

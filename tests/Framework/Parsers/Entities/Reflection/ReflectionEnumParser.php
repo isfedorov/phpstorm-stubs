@@ -52,15 +52,15 @@ class ReflectionEnumParser implements Parser
         $parsedEnum->isFinal = $object->isFinal();
         $parsedEnum->isReadonly = $object->isReadOnly();
         foreach ($object->getMethods() ?? [] as $method) {
-            $parsedEnum->methods []= $this->methodParser->parse($method);
+            $parsedEnum->addMethod($this->methodParser->parse($method));
         }
         if ($object->hasMethod('getReflectionConstants')) {
             foreach ($object->getReflectionConstants() ?? [] as $reflectionConstant) {
-                $parsedEnum->constants []= $this->constantParser->parse($reflectionConstant);
+                $parsedEnum->addConstant($this->constantParser->parse($reflectionConstant));
             }
         } else {
             foreach ($object->getConstants() ?? [] as $key => $value) {
-                $parsedEnum->constants []= $this->constantParser->parse([$key => $value]);
+                $parsedEnum->addConstant($this->constantParser->parse([$key => $value]));
             }
         }
         foreach ($object->getInterfaces() ?? [] as $interface) {

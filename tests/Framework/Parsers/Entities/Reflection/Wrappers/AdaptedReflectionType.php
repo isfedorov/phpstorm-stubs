@@ -41,24 +41,13 @@ class AdaptedReflectionType extends AbstractReflectionAdapter
         // Detect type kind
         $isUnion = $reflectionObject instanceof \ReflectionUnionType;
         $isIntersection = class_exists('\ReflectionIntersectionType') && $reflectionObject instanceof \ReflectionIntersectionType;
-        $isNamed = $reflectionObject instanceof \ReflectionNamedType;
+        $isComposite = $isUnion || $isIntersection;
 
         $this->setData('isUnionType', $isUnion);
         $this->setData('isIntersectionType', $isIntersection);
 
-        // Handle union types (PHP 8.0+)
-        if ($isUnion) {
-            $types = array();
-            foreach ($reflectionObject->getTypes() as $type) {
-                if ($type instanceof \ReflectionNamedType) {
-                    $types[] = $type->getName();
-                }
-            }
-            $this->setData('getTypes', $types);
-            $this->setData('getName', null);
-        }
-        // Handle intersection types (PHP 8.1+)
-        elseif ($isIntersection) {
+        // Handle composite types (union/intersection) - both have getTypes() method
+        if ($isComposite) {
             $types = array();
             foreach ($reflectionObject->getTypes() as $type) {
                 $types[] = $type->getName();
@@ -66,12 +55,12 @@ class AdaptedReflectionType extends AbstractReflectionAdapter
             $this->setData('getTypes', $types);
             $this->setData('getName', null);
         }
-        // Handle named types (PHP 7.0+)
-        elseif ($isNamed) {
+        // Handle named types and fallback - use getName() if available
+        elseif (method_exists($reflectionObject, 'getName')) {
             $this->setData('getName', $reflectionObject->getName());
             $this->setData('getTypes', array());
         }
-        // Fallback
+        // Fallback for unknown types
         else {
             $this->setData('getName', null);
             $this->setData('getTypes', array());

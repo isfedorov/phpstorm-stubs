@@ -77,7 +77,7 @@ class PhpDocSeparationTest extends TestCase
         $method->setParameters([]);
         $method->setPhpDoc('/** @return string */');
 
-        $class->methods[] = $method;
+        $class->addMethod($method);
 
         $serialized = $this->serializer->serialize($class);
 

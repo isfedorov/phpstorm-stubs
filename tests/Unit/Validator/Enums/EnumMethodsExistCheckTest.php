@@ -51,7 +51,7 @@ class EnumMethodsExistCheckTest extends CheckTestCase
         $enum = new PHPEnum();
         $enum->setId($id);
         $enum->setName(ltrim($id, '\\'));
-        $enum->methods = $methods;
+        $enum->setMethods($methods);
         return $enum;
     }
 
@@ -60,7 +60,7 @@ class EnumMethodsExistCheckTest extends CheckTestCase
         $iface = new PHPInterface();
         $iface->setId($id);
         $iface->setName(ltrim($id, '\\'));
-        $iface->methods = $methods;
+        $iface->setMethods($methods);
         return $iface;
     }
 

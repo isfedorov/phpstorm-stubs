@@ -42,15 +42,15 @@ class ReflectionInterfaceParser implements Parser
         $interface->setNamespace($object->getNamespaceName() ? '\\' . $object->getNamespaceName() : '\\');
         $interface->setId($interface->getNamespace() != '\\' ? $interface->getNamespace() . '\\' . $interface->getName() : '\\' . $interface->getName());
         foreach ($object->getMethods() ?? [] as $method) {
-            $interface->methods []= $this->methodParser->parse($method);
+            $interface->addMethod($this->methodParser->parse($method));
         }
         if ($object->hasMethod('getReflectionConstants')) {
             foreach ($object->getReflectionConstants() ?? [] as $reflectionConstant) {
-                $interface->constants []= $this->constantParser->parse($reflectionConstant);
+                $interface->addConstant($this->constantParser->parse($reflectionConstant));
             }
         } else {
             foreach ($object->getConstants() ?? [] as $constantName => $constantValue) {
-                $interface->constants []= $this->constantParser->parse([$constantName => $constantValue]);
+                $interface->addConstant($this->constantParser->parse([$constantName => $constantValue]));
             }
         }
         return $interface;

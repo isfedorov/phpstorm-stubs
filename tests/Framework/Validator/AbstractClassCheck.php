@@ -13,17 +13,29 @@ use StubTests\Sources\Parsers\ParsedDataStorageManager;
 
 abstract class AbstractClassCheck extends AbstractReflectionCheck
 {
+    /** @var array<int, array<string, PHPClass>> ID-indexed class lookup cache, keyed by storage object id */
+    private array $classIndex = [];
+    /** @var array<int, array<string, PHPEnum>> */
+    private array $enumIndex = [];
+    /** @var array<int, array<string, PHPInterface>> */
+    private array $interfaceIndex = [];
+
     /**
      * Find a class by entity ID in the given storage (works for both reflection and stubs).
      */
     protected function findClassById(ParsedDataStorageManager $storage, string $entityId): ?PHPClass
     {
-        foreach ($storage->getClasses() as $class) {
-            if ($class->getId() === $entityId) {
-                return $class;
+        $storageId = spl_object_id($storage);
+        if (!isset($this->classIndex[$storageId])) {
+            $this->classIndex[$storageId] = [];
+            foreach ($storage->getClasses() as $class) {
+                $id = $class->getId();
+                if ($id !== null) {
+                    $this->classIndex[$storageId][$id] = $class;
+                }
             }
         }
-        return null;
+        return $this->classIndex[$storageId][$entityId] ?? null;
     }
 
     /**
@@ -120,12 +132,17 @@ abstract class AbstractClassCheck extends AbstractReflectionCheck
      */
     protected function findEnumById(ParsedDataStorageManager $storage, string $entityId): ?PHPEnum
     {
-        foreach ($storage->getEnums() as $enum) {
-            if ($enum->getId() === $entityId) {
-                return $enum;
+        $storageId = spl_object_id($storage);
+        if (!isset($this->enumIndex[$storageId])) {
+            $this->enumIndex[$storageId] = [];
+            foreach ($storage->getEnums() as $enum) {
+                $id = $enum->getId();
+                if ($id !== null) {
+                    $this->enumIndex[$storageId][$id] = $enum;
+                }
             }
         }
-        return null;
+        return $this->enumIndex[$storageId][$entityId] ?? null;
     }
 
     /**
@@ -156,12 +173,17 @@ abstract class AbstractClassCheck extends AbstractReflectionCheck
      */
     protected function findInterfaceById(ParsedDataStorageManager $storage, string $entityId): ?PHPInterface
     {
-        foreach ($storage->getInterfaces() as $interface) {
-            if ($interface->getId() === $entityId) {
-                return $interface;
+        $storageId = spl_object_id($storage);
+        if (!isset($this->interfaceIndex[$storageId])) {
+            $this->interfaceIndex[$storageId] = [];
+            foreach ($storage->getInterfaces() as $interface) {
+                $id = $interface->getId();
+                if ($id !== null) {
+                    $this->interfaceIndex[$storageId][$id] = $interface;
+                }
             }
         }
-        return null;
+        return $this->interfaceIndex[$storageId][$entityId] ?? null;
     }
 
     /**

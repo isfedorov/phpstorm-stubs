@@ -46,11 +46,13 @@ class ReflectionClassConstantParser implements Parser
                 $constant->visibility = 'public';
             }
         } else {
-            foreach (array_keys($object) as $constantName) {
-                $constant = new PHPClassConstant();
-                $constant->setName($constantName);
-                $constant->value = $object[$constant->getName()];
+            if (!is_array($object) || empty($object)) {
+                throw new \InvalidArgumentException('ReflectionClassConstantParser::parse() expects a non-empty array or an adapted reflection object');
             }
+            $constantName = array_key_first($object);
+            $constant = new PHPClassConstant();
+            $constant->setName((string) $constantName);
+            $constant->value = $object[$constantName];
         }
         return $constant;
     }

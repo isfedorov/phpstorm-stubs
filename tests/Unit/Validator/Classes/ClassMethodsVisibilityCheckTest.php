@@ -65,7 +65,7 @@ class ClassMethodsVisibilityCheckTest extends CheckTestCase
         $iface = new PHPInterface();
         $iface->setId($id);
         $iface->setName(ltrim($id, '\\'));
-        $iface->methods = $methods;
+        $iface->setMethods($methods);
         return $iface;
     }
 
@@ -495,7 +495,7 @@ class ClassMethodsVisibilityCheckTest extends CheckTestCase
 
         $parentStub = new PHPClass();
         $parentStub->setId($parentClassName);
-        $parentStub->methods = [$this->makeMethod('doWork', 'public')]; // stub parent: public → mismatch
+        $parentStub->setMethods([$this->makeMethod('doWork', 'public')]); // stub parent: public → mismatch
 
         $childStub = $this->createMockClassWithProperties($className);
         $childStub->parentClass = $parentStub;
@@ -522,7 +522,7 @@ class ClassMethodsVisibilityCheckTest extends CheckTestCase
 
         $parentStub = new PHPClass();
         $parentStub->setId($parentClassName);
-        $parentStub->methods = [$this->makeMethod('doWork', 'protected')]; // matches
+        $parentStub->setMethods([$this->makeMethod('doWork', 'protected')]); // matches
 
         $childStub = $this->createMockClassWithProperties($className);
         $childStub->parentClass = $parentStub;
@@ -579,7 +579,7 @@ class ClassMethodsVisibilityCheckTest extends CheckTestCase
 
         $parentStub = new PHPClass();
         $parentStub->setId($parentClassName);
-        $parentStub->methods = [$this->makeMethod('doWork', 'protected')]; // parent: protected
+        $parentStub->setMethods([$this->makeMethod('doWork', 'protected')]); // parent: protected
 
         $childStub = $this->createMockClassWithProperties(
             $className, null, null, null,

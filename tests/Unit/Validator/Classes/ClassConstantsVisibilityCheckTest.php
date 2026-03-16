@@ -49,7 +49,7 @@ class ClassConstantsVisibilityCheckTest extends CheckTestCase
     {
         $class = new PHPClass();
         $class->setId($id);
-        $class->constants = $constants;
+        $class->setConstants($constants);
         return $class;
     }
 

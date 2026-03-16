@@ -25,7 +25,7 @@ class EnumConstantsValueCheckTest extends CheckTestCase
     {
         $enum = new PHPEnum();
         $enum->setId($id);
-        $enum->constants = $constants;
+        $enum->setConstants($constants);
         return $enum;
     }
 

@@ -26,7 +26,7 @@ class InterfaceConstantsCheckTest extends CheckTestCase
     {
         $interface = new PHPInterface();
         $interface->setId($id);
-        $interface->constants = $constants;
+        $interface->setConstants($constants);
         return $interface;
     }
 

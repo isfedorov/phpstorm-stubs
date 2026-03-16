@@ -32,7 +32,7 @@ class EnumMethodsTentativeReturnTypeCheckTest extends CheckTestCase
         $enum = new PHPEnum();
         $enum->setId($enumId);
         $enum->setName(ltrim($enumId, '\\'));
-        $enum->methods = [$method];
+        $enum->setMethods([$method]);
         return $enum;
     }
 

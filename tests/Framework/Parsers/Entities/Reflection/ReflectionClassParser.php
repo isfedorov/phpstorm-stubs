@@ -57,18 +57,18 @@ class ReflectionClassParser implements Parser
         $class->isFinal = $object->isFinal();
         $class->isReadonly = $object->isReadOnly();
         foreach ($object->getMethods() ?? [] as $method) {
-            $class->methods []= $this->methodParser->parse($method);
+            $class->addMethod($this->methodParser->parse($method));
         }
         foreach ($object->getProperties() ?? [] as $property) {
             $class->properties []= $this->propertyParser->parse($property);
         }
         if ($object->hasMethod('getReflectionConstants')) {
             foreach ($object->getReflectionConstants() ?? [] as $reflectionConstant) {
-                $class->constants []= $this->constantParser->parse($reflectionConstant);
+                $class->addConstant($this->constantParser->parse($reflectionConstant));
             }
         } else {
             foreach ($object->getConstants() ?? [] as $constantName => $constantValue) {
-                $class->constants []= $this->constantParser->parse([$constantName => $constantValue]);
+                $class->addConstant($this->constantParser->parse([$constantName => $constantValue]));
             }
         }
         if ($object->getParentClass()) {

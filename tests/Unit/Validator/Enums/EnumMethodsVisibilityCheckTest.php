@@ -2,6 +2,8 @@
 
 namespace StubTests\Unit\Validator\Enums;
 
+use StubTests\Framework\Parsers\Entities\Model\Access\PrivateAccessModifier;
+use StubTests\Framework\Parsers\Entities\Model\Access\ProtectedAccessModifier;
 use StubTests\Framework\Parsers\Entities\Model\Access\PublicAccessModifier;
 use StubTests\Sources\Parsers\Entities\Model\PHPEnum;
 use StubTests\Sources\Parsers\Entities\Model\PHPMethod;
@@ -16,7 +18,11 @@ class EnumMethodsVisibilityCheckTest extends CheckTestCase
     {
         $method = new PHPMethod();
         $method->setName($name);
-        $method->setAccess(new PublicAccessModifier());
+        $method->setAccess(match ($visibility) {
+            'protected' => new ProtectedAccessModifier(),
+            'private'   => new PrivateAccessModifier(),
+            default     => new PublicAccessModifier(),
+        });
         return $method;
     }
 
@@ -24,7 +30,7 @@ class EnumMethodsVisibilityCheckTest extends CheckTestCase
     {
         $enum = new PHPEnum();
         $enum->setId($id);
-        $enum->methods = $methods;
+        $enum->setMethods($methods);
         return $enum;
     }
 

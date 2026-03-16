@@ -23,7 +23,7 @@ class EnumMethodDeprecationCheckTest extends CheckTestCase
     {
         $enum = new PHPEnum();
         $enum->setId($id);
-        $enum->methods = $methods;
+        $enum->setMethods($methods);
         return $enum;
     }
 

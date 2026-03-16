@@ -39,9 +39,7 @@ class ReflectionTypeRegistry
         'ReflectionParameter' => AdaptedReflectionParameter::class,
         'ReflectionProperty' => AdaptedReflectionProperty::class,
         'ReflectionClassConstant' => AdaptedReflectionClassConstant::class,
-        'ReflectionNamedType' => AdaptedReflectionType::class,
-        'ReflectionUnionType' => AdaptedReflectionType::class,
-        'ReflectionIntersectionType' => AdaptedReflectionType::class,
+        'ReflectionType' => AdaptedReflectionType::class,
     );
 
     /**
@@ -119,7 +117,7 @@ class ReflectionTypeRegistry
 
         // Check if it's a ReflectionType subclass (catches future type variants)
         if ($reflectionObject instanceof \ReflectionType) {
-            return self::$typeMapping['ReflectionNamedType'];
+            return self::$typeMapping['ReflectionType'];
         }
 
         return null;
@@ -148,17 +146,6 @@ class ReflectionTypeRegistry
     }
 
     /**
-     * Check if a Reflection object has a registered adapter
-     *
-     * @param object $reflectionObject
-     * @return bool
-     */
-    public static function hasAdapter($reflectionObject)
-    {
-        return self::getAdapterClass($reflectionObject) !== null;
-    }
-
-    /**
      * Get global skip patterns that apply to all adapters
      *
      * @return array
@@ -166,26 +153,5 @@ class ReflectionTypeRegistry
     public static function getGlobalSkipPatterns()
     {
         return self::$globalSkipPatterns;
-    }
-
-    /**
-     * Register a new Reflection type mapping (for extending with custom types)
-     *
-     * @param string $reflectionClassName
-     * @param string $adapterClassName
-     */
-    public static function registerType($reflectionClassName, $adapterClassName)
-    {
-        self::$typeMapping[$reflectionClassName] = $adapterClassName;
-    }
-
-    /**
-     * Get all registered type mappings (for debugging/introspection)
-     *
-     * @return array
-     */
-    public static function getTypeMappings()
-    {
-        return self::$typeMapping;
     }
 }

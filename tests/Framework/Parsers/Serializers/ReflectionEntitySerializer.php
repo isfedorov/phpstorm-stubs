@@ -34,34 +34,6 @@ class ReflectionEntitySerializer implements EntitySerializerInterface
 {
     use SerializerHelperTrait;
 
-    /**
-     * Convert value to JSON-safe format, filtering out resources and closures
-     */
-    private function toJsonSafe($value)
-    {
-        if (is_resource($value)) {
-            return '[resource]';
-        }
-
-        if ($value instanceof \Closure) {
-            return '[closure]';
-        }
-
-        if (is_object($value) && !($value instanceof \stdClass) && !($value instanceof \DateTimeInterface)) {
-            // Check if object has toString() method (e.g., type objects)
-            if (method_exists($value, 'toString')) {
-                return $value->toString();
-            }
-            return '[object:' . get_class($value) . ']';
-        }
-
-        if (is_array($value)) {
-            return array_map([$this, 'toJsonSafe'], $value);
-        }
-
-        return $value;
-    }
-
     public function serialize($entity): array
     {
         if ($entity instanceof PHPClass) {
@@ -126,7 +98,7 @@ class ReflectionEntitySerializer implements EntitySerializerInterface
 
         // Serialize methods
         $data['methods'] = [];
-        foreach ($entity->methods as $method) {
+        foreach ($entity->getMethods() as $method) {
             $data['methods'][] = $this->serializeMethod($method);
         }
 
@@ -138,7 +110,7 @@ class ReflectionEntitySerializer implements EntitySerializerInterface
 
         // Serialize constants
         $data['constants'] = [];
-        foreach ($entity->constants as $constant) {
+        foreach ($entity->getConstants() as $constant) {
             $data['constants'][] = $this->serializeClassConstant($constant);
         }
 
@@ -222,13 +194,13 @@ class ReflectionEntitySerializer implements EntitySerializerInterface
 
         // Serialize methods
         $data['methods'] = [];
-        foreach ($entity->methods as $method) {
+        foreach ($entity->getMethods() as $method) {
             $data['methods'][] = $this->serializeMethod($method);
         }
 
         // Serialize constants
         $data['constants'] = [];
-        foreach ($entity->constants as $constant) {
+        foreach ($entity->getConstants() as $constant) {
             $data['constants'][] = $this->serializeClassConstant($constant);
         }
 
@@ -255,7 +227,7 @@ class ReflectionEntitySerializer implements EntitySerializerInterface
 
         // Serialize methods
         $data['methods'] = [];
-        foreach ($entity->methods as $method) {
+        foreach ($entity->getMethods() as $method) {
             $data['methods'][] = $this->serializeMethod($method);
         }
 
@@ -392,7 +364,7 @@ class ReflectionEntitySerializer implements EntitySerializerInterface
         // Deserialize methods
         if (isset($data['methods']) && is_array($data['methods'])) {
             foreach ($data['methods'] as $methodData) {
-                $class->methods[] = $this->deserializeMethod($methodData);
+                $class->addMethod($this->deserializeMethod($methodData));
             }
         }
 
@@ -406,7 +378,7 @@ class ReflectionEntitySerializer implements EntitySerializerInterface
         // Deserialize constants
         if (isset($data['constants']) && is_array($data['constants'])) {
             foreach ($data['constants'] as $constantData) {
-                $class->constants[] = $this->deserializeClassConstant($constantData);
+                $class->addConstant($this->deserializeClassConstant($constantData));
             }
         }
 
@@ -472,14 +444,14 @@ class ReflectionEntitySerializer implements EntitySerializerInterface
         // Deserialize methods
         if (isset($data['methods']) && is_array($data['methods'])) {
             foreach ($data['methods'] as $methodData) {
-                $interface->methods[] = $this->deserializeMethod($methodData);
+                $interface->addMethod($this->deserializeMethod($methodData));
             }
         }
 
         // Deserialize constants
         if (isset($data['constants']) && is_array($data['constants'])) {
             foreach ($data['constants'] as $constantData) {
-                $interface->constants[] = $this->deserializeClassConstant($constantData);
+                $interface->addConstant($this->deserializeClassConstant($constantData));
             }
         }
 
@@ -500,7 +472,7 @@ class ReflectionEntitySerializer implements EntitySerializerInterface
         // Deserialize methods
         if (isset($data['methods']) && is_array($data['methods'])) {
             foreach ($data['methods'] as $methodData) {
-                $enum->methods[] = $this->deserializeMethod($methodData);
+                $enum->addMethod($this->deserializeMethod($methodData));
             }
         }
 

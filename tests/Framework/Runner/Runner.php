@@ -54,7 +54,17 @@ class Runner
                 new JsonParsedDataStorage($cacheFilePath, $serializer, true)
             );
         } else {
-            // Parse reflection data and save to cache
+            // Verify the requested version matches the current runtime before falling back
+            $runtimeVersion = PHP_MAJOR_VERSION . '.' . PHP_MINOR_VERSION;
+            if ($runtimeVersion !== $phpVersion) {
+                throw new \RuntimeException(
+                    "Reflection cache file not found: $cacheFilePath. "
+                    . "Cannot generate cache for PHP $phpVersion on runtime PHP $runtimeVersion. "
+                    . "Run the reflection cache generation script for PHP $phpVersion first."
+                );
+            }
+
+            // Parse reflection data from current runtime and save to cache
             $parsedReflectionDataStorageManager = new DefaultParsedDataStorageManager(
                 new JsonParsedDataStorage($cacheFilePath, $serializer, false)
             );

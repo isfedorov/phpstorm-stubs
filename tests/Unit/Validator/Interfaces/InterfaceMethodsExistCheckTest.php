@@ -50,7 +50,7 @@ class InterfaceMethodsExistCheckTest extends CheckTestCase
         $iface = new PHPInterface();
         $iface->setId($id);
         $iface->setName(ltrim($id, '\\'));
-        $iface->methods = $methods;
+        $iface->setMethods($methods);
         return $iface;
     }
 

@@ -109,7 +109,7 @@ class StubClassParser implements MultiEntityStubParserInterface
 
         // Methods - pass namespace context for type resolution
         foreach ($node->getMethods() as $methodNode) {
-            $phpClass->methods[] = $this->methodParser->parseNode($methodNode, $imports, $phpClass->getNamespace());
+            $phpClass->addMethod($this->methodParser->parseNode($methodNode, $imports, $phpClass->getNamespace()));
         }
 
         // Properties - pass namespace context for type resolution
@@ -119,7 +119,7 @@ class StubClassParser implements MultiEntityStubParserInterface
 
         // Constants
         foreach ($node->getConstants() as $constantNode) {
-            $phpClass->constants[] = $this->constantParser->parseNode($constantNode, $imports);
+            $phpClass->addConstant($this->constantParser->parseNode($constantNode, $imports));
         }
 
         return $phpClass;

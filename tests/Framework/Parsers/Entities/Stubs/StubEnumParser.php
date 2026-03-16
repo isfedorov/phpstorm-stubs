@@ -78,12 +78,12 @@ class StubEnumParser implements MultiEntityStubParserInterface
 
         // Constants
         foreach ($node->getConstants() as $constantNode) {
-            $phpEnum->constants[] = $this->constantParser->parseNode($constantNode, $imports);
+            $phpEnum->addConstant($this->constantParser->parseNode($constantNode, $imports));
         }
 
         // Methods - pass namespace context for type resolution
         foreach ($node->getMethods() as $methodNode) {
-            $phpEnum->methods[] = $this->methodParser->parseNode($methodNode, $imports, $phpEnum->getNamespace());
+            $phpEnum->addMethod($this->methodParser->parseNode($methodNode, $imports, $phpEnum->getNamespace()));
         }
 
         // Cases

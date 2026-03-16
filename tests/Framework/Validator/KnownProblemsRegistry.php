@@ -219,6 +219,7 @@ class KnownProblemsRegistry
             'PhpDocVersionFormatCheck'             => CheckType::PHPDOC_VERSION_FORMAT,
             'PhpDocLinksCheck'                     => CheckType::PHPDOC_LINKS,
             'ReflectionMethodSpecialTypeHintsCheck' => CheckType::REFLECTION_SPECIAL_TYPE_HINTS,
+            'NullableReturnTypeCheck'               => CheckType::NULLABLE_RETURN_TYPE,
             default => null,
         };
     }

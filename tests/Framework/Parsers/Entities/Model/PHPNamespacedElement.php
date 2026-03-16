@@ -4,7 +4,7 @@ namespace StubTests\Sources\Parsers\Entities\Model;
 
 class PHPNamespacedElement extends BasePHPElement
 {
-    private ?string $namespace;
+    private ?string $namespace = null;
 
     public function getNamespace(): ?string
     {

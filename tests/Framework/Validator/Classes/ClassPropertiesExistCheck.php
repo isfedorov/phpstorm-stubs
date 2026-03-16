@@ -23,7 +23,7 @@ use StubTests\Sources\Validator\KnownProblems\EntityType;
  * Version filtering for stub properties uses sinceVersion/removedVersion stored on
  * each PHPProperty. A stub property is considered available for a given PHP version if:
  *   - sinceVersion is null OR phpVersion >= sinceVersion
- *   - AND removedVersion is null OR phpVersion <= removedVersion
+ *   - AND removedVersion is null OR phpVersion < removedVersion
  *
  * Known problems are supported at two granularities:
  * - class-level: EntityType::CLASS_TYPE + classId + 'ClassPropertiesExistCheck'

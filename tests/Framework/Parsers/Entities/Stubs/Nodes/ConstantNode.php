@@ -14,6 +14,11 @@ interface ConstantNode
     public function getName(): string;
 
     /**
+     * Get the constant value as a plain PHP scalar, or null for complex expressions.
+     */
+    public function getValue(): mixed;
+
+    /**
      * Check if the constant is public (PHP 7.1+).
      */
     public function isPublic(): bool;

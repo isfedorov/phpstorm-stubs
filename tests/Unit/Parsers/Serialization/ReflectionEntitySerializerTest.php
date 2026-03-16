@@ -75,7 +75,7 @@ class ReflectionEntitySerializerTest extends TestCase
         $method->setReturnTypeFromSignature($returnType);
         $method->setHasTentativeReturnType(false);
 
-        $class->methods[] = $method;
+        $class->addMethod($method);
 
         $result = $this->serializer->serialize($class);
 
@@ -106,7 +106,7 @@ class ReflectionEntitySerializerTest extends TestCase
         $privateMethod->setIsAbstract(false);
         $privateMethod->setParameters([]);
         $privateMethod->setReturnTypeFromSignature(new NoType());
-        $class->methods[] = $privateMethod;
+        $class->addMethod($privateMethod);
 
         // Test protected method
         $protectedMethod = new PHPMethod();
@@ -117,7 +117,7 @@ class ReflectionEntitySerializerTest extends TestCase
         $protectedMethod->setIsAbstract(false);
         $protectedMethod->setParameters([]);
         $protectedMethod->setReturnTypeFromSignature(new NoType());
-        $class->methods[] = $protectedMethod;
+        $class->addMethod($protectedMethod);
 
         $result = $this->serializer->serialize($class);
 
@@ -149,7 +149,7 @@ class ReflectionEntitySerializerTest extends TestCase
         $class = new PHPClass();
         $class->setName('TestClass');
         $class->setId('TestClass');
-        $class->methods[] = $method;
+        $class->addMethod($method);
 
         $result = $this->serializer->serialize($class);
 
@@ -202,7 +202,7 @@ class ReflectionEntitySerializerTest extends TestCase
         $constant->visibility = 'public';
         $constant->isFinal = true;
 
-        $class->constants[] = $constant;
+        $class->addConstant($constant);
 
         $result = $this->serializer->serialize($class);
 
@@ -257,12 +257,12 @@ class ReflectionEntitySerializerTest extends TestCase
         $method->setAccess(new PublicAccessModifier());
         $method->setParameters([]);
         $method->setReturnTypeFromSignature(new NoType());
-        $interface->methods[] = $method;
+        $interface->addMethod($method);
 
         $constant = new PHPClassConstant();
         $constant->setName('INTERFACE_CONSTANT');
         $constant->value = 123;
-        $interface->constants[] = $constant;
+        $interface->addConstant($constant);
 
         $result = $this->serializer->serialize($interface);
 
@@ -381,9 +381,9 @@ class ReflectionEntitySerializerTest extends TestCase
         $result = $this->serializer->deserialize($data);
 
         self::assertInstanceOf(PHPClass::class, $result);
-        self::assertCount(1, $result->methods);
+        self::assertCount(1, $result->getMethods());
 
-        $method = $result->methods[0];
+        $method = $result->getMethods()[0];
         self::assertEquals('testMethod', $method->getName());
         self::assertTrue($method->isStatic());
         self::assertFalse($method->isFinal());
@@ -427,8 +427,8 @@ class ReflectionEntitySerializerTest extends TestCase
 
         $result = $this->serializer->deserialize($data);
 
-        self::assertCount(1, $result->methods);
-        $parameters = $result->methods[0]->getParameters();
+        self::assertCount(1, $result->getMethods());
+        $parameters = $result->getMethods()[0]->getParameters();
         self::assertCount(1, $parameters);
 
         $param = $parameters[0];
@@ -572,7 +572,7 @@ class ReflectionEntitySerializerTest extends TestCase
         $method->setIsAbstract(false);
         $method->setReturnTypeFromSignature(new StandaloneType('string'));
         $method->setParameters([]);
-        $class->methods[] = $method;
+        $class->addMethod($method);
 
         $property = new PHPProperty();
         $property->setName('testProp');
@@ -590,9 +590,9 @@ class ReflectionEntitySerializerTest extends TestCase
         self::assertEquals($class->getName(), $deserialized->getName());
         self::assertEquals($class->getNamespace(), $deserialized->getNamespace());
         self::assertEquals($class->isFinal, $deserialized->isFinal);
-        self::assertCount(1, $deserialized->methods);
+        self::assertCount(1, $deserialized->getMethods());
         self::assertCount(1, $deserialized->properties);
-        self::assertEquals('testMethod', $deserialized->methods[0]->getName());
+        self::assertEquals('testMethod', $deserialized->getMethods()[0]->getName());
         self::assertEquals('testProp', $deserialized->properties[0]->getName());
     }
 

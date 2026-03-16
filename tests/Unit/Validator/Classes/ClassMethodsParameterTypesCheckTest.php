@@ -587,7 +587,7 @@ class ClassMethodsParameterTypesCheckTest extends CheckTestCase
 
         $parentStub = new PHPClass();
         $parentStub->setId($parentClassName);
-        $parentStub->methods = [$this->createMockMethod('inherited', $stubParams)];
+        $parentStub->setMethods([$this->createMockMethod('inherited', $stubParams)]);
 
         $childStub = $this->createMockClassWithProperties($className);
         $childStub->parentClass = $parentStub;

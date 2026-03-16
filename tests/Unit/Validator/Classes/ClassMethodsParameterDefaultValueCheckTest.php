@@ -483,7 +483,7 @@ class ClassMethodsParameterDefaultValueCheckTest extends CheckTestCase
 
         $parentStub = new PHPClass();
         $parentStub->setId($parentClassName);
-        $parentStub->methods = [$this->createMockMethod('sort', $stubParams)];
+        $parentStub->setMethods([$this->createMockMethod('sort', $stubParams)]);
 
         $childStub = $this->createMockClassWithProperties($className);
         $childStub->parentClass = $parentStub;

@@ -55,7 +55,7 @@ class ClassStaticMethodsCheckTest extends CheckTestCase
         $iface = new PHPInterface();
         $iface->setId($id);
         $iface->setName(ltrim($id, '\\'));
-        $iface->methods = $methods;
+        $iface->setMethods($methods);
         return $iface;
     }
 
@@ -576,7 +576,7 @@ class ClassStaticMethodsCheckTest extends CheckTestCase
 
         $parentStub = new PHPClass();
         $parentStub->setId($parentClassName);
-        $parentStub->methods = [$this->makeMethod('create', false)]; // stub parent: non-static
+        $parentStub->setMethods([$this->makeMethod('create', false)]); // stub parent: non-static
 
         $childStub = $this->createMockClassWithProperties($className);
         $childStub->parentClass = $parentStub;
@@ -603,7 +603,7 @@ class ClassStaticMethodsCheckTest extends CheckTestCase
 
         $parentStub = new PHPClass();
         $parentStub->setId($parentClassName);
-        $parentStub->methods = [$this->makeMethod('create', true)]; // matches
+        $parentStub->setMethods([$this->makeMethod('create', true)]); // matches
 
         $childStub = $this->createMockClassWithProperties($className);
         $childStub->parentClass = $parentStub;
@@ -631,7 +631,7 @@ class ClassStaticMethodsCheckTest extends CheckTestCase
 
         $parentStub = new PHPClass();
         $parentStub->setId($parentClassName);
-        $parentStub->methods = [$this->makeMethod('create', true)]; // parent: static (must not win)
+        $parentStub->setMethods([$this->makeMethod('create', true)]); // parent: static (must not win)
 
         $childStub = $this->createMockClassWithProperties(
             $className, null, null, null,
@@ -744,7 +744,7 @@ class ClassStaticMethodsCheckTest extends CheckTestCase
         // is exercised by having a two-node chain where second node has no parent
         $parent = new PHPClass();
         $parent->setId('\ParentClass');
-        $parent->methods = [];
+        $parent->setMethods([]);
         $stubClass->parentClass = $parent;
 
         $provider = $this->createMockReflectionProvider([], [$reflClass]);

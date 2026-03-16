@@ -215,13 +215,4 @@ class ReflectionMethodExtractorTest extends TestCase
 
         self::assertEquals('stdClass', $result);
     }
-
-    // getPropertyKey() tests
-
-    public function testGetPropertyKeyReturnsMethodNameAsIs()
-    {
-        self::assertEquals('isAbstract', ReflectionMethodExtractor::getPropertyKey('isAbstract'));
-        self::assertEquals('getName', ReflectionMethodExtractor::getPropertyKey('getName'));
-        self::assertEquals('hasMethod', ReflectionMethodExtractor::getPropertyKey('hasMethod'));
-    }
 }

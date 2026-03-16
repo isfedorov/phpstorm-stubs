@@ -60,6 +60,7 @@ trait ReturnTypeHelperTrait
         }
 
         // Try alternative methods for backward compatibility
+        $legacyType = null;
         if (method_exists($callable, 'getReturnType')) {
             $returnType = $callable->getReturnType();
 
@@ -70,18 +71,18 @@ trait ReturnTypeHelperTrait
                     }
                     if (method_exists($returnType, 'toString')) {
                         $typeString = $returnType->toString();
-                        $signatureType = $typeString === '' ? null : $typeString;
+                        $legacyType = $typeString === '' ? null : $typeString;
                     } elseif (method_exists($returnType, 'getTypeName')) {
-                        $signatureType = $returnType->getTypeName();
+                        $legacyType = $returnType->getTypeName();
                     }
                 } else {
-                    $signatureType = (string) $returnType;
+                    $legacyType = (string) $returnType;
                 }
             }
         }
 
-        if ($signatureType !== null && $signatureType !== '') {
-            return $signatureType;
+        if ($legacyType !== null && $legacyType !== '') {
+            return $legacyType;
         }
 
         return null;

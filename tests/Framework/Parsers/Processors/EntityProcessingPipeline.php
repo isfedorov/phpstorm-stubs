@@ -83,7 +83,7 @@ class EntityProcessingPipeline
     {
         $processed = [];
         foreach ($entities as $entity) {
-            $result = $this->processSingle($entity, ['allEntities' => $entities]);
+            $result = $this->processSingle($entity, ['existingEntities' => $entities]);
             if ($result !== null) {
                 $processed[] = $result;
             }

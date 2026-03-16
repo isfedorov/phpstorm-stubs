@@ -176,15 +176,5 @@ class ReflectionMethodExtractor
         return $value;
     }
 
-    /**
-     * Get a property key name from a method name
-     * Converts method name like "isAbstract" to "isAbstract" for storage
-     *
-     * @param string $methodName
-     * @return string
-     */
-    public static function getPropertyKey($methodName)
-    {
-        return $methodName;
-    }
+
 }

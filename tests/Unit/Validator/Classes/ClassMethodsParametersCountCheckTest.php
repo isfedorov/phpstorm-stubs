@@ -445,7 +445,7 @@ class ClassMethodsParametersCountCheckTest extends CheckTestCase
 
         $parentStub = new PHPClass();
         $parentStub->setId($parentClassName);
-        $parentStub->methods = [$this->makeMethod('doWork', [$this->makeParam('a')])]; // wrong count
+        $parentStub->setMethods([$this->makeMethod('doWork', [$this->makeParam('a')])]); // wrong count
 
         $childStub = $this->createMockClassWithProperties($className);
         $childStub->parentClass = $parentStub;
@@ -472,7 +472,7 @@ class ClassMethodsParametersCountCheckTest extends CheckTestCase
 
         $parentStub = new PHPClass();
         $parentStub->setId($parentClassName);
-        $parentStub->methods = [$this->makeMethod('doWork', [$this->makeParam('a')])]; // wrong in parent
+        $parentStub->setMethods([$this->makeMethod('doWork', [$this->makeParam('a')])]); // wrong in parent
 
         $childStub = $this->createMockClassWithProperties(
             $className, null, null, null,

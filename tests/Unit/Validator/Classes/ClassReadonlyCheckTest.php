@@ -4,144 +4,136 @@ namespace StubTests\Unit\Validator\Classes;
 
 use StubTests\Sources\Runner\PhpVersions;
 use StubTests\Sources\Validator\Classes\ClassReadonlyCheck;
+use StubTests\Sources\Validator\ReflectionProviderInterface;
 use StubTests\Unit\Validator\CheckTestCase;
 
 class ClassReadonlyCheckTest extends CheckTestCase
 {
-    private ClassReadonlyCheck $check;
-
-    protected function setUp(): void
+    private function createMockReflectionProviderWithClasses(array $classes = []): ReflectionProviderInterface
     {
-        parent::setUp();
-        $this->check = new ClassReadonlyCheck();
+        $provider = $this->createMock(ReflectionProviderInterface::class);
+        $manager  = $this->createMockStorageManager();
+        $manager->method('getClasses')->willReturn($classes);
+        $provider->method('getReflection')->willReturn($manager);
+        return $provider;
     }
 
     public function testSupportsPhp82AndAbove(): void
     {
-        $this->assertTrue($this->check->supports(PhpVersions::PHP_8_2->value));
-        $this->assertTrue($this->check->supports(PhpVersions::PHP_8_3->value));
-        $this->assertTrue($this->check->supports(PhpVersions::LATEST->value));
+        $check = new ClassReadonlyCheck();
+        $this->assertTrue($check->supports(PhpVersions::PHP_8_2->value));
+        $this->assertTrue($check->supports(PhpVersions::PHP_8_3->value));
+        $this->assertTrue($check->supports(PhpVersions::LATEST->value));
     }
 
     public function testDoesNotSupportOlderPhpVersions(): void
     {
-        $this->assertFalse($this->check->supports(PhpVersions::EARLIEST->value));
-        $this->assertFalse($this->check->supports(PhpVersions::PHP_7_0->value));
-        $this->assertFalse($this->check->supports(PhpVersions::PHP_7_4->value));
-        $this->assertFalse($this->check->supports(PhpVersions::PHP_8_0->value));
-        $this->assertFalse($this->check->supports(PhpVersions::PHP_8_1->value));
+        $check = new ClassReadonlyCheck();
+        $this->assertFalse($check->supports(PhpVersions::EARLIEST->value));
+        $this->assertFalse($check->supports(PhpVersions::PHP_7_0->value));
+        $this->assertFalse($check->supports(PhpVersions::PHP_7_4->value));
+        $this->assertFalse($check->supports(PhpVersions::PHP_8_0->value));
+        $this->assertFalse($check->supports(PhpVersions::PHP_8_1->value));
     }
 
-    public function testReadonlyClassWithBooleanTrue(): void
+    public function testReadonlyMatchPasses(): void
     {
-        // Arrange
-        $className = 'MyReadonlyClass';
+        $classId = 'MyReadonlyClass';
+        $reflClass = $this->createMockClassWithProperties($classId, null, null, true);
+        $stubClass = $this->createMockClassWithProperties($classId, null, null, true);
 
-        $stubClass = $this->createMockClassWithProperties($className, null, null, true);
-        $stubsManager = $this->createMockStorageManager();
-        $stubsManager->method('getClasses')->willReturn([$stubClass]);
+        $provider = $this->createMockReflectionProviderWithClasses([$reflClass]);
+        $stubs = $this->createMockStorageManager();
+        $stubs->method('getClasses')->willReturn([$stubClass]);
 
-        // Act
-        $result = $this->check->run($stubsManager, $className, '8.2');
-
-        // Assert
+        $result = (new ClassReadonlyCheck($provider))->run($stubs, $classId, '8.2');
         $this->assertFalse($result->hasFailures());
         $this->assertEquals(1, $result->getSuccessCount());
     }
 
-    public function testNonReadonlyClassWithBooleanFalse(): void
+    public function testNonReadonlyMatchPasses(): void
     {
-        // Arrange
-        $className = 'RegularClass';
+        $classId = 'RegularClass';
+        $reflClass = $this->createMockClassWithProperties($classId, null, null, false);
+        $stubClass = $this->createMockClassWithProperties($classId, null, null, false);
 
-        $stubClass = $this->createMockClassWithProperties($className, null, null, false);
-        $stubsManager = $this->createMockStorageManager();
-        $stubsManager->method('getClasses')->willReturn([$stubClass]);
+        $provider = $this->createMockReflectionProviderWithClasses([$reflClass]);
+        $stubs = $this->createMockStorageManager();
+        $stubs->method('getClasses')->willReturn([$stubClass]);
 
-        // Act
-        $result = $this->check->run($stubsManager, $className, '8.2');
-
-        // Assert
+        $result = (new ClassReadonlyCheck($provider))->run($stubs, $classId, '8.2');
         $this->assertFalse($result->hasFailures());
         $this->assertEquals(1, $result->getSuccessCount());
     }
 
-    public function testClassWithoutReadonlyProperty(): void
+    public function testMismatchReadonlyInReflectionButNotInStubs(): void
     {
-        // Arrange
-        $className = 'ClassWithoutReadonly';
+        $classId = 'MismatchClass';
+        $reflClass = $this->createMockClassWithProperties($classId, null, null, true);
+        $stubClass = $this->createMockClassWithProperties($classId, null, null, false);
 
-        // Don't set isReadonly property (null)
-        $stubClass = $this->createMockClassWithProperties($className, null, null, null);
-        $stubsManager = $this->createMockStorageManager();
-        $stubsManager->method('getClasses')->willReturn([$stubClass]);
+        $provider = $this->createMockReflectionProviderWithClasses([$reflClass]);
+        $stubs = $this->createMockStorageManager();
+        $stubs->method('getClasses')->willReturn([$stubClass]);
 
-        // Act
-        $result = $this->check->run($stubsManager, $className, '8.2');
+        $result = (new ClassReadonlyCheck($provider))->run($stubs, $classId, '8.2');
+        $this->assertTrue($result->hasFailures());
+        $this->assertStringContainsString('readonly', $result->getFailures()[$classId]);
+    }
 
-        // Assert - Should succeed because null/unset is treated as false
-        $this->assertFalse($result->hasFailures());
-        $this->assertEquals(1, $result->getSuccessCount());
+    public function testMismatchReadonlyInStubsButNotInReflection(): void
+    {
+        $classId = 'MismatchClass2';
+        $reflClass = $this->createMockClassWithProperties($classId, null, null, false);
+        $stubClass = $this->createMockClassWithProperties($classId, null, null, true);
+
+        $provider = $this->createMockReflectionProviderWithClasses([$reflClass]);
+        $stubs = $this->createMockStorageManager();
+        $stubs->method('getClasses')->willReturn([$stubClass]);
+
+        $result = (new ClassReadonlyCheck($provider))->run($stubs, $classId, '8.2');
+        $this->assertTrue($result->hasFailures());
+        $this->assertStringContainsString('non-readonly', $result->getFailures()[$classId]);
+    }
+
+    public function testClassNotFoundInReflection(): void
+    {
+        $classId = 'MissingClass';
+
+        $provider = $this->createMockReflectionProviderWithClasses([]);
+        $stubs = $this->createMockStorageManager();
+        $stubs->method('getClasses')->willReturn([]);
+
+        $result = (new ClassReadonlyCheck($provider))->run($stubs, $classId, '8.2');
+        $this->assertTrue($result->hasFailures());
+        $this->assertStringContainsString('not found in reflection', $result->getFailures()[$classId]);
     }
 
     public function testClassNotFoundInStubs(): void
     {
-        // Arrange
-        $className = 'MissingClass';
+        $classId = 'MissingInStubs';
+        $reflClass = $this->createMockClassWithProperties($classId, null, null, false);
 
-        $stubsManager = $this->createMockStorageManager();
-        $stubsManager->method('getClasses')->willReturn([]);
+        $provider = $this->createMockReflectionProviderWithClasses([$reflClass]);
+        $stubs = $this->createMockStorageManager();
+        $stubs->method('getClasses')->willReturn([]);
 
-        // Act
-        $result = $this->check->run($stubsManager, $className, '8.2');
-
-        // Assert
+        $result = (new ClassReadonlyCheck($provider))->run($stubs, $classId, '8.2');
         $this->assertTrue($result->hasFailures());
-        $this->assertEquals(1, $result->getFailureCount());
-
-        $failures = $result->getFailures();
-        $this->assertArrayHasKey($className, $failures);
-        $this->assertStringContainsString('not found in stubs', $failures[$className]);
-    }
-
-    public function testInvalidReadonlyPropertyType(): void
-    {
-        // Arrange
-        $className = 'InvalidClass';
-
-        $stubClass = $this->createMockClassWithProperties($className);
-        // Set invalid type for isReadonly (string instead of boolean)
-        $stubClass->isReadonly = 'yes'; // Invalid type
-
-        $stubsManager = $this->createMockStorageManager();
-        $stubsManager->method('getClasses')->willReturn([$stubClass]);
-
-        // Act
-        $result = $this->check->run($stubsManager, $className, '8.2');
-
-        // Assert
-        $this->assertTrue($result->hasFailures());
-        $this->assertEquals(1, $result->getFailureCount());
-
-        $failures = $result->getFailures();
-        $this->assertArrayHasKey($className, $failures);
-        $this->assertStringContainsString('invalid isReadonly property type', $failures[$className]);
-        $this->assertStringContainsString('expected boolean', $failures[$className]);
+        $this->assertStringContainsString('not found in stubs', $result->getFailures()[$classId]);
     }
 
     public function testReadonlyClassInNamespace(): void
     {
-        // Arrange
-        $className = 'Foo\\Bar\\ReadonlyClass';
+        $classId = 'Foo\\Bar\\ReadonlyClass';
+        $reflClass = $this->createMockClassWithProperties($classId, 'Foo\\Bar', null, true);
+        $stubClass = $this->createMockClassWithProperties($classId, 'Foo\\Bar', null, true);
 
-        $stubClass = $this->createMockClassWithProperties($className, 'Foo\\Bar', null, true);
-        $stubsManager = $this->createMockStorageManager();
-        $stubsManager->method('getClasses')->willReturn([$stubClass]);
+        $provider = $this->createMockReflectionProviderWithClasses([$reflClass]);
+        $stubs = $this->createMockStorageManager();
+        $stubs->method('getClasses')->willReturn([$stubClass]);
 
-        // Act
-        $result = $this->check->run($stubsManager, $className, '8.3');
-
-        // Assert
+        $result = (new ClassReadonlyCheck($provider))->run($stubs, $classId, '8.3');
         $this->assertFalse($result->hasFailures());
         $this->assertEquals(1, $result->getSuccessCount());
     }

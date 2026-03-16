@@ -48,7 +48,7 @@ class PHPClassSerializer implements EntityTypeSerializerInterface
 
         // Serialize methods
         $data['methods'] = [];
-        foreach ($entity->methods as $method) {
+        foreach ($entity->getMethods() as $method) {
             $data['methods'][] = $this->serializeMethod($method, $entity->getId(), $phpDocStorage);
         }
 
@@ -60,7 +60,7 @@ class PHPClassSerializer implements EntityTypeSerializerInterface
 
         // Serialize constants
         $data['constants'] = [];
-        foreach ($entity->constants as $constant) {
+        foreach ($entity->getConstants() as $constant) {
             $data['constants'][] = $this->serializeClassConstant($constant);
         }
 
@@ -100,7 +100,7 @@ class PHPClassSerializer implements EntityTypeSerializerInterface
         // Deserialize methods
         if (isset($data['methods']) && is_array($data['methods'])) {
             foreach ($data['methods'] as $methodData) {
-                $class->methods[] = $this->deserializeMethod($methodData, $classId, $phpDocStorage);
+                $class->addMethod($this->deserializeMethod($methodData, $classId, $phpDocStorage));
             }
         }
 
@@ -114,7 +114,7 @@ class PHPClassSerializer implements EntityTypeSerializerInterface
         // Deserialize constants
         if (isset($data['constants']) && is_array($data['constants'])) {
             foreach ($data['constants'] as $constantData) {
-                $class->constants[] = $this->deserializeClassConstant($constantData);
+                $class->addConstant($this->deserializeClassConstant($constantData));
             }
         }
 

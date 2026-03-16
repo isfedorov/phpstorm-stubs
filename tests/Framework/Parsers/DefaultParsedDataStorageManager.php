@@ -15,6 +15,12 @@ class DefaultParsedDataStorageManager implements ParsedDataStorageManager
     private EntityProcessingPipeline $pipeline;
     private array $rawEntities = [];
 
+    private ?array $cachedClasses = null;
+    private ?array $cachedFunctions = null;
+    private ?array $cachedInterfaces = null;
+    private ?array $cachedEnums = null;
+    private ?array $cachedConstants = null;
+
     public function __construct(
         ParsedDataStorageProvider $parsedDataStorageProvider,
         ?EntityProcessingPipeline $pipeline = null
@@ -31,6 +37,15 @@ class DefaultParsedDataStorageManager implements ParsedDataStorageManager
     public function getPipeline(): EntityProcessingPipeline
     {
         return $this->pipeline;
+    }
+
+    private function invalidateCache(): void
+    {
+        $this->cachedClasses = null;
+        $this->cachedFunctions = null;
+        $this->cachedInterfaces = null;
+        $this->cachedEnums = null;
+        $this->cachedConstants = null;
     }
 
     public function getAllEntities()
@@ -50,6 +65,7 @@ class DefaultParsedDataStorageManager implements ParsedDataStorageManager
 
         if ($processed !== null) {
             $this->parsedDataStorageProvider->addEntity($processed);
+            $this->invalidateCache();
         }
     }
 
@@ -62,6 +78,7 @@ class DefaultParsedDataStorageManager implements ParsedDataStorageManager
 
         if ($processed !== null) {
             $this->parsedDataStorageProvider->addEntity($processed);
+            $this->invalidateCache();
         }
     }
 
@@ -74,6 +91,7 @@ class DefaultParsedDataStorageManager implements ParsedDataStorageManager
 
         if ($processed !== null) {
             $this->parsedDataStorageProvider->addEntity($processed);
+            $this->invalidateCache();
         }
     }
 
@@ -86,6 +104,7 @@ class DefaultParsedDataStorageManager implements ParsedDataStorageManager
 
         if ($processed !== null) {
             $this->parsedDataStorageProvider->addEntity($processed);
+            $this->invalidateCache();
         }
     }
 
@@ -98,6 +117,7 @@ class DefaultParsedDataStorageManager implements ParsedDataStorageManager
 
         if ($processed !== null) {
             $this->parsedDataStorageProvider->addEntity($processed);
+            $this->invalidateCache();
         }
     }
 
@@ -125,6 +145,7 @@ class DefaultParsedDataStorageManager implements ParsedDataStorageManager
 
             if ($processed !== null) {
                 $this->parsedDataStorageProvider->addEntity($processed);
+                $this->invalidateCache();
             }
         }
     }
@@ -153,6 +174,7 @@ class DefaultParsedDataStorageManager implements ParsedDataStorageManager
         }
 
         $this->rawEntities = [];
+        $this->invalidateCache();
     }
 
     /**
@@ -177,25 +199,24 @@ class DefaultParsedDataStorageManager implements ParsedDataStorageManager
         // Delegate to storage provider if it supports persistence
         if ($this->parsedDataStorageProvider instanceof ParsedDataPersistentStorageProvider) {
             $this->parsedDataStorageProvider->load();
+            $this->invalidateCache();
         }
     }
 
     public function getClasses()
     {
-        $allEntities = $this->parsedDataStorageProvider->getEntities();
-        if (!is_array($allEntities)) {
-            return [];
+        if ($this->cachedClasses === null) {
+            $allEntities = $this->parsedDataStorageProvider->getEntities();
+            $this->cachedClasses = is_array($allEntities)
+                ? array_filter($allEntities, fn($e) => $e instanceof PHPClass)
+                : [];
         }
-
-        return array_filter($allEntities, function ($entity) {
-            return $entity instanceof PHPClass;
-        });
+        return $this->cachedClasses;
     }
 
     public function hasClass(string $id): bool
     {
-        $classes = $this->getClasses();
-        foreach ($classes as $class) {
+        foreach ($this->getClasses() as $class) {
             if ($class->getId() === $id) {
                 return true;
             }
@@ -205,26 +226,24 @@ class DefaultParsedDataStorageManager implements ParsedDataStorageManager
 
     public function getFunctions()
     {
-        $allEntities = $this->parsedDataStorageProvider->getEntities();
-        if (!is_array($allEntities)) {
-            return [];
+        if ($this->cachedFunctions === null) {
+            $allEntities = $this->parsedDataStorageProvider->getEntities();
+            $this->cachedFunctions = is_array($allEntities)
+                ? array_filter($allEntities, fn($e) => $e instanceof PHPFunction)
+                : [];
         }
-
-        return array_filter($allEntities, function ($entity) {
-            return $entity instanceof PHPFunction;
-        });
+        return $this->cachedFunctions;
     }
 
     public function getInterfaces()
     {
-        $allEntities = $this->parsedDataStorageProvider->getEntities();
-        if (!is_array($allEntities)) {
-            return [];
+        if ($this->cachedInterfaces === null) {
+            $allEntities = $this->parsedDataStorageProvider->getEntities();
+            $this->cachedInterfaces = is_array($allEntities)
+                ? array_filter($allEntities, fn($e) => $e instanceof PHPInterface)
+                : [];
         }
-
-        return array_filter($allEntities, function ($entity) {
-            return $entity instanceof PHPInterface;
-        });
+        return $this->cachedInterfaces;
     }
 
     public function hasInterface(string $id): bool
@@ -239,14 +258,13 @@ class DefaultParsedDataStorageManager implements ParsedDataStorageManager
 
     public function getEnums()
     {
-        $allEntities = $this->parsedDataStorageProvider->getEntities();
-        if (!is_array($allEntities)) {
-            return [];
+        if ($this->cachedEnums === null) {
+            $allEntities = $this->parsedDataStorageProvider->getEntities();
+            $this->cachedEnums = is_array($allEntities)
+                ? array_filter($allEntities, fn($e) => $e instanceof PHPEnum)
+                : [];
         }
-
-        return array_filter($allEntities, function ($entity) {
-            return $entity instanceof PHPEnum;
-        });
+        return $this->cachedEnums;
     }
 
     public function hasEnum(string $id): bool
@@ -261,14 +279,13 @@ class DefaultParsedDataStorageManager implements ParsedDataStorageManager
 
     public function getConstants()
     {
-        $allEntities = $this->parsedDataStorageProvider->getEntities();
-        if (!is_array($allEntities)) {
-            return [];
+        if ($this->cachedConstants === null) {
+            $allEntities = $this->parsedDataStorageProvider->getEntities();
+            $this->cachedConstants = is_array($allEntities)
+                ? array_filter($allEntities, fn($e) => $e instanceof PHPConstant)
+                : [];
         }
-
-        return array_filter($allEntities, function ($entity) {
-            return $entity instanceof PHPConstant;
-        });
+        return $this->cachedConstants;
     }
 }
 

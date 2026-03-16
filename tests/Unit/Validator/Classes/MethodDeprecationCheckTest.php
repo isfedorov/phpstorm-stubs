@@ -231,7 +231,7 @@ class MethodDeprecationCheckTest extends CheckTestCase
 
         $parentStub = new PHPClass();
         $parentStub->setId($parentClassName);
-        $parentStub->methods = [$this->makeMethod('inherited', false)]; // not deprecated in stub
+        $parentStub->setMethods([$this->makeMethod('inherited', false)]); // not deprecated in stub
 
         $childStub = $this->createMockClassWithProperties($className);
         $childStub->parentClass = $parentStub;

@@ -74,8 +74,7 @@ abstract class AbstractReflectionAdapter
         // Convert to adapted format
         $this->data = array();
         foreach ($rawData as $methodName => $value) {
-            $key = ReflectionMethodExtractor::getPropertyKey($methodName);
-            $this->data[$key] = ReflectionMethodExtractor::makeSerializable($value);
+            $this->data[$methodName] = ReflectionMethodExtractor::makeSerializable($value);
         }
     }
 

@@ -49,13 +49,13 @@ class PHPEnumSerializer implements EntityTypeSerializerInterface
 
         // Serialize constants
         $data['constants'] = [];
-        foreach ($entity->constants as $constant) {
+        foreach ($entity->getConstants() as $constant) {
             $data['constants'][] = $this->serializeClassConstant($constant);
         }
 
         // Serialize methods
         $data['methods'] = [];
-        foreach ($entity->methods as $method) {
+        foreach ($entity->getMethods() as $method) {
             $data['methods'][] = $this->serializeMethod($method, $entity->getId(), $phpDocStorage);
         }
 
@@ -91,14 +91,14 @@ class PHPEnumSerializer implements EntityTypeSerializerInterface
         // Deserialize constants
         if (isset($data['constants']) && is_array($data['constants'])) {
             foreach ($data['constants'] as $constantData) {
-                $enum->constants[] = $this->deserializeClassConstant($constantData);
+                $enum->addConstant($this->deserializeClassConstant($constantData));
             }
         }
 
         // Deserialize methods
         if (isset($data['methods']) && is_array($data['methods'])) {
             foreach ($data['methods'] as $methodData) {
-                $enum->methods[] = $this->deserializeMethod($methodData, $enumId, $phpDocStorage);
+                $enum->addMethod($this->deserializeMethod($methodData, $enumId, $phpDocStorage));
             }
         }
 

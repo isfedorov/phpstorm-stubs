@@ -63,7 +63,7 @@ class ClassFinalMethodsCheckTest extends CheckTestCase
         $iface = new PHPInterface();
         $iface->setId($id);
         $iface->setName(ltrim($id, '\\'));
-        $iface->methods = $methods;
+        $iface->setMethods($methods);
         return $iface;
     }
 
@@ -460,7 +460,7 @@ class ClassFinalMethodsCheckTest extends CheckTestCase
 
         $parentStub = new PHPClass();
         $parentStub->setId($parentClassName);
-        $parentStub->methods = [$this->makeMethod('doWork', false)]; // stub: non-final → mismatch
+        $parentStub->setMethods([$this->makeMethod('doWork', false)]); // stub: non-final → mismatch
 
         $childStub = $this->createMockClassWithProperties($className);
         $childStub->parentClass = $parentStub;
@@ -487,7 +487,7 @@ class ClassFinalMethodsCheckTest extends CheckTestCase
 
         $parentStub = new PHPClass();
         $parentStub->setId($parentClassName);
-        $parentStub->methods = [$this->makeMethod('doWork', true)]; // matches
+        $parentStub->setMethods([$this->makeMethod('doWork', true)]); // matches
 
         $childStub = $this->createMockClassWithProperties($className);
         $childStub->parentClass = $parentStub;
@@ -547,7 +547,7 @@ class ClassFinalMethodsCheckTest extends CheckTestCase
 
         $parentStub = new PHPClass();
         $parentStub->setId($parentClassName);
-        $parentStub->methods = [$this->makeMethod('doWork', true)]; // parent: final (should be overridden)
+        $parentStub->setMethods([$this->makeMethod('doWork', true)]); // parent: final (should be overridden)
 
         $childStub = $this->createMockClassWithProperties(
             $className, null, null, null,

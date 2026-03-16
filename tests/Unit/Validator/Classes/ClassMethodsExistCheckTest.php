@@ -347,7 +347,7 @@ class ClassMethodsExistCheckTest extends CheckTestCase
         $iface = new PHPInterface();
         $iface->setId($id);
         $iface->setName(ltrim($id, '\\'));
-        $iface->methods = $methods;
+        $iface->setMethods($methods);
         return $iface;
     }
 
@@ -547,11 +547,11 @@ class ClassMethodsExistCheckTest extends CheckTestCase
 
         $grandparent = new PHPClass();
         $grandparent->setId('\GrandparentClass');
-        $grandparent->methods = [$this->makeMethod('grandparentMethod')];
+        $grandparent->setMethods([$this->makeMethod('grandparentMethod')]);
 
         $parent = new PHPClass();
         $parent->setId('\ParentClass');
-        $parent->methods = [$this->makeMethod('parentMethod')];
+        $parent->setMethods([$this->makeMethod('parentMethod')]);
         $parent->parentClass = $grandparent;
 
         $stubClass = $this->createMockClassWithProperties(
@@ -585,11 +585,11 @@ class ClassMethodsExistCheckTest extends CheckTestCase
 
         $classA = new PHPClass();
         $classA->setId('\ClassA');
-        $classA->methods = [$this->makeMethod('methodA')];
+        $classA->setMethods([$this->makeMethod('methodA')]);
 
         $classB = new PHPClass();
         $classB->setId('\ClassB');
-        $classB->methods = [$this->makeMethod('methodB')];
+        $classB->setMethods([$this->makeMethod('methodB')]);
 
         $classA->parentClass = $classB;
         $classB->parentClass = $classA;  // cycle!
@@ -706,7 +706,7 @@ class ClassMethodsExistCheckTest extends CheckTestCase
 
         $parentClass = new PHPClass();
         $parentClass->setId('\ParentClass');
-        $parentClass->methods = [$this->makeMethod('sharedMethod')];
+        $parentClass->setMethods([$this->makeMethod('sharedMethod')]);
 
         $interface = $this->makeInterface('\SharedInterface', [$this->makeMethod('sharedMethod')]);
 

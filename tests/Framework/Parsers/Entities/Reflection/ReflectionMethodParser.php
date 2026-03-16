@@ -51,12 +51,13 @@ class ReflectionMethodParser implements Parser
         $method->setIsAbstract($object->isAbstract());
         $method->setDeprecated($object->isDeprecated());
         $method->setHasTentativeReturnType($object->hasTentativeReturnType());
+        $returnType = null;
         if ($object->hasTentativeReturnType()) {
             $returnType = $object->getTentativeReturnType();
         } elseif($object->hasReturnType()) {
             $returnType = $object->getReturnType();
         }
-        $returnTypesFromSignature = $this->typeParser->parse($returnType ?? null);
+        $returnTypesFromSignature = $this->typeParser->parse($returnType);
         $method->setReturnTypeFromSignature($returnTypesFromSignature);
 
         // Parse parameters

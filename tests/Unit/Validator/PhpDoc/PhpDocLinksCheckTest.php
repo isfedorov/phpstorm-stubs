@@ -41,7 +41,7 @@ class PhpDocLinksCheckTest extends CheckTestCase
         if ($phpDoc !== null) {
             $class->setPhpDoc($phpDoc);
         }
-        $class->methods = $methods;
+        $class->setMethods($methods);
         return $class;
     }
 

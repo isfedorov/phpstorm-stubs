@@ -32,7 +32,7 @@ class InterfaceMethodsTentativeReturnTypeCheckTest extends CheckTestCase
         $iface = new PHPInterface();
         $iface->setId($id);
         $iface->setName(ltrim($id, '\\'));
-        $iface->methods = [$method];
+        $iface->setMethods([$method]);
         return $iface;
     }
 
@@ -121,7 +121,7 @@ class InterfaceMethodsTentativeReturnTypeCheckTest extends CheckTestCase
         $currentMethod = new PHPMethod();
         $currentMethod->setName('current');
         $currentMethod->setHasTentativeReturnType(true);
-        $reflChild->methods = [$currentMethod];
+        $reflChild->setMethods([$currentMethod]);
 
         // Stubs: RecursiveIterator has no methods but extends Iterator (stub)
         $parentStub = new PHPInterface();
@@ -130,12 +130,12 @@ class InterfaceMethodsTentativeReturnTypeCheckTest extends CheckTestCase
         $parentMethod = new PHPMethod();
         $parentMethod->setName('current');
         $parentMethod->setHasTentativeReturnType(false); // stub parent: not tentative → mismatch
-        $parentStub->methods = [$parentMethod];
+        $parentStub->setMethods([$parentMethod]);
 
         $childStub = new PHPInterface();
         $childStub->setId($childId);
         $childStub->setName('RecursiveIterator');
-        $childStub->methods = [];
+        $childStub->setMethods([]);
         $childStub->setParentInterfaces([$parentStub]);
 
         $stubs = $this->createMockStorageManager();

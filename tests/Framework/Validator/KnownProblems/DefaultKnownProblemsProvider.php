@@ -1494,7 +1494,10 @@ class DefaultKnownProblemsProvider implements KnownProblemsProvider
             $allProblems,
             fn(ProblemDefinition $problem) =>
                 $problem->entityType === $entityType
-                && $problem->entityId === $entityId
+                && (
+                    $problem->entityId === $entityId
+                    || (!empty($problem->entityIds) && in_array($entityId, $problem->entityIds, true))
+                )
         );
     }
 }
