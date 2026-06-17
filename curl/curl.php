@@ -39,7 +39,8 @@ class CURLFile
      */
     #[Pure]
     #[TentativeType]
-    public function getFilename(): string {}
+    #[LanguageLevelTypeAware(['8.1' => 'string'], default: '')]
+    public function getFilename() {}
 
     /**
      * Get MIME type
@@ -49,7 +50,8 @@ class CURLFile
      */
     #[Pure]
     #[TentativeType]
-    public function getMimeType(): string {}
+    #[LanguageLevelTypeAware(['8.1' => 'string'], default: '')]
+    public function getMimeType() {}
 
     /**
      * Get file name for POST
@@ -59,7 +61,8 @@ class CURLFile
      */
     #[Pure]
     #[TentativeType]
-    public function getPostFilename(): string {}
+    #[LanguageLevelTypeAware(['8.1' => 'string'], default: '')]
+    public function getPostFilename() {}
 
     /**
      * Set MIME type
@@ -68,7 +71,8 @@ class CURLFile
      * @since 5.5
      */
     #[TentativeType]
-    public function setMimeType(#[LanguageLevelTypeAware(['8.0' => 'string'], default: '')] $mime_type): void {}
+    #[LanguageLevelTypeAware(['8.1' => 'void'], default: '')]
+    public function setMimeType(#[LanguageLevelTypeAware(['8.0' => 'string'], default: '')] $mime_type) {}
 
     /**
      * Set file name for POST
@@ -77,7 +81,8 @@ class CURLFile
      * @since 5.5
      */
     #[TentativeType]
-    public function setPostFilename(#[LanguageLevelTypeAware(['8.0' => 'string'], default: '')] $posted_filename): void {}
+    #[LanguageLevelTypeAware(['8.1' => 'void'], default: '')]
+    public function setPostFilename(#[LanguageLevelTypeAware(['8.0' => 'string'], default: '')] $posted_filename) {}
 
     /**
      * @link https://secure.php.net/manual/en/curlfile.wakeup.php

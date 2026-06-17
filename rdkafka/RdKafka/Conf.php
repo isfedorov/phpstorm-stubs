@@ -3,6 +3,7 @@
 namespace RdKafka;
 
 use JetBrains\PhpStorm\Internal\TentativeType;
+use JetBrains\PhpStorm\Internal\LanguageLevelTypeAware;
 
 /**
  * Configuration reference: https://github.com/edenhill/librdkafka/blob/master/CONFIGURATION.md
@@ -81,5 +82,6 @@ class Conf
     public function setLogCb($callback) {}
 
     #[TentativeType]
-    public function setOauthbearerTokenRefreshCb(callable $callback): void {}
+    #[LanguageLevelTypeAware(['8.1' => 'void'], default: '')]
+    public function setOauthbearerTokenRefreshCb(callable $callback) {}
 }

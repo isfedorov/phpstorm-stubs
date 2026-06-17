@@ -55,7 +55,8 @@ class SimpleXMLElement implements Traversable, ArrayAccess, Countable, Iterator,
      * @since 5.0
      */
     #[TentativeType]
-    public function asXML(#[LanguageLevelTypeAware(['8.0' => 'string|null'], default: '')] $filename = null): string|bool {}
+    #[LanguageLevelTypeAware(['8.1' => 'string|bool'], default: '')]
+    public function asXML(#[LanguageLevelTypeAware(['8.0' => 'string|null'], default: '')] $filename = null) {}
 
     /**
      * Alias of <b>SimpleXMLElement::asXML</b>
@@ -71,7 +72,8 @@ class SimpleXMLElement implements Traversable, ArrayAccess, Countable, Iterator,
      * successfully and false otherwise.
      */
     #[TentativeType]
-    public function saveXML(#[LanguageLevelTypeAware(['8.0' => 'string|null'], default: '')] $filename = null): string|bool {}
+    #[LanguageLevelTypeAware(['8.1' => 'string|bool'], default: '')]
+    public function saveXML(#[LanguageLevelTypeAware(['8.0' => 'string|null'], default: '')] $filename = null) {}
 
     /**
      * Runs XPath query on XML data
@@ -83,7 +85,8 @@ class SimpleXMLElement implements Traversable, ArrayAccess, Countable, Iterator,
      * case of an error.
      */
     #[TentativeType]
-    public function xpath(#[LanguageLevelTypeAware(['8.0' => 'string'], default: '')] $expression): array|false|null {}
+    #[LanguageLevelTypeAware(['8.1' => 'array|false|null'], default: '')]
+    public function xpath(#[LanguageLevelTypeAware(['8.0' => 'string'], default: '')] $expression) {}
 
     /**
      * Creates a prefix/ns context for the next XPath query
@@ -100,10 +103,11 @@ class SimpleXMLElement implements Traversable, ArrayAccess, Countable, Iterator,
      * @return bool <b>TRUE</b> on success or <b>FALSE</b> on failure.
      */
     #[TentativeType]
+    #[LanguageLevelTypeAware(['8.1' => 'bool'], default: '')]
     public function registerXPathNamespace(
         #[LanguageLevelTypeAware(['8.0' => 'string'], default: '')] $prefix,
         #[LanguageLevelTypeAware(['8.0' => 'string'], default: '')] $namespace
-    ): bool {}
+    ) {}
 
     /**
      * Identifies an element's attributes
@@ -123,10 +127,11 @@ class SimpleXMLElement implements Traversable, ArrayAccess, Countable, Iterator,
      * @since 5.0
      */
     #[TentativeType]
+    #[LanguageLevelTypeAware(['8.1' => 'static|null'], default: '')]
     public function attributes(
         #[LanguageLevelTypeAware(['8.0' => 'string|null'], default: '')] $namespaceOrPrefix = null,
         #[LanguageLevelTypeAware(['8.0' => 'bool'], default: '')] $isPrefix = false
-    ): ?static {}
+    ) {}
 
     /**
      * Finds children of given node
@@ -146,10 +151,11 @@ class SimpleXMLElement implements Traversable, ArrayAccess, Countable, Iterator,
      */
     #[Pure]
     #[TentativeType]
+    #[LanguageLevelTypeAware(['8.1' => 'static|null'], default: '')]
     public function children(
         #[LanguageLevelTypeAware(['8.0' => 'string|null'], default: '')] $namespaceOrPrefix = null,
         #[LanguageLevelTypeAware(['8.0' => 'bool'], default: '')] $isPrefix = false
-    ): ?static {}
+    ) {}
 
     /**
      * Returns namespaces used in document
@@ -164,7 +170,8 @@ class SimpleXMLElement implements Traversable, ArrayAccess, Countable, Iterator,
      */
     #[Pure]
     #[TentativeType]
-    public function getNamespaces(#[LanguageLevelTypeAware(['8.0' => 'bool'], default: '')] $recursive = false): array {}
+    #[LanguageLevelTypeAware(['8.1' => 'array'], default: '')]
+    public function getNamespaces(#[LanguageLevelTypeAware(['8.0' => 'bool'], default: '')] $recursive = false) {}
 
     /**
      * Returns namespaces declared in document
@@ -183,10 +190,11 @@ class SimpleXMLElement implements Traversable, ArrayAccess, Countable, Iterator,
      */
     #[Pure]
     #[TentativeType]
+    #[LanguageLevelTypeAware(['8.1' => 'array|false'], default: '')]
     public function getDocNamespaces(
         #[LanguageLevelTypeAware(['8.0' => 'bool'], default: '')] $recursive = false,
         #[LanguageLevelTypeAware(['8.0' => 'bool'], default: '')] $fromRoot = true
-    ): array|false {}
+    ) {}
 
     /**
      * Gets the name of the XML element
@@ -197,7 +205,8 @@ class SimpleXMLElement implements Traversable, ArrayAccess, Countable, Iterator,
      */
     #[Pure]
     #[TentativeType]
-    public function getName(): string {}
+    #[LanguageLevelTypeAware(['8.1' => 'string'], default: '')]
+    public function getName() {}
 
     /**
      * Adds a child element to the XML node
@@ -216,11 +225,12 @@ class SimpleXMLElement implements Traversable, ArrayAccess, Countable, Iterator,
      * @since 5.1
      */
     #[TentativeType]
+    #[LanguageLevelTypeAware(['8.1' => 'static|null'], default: '')]
     public function addChild(
         #[LanguageLevelTypeAware(['8.0' => 'string'], default: '')] $qualifiedName,
         #[LanguageLevelTypeAware(['8.0' => 'string|null'], default: '')] $value = null,
         #[LanguageLevelTypeAware(['8.0' => 'string|null'], default: '')] $namespace = null
-    ): ?static {}
+    ) {}
 
     /**
      * Adds an attribute to the SimpleXML element
@@ -238,12 +248,13 @@ class SimpleXMLElement implements Traversable, ArrayAccess, Countable, Iterator,
      * @since 5.1
      */
     #[TentativeType]
+    #[LanguageLevelTypeAware(['8.1' => 'void'], default: '')]
     public function addAttribute(
         #[LanguageLevelTypeAware(['8.0' => 'string'], default: '')] $qualifiedName,
         #[PhpStormStubsElementAvailable(from: '5.3', to: '7.4')] $value = null,
         #[PhpStormStubsElementAvailable(from: '8.0')] string $value,
         #[LanguageLevelTypeAware(['8.0' => 'string|null'], default: '')] $namespace = null
-    ): void {}
+    ) {}
 
     /**
      * Returns the string content
@@ -261,7 +272,8 @@ class SimpleXMLElement implements Traversable, ArrayAccess, Countable, Iterator,
      */
     #[Pure]
     #[TentativeType]
-    public function count(): int {}
+    #[LanguageLevelTypeAware(['8.1' => 'int'], default: '')]
+    public function count() {}
 
     /**
      * Class provides access to children by position, and attributes by name
@@ -304,7 +316,8 @@ class SimpleXMLElement implements Traversable, ArrayAccess, Countable, Iterator,
      * @return void No value is returned.
      */
     #[TentativeType]
-    public function rewind(): void {}
+    #[LanguageLevelTypeAware(['8.1' => 'void'], default: '')]
+    public function rewind() {}
 
     /**
      * Check whether the current element is valid
@@ -313,7 +326,8 @@ class SimpleXMLElement implements Traversable, ArrayAccess, Countable, Iterator,
      */
     #[Pure]
     #[TentativeType]
-    public function valid(): bool {}
+    #[LanguageLevelTypeAware(['8.1' => 'bool'], default: '')]
+    public function valid() {}
 
     /**
      * Returns the current element
@@ -322,7 +336,8 @@ class SimpleXMLElement implements Traversable, ArrayAccess, Countable, Iterator,
      */
     #[Pure]
     #[TentativeType]
-    public function current(): SimpleXMLElement {}
+    #[LanguageLevelTypeAware(['8.1' => 'SimpleXMLElement'], default: '')]
+    public function current() {}
 
     /**
      * Return current key
@@ -339,7 +354,8 @@ class SimpleXMLElement implements Traversable, ArrayAccess, Countable, Iterator,
      * @return void No value is returned.
      */
     #[TentativeType]
-    public function next(): void {}
+    #[LanguageLevelTypeAware(['8.1' => 'void'], default: '')]
+    public function next() {}
 
     /**
      * @return bool
@@ -347,14 +363,16 @@ class SimpleXMLElement implements Traversable, ArrayAccess, Countable, Iterator,
      */
     #[Pure]
     #[TentativeType]
-    public function hasChildren(): bool {}
+    #[LanguageLevelTypeAware(['8.1' => 'bool'], default: '')]
+    public function hasChildren() {}
 
     /**
      * @since 8.0
      */
     #[Pure]
     #[TentativeType]
-    public function getChildren(): ?SimpleXMLElement {}
+    #[LanguageLevelTypeAware(['8.1' => 'SimpleXMLElement|null'], default: '')]
+    public function getChildren() {}
 
     /**
      * @since 8.3
@@ -394,7 +412,8 @@ class SimpleXMLIterator extends SimpleXMLElement implements RecursiveIterator, C
      */
     #[Pure]
     #[TentativeType]
-    public function current(): SimpleXMLElement {}
+    #[LanguageLevelTypeAware(['8.1' => 'SimpleXMLElement'], default: '')]
+    public function current() {}
 
     /**
      * Return current key

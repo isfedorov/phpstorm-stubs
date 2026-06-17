@@ -46,7 +46,8 @@ abstract class ReflectionFunctionAbstract implements Reflector
      * @return bool {@see true} if it's in a namespace, otherwise {@see false}
      */
     #[TentativeType]
-    public function inNamespace(): bool {}
+    #[LanguageLevelTypeAware(['8.1' => 'bool'], default: '')]
+    public function inNamespace() {}
 
     /**
      * Checks if closure
@@ -56,7 +57,8 @@ abstract class ReflectionFunctionAbstract implements Reflector
      */
     #[Pure]
     #[TentativeType]
-    public function isClosure(): bool {}
+    #[LanguageLevelTypeAware(['8.1' => 'bool'], default: '')]
+    public function isClosure() {}
 
     /**
      * Checks if deprecated
@@ -66,7 +68,8 @@ abstract class ReflectionFunctionAbstract implements Reflector
      */
     #[Pure]
     #[TentativeType]
-    public function isDeprecated(): bool {}
+    #[LanguageLevelTypeAware(['8.1' => 'bool'], default: '')]
+    public function isDeprecated() {}
 
     /**
      * Checks if is internal
@@ -76,7 +79,8 @@ abstract class ReflectionFunctionAbstract implements Reflector
      */
     #[Pure]
     #[TentativeType]
-    public function isInternal(): bool {}
+    #[LanguageLevelTypeAware(['8.1' => 'bool'], default: '')]
+    public function isInternal() {}
 
     /**
      * Checks if user defined
@@ -86,7 +90,8 @@ abstract class ReflectionFunctionAbstract implements Reflector
      */
     #[Pure]
     #[TentativeType]
-    public function isUserDefined(): bool {}
+    #[LanguageLevelTypeAware(['8.1' => 'bool'], default: '')]
+    public function isUserDefined() {}
 
     /**
      * Returns whether this function is a generator
@@ -97,7 +102,8 @@ abstract class ReflectionFunctionAbstract implements Reflector
      */
     #[Pure]
     #[TentativeType]
-    public function isGenerator(): bool {}
+    #[LanguageLevelTypeAware(['8.1' => 'bool'], default: '')]
+    public function isGenerator() {}
 
     /**
      * Returns whether this function is variadic
@@ -108,7 +114,8 @@ abstract class ReflectionFunctionAbstract implements Reflector
      */
     #[Pure]
     #[TentativeType]
-    public function isVariadic(): bool {}
+    #[LanguageLevelTypeAware(['8.1' => 'bool'], default: '')]
+    public function isVariadic() {}
 
     /**
      * Returns this pointer bound to closure
@@ -118,7 +125,8 @@ abstract class ReflectionFunctionAbstract implements Reflector
      */
     #[Pure]
     #[TentativeType]
-    public function getClosureThis(): ?object {}
+    #[LanguageLevelTypeAware(['8.1' => 'object|null'], default: '')]
+    public function getClosureThis() {}
 
     /**
      * Returns the scope associated to the closure
@@ -130,7 +138,8 @@ abstract class ReflectionFunctionAbstract implements Reflector
      */
     #[Pure]
     #[TentativeType]
-    public function getClosureScopeClass(): ?ReflectionClass {}
+    #[LanguageLevelTypeAware(['8.1' => 'ReflectionClass|null'], default: '')]
+    public function getClosureScopeClass() {}
 
     /**
      * @return ReflectionClass|null Returns the class on success or {@see null}
@@ -139,7 +148,8 @@ abstract class ReflectionFunctionAbstract implements Reflector
      */
     #[Pure]
     #[TentativeType]
-    public function getClosureCalledClass(): ?ReflectionClass {}
+    #[LanguageLevelTypeAware(['8.1' => 'ReflectionClass|null'], default: '')]
+    public function getClosureCalledClass() {}
 
     /**
      * Gets doc comment
@@ -149,7 +159,8 @@ abstract class ReflectionFunctionAbstract implements Reflector
      */
     #[Pure]
     #[TentativeType]
-    public function getDocComment(): string|false {}
+    #[LanguageLevelTypeAware(['8.1' => 'string|false'], default: '')]
+    public function getDocComment() {}
 
     /**
      * Gets end line number
@@ -160,7 +171,8 @@ abstract class ReflectionFunctionAbstract implements Reflector
      */
     #[Pure]
     #[TentativeType]
-    public function getEndLine(): int|false {}
+    #[LanguageLevelTypeAware(['8.1' => 'int|false'], default: '')]
+    public function getEndLine() {}
 
     /**
      * Gets extension info
@@ -171,7 +183,8 @@ abstract class ReflectionFunctionAbstract implements Reflector
      */
     #[Pure]
     #[TentativeType]
-    public function getExtension(): ?ReflectionExtension {}
+    #[LanguageLevelTypeAware(['8.1' => 'ReflectionExtension|null'], default: '')]
+    public function getExtension() {}
 
     /**
      * Gets extension name
@@ -181,7 +194,8 @@ abstract class ReflectionFunctionAbstract implements Reflector
      */
     #[Pure]
     #[TentativeType]
-    public function getExtensionName(): string|false {}
+    #[LanguageLevelTypeAware(['8.1' => 'string|false'], default: '')]
+    public function getExtensionName() {}
 
     /**
      * Gets file name
@@ -191,7 +205,8 @@ abstract class ReflectionFunctionAbstract implements Reflector
      */
     #[Pure]
     #[TentativeType]
-    public function getFileName(): string|false {}
+    #[LanguageLevelTypeAware(['8.1' => 'string|false'], default: '')]
+    public function getFileName() {}
 
     /**
      * Gets function name
@@ -201,7 +216,8 @@ abstract class ReflectionFunctionAbstract implements Reflector
      */
     #[Pure]
     #[TentativeType]
-    public function getName(): string {}
+    #[LanguageLevelTypeAware(['8.1' => 'string'], default: '')]
+    public function getName() {}
 
     /**
      * Gets namespace name
@@ -211,7 +227,8 @@ abstract class ReflectionFunctionAbstract implements Reflector
      */
     #[Pure]
     #[TentativeType]
-    public function getNamespaceName(): string {}
+    #[LanguageLevelTypeAware(['8.1' => 'string'], default: '')]
+    public function getNamespaceName() {}
 
     /**
      * Gets number of parameters
@@ -222,7 +239,8 @@ abstract class ReflectionFunctionAbstract implements Reflector
      */
     #[Pure]
     #[TentativeType]
-    public function getNumberOfParameters(): int {}
+    #[LanguageLevelTypeAware(['8.1' => 'int'], default: '')]
+    public function getNumberOfParameters() {}
 
     /**
      * Gets number of required parameters
@@ -233,7 +251,8 @@ abstract class ReflectionFunctionAbstract implements Reflector
      */
     #[Pure]
     #[TentativeType]
-    public function getNumberOfRequiredParameters(): int {}
+    #[LanguageLevelTypeAware(['8.1' => 'int'], default: '')]
+    public function getNumberOfRequiredParameters() {}
 
     /**
      * Gets parameters
@@ -243,7 +262,8 @@ abstract class ReflectionFunctionAbstract implements Reflector
      */
     #[Pure]
     #[TentativeType]
-    public function getParameters(): array {}
+    #[LanguageLevelTypeAware(['8.1' => 'array'], default: '')]
+    public function getParameters() {}
 
     /**
      * Gets the specified return type of a function
@@ -273,7 +293,8 @@ abstract class ReflectionFunctionAbstract implements Reflector
      */
     #[Pure]
     #[TentativeType]
-    public function getShortName(): string {}
+    #[LanguageLevelTypeAware(['8.1' => 'string'], default: '')]
+    public function getShortName() {}
 
     /**
      * Gets starting line number
@@ -283,7 +304,8 @@ abstract class ReflectionFunctionAbstract implements Reflector
      */
     #[Pure]
     #[TentativeType]
-    public function getStartLine(): int|false {}
+    #[LanguageLevelTypeAware(['8.1' => 'int|false'], default: '')]
+    public function getStartLine() {}
 
     /**
      * Gets static variables
@@ -293,7 +315,8 @@ abstract class ReflectionFunctionAbstract implements Reflector
      */
     #[Pure]
     #[TentativeType]
-    public function getStaticVariables(): array {}
+    #[LanguageLevelTypeAware(['8.1' => 'array'], default: '')]
+    public function getStaticVariables() {}
 
     /**
      * Checks if returns reference
@@ -302,7 +325,8 @@ abstract class ReflectionFunctionAbstract implements Reflector
      * @return bool {@see true} if it returns a reference, otherwise {@see false}
      */
     #[TentativeType]
-    public function returnsReference(): bool {}
+    #[LanguageLevelTypeAware(['8.1' => 'bool'], default: '')]
+    public function returnsReference() {}
 
     /**
      * Checks if the function has a specified return type
@@ -313,7 +337,8 @@ abstract class ReflectionFunctionAbstract implements Reflector
      * @since 7.0
      */
     #[TentativeType]
-    public function hasReturnType(): bool {}
+    #[LanguageLevelTypeAware(['8.1' => 'bool'], default: '')]
+    public function hasReturnType() {}
 
     /**
      * @template T
@@ -343,7 +368,8 @@ abstract class ReflectionFunctionAbstract implements Reflector
     #[PhpStormStubsElementAvailable('8.1')]
     #[Pure]
     #[TentativeType]
-    public function isStatic(): bool {}
+    #[LanguageLevelTypeAware(['8.1' => 'bool'], default: '')]
+    public function isStatic() {}
 
     #[LanguageLevelTypeAware(['7.0' => 'string'], default: '')]
     public function __toString() {}

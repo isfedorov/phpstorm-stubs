@@ -2,6 +2,7 @@
 
 use JetBrains\PhpStorm\Internal\TentativeType;
 use JetBrains\PhpStorm\Pure;
+use JetBrains\PhpStorm\Internal\LanguageLevelTypeAware;
 
 /**
  * @since 7.1
@@ -17,7 +18,8 @@ class ReflectionNamedType extends ReflectionType
      */
     #[Pure]
     #[TentativeType]
-    public function getName(): string {}
+    #[LanguageLevelTypeAware(['8.1' => 'string'], default: '')]
+    public function getName() {}
 
     /**
      * Checks if it is a built-in type
@@ -30,5 +32,6 @@ class ReflectionNamedType extends ReflectionType
      */
     #[Pure]
     #[TentativeType]
-    public function isBuiltin(): bool {}
+    #[LanguageLevelTypeAware(['8.1' => 'bool'], default: '')]
+    public function isBuiltin() {}
 }

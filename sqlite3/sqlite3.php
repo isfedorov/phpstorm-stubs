@@ -149,13 +149,14 @@ class SQLite3
      * @return void No value is returned.
      */
     #[TentativeType]
+    #[LanguageLevelTypeAware(['8.1' => 'void'], default: '')]
     public function open(
         #[LanguageLevelTypeAware(['8.0' => 'string'], default: '')] $filename,
         #[PhpStormStubsElementAvailable(from: '5.3', to: '5.6')] $flags = 6,
         #[PhpStormStubsElementAvailable(from: '5.3', to: '5.6')] $encryptionKey = '',
         #[PhpStormStubsElementAvailable(from: '7.0')] #[LanguageLevelTypeAware(['8.0' => 'int'], default: '')] $flags = SQLITE3_OPEN_READWRITE|SQLITE3_OPEN_CREATE,
         #[PhpStormStubsElementAvailable(from: '7.0')] #[LanguageLevelTypeAware(['8.0' => 'string'], default: '')] $encryptionKey = ''
-    ): void {}
+    ) {}
 
     /**
      * Closes the database connection
@@ -163,7 +164,8 @@ class SQLite3
      * @return bool <b>TRUE</b> on success, <b>FALSE</b> on failure.
      */
     #[TentativeType]
-    public function close(): bool {}
+    #[LanguageLevelTypeAware(['8.1' => 'bool'], default: '')]
+    public function close() {}
 
     /**
      * Executes a result-less query against a given database
@@ -175,7 +177,8 @@ class SQLite3
      * @return bool <b>TRUE</b> if the query succeeded, <b>FALSE</b> on failure.
      */
     #[TentativeType]
-    public function exec(#[LanguageLevelTypeAware(['8.0' => 'string'], default: '')] $query): bool {}
+    #[LanguageLevelTypeAware(['8.1' => 'bool'], default: '')]
+    public function exec(#[LanguageLevelTypeAware(['8.0' => 'string'], default: '')] $query) {}
 
     /**
      * Returns the SQLite3 library version as a string constant and as a number
@@ -185,7 +188,8 @@ class SQLite3
      */
     #[ArrayShape(["versionString" => "string", "versionNumber" => "int"])]
     #[TentativeType]
-    public static function version(): array {}
+    #[LanguageLevelTypeAware(['8.1' => 'array'], default: '')]
+    public static function version() {}
 
     /**
      * Returns the row ID of the most recent INSERT into the database
@@ -193,7 +197,8 @@ class SQLite3
      * @return int the row ID of the most recent INSERT into the database
      */
     #[TentativeType]
-    public function lastInsertRowID(): int {}
+    #[LanguageLevelTypeAware(['8.1' => 'int'], default: '')]
+    public function lastInsertRowID() {}
 
     /**
      * Returns the numeric result code of the most recent failed SQLite request
@@ -202,7 +207,8 @@ class SQLite3
      * recent failed SQLite request.
      */
     #[TentativeType]
-    public function lastErrorCode(): int {}
+    #[LanguageLevelTypeAware(['8.1' => 'int'], default: '')]
+    public function lastErrorCode() {}
 
     /**
      * Returns English text describing the most recent failed SQLite request
@@ -210,7 +216,8 @@ class SQLite3
      * @return string an English string describing the most recent failed SQLite request.
      */
     #[TentativeType]
-    public function lastErrorMsg(): string {}
+    #[LanguageLevelTypeAware(['8.1' => 'string'], default: '')]
+    public function lastErrorMsg() {}
 
     /**
      * Sets the busy connection handler
@@ -223,7 +230,8 @@ class SQLite3
      * @since 5.3
      */
     #[TentativeType]
-    public function busyTimeout(#[LanguageLevelTypeAware(['8.0' => 'int'], default: '')] $milliseconds): bool {}
+    #[LanguageLevelTypeAware(['8.1' => 'bool'], default: '')]
+    public function busyTimeout(#[LanguageLevelTypeAware(['8.0' => 'int'], default: '')] $milliseconds) {}
 
     /**
      * Attempts to load an SQLite extension library
@@ -235,7 +243,8 @@ class SQLite3
      * @return bool <b>TRUE</b> if the extension is successfully loaded, <b>FALSE</b> on failure.
      */
     #[TentativeType]
-    public function loadExtension(#[LanguageLevelTypeAware(['8.0' => 'string'], default: '')] $name): bool {}
+    #[LanguageLevelTypeAware(['8.1' => 'bool'], default: '')]
+    public function loadExtension(#[LanguageLevelTypeAware(['8.0' => 'string'], default: '')] $name) {}
 
     /**
      * Returns the number of database rows that were changed (or inserted or
@@ -246,7 +255,8 @@ class SQLite3
      * statement.
      */
     #[TentativeType]
-    public function changes(): int {}
+    #[LanguageLevelTypeAware(['8.1' => 'int'], default: '')]
+    public function changes() {}
 
     /**
      * Returns a string that has been properly escaped
@@ -258,7 +268,8 @@ class SQLite3
      * statement.
      */
     #[TentativeType]
-    public static function escapeString(#[LanguageLevelTypeAware(['8.0' => 'string'], default: '')] $string): string {}
+    #[LanguageLevelTypeAware(['8.1' => 'string'], default: '')]
+    public static function escapeString(#[LanguageLevelTypeAware(['8.0' => 'string'], default: '')] $string) {}
 
     /**
      * Prepares an SQL statement for execution
@@ -269,7 +280,8 @@ class SQLite3
      * @return SQLite3Stmt|false an <b>SQLite3Stmt</b> object on success or <b>FALSE</b> on failure.
      */
     #[TentativeType]
-    public function prepare(#[LanguageLevelTypeAware(['8.0' => 'string'], default: '')] $query): SQLite3Stmt|false {}
+    #[LanguageLevelTypeAware(['8.1' => 'SQLite3Stmt|false'], default: '')]
+    public function prepare(#[LanguageLevelTypeAware(['8.0' => 'string'], default: '')] $query) {}
 
     /**
      * Executes an SQL query
@@ -280,7 +292,8 @@ class SQLite3
      * @return SQLite3Result|false an <b>SQLite3Result</b> object, or <b>FALSE</b> on failure.
      */
     #[TentativeType]
-    public function query(#[LanguageLevelTypeAware(['8.0' => 'string'], default: '')] $query): SQLite3Result|false {}
+    #[LanguageLevelTypeAware(['8.1' => 'SQLite3Result|false'], default: '')]
+    public function query(#[LanguageLevelTypeAware(['8.0' => 'string'], default: '')] $query) {}
 
     /**
      * Executes a query and returns a single result
@@ -306,10 +319,11 @@ class SQLite3
      * Invalid or failing queries will return <b>FALSE</b>.
      */
     #[TentativeType]
+    #[LanguageLevelTypeAware(['8.1' => 'mixed'], default: '')]
     public function querySingle(
         #[LanguageLevelTypeAware(['8.0' => 'string'], default: '')] $query,
         #[LanguageLevelTypeAware(['8.0' => 'bool'], default: '')] $entireRow = false
-    ): mixed {}
+    ) {}
 
     /**
      * Registers a PHP function for use as an SQL scalar function
@@ -333,12 +347,13 @@ class SQLite3
      * @return bool <b>TRUE</b> upon successful creation of the function, <b>FALSE</b> on failure.
      */
     #[TentativeType]
+    #[LanguageLevelTypeAware(['8.1' => 'bool'], default: '')]
     public function createFunction(
         #[LanguageLevelTypeAware(['8.0' => 'string'], default: '')] $name,
         #[LanguageLevelTypeAware(['8.0' => 'callable'], default: '')] $callback,
         #[LanguageLevelTypeAware(['8.0' => 'int'], default: '')] $argCount = -1,
         #[PhpStormStubsElementAvailable(from: '7.1')] int $flags = 0
-    ): bool {}
+    ) {}
 
     /**
      * Registers a PHP function for use as an SQL aggregate function
@@ -363,12 +378,13 @@ class SQLite3
      * failure.
      */
     #[TentativeType]
+    #[LanguageLevelTypeAware(['8.1' => 'bool'], default: '')]
     public function createAggregate(
         #[LanguageLevelTypeAware(['8.0' => 'string'], default: '')] $name,
         #[LanguageLevelTypeAware(['8.0' => 'callable'], default: '')] $stepCallback,
         #[LanguageLevelTypeAware(['8.0' => 'callable'], default: '')] $finalCallback,
         #[LanguageLevelTypeAware(['8.0' => 'int'], default: '')] $argCount = -1
-    ): bool {}
+    ) {}
 
     /**
      * Registers a PHP function for use as an SQL collating function
@@ -387,7 +403,8 @@ class SQLite3
      * @since 5.3
      */
     #[TentativeType]
-    public function createCollation(#[LanguageLevelTypeAware(['8.0' => 'string'], default: '')] $name, callable $callback): bool {}
+    #[LanguageLevelTypeAware(['8.1' => 'bool'], default: '')]
+    public function createCollation(#[LanguageLevelTypeAware(['8.0' => 'string'], default: '')] $name, callable $callback) {}
 
     /**
      * Opens a stream resource to read a BLOB
@@ -415,10 +432,11 @@ class SQLite3
      * @return bool Returns the old value; true if exceptions were enabled, false otherwise.
      */
     #[TentativeType]
+    #[LanguageLevelTypeAware(['8.1' => 'bool'], default: '')]
     public function enableExceptions(
         #[PhpStormStubsElementAvailable(from: '5.3', to: '5.6')] $enable = false,
         #[PhpStormStubsElementAvailable(from: '7.0')] #[LanguageLevelTypeAware(['8.0' => 'bool'], default: '')] $enable = false
-    ): bool {}
+    ) {}
 
     /**
      * Instantiates an SQLite3 object and opens an SQLite 3 database
@@ -452,17 +470,19 @@ class SQLite3
      * @since 7.4
      */
     #[TentativeType]
-    public function lastExtendedErrorCode(): int {}
+    #[LanguageLevelTypeAware(['8.1' => 'int'], default: '')]
+    public function lastExtendedErrorCode() {}
 
     /**
      * @param bool $enable
      * @since 7.4
      */
     #[TentativeType]
+    #[LanguageLevelTypeAware(['8.1' => 'bool'], default: '')]
     public function enableExtendedResultCodes(
         #[PhpStormStubsElementAvailable(from: '7.4', to: '7.4')] bool $enable = true,
         #[PhpStormStubsElementAvailable(from: '8.0')] bool $enable = true
-    ): bool {}
+    ) {}
 
     /**
      * @param SQLite3 $destination
@@ -472,7 +492,8 @@ class SQLite3
      * @since 7.4
      */
     #[TentativeType]
-    public function backup(SQLite3 $destination, string $sourceDatabase = 'main', string $destinationDatabase = 'main'): bool {}
+    #[LanguageLevelTypeAware(['8.1' => 'bool'], default: '')]
+    public function backup(SQLite3 $destination, string $sourceDatabase = 'main', string $destinationDatabase = 'main') {}
 
     /**
      * @param null|callable $callback
@@ -480,7 +501,8 @@ class SQLite3
      * @since 8.0
      */
     #[TentativeType]
-    public function setAuthorizer(?callable $callback): bool {}
+    #[LanguageLevelTypeAware(['8.1' => 'bool'], default: '')]
+    public function setAuthorizer(?callable $callback) {}
 }
 
 /**
@@ -504,7 +526,8 @@ class SQLite3Stmt
      * @return int the number of parameters within the prepared statement.
      */
     #[TentativeType]
-    public function paramCount(): int {}
+    #[LanguageLevelTypeAware(['8.1' => 'int'], default: '')]
+    public function paramCount() {}
 
     /**
      * Closes the prepared statement
@@ -521,7 +544,8 @@ class SQLite3Stmt
      * @return bool <b>TRUE</b> if the statement is successfully reset, <b>FALSE</b> on failure.
      */
     #[TentativeType]
-    public function reset(): bool {}
+    #[LanguageLevelTypeAware(['8.1' => 'bool'], default: '')]
+    public function reset() {}
 
     /**
      * Clears all current bound parameters
@@ -530,7 +554,8 @@ class SQLite3Stmt
      * failure.
      */
     #[TentativeType]
-    public function clear(): bool {}
+    #[LanguageLevelTypeAware(['8.1' => 'bool'], default: '')]
+    public function clear() {}
 
     /**
      * Executes a prepared statement and returns a result set object
@@ -539,7 +564,8 @@ class SQLite3Stmt
      * statement, <b>FALSE</b> on failure.
      */
     #[TentativeType]
-    public function execute(): SQLite3Result|false {}
+    #[LanguageLevelTypeAware(['8.1' => 'SQLite3Result|false'], default: '')]
+    public function execute() {}
 
     /**
      * Binds a parameter to a statement variable
@@ -563,11 +589,12 @@ class SQLite3Stmt
      * on failure.
      */
     #[TentativeType]
+    #[LanguageLevelTypeAware(['8.1' => 'bool'], default: '')]
     public function bindParam(
         #[LanguageLevelTypeAware(['8.0' => 'string|int'], default: '')] $param,
         #[LanguageLevelTypeAware(['8.0' => 'mixed'], default: '')] &$var,
         #[LanguageLevelTypeAware(['8.0' => 'int'], default: '')] $type = SQLITE3_TEXT
-    ): bool {}
+    ) {}
 
     /**
      * Binds the value of a parameter to a statement variable
@@ -591,14 +618,16 @@ class SQLite3Stmt
      * on failure.
      */
     #[TentativeType]
+    #[LanguageLevelTypeAware(['8.1' => 'bool'], default: '')]
     public function bindValue(
         #[LanguageLevelTypeAware(['8.0' => 'string|int'], default: '')] $param,
         #[LanguageLevelTypeAware(['8.0' => 'mixed'], default: '')] $value,
         #[LanguageLevelTypeAware(['8.0' => 'int'], default: '')] $type = SQLITE3_TEXT
-    ): bool {}
+    ) {}
 
     #[TentativeType]
-    public function readOnly(): bool {}
+    #[LanguageLevelTypeAware(['8.1' => 'bool'], default: '')]
+    public function readOnly() {}
 
     /**
      * @param SQLite3 $sqlite3
@@ -617,7 +646,8 @@ class SQLite3Stmt
      * @since 7.4
      */
     #[TentativeType]
-    public function getSQL(bool $expand = false): string|false {}
+    #[LanguageLevelTypeAware(['8.1' => 'string|false'], default: '')]
+    public function getSQL(bool $expand = false) {}
 
     /**
      * @since 8.5
@@ -647,7 +677,8 @@ class SQLite3Result
      * @return int the number of columns in the result set.
      */
     #[TentativeType]
-    public function numColumns(): int {}
+    #[LanguageLevelTypeAware(['8.1' => 'int'], default: '')]
+    public function numColumns() {}
 
     /**
      * Returns the name of the nth column
@@ -659,7 +690,8 @@ class SQLite3Result
      * <i>column_number</i>.
      */
     #[TentativeType]
-    public function columnName(#[LanguageLevelTypeAware(['8.0' => 'int'], default: '')] $column): string|false {}
+    #[LanguageLevelTypeAware(['8.1' => 'string|false'], default: '')]
+    public function columnName(#[LanguageLevelTypeAware(['8.0' => 'int'], default: '')] $column) {}
 
     /**
      * Returns the type of the nth column
@@ -674,7 +706,8 @@ class SQLite3Result
      * <b>SQLITE3_NULL</b>).
      */
     #[TentativeType]
-    public function columnType(#[LanguageLevelTypeAware(['8.0' => 'int'], default: '')] $column): int|false {}
+    #[LanguageLevelTypeAware(['8.1' => 'int|false'], default: '')]
+    public function columnType(#[LanguageLevelTypeAware(['8.0' => 'int'], default: '')] $column) {}
 
     /**
      * Fetches a result row as an associative or numerically indexed array or both
@@ -692,7 +725,8 @@ class SQLite3Result
      * both. Alternately will return <b>FALSE</b> if there are no more rows.
      */
     #[TentativeType]
-    public function fetchArray(#[LanguageLevelTypeAware(['8.0' => 'int'], default: '')] $mode = SQLITE3_BOTH): array|false {}
+    #[LanguageLevelTypeAware(['8.1' => 'array|false'], default: '')]
+    public function fetchArray(#[LanguageLevelTypeAware(['8.0' => 'int'], default: '')] $mode = SQLITE3_BOTH) {}
 
     /**
      * Resets the result set back to the first row
@@ -701,7 +735,8 @@ class SQLite3Result
      * back to the first row, <b>FALSE</b> on failure.
      */
     #[TentativeType]
-    public function reset(): bool {}
+    #[LanguageLevelTypeAware(['8.1' => 'bool'], default: '')]
+    public function reset() {}
 
     /**
      * Closes the result set

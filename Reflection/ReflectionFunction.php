@@ -70,7 +70,8 @@ class ReflectionFunction extends ReflectionFunctionAbstract
     #[Deprecated(since: '8.0')]
     #[Pure]
     #[TentativeType]
-    public function isDisabled(): bool {}
+    #[LanguageLevelTypeAware(['8.1' => 'bool'], default: '')]
+    public function isDisabled() {}
 
     /**
      * Invokes function
@@ -82,7 +83,8 @@ class ReflectionFunction extends ReflectionFunctionAbstract
      * @return mixed Returns the result of the invoked function call.
      */
     #[TentativeType]
-    public function invoke(#[LanguageLevelTypeAware(['8.0' => 'mixed'], default: '')] ...$args): mixed {}
+    #[LanguageLevelTypeAware(['8.1' => 'mixed'], default: '')]
+    public function invoke(#[LanguageLevelTypeAware(['8.0' => 'mixed'], default: '')] ...$args) {}
 
     /**
      * Invokes function args
@@ -93,7 +95,8 @@ class ReflectionFunction extends ReflectionFunctionAbstract
      * @return mixed the result of the invoked function
      */
     #[TentativeType]
-    public function invokeArgs(array $args): mixed {}
+    #[LanguageLevelTypeAware(['8.1' => 'mixed'], default: '')]
+    public function invokeArgs(array $args) {}
 
     /**
      * Returns a dynamically created closure for the function
@@ -103,7 +106,8 @@ class ReflectionFunction extends ReflectionFunctionAbstract
      */
     #[Pure]
     #[TentativeType]
-    public function getClosure(): Closure {}
+    #[LanguageLevelTypeAware(['8.1' => 'Closure'], default: '')]
+    public function getClosure() {}
 
     #[PhpStormStubsElementAvailable(from: '8.2')]
     public function isAnonymous(): bool {}

@@ -106,7 +106,8 @@ class EmptyIterator implements Iterator
      * @return mixed Can return any type.
      */
     #[TentativeType]
-    public function current(): never {}
+    #[LanguageLevelTypeAware(['8.1' => 'never'], default: '')]
+    public function current() {}
 
     /**
      * Move forward to next element
@@ -114,7 +115,8 @@ class EmptyIterator implements Iterator
      * @return void Any returned value is ignored.
      */
     #[TentativeType]
-    public function next(): void {}
+    #[LanguageLevelTypeAware(['8.1' => 'void'], default: '')]
+    public function next() {}
 
     /**
      * Return the key of the current element
@@ -122,7 +124,8 @@ class EmptyIterator implements Iterator
      * @return mixed The key of the current element.
      */
     #[TentativeType]
-    public function key(): never {}
+    #[LanguageLevelTypeAware(['8.1' => 'never'], default: '')]
+    public function key() {}
 
     /**
      * Checks if current position is valid
@@ -140,7 +143,8 @@ class EmptyIterator implements Iterator
      * @return void Any returned value is ignored.
      */
     #[TentativeType]
-    public function rewind(): void {}
+    #[LanguageLevelTypeAware(['8.1' => 'void'], default: '')]
+    public function rewind() {}
 }
 
 /**
@@ -168,7 +172,8 @@ class CallbackFilterIterator extends FilterIterator
      * @return bool true if the current element is acceptable, otherwise false.
      */
     #[TentativeType]
-    public function accept(): bool {}
+    #[LanguageLevelTypeAware(['8.1' => 'bool'], default: '')]
+    public function accept() {}
 }
 
 /**
@@ -197,7 +202,8 @@ class RecursiveCallbackFilterIterator extends CallbackFilterIterator implements 
      * @return bool Returns TRUE if the current element has children, FALSE otherwise.
      */
     #[TentativeType]
-    public function hasChildren(): bool {}
+    #[LanguageLevelTypeAware(['8.1' => 'bool'], default: '')]
+    public function hasChildren() {}
 
     /**
      * Returns an iterator for the current entry.
@@ -205,7 +211,8 @@ class RecursiveCallbackFilterIterator extends CallbackFilterIterator implements 
      * @return RecursiveCallbackFilterIterator containing the children.
      */
     #[TentativeType]
-    public function getChildren(): RecursiveCallbackFilterIterator {}
+    #[LanguageLevelTypeAware(['8.1' => 'RecursiveCallbackFilterIterator'], default: '')]
+    public function getChildren() {}
 }
 
 /**
@@ -221,7 +228,8 @@ interface RecursiveIterator extends Iterator
      * @return bool true if the current entry can be iterated over, otherwise returns false.
      */
     #[TentativeType]
-    public function hasChildren(): bool;
+    #[LanguageLevelTypeAware(['8.1' => 'bool'], default: '')]
+    public function hasChildren();
 
     /**
      * Returns an iterator for the current entry.
@@ -229,7 +237,8 @@ interface RecursiveIterator extends Iterator
      * @return RecursiveIterator|null An iterator for the current entry.
      */
     #[TentativeType]
-    public function getChildren(): ?RecursiveIterator;
+    #[LanguageLevelTypeAware(['8.1' => 'RecursiveIterator|null'], default: '')]
+    public function getChildren();
 }
 
 /**
@@ -278,7 +287,8 @@ class RecursiveIteratorIterator implements OuterIterator
      * @return void
      */
     #[TentativeType]
-    public function rewind(): void {}
+    #[LanguageLevelTypeAware(['8.1' => 'void'], default: '')]
+    public function rewind() {}
 
     /**
      * Check whether the current position is valid
@@ -286,7 +296,8 @@ class RecursiveIteratorIterator implements OuterIterator
      * @return bool true if the current position is valid, otherwise false
      */
     #[TentativeType]
-    public function valid(): bool {}
+    #[LanguageLevelTypeAware(['8.1' => 'bool'], default: '')]
+    public function valid() {}
 
     /**
      * Access the current key
@@ -294,7 +305,8 @@ class RecursiveIteratorIterator implements OuterIterator
      * @return mixed The key of the current element.
      */
     #[TentativeType]
-    public function key(): mixed {}
+    #[LanguageLevelTypeAware(['8.1' => 'mixed'], default: '')]
+    public function key() {}
 
     /**
      * Access the current element value
@@ -302,7 +314,8 @@ class RecursiveIteratorIterator implements OuterIterator
      * @return mixed The current elements value.
      */
     #[TentativeType]
-    public function current(): mixed {}
+    #[LanguageLevelTypeAware(['8.1' => 'mixed'], default: '')]
+    public function current() {}
 
     /**
      * Move forward to the next element
@@ -310,7 +323,8 @@ class RecursiveIteratorIterator implements OuterIterator
      * @return void
      */
     #[TentativeType]
-    public function next(): void {}
+    #[LanguageLevelTypeAware(['8.1' => 'void'], default: '')]
+    public function next() {}
 
     /**
      * Get the current depth of the recursive iteration
@@ -318,7 +332,8 @@ class RecursiveIteratorIterator implements OuterIterator
      * @return int The current depth of the recursive iteration.
      */
     #[TentativeType]
-    public function getDepth(): int {}
+    #[LanguageLevelTypeAware(['8.1' => 'int'], default: '')]
+    public function getDepth() {}
 
     /**
      * The current active sub iterator
@@ -327,7 +342,8 @@ class RecursiveIteratorIterator implements OuterIterator
      * @return RecursiveIterator|null The current active sub iterator.
      */
     #[TentativeType]
-    public function getSubIterator(#[LanguageLevelTypeAware(['8.0' => 'int|null'], default: '')] $level = null): ?RecursiveIterator {}
+    #[LanguageLevelTypeAware(['8.1' => 'RecursiveIterator|null'], default: '')]
+    public function getSubIterator(#[LanguageLevelTypeAware(['8.0' => 'int|null'], default: '')] $level = null) {}
 
     /**
      * Get inner iterator
@@ -335,7 +351,8 @@ class RecursiveIteratorIterator implements OuterIterator
      * @return RecursiveIterator The current active sub iterator.
      */
     #[TentativeType]
-    public function getInnerIterator(): RecursiveIterator {}
+    #[LanguageLevelTypeAware(['8.1' => 'RecursiveIterator'], default: '')]
+    public function getInnerIterator() {}
 
     /**
      * Begin Iteration
@@ -343,7 +360,8 @@ class RecursiveIteratorIterator implements OuterIterator
      * @return void
      */
     #[TentativeType]
-    public function beginIteration(): void {}
+    #[LanguageLevelTypeAware(['8.1' => 'void'], default: '')]
+    public function beginIteration() {}
 
     /**
      * End Iteration
@@ -351,7 +369,8 @@ class RecursiveIteratorIterator implements OuterIterator
      * @return void
      */
     #[TentativeType]
-    public function endIteration(): void {}
+    #[LanguageLevelTypeAware(['8.1' => 'void'], default: '')]
+    public function endIteration() {}
 
     /**
      * Has children
@@ -359,7 +378,8 @@ class RecursiveIteratorIterator implements OuterIterator
      * @return bool true if the element has children, otherwise false
      */
     #[TentativeType]
-    public function callHasChildren(): bool {}
+    #[LanguageLevelTypeAware(['8.1' => 'bool'], default: '')]
+    public function callHasChildren() {}
 
     /**
      * Get children
@@ -367,7 +387,8 @@ class RecursiveIteratorIterator implements OuterIterator
      * @return RecursiveIterator|null A <b>RecursiveIterator</b>.
      */
     #[TentativeType]
-    public function callGetChildren(): ?RecursiveIterator {}
+    #[LanguageLevelTypeAware(['8.1' => 'RecursiveIterator|null'], default: '')]
+    public function callGetChildren() {}
 
     /**
      * Begin children
@@ -375,7 +396,8 @@ class RecursiveIteratorIterator implements OuterIterator
      * @return void
      */
     #[TentativeType]
-    public function beginChildren(): void {}
+    #[LanguageLevelTypeAware(['8.1' => 'void'], default: '')]
+    public function beginChildren() {}
 
     /**
      * End children
@@ -383,7 +405,8 @@ class RecursiveIteratorIterator implements OuterIterator
      * @return void
      */
     #[TentativeType]
-    public function endChildren(): void {}
+    #[LanguageLevelTypeAware(['8.1' => 'void'], default: '')]
+    public function endChildren() {}
 
     /**
      * Next element
@@ -391,7 +414,8 @@ class RecursiveIteratorIterator implements OuterIterator
      * @return void
      */
     #[TentativeType]
-    public function nextElement(): void {}
+    #[LanguageLevelTypeAware(['8.1' => 'void'], default: '')]
+    public function nextElement() {}
 
     /**
      * Set max depth
@@ -403,7 +427,8 @@ class RecursiveIteratorIterator implements OuterIterator
      * @return void
      */
     #[TentativeType]
-    public function setMaxDepth(#[LanguageLevelTypeAware(['8.0' => 'int'], default: '')] $maxDepth = -1): void {}
+    #[LanguageLevelTypeAware(['8.1' => 'void'], default: '')]
+    public function setMaxDepth(#[LanguageLevelTypeAware(['8.0' => 'int'], default: '')] $maxDepth = -1) {}
 
     /**
      * Get max depth
@@ -411,7 +436,8 @@ class RecursiveIteratorIterator implements OuterIterator
      * @return int|false The maximum accepted depth, or false if any depth is allowed.
      */
     #[TentativeType]
-    public function getMaxDepth(): int|false {}
+    #[LanguageLevelTypeAware(['8.1' => 'int|false'], default: '')]
+    public function getMaxDepth() {}
 }
 
 /**
@@ -427,7 +453,8 @@ interface OuterIterator extends Iterator
      * @return Iterator|null The inner iterator for the current entry.
      */
     #[TentativeType]
-    public function getInnerIterator(): ?Iterator;
+    #[LanguageLevelTypeAware(['8.1' => 'Iterator|null'], default: '')]
+    public function getInnerIterator();
 }
 
 /**
@@ -455,7 +482,8 @@ class IteratorIterator implements OuterIterator
      * @return Iterator|null The inner iterator as passed to IteratorIterator::__construct.
      */
     #[TentativeType]
-    public function getInnerIterator(): ?Iterator {}
+    #[LanguageLevelTypeAware(['8.1' => 'Iterator|null'], default: '')]
+    public function getInnerIterator() {}
 
     /**
      * Rewind to the first element
@@ -463,7 +491,8 @@ class IteratorIterator implements OuterIterator
      * @return void
      */
     #[TentativeType]
-    public function rewind(): void {}
+    #[LanguageLevelTypeAware(['8.1' => 'void'], default: '')]
+    public function rewind() {}
 
     /**
      * Checks if the iterator is valid
@@ -471,7 +500,8 @@ class IteratorIterator implements OuterIterator
      * @return bool true if the iterator is valid, otherwise false
      */
     #[TentativeType]
-    public function valid(): bool {}
+    #[LanguageLevelTypeAware(['8.1' => 'bool'], default: '')]
+    public function valid() {}
 
     /**
      * Get the key of the current element
@@ -479,7 +509,8 @@ class IteratorIterator implements OuterIterator
      * @return mixed The key of the current element.
      */
     #[TentativeType]
-    public function key(): mixed {}
+    #[LanguageLevelTypeAware(['8.1' => 'mixed'], default: '')]
+    public function key() {}
 
     /**
      * Get the current value
@@ -487,7 +518,8 @@ class IteratorIterator implements OuterIterator
      * @return mixed The value of the current element.
      */
     #[TentativeType]
-    public function current(): mixed {}
+    #[LanguageLevelTypeAware(['8.1' => 'mixed'], default: '')]
+    public function current() {}
 
     /**
      * Forward to the next element
@@ -495,7 +527,8 @@ class IteratorIterator implements OuterIterator
      * @return void
      */
     #[TentativeType]
-    public function next(): void {}
+    #[LanguageLevelTypeAware(['8.1' => 'void'], default: '')]
+    public function next() {}
 }
 
 /**
@@ -512,7 +545,8 @@ abstract class FilterIterator extends IteratorIterator
      * @return bool true if the current element is acceptable, otherwise false.
      */
     #[TentativeType]
-    abstract public function accept(): bool;
+    #[LanguageLevelTypeAware(['8.1' => 'bool'], default: '')]
+    abstract public function accept();
 
     /**
      * Construct a filterIterator
@@ -527,7 +561,8 @@ abstract class FilterIterator extends IteratorIterator
      * @return void
      */
     #[TentativeType]
-    public function rewind(): void {}
+    #[LanguageLevelTypeAware(['8.1' => 'void'], default: '')]
+    public function rewind() {}
 
     /**
      * Check whether the current element is valid
@@ -535,7 +570,8 @@ abstract class FilterIterator extends IteratorIterator
      * @return bool true if the current element is valid, otherwise false
      */
     #[TentativeType]
-    public function valid(): bool {}
+    #[LanguageLevelTypeAware(['8.1' => 'bool'], default: '')]
+    public function valid() {}
 
     /**
      * Get the current key
@@ -543,7 +579,8 @@ abstract class FilterIterator extends IteratorIterator
      * @return mixed The key of the current element.
      */
     #[TentativeType]
-    public function key(): mixed {}
+    #[LanguageLevelTypeAware(['8.1' => 'mixed'], default: '')]
+    public function key() {}
 
     /**
      * Get the current element value
@@ -551,7 +588,8 @@ abstract class FilterIterator extends IteratorIterator
      * @return mixed The current element value.
      */
     #[TentativeType]
-    public function current(): mixed {}
+    #[LanguageLevelTypeAware(['8.1' => 'mixed'], default: '')]
+    public function current() {}
 
     /**
      * Move the iterator forward
@@ -559,7 +597,8 @@ abstract class FilterIterator extends IteratorIterator
      * @return void
      */
     #[TentativeType]
-    public function next(): void {}
+    #[LanguageLevelTypeAware(['8.1' => 'void'], default: '')]
+    public function next() {}
 
     /**
      * Get the inner iterator
@@ -567,7 +606,8 @@ abstract class FilterIterator extends IteratorIterator
      * @return Iterator The inner iterator.
      */
     #[TentativeType]
-    public function getInnerIterator(): ?Iterator {}
+    #[LanguageLevelTypeAware(['8.1' => 'Iterator|null'], default: '')]
+    public function getInnerIterator() {}
 }
 
 /**
@@ -591,7 +631,8 @@ abstract class RecursiveFilterIterator extends FilterIterator implements Recursi
      * @return bool true if the inner iterator has children, otherwise false
      */
     #[TentativeType]
-    public function hasChildren(): bool {}
+    #[LanguageLevelTypeAware(['8.1' => 'bool'], default: '')]
+    public function hasChildren() {}
 
     /**
      * Return the inner iterator's children contained in a RecursiveFilterIterator
@@ -599,7 +640,8 @@ abstract class RecursiveFilterIterator extends FilterIterator implements Recursi
      * @return RecursiveFilterIterator|null containing the inner iterator's children.
      */
     #[TentativeType]
-    public function getChildren(): ?RecursiveFilterIterator {}
+    #[LanguageLevelTypeAware(['8.1' => 'RecursiveFilterIterator|null'], default: '')]
+    public function getChildren() {}
 }
 
 /**
@@ -614,7 +656,8 @@ class ParentIterator extends RecursiveFilterIterator
      * @return bool true if the current element is acceptable, otherwise false.
      */
     #[TentativeType]
-    public function accept(): bool {}
+    #[LanguageLevelTypeAware(['8.1' => 'bool'], default: '')]
+    public function accept() {}
 
     /**
      * Constructs a ParentIterator
@@ -629,7 +672,8 @@ class ParentIterator extends RecursiveFilterIterator
      * @return bool true if the inner iterator has children, otherwise false
      */
     #[TentativeType]
-    public function hasChildren(): bool {}
+    #[LanguageLevelTypeAware(['8.1' => 'bool'], default: '')]
+    public function hasChildren() {}
 
     /**
      * Return the inner iterator's children contained in a RecursiveFilterIterator
@@ -637,7 +681,8 @@ class ParentIterator extends RecursiveFilterIterator
      * @return ParentIterator containing the inner iterator's children.
      */
     #[TentativeType]
-    public function getChildren(): ?RecursiveFilterIterator {}
+    #[LanguageLevelTypeAware(['8.1' => 'RecursiveFilterIterator|null'], default: '')]
+    public function getChildren() {}
 }
 
 /**
@@ -658,7 +703,8 @@ interface SeekableIterator extends Iterator
      * @return void
      */
     #[TentativeType]
-    public function seek(#[LanguageLevelTypeAware(['8.0' => 'int'], default: '')] $offset): void;
+    #[LanguageLevelTypeAware(['8.1' => 'void'], default: '')]
+    public function seek(#[LanguageLevelTypeAware(['8.0' => 'int'], default: '')] $offset);
 }
 
 /**
@@ -687,7 +733,8 @@ class LimitIterator extends IteratorIterator
      * @return void
      */
     #[TentativeType]
-    public function rewind(): void {}
+    #[LanguageLevelTypeAware(['8.1' => 'void'], default: '')]
+    public function rewind() {}
 
     /**
      * Check whether the current element is valid
@@ -695,7 +742,8 @@ class LimitIterator extends IteratorIterator
      * @return bool true on success or false on failure.
      */
     #[TentativeType]
-    public function valid(): bool {}
+    #[LanguageLevelTypeAware(['8.1' => 'bool'], default: '')]
+    public function valid() {}
 
     /**
      * Get current key
@@ -703,7 +751,8 @@ class LimitIterator extends IteratorIterator
      * @return mixed The key of the current element.
      */
     #[TentativeType]
-    public function key(): mixed {}
+    #[LanguageLevelTypeAware(['8.1' => 'mixed'], default: '')]
+    public function key() {}
 
     /**
      * Get current element
@@ -711,7 +760,8 @@ class LimitIterator extends IteratorIterator
      * @return mixed the current element or null if there is none.
      */
     #[TentativeType]
-    public function current(): mixed {}
+    #[LanguageLevelTypeAware(['8.1' => 'mixed'], default: '')]
+    public function current() {}
 
     /**
      * Move the iterator forward
@@ -719,7 +769,8 @@ class LimitIterator extends IteratorIterator
      * @return void
      */
     #[TentativeType]
-    public function next(): void {}
+    #[LanguageLevelTypeAware(['8.1' => 'void'], default: '')]
+    public function next() {}
 
     /**
      * Seek to the given position
@@ -730,7 +781,8 @@ class LimitIterator extends IteratorIterator
      * @return int the offset position after seeking.
      */
     #[TentativeType]
-    public function seek(#[LanguageLevelTypeAware(['8.0' => 'int'], default: '')] $offset): int {}
+    #[LanguageLevelTypeAware(['8.1' => 'int'], default: '')]
+    public function seek(#[LanguageLevelTypeAware(['8.0' => 'int'], default: '')] $offset) {}
 
     /**
      * Return the current position
@@ -738,7 +790,8 @@ class LimitIterator extends IteratorIterator
      * @return int The current position.
      */
     #[TentativeType]
-    public function getPosition(): int {}
+    #[LanguageLevelTypeAware(['8.1' => 'int'], default: '')]
+    public function getPosition() {}
 
     /**
      * Get inner iterator
@@ -746,7 +799,8 @@ class LimitIterator extends IteratorIterator
      * @return Iterator The inner iterator passed to <b>LimitIterator::__construct</b>.
      */
     #[TentativeType]
-    public function getInnerIterator(): ?Iterator {}
+    #[LanguageLevelTypeAware(['8.1' => 'Iterator|null'], default: '')]
+    public function getInnerIterator() {}
 }
 
 /**
@@ -802,7 +856,8 @@ class CachingIterator extends IteratorIterator implements ArrayAccess, Countable
      * @return void
      */
     #[TentativeType]
-    public function rewind(): void {}
+    #[LanguageLevelTypeAware(['8.1' => 'void'], default: '')]
+    public function rewind() {}
 
     /**
      * Check whether the current element is valid
@@ -810,7 +865,8 @@ class CachingIterator extends IteratorIterator implements ArrayAccess, Countable
      * @return bool true on success or false on failure.
      */
     #[TentativeType]
-    public function valid(): bool {}
+    #[LanguageLevelTypeAware(['8.1' => 'bool'], default: '')]
+    public function valid() {}
 
     /**
      * Return the key for the current element
@@ -818,7 +874,8 @@ class CachingIterator extends IteratorIterator implements ArrayAccess, Countable
      * @return mixed The key of the current element.
      */
     #[TentativeType]
-    public function key(): mixed {}
+    #[LanguageLevelTypeAware(['8.1' => 'mixed'], default: '')]
+    public function key() {}
 
     /**
      * Return the current element
@@ -826,7 +883,8 @@ class CachingIterator extends IteratorIterator implements ArrayAccess, Countable
      * @return mixed
      */
     #[TentativeType]
-    public function current(): mixed {}
+    #[LanguageLevelTypeAware(['8.1' => 'mixed'], default: '')]
+    public function current() {}
 
     /**
      * Move the iterator forward
@@ -834,7 +892,8 @@ class CachingIterator extends IteratorIterator implements ArrayAccess, Countable
      * @return void
      */
     #[TentativeType]
-    public function next(): void {}
+    #[LanguageLevelTypeAware(['8.1' => 'void'], default: '')]
+    public function next() {}
 
     /**
      * Check whether the inner iterator has a valid next element
@@ -842,7 +901,8 @@ class CachingIterator extends IteratorIterator implements ArrayAccess, Countable
      * @return bool true on success or false on failure.
      */
     #[TentativeType]
-    public function hasNext(): bool {}
+    #[LanguageLevelTypeAware(['8.1' => 'bool'], default: '')]
+    public function hasNext() {}
 
     /**
      * Return the string representation of the current iteration based on the flag being used.
@@ -858,7 +918,8 @@ class CachingIterator extends IteratorIterator implements ArrayAccess, Countable
      * @return Iterator an object implementing the Iterator interface.
      */
     #[TentativeType]
-    public function getInnerIterator(): ?Iterator {}
+    #[LanguageLevelTypeAware(['8.1' => 'Iterator|null'], default: '')]
+    public function getInnerIterator() {}
 
     /**
      * Get flags used
@@ -866,7 +927,8 @@ class CachingIterator extends IteratorIterator implements ArrayAccess, Countable
      * @return int Bitmask of the flags
      */
     #[TentativeType]
-    public function getFlags(): int {}
+    #[LanguageLevelTypeAware(['8.1' => 'int'], default: '')]
+    public function getFlags() {}
 
     /**
      * The setFlags purpose
@@ -875,7 +937,8 @@ class CachingIterator extends IteratorIterator implements ArrayAccess, Countable
      * @return void
      */
     #[TentativeType]
-    public function setFlags(#[LanguageLevelTypeAware(['8.0' => 'int'], default: '')] $flags): void {}
+    #[LanguageLevelTypeAware(['8.1' => 'void'], default: '')]
+    public function setFlags(#[LanguageLevelTypeAware(['8.0' => 'int'], default: '')] $flags) {}
 
     /**
      * Internal cache array index to retrieve.
@@ -885,7 +948,8 @@ class CachingIterator extends IteratorIterator implements ArrayAccess, Countable
      * @throws BadMethodCallException when the {@see CachingIterator::FULL_CACHE} flag is not being used.
      */
     #[TentativeType]
-    public function offsetGet($key): mixed {}
+    #[LanguageLevelTypeAware(['8.1' => 'mixed'], default: '')]
+    public function offsetGet($key) {}
 
     /**
      * Set an element on the internal cache array.
@@ -896,7 +960,8 @@ class CachingIterator extends IteratorIterator implements ArrayAccess, Countable
      * @throws BadMethodCallException when the {@see CachingIterator::FULL_CACHE} flag is not being used.
      */
     #[TentativeType]
-    public function offsetSet($key, #[LanguageLevelTypeAware(['8.0' => 'mixed'], default: '')] $value): void {}
+    #[LanguageLevelTypeAware(['8.1' => 'void'], default: '')]
+    public function offsetSet($key, #[LanguageLevelTypeAware(['8.0' => 'mixed'], default: '')] $value) {}
 
     /**
      * Remove an element from the internal cache array.
@@ -906,7 +971,8 @@ class CachingIterator extends IteratorIterator implements ArrayAccess, Countable
      * @throws BadMethodCallException when the {@see CachingIterator::FULL_CACHE} flag is not being used.
      */
     #[TentativeType]
-    public function offsetUnset($key): void {}
+    #[LanguageLevelTypeAware(['8.1' => 'void'], default: '')]
+    public function offsetUnset($key) {}
 
     /**
      * Return whether an element at the index exists on the internal cache array.
@@ -916,7 +982,8 @@ class CachingIterator extends IteratorIterator implements ArrayAccess, Countable
      * @throws BadMethodCallException when the {@see CachingIterator::FULL_CACHE} flag is not being used.
      */
     #[TentativeType]
-    public function offsetExists($key): bool {}
+    #[LanguageLevelTypeAware(['8.1' => 'bool'], default: '')]
+    public function offsetExists($key) {}
 
     /**
      * Retrieve the contents of the cache
@@ -925,7 +992,8 @@ class CachingIterator extends IteratorIterator implements ArrayAccess, Countable
      * @throws BadMethodCallException when the {@see CachingIterator::FULL_CACHE} flag is not being used.
      */
     #[TentativeType]
-    public function getCache(): array {}
+    #[LanguageLevelTypeAware(['8.1' => 'array'], default: '')]
+    public function getCache() {}
 
     /**
      * The number of elements in the iterator
@@ -935,7 +1003,8 @@ class CachingIterator extends IteratorIterator implements ArrayAccess, Countable
      * @since 5.2
      */
     #[TentativeType]
-    public function count(): int {}
+    #[LanguageLevelTypeAware(['8.1' => 'int'], default: '')]
+    public function count() {}
 }
 
 /**
@@ -958,7 +1027,8 @@ class RecursiveCachingIterator extends CachingIterator implements RecursiveItera
      * @return bool true if the inner iterator has children, otherwise false
      */
     #[TentativeType]
-    public function hasChildren(): bool {}
+    #[LanguageLevelTypeAware(['8.1' => 'bool'], default: '')]
+    public function hasChildren() {}
 
     /**
      * Return the inner iterator's children as a RecursiveCachingIterator
@@ -966,7 +1036,8 @@ class RecursiveCachingIterator extends CachingIterator implements RecursiveItera
      * @return RecursiveCachingIterator|null The inner iterator's children, as a RecursiveCachingIterator.
      */
     #[TentativeType]
-    public function getChildren(): ?RecursiveCachingIterator {}
+    #[LanguageLevelTypeAware(['8.1' => 'RecursiveCachingIterator|null'], default: '')]
+    public function getChildren() {}
 }
 
 /**
@@ -988,7 +1059,8 @@ class NoRewindIterator extends IteratorIterator
      * @return void
      */
     #[TentativeType]
-    public function rewind(): void {}
+    #[LanguageLevelTypeAware(['8.1' => 'void'], default: '')]
+    public function rewind() {}
 
     /**
      * Validates the iterator
@@ -996,7 +1068,8 @@ class NoRewindIterator extends IteratorIterator
      * @return bool true on success or false on failure.
      */
     #[TentativeType]
-    public function valid(): bool {}
+    #[LanguageLevelTypeAware(['8.1' => 'bool'], default: '')]
+    public function valid() {}
 
     /**
      * Get the current key
@@ -1004,7 +1077,8 @@ class NoRewindIterator extends IteratorIterator
      * @return mixed The key of the current element.
      */
     #[TentativeType]
-    public function key(): mixed {}
+    #[LanguageLevelTypeAware(['8.1' => 'mixed'], default: '')]
+    public function key() {}
 
     /**
      * Get the current value
@@ -1012,7 +1086,8 @@ class NoRewindIterator extends IteratorIterator
      * @return mixed The current value.
      */
     #[TentativeType]
-    public function current(): mixed {}
+    #[LanguageLevelTypeAware(['8.1' => 'mixed'], default: '')]
+    public function current() {}
 
     /**
      * Forward to the next element
@@ -1020,7 +1095,8 @@ class NoRewindIterator extends IteratorIterator
      * @return void
      */
     #[TentativeType]
-    public function next(): void {}
+    #[LanguageLevelTypeAware(['8.1' => 'void'], default: '')]
+    public function next() {}
 
     /**
      * Get the inner iterator
@@ -1028,7 +1104,8 @@ class NoRewindIterator extends IteratorIterator
      * @return Iterator The inner iterator, as passed to <b>NoRewindIterator::__construct</b>.
      */
     #[TentativeType]
-    public function getInnerIterator(): ?Iterator {}
+    #[LanguageLevelTypeAware(['8.1' => 'Iterator|null'], default: '')]
+    public function getInnerIterator() {}
 }
 
 /**
@@ -1052,7 +1129,8 @@ class AppendIterator extends IteratorIterator
      * @return void
      */
     #[TentativeType]
-    public function append(Iterator $iterator): void {}
+    #[LanguageLevelTypeAware(['8.1' => 'void'], default: '')]
+    public function append(Iterator $iterator) {}
 
     /**
      * Rewinds the Iterator
@@ -1060,7 +1138,8 @@ class AppendIterator extends IteratorIterator
      * @return void
      */
     #[TentativeType]
-    public function rewind(): void {}
+    #[LanguageLevelTypeAware(['8.1' => 'void'], default: '')]
+    public function rewind() {}
 
     /**
      * Checks validity of the current element
@@ -1068,7 +1147,8 @@ class AppendIterator extends IteratorIterator
      * @return bool true on success or false on failure.
      */
     #[TentativeType]
-    public function valid(): bool {}
+    #[LanguageLevelTypeAware(['8.1' => 'bool'], default: '')]
+    public function valid() {}
 
     /**
      * Gets the current key
@@ -1076,7 +1156,8 @@ class AppendIterator extends IteratorIterator
      * @return mixed The key of the current element.
      */
     #[TentativeType]
-    public function key(): mixed {}
+    #[LanguageLevelTypeAware(['8.1' => 'mixed'], default: '')]
+    public function key() {}
 
     /**
      * Gets the current value
@@ -1084,7 +1165,8 @@ class AppendIterator extends IteratorIterator
      * @return mixed The current value if it is valid or null otherwise.
      */
     #[TentativeType]
-    public function current(): mixed {}
+    #[LanguageLevelTypeAware(['8.1' => 'mixed'], default: '')]
+    public function current() {}
 
     /**
      * Moves to the next element
@@ -1092,7 +1174,8 @@ class AppendIterator extends IteratorIterator
      * @return void
      */
     #[TentativeType]
-    public function next(): void {}
+    #[LanguageLevelTypeAware(['8.1' => 'void'], default: '')]
+    public function next() {}
 
     /**
      * Gets an inner iterator
@@ -1100,7 +1183,8 @@ class AppendIterator extends IteratorIterator
      * @return Iterator the current inner Iterator.
      */
     #[TentativeType]
-    public function getInnerIterator(): ?Iterator {}
+    #[LanguageLevelTypeAware(['8.1' => 'Iterator|null'], default: '')]
+    public function getInnerIterator() {}
 
     /**
      * Gets an index of iterators
@@ -1108,7 +1192,8 @@ class AppendIterator extends IteratorIterator
      * @return int|null The index of iterators.
      */
     #[TentativeType]
-    public function getIteratorIndex(): ?int {}
+    #[LanguageLevelTypeAware(['8.1' => 'int|null'], default: '')]
+    public function getIteratorIndex() {}
 
     /**
      * The getArrayIterator method
@@ -1116,7 +1201,8 @@ class AppendIterator extends IteratorIterator
      * @return ArrayIterator containing the appended iterators.
      */
     #[TentativeType]
-    public function getArrayIterator(): ArrayIterator {}
+    #[LanguageLevelTypeAware(['8.1' => 'ArrayIterator'], default: '')]
+    public function getArrayIterator() {}
 }
 
 /**
@@ -1140,7 +1226,8 @@ class InfiniteIterator extends IteratorIterator
      * @return void
      */
     #[TentativeType]
-    public function next(): void {}
+    #[LanguageLevelTypeAware(['8.1' => 'void'], default: '')]
+    public function next() {}
 }
 
 /**
@@ -1206,7 +1293,8 @@ class RegexIterator extends FilterIterator
      * @return bool true if a match, false otherwise.
      */
     #[TentativeType]
-    public function accept(): bool {}
+    #[LanguageLevelTypeAware(['8.1' => 'bool'], default: '')]
+    public function accept() {}
 
     /**
      * Returns operation mode.
@@ -1214,7 +1302,8 @@ class RegexIterator extends FilterIterator
      * @return int the operation mode.
      */
     #[TentativeType]
-    public function getMode(): int {}
+    #[LanguageLevelTypeAware(['8.1' => 'int'], default: '')]
+    public function getMode() {}
 
     /**
      * Sets the operation mode.
@@ -1267,7 +1356,8 @@ class RegexIterator extends FilterIterator
      * @return void
      */
     #[TentativeType]
-    public function setMode(#[LanguageLevelTypeAware(['8.0' => 'int'], default: '')] $mode): void {}
+    #[LanguageLevelTypeAware(['8.1' => 'void'], default: '')]
+    public function setMode(#[LanguageLevelTypeAware(['8.0' => 'int'], default: '')] $mode) {}
 
     /**
      * Get flags
@@ -1275,7 +1365,8 @@ class RegexIterator extends FilterIterator
      * @return int the set flags.
      */
     #[TentativeType]
-    public function getFlags(): int {}
+    #[LanguageLevelTypeAware(['8.1' => 'int'], default: '')]
+    public function getFlags() {}
 
     /**
      * Sets the flags.
@@ -1304,7 +1395,8 @@ class RegexIterator extends FilterIterator
      * @return void
      */
     #[TentativeType]
-    public function setFlags(#[LanguageLevelTypeAware(['8.0' => 'int'], default: '')] $flags): void {}
+    #[LanguageLevelTypeAware(['8.1' => 'void'], default: '')]
+    public function setFlags(#[LanguageLevelTypeAware(['8.0' => 'int'], default: '')] $flags) {}
 
     /**
      * Returns current regular expression
@@ -1313,7 +1405,8 @@ class RegexIterator extends FilterIterator
      * @since 5.4
      */
     #[TentativeType]
-    public function getRegex(): string {}
+    #[LanguageLevelTypeAware(['8.1' => 'string'], default: '')]
+    public function getRegex() {}
 
     /**
      * Returns the regular expression flags.
@@ -1321,7 +1414,8 @@ class RegexIterator extends FilterIterator
      * @return int a bitmask of the regular expression flags.
      */
     #[TentativeType]
-    public function getPregFlags(): int {}
+    #[LanguageLevelTypeAware(['8.1' => 'int'], default: '')]
+    public function getPregFlags() {}
 
     /**
      * Sets the regular expression flags.
@@ -1333,7 +1427,8 @@ class RegexIterator extends FilterIterator
      * @return void
      */
     #[TentativeType]
-    public function setPregFlags(#[LanguageLevelTypeAware(['8.0' => 'int'], default: '')] $pregFlags): void {}
+    #[LanguageLevelTypeAware(['8.1' => 'void'], default: '')]
+    public function setPregFlags(#[LanguageLevelTypeAware(['8.0' => 'int'], default: '')] $pregFlags) {}
 }
 
 /**
@@ -1365,7 +1460,8 @@ class RecursiveRegexIterator extends RegexIterator implements RecursiveIterator
      * @return bool true if an iterator can be obtained for the current entry, otherwise returns false.
      */
     #[TentativeType]
-    public function hasChildren(): bool {}
+    #[LanguageLevelTypeAware(['8.1' => 'bool'], default: '')]
+    public function hasChildren() {}
 
     /**
      * Returns an iterator for the current entry.
@@ -1373,7 +1469,8 @@ class RecursiveRegexIterator extends RegexIterator implements RecursiveIterator
      * @return RecursiveRegexIterator An iterator for the current entry, if it can be iterated over by the inner iterator.
      */
     #[TentativeType]
-    public function getChildren(): RecursiveRegexIterator {}
+    #[LanguageLevelTypeAware(['8.1' => 'RecursiveRegexIterator'], default: '')]
+    public function getChildren() {}
 }
 
 /**
@@ -1412,7 +1509,8 @@ class RecursiveTreeIterator extends RecursiveIteratorIterator
      * @return void
      */
     #[TentativeType]
-    public function rewind(): void {}
+    #[LanguageLevelTypeAware(['8.1' => 'void'], default: '')]
+    public function rewind() {}
 
     /**
      * Check validity
@@ -1420,7 +1518,8 @@ class RecursiveTreeIterator extends RecursiveIteratorIterator
      * @return bool true if the current position is valid, otherwise false
      */
     #[TentativeType]
-    public function valid(): bool {}
+    #[LanguageLevelTypeAware(['8.1' => 'bool'], default: '')]
+    public function valid() {}
 
     /**
      * Get the key of the current element
@@ -1428,7 +1527,8 @@ class RecursiveTreeIterator extends RecursiveIteratorIterator
      * @return string the current key prefixed and postfixed.
      */
     #[TentativeType]
-    public function key(): mixed {}
+    #[LanguageLevelTypeAware(['8.1' => 'mixed'], default: '')]
+    public function key() {}
 
     /**
      * Get current element
@@ -1436,7 +1536,8 @@ class RecursiveTreeIterator extends RecursiveIteratorIterator
      * @return string the current element prefixed and postfixed.
      */
     #[TentativeType]
-    public function current(): mixed {}
+    #[LanguageLevelTypeAware(['8.1' => 'mixed'], default: '')]
+    public function current() {}
 
     /**
      * Move to next element
@@ -1444,7 +1545,8 @@ class RecursiveTreeIterator extends RecursiveIteratorIterator
      * @return void
      */
     #[TentativeType]
-    public function next(): void {}
+    #[LanguageLevelTypeAware(['8.1' => 'void'], default: '')]
+    public function next() {}
 
     /**
      * Begin iteration
@@ -1452,7 +1554,8 @@ class RecursiveTreeIterator extends RecursiveIteratorIterator
      * @return void
      */
     #[TentativeType]
-    public function beginIteration(): void {}
+    #[LanguageLevelTypeAware(['8.1' => 'void'], default: '')]
+    public function beginIteration() {}
 
     /**
      * End iteration
@@ -1460,7 +1563,8 @@ class RecursiveTreeIterator extends RecursiveIteratorIterator
      * @return void
      */
     #[TentativeType]
-    public function endIteration(): void {}
+    #[LanguageLevelTypeAware(['8.1' => 'void'], default: '')]
+    public function endIteration() {}
 
     /**
      * Has children
@@ -1468,7 +1572,8 @@ class RecursiveTreeIterator extends RecursiveIteratorIterator
      * @return bool true if there are children, otherwise false
      */
     #[TentativeType]
-    public function callHasChildren(): bool {}
+    #[LanguageLevelTypeAware(['8.1' => 'bool'], default: '')]
+    public function callHasChildren() {}
 
     /**
      * Get children
@@ -1476,7 +1581,8 @@ class RecursiveTreeIterator extends RecursiveIteratorIterator
      * @return RecursiveIterator|null A <b>RecursiveIterator</b>.
      */
     #[TentativeType]
-    public function callGetChildren(): ?RecursiveIterator {}
+    #[LanguageLevelTypeAware(['8.1' => 'RecursiveIterator|null'], default: '')]
+    public function callGetChildren() {}
 
     /**
      * Begin children
@@ -1484,7 +1590,8 @@ class RecursiveTreeIterator extends RecursiveIteratorIterator
      * @return void
      */
     #[TentativeType]
-    public function beginChildren(): void {}
+    #[LanguageLevelTypeAware(['8.1' => 'void'], default: '')]
+    public function beginChildren() {}
 
     /**
      * End children
@@ -1492,7 +1599,8 @@ class RecursiveTreeIterator extends RecursiveIteratorIterator
      * @return void
      */
     #[TentativeType]
-    public function endChildren(): void {}
+    #[LanguageLevelTypeAware(['8.1' => 'void'], default: '')]
+    public function endChildren() {}
 
     /**
      * Next element
@@ -1500,7 +1608,8 @@ class RecursiveTreeIterator extends RecursiveIteratorIterator
      * @return void
      */
     #[TentativeType]
-    public function nextElement(): void {}
+    #[LanguageLevelTypeAware(['8.1' => 'void'], default: '')]
+    public function nextElement() {}
 
     /**
      * Get the prefix
@@ -1508,13 +1617,15 @@ class RecursiveTreeIterator extends RecursiveIteratorIterator
      * @return string the string to place in front of current element
      */
     #[TentativeType]
-    public function getPrefix(): string {}
+    #[LanguageLevelTypeAware(['8.1' => 'string'], default: '')]
+    public function getPrefix() {}
 
     /**
      * @param string $postfix
      */
     #[TentativeType]
-    public function setPostfix(#[PhpStormStubsElementAvailable(from: '7.3')] string $postfix): void {}
+    #[LanguageLevelTypeAware(['8.1' => 'void'], default: '')]
+    public function setPostfix(#[PhpStormStubsElementAvailable(from: '7.3')] string $postfix) {}
 
     /**
      * Set a part of the prefix
@@ -1528,10 +1639,11 @@ class RecursiveTreeIterator extends RecursiveIteratorIterator
      * @return void
      */
     #[TentativeType]
+    #[LanguageLevelTypeAware(['8.1' => 'void'], default: '')]
     public function setPrefixPart(
         #[LanguageLevelTypeAware(['8.0' => 'int'], default: '')] $part,
         #[LanguageLevelTypeAware(['8.0' => 'string'], default: '')] $value
-    ): void {}
+    ) {}
 
     /**
      * Get current entry
@@ -1539,7 +1651,8 @@ class RecursiveTreeIterator extends RecursiveIteratorIterator
      * @return string the part of the tree built for the current element.
      */
     #[TentativeType]
-    public function getEntry(): string {}
+    #[LanguageLevelTypeAware(['8.1' => 'string'], default: '')]
+    public function getEntry() {}
 
     /**
      * Get the postfix
@@ -1547,7 +1660,8 @@ class RecursiveTreeIterator extends RecursiveIteratorIterator
      * @return string to place after the current element.
      */
     #[TentativeType]
-    public function getPostfix(): string {}
+    #[LanguageLevelTypeAware(['8.1' => 'string'], default: '')]
+    public function getPostfix() {}
 }
 
 /**
@@ -1592,7 +1706,8 @@ class ArrayObject implements IteratorAggregate, ArrayAccess, Serializable, Count
      * @return bool true if the requested index exists, otherwise false
      */
     #[TentativeType]
-    public function offsetExists(#[LanguageLevelTypeAware(['8.0' => 'mixed'], default: '')] $key): bool {}
+    #[LanguageLevelTypeAware(['8.1' => 'bool'], default: '')]
+    public function offsetExists(#[LanguageLevelTypeAware(['8.0' => 'mixed'], default: '')] $key) {}
 
     /**
      * Returns the value at the specified index
@@ -1603,7 +1718,8 @@ class ArrayObject implements IteratorAggregate, ArrayAccess, Serializable, Count
      * @return TValue|null The value at the specified index or null.
      */
     #[TentativeType]
-    public function offsetGet(#[LanguageLevelTypeAware(['8.0' => 'mixed'], default: '')] $key): mixed {}
+    #[LanguageLevelTypeAware(['8.1' => 'mixed'], default: '')]
+    public function offsetGet(#[LanguageLevelTypeAware(['8.0' => 'mixed'], default: '')] $key) {}
 
     /**
      * Sets the value at the specified index to newval
@@ -1617,10 +1733,11 @@ class ArrayObject implements IteratorAggregate, ArrayAccess, Serializable, Count
      * @return void
      */
     #[TentativeType]
+    #[LanguageLevelTypeAware(['8.1' => 'void'], default: '')]
     public function offsetSet(
         #[LanguageLevelTypeAware(['8.0' => 'mixed'], default: '')] $key,
         #[LanguageLevelTypeAware(['8.0' => 'mixed'], default: '')] $value
-    ): void {}
+    ) {}
 
     /**
      * Unsets the value at the specified index
@@ -1631,7 +1748,8 @@ class ArrayObject implements IteratorAggregate, ArrayAccess, Serializable, Count
      * @return void
      */
     #[TentativeType]
-    public function offsetUnset(#[LanguageLevelTypeAware(['8.0' => 'mixed'], default: '')] $key): void {}
+    #[LanguageLevelTypeAware(['8.1' => 'void'], default: '')]
+    public function offsetUnset(#[LanguageLevelTypeAware(['8.0' => 'mixed'], default: '')] $key) {}
 
     /**
      * Appends the value
@@ -1642,7 +1760,8 @@ class ArrayObject implements IteratorAggregate, ArrayAccess, Serializable, Count
      * @return void
      */
     #[TentativeType]
-    public function append(#[LanguageLevelTypeAware(['8.0' => 'mixed'], default: '')] $value): void {}
+    #[LanguageLevelTypeAware(['8.1' => 'void'], default: '')]
+    public function append(#[LanguageLevelTypeAware(['8.0' => 'mixed'], default: '')] $value) {}
 
     /**
      * Creates a copy of the ArrayObject.
@@ -1651,7 +1770,8 @@ class ArrayObject implements IteratorAggregate, ArrayAccess, Serializable, Count
      * an array of the public properties of that object will be returned.
      */
     #[TentativeType]
-    public function getArrayCopy(): array {}
+    #[LanguageLevelTypeAware(['8.1' => 'array'], default: '')]
+    public function getArrayCopy() {}
 
     /**
      * Get the number of public properties in the ArrayObject
@@ -1660,7 +1780,8 @@ class ArrayObject implements IteratorAggregate, ArrayAccess, Serializable, Count
      * @return int The number of public properties in the ArrayObject.
      */
     #[TentativeType]
-    public function count(): int {}
+    #[LanguageLevelTypeAware(['8.1' => 'int'], default: '')]
+    public function count() {}
 
     /**
      * Gets the behavior flags.
@@ -1668,7 +1789,8 @@ class ArrayObject implements IteratorAggregate, ArrayAccess, Serializable, Count
      * @return int the behavior flags of the ArrayObject.
      */
     #[TentativeType]
-    public function getFlags(): int {}
+    #[LanguageLevelTypeAware(['8.1' => 'int'], default: '')]
+    public function getFlags() {}
 
     /**
      * Sets the behavior flags.
@@ -1706,7 +1828,8 @@ class ArrayObject implements IteratorAggregate, ArrayAccess, Serializable, Count
      * @return void
      */
     #[TentativeType]
-    public function setFlags(#[LanguageLevelTypeAware(['8.0' => 'int'], default: '')] $flags): void {}
+    #[LanguageLevelTypeAware(['8.1' => 'void'], default: '')]
+    public function setFlags(#[LanguageLevelTypeAware(['8.0' => 'int'], default: '')] $flags) {}
 
     /**
      * Sort the entries by value
@@ -1784,7 +1907,8 @@ class ArrayObject implements IteratorAggregate, ArrayAccess, Serializable, Count
      * @return void
      */
     #[TentativeType]
-    public function unserialize(#[LanguageLevelTypeAware(['8.0' => 'string'], default: '')] $data): void {}
+    #[LanguageLevelTypeAware(['8.1' => 'void'], default: '')]
+    public function unserialize(#[LanguageLevelTypeAware(['8.0' => 'string'], default: '')] $data) {}
 
     /**
      * Serialize an ArrayObject
@@ -1792,28 +1916,32 @@ class ArrayObject implements IteratorAggregate, ArrayAccess, Serializable, Count
      * @return string The serialized representation of the <b>ArrayObject</b>.
      */
     #[TentativeType]
-    public function serialize(): string {}
+    #[LanguageLevelTypeAware(['8.1' => 'string'], default: '')]
+    public function serialize() {}
 
     /**
      * @return array
      * @since 7.4
      */
     #[TentativeType]
-    public function __debugInfo(): array {}
+    #[LanguageLevelTypeAware(['8.1' => 'array'], default: '')]
+    public function __debugInfo() {}
 
     /**
      * @return array
      * @since 7.4
      */
     #[TentativeType]
-    public function __serialize(): array {}
+    #[LanguageLevelTypeAware(['8.1' => 'array'], default: '')]
+    public function __serialize() {}
 
     /**
      * @param array $data
      * @since 7.4
      */
     #[TentativeType]
-    public function __unserialize(array $data): void {}
+    #[LanguageLevelTypeAware(['8.1' => 'void'], default: '')]
+    public function __unserialize(array $data) {}
 
     /**
      * Create a new iterator from an ArrayObject instance
@@ -1821,7 +1949,8 @@ class ArrayObject implements IteratorAggregate, ArrayAccess, Serializable, Count
      * @return ArrayIterator<TKey, TValue> An iterator from an <b>ArrayObject</b>.
      */
     #[TentativeType]
-    public function getIterator(): Iterator {}
+    #[LanguageLevelTypeAware(['8.1' => 'Iterator'], default: '')]
+    public function getIterator() {}
 
     /**
      * Exchange the array for another one.
@@ -1832,7 +1961,8 @@ class ArrayObject implements IteratorAggregate, ArrayAccess, Serializable, Count
      * @return array the old array.
      */
     #[TentativeType]
-    public function exchangeArray(#[LanguageLevelTypeAware(['8.0' => 'object|array'], default: '')] $array): array {}
+    #[LanguageLevelTypeAware(['8.1' => 'array'], default: '')]
+    public function exchangeArray(#[LanguageLevelTypeAware(['8.0' => 'object|array'], default: '')] $array) {}
 
     /**
      * Sets the iterator classname for the ArrayObject.
@@ -1843,7 +1973,8 @@ class ArrayObject implements IteratorAggregate, ArrayAccess, Serializable, Count
      * @return void
      */
     #[TentativeType]
-    public function setIteratorClass(#[LanguageLevelTypeAware(['8.0' => 'string'], default: '')] $iteratorClass): void {}
+    #[LanguageLevelTypeAware(['8.1' => 'void'], default: '')]
+    public function setIteratorClass(#[LanguageLevelTypeAware(['8.0' => 'string'], default: '')] $iteratorClass) {}
 
     /**
      * Gets the iterator classname for the ArrayObject.
@@ -1851,7 +1982,8 @@ class ArrayObject implements IteratorAggregate, ArrayAccess, Serializable, Count
      * @return class-string<ArrayIterator> the iterator class name that is used to iterate over this object.
      */
     #[TentativeType]
-    public function getIteratorClass(): string {}
+    #[LanguageLevelTypeAware(['8.1' => 'string'], default: '')]
+    public function getIteratorClass() {}
 }
 
 /**
@@ -1890,7 +2022,8 @@ class ArrayIterator implements SeekableIterator, ArrayAccess, Serializable, Coun
      * @return bool true if the offset exists, otherwise false
      */
     #[TentativeType]
-    public function offsetExists(#[LanguageLevelTypeAware(['8.0' => 'mixed'], default: '')] $key): bool {}
+    #[LanguageLevelTypeAware(['8.1' => 'bool'], default: '')]
+    public function offsetExists(#[LanguageLevelTypeAware(['8.0' => 'mixed'], default: '')] $key) {}
 
     /**
      * Get value for an offset
@@ -1901,7 +2034,8 @@ class ArrayIterator implements SeekableIterator, ArrayAccess, Serializable, Coun
      * @return TValue|null The value at offset <i>index</i>.
      */
     #[TentativeType]
-    public function offsetGet(#[LanguageLevelTypeAware(['8.0' => 'mixed'], default: '')] $key): mixed {}
+    #[LanguageLevelTypeAware(['8.1' => 'mixed'], default: '')]
+    public function offsetGet(#[LanguageLevelTypeAware(['8.0' => 'mixed'], default: '')] $key) {}
 
     /**
      * Set value for an offset
@@ -1915,10 +2049,11 @@ class ArrayIterator implements SeekableIterator, ArrayAccess, Serializable, Coun
      * @return void
      */
     #[TentativeType]
+    #[LanguageLevelTypeAware(['8.1' => 'void'], default: '')]
     public function offsetSet(
         #[LanguageLevelTypeAware(['8.0' => 'mixed'], default: '')] $key,
         #[LanguageLevelTypeAware(['8.0' => 'mixed'], default: '')] $value
-    ): void {}
+    ) {}
 
     /**
      * Unset value for an offset
@@ -1929,7 +2064,8 @@ class ArrayIterator implements SeekableIterator, ArrayAccess, Serializable, Coun
      * @return void
      */
     #[TentativeType]
-    public function offsetUnset(#[LanguageLevelTypeAware(['8.0' => 'mixed'], default: '')] $key): void {}
+    #[LanguageLevelTypeAware(['8.1' => 'void'], default: '')]
+    public function offsetUnset(#[LanguageLevelTypeAware(['8.0' => 'mixed'], default: '')] $key) {}
 
     /**
      * Append an element
@@ -1940,7 +2076,8 @@ class ArrayIterator implements SeekableIterator, ArrayAccess, Serializable, Coun
      * @return void
      */
     #[TentativeType]
-    public function append(#[LanguageLevelTypeAware(['8.0' => 'mixed'], default: '')] $value): void {}
+    #[LanguageLevelTypeAware(['8.1' => 'void'], default: '')]
+    public function append(#[LanguageLevelTypeAware(['8.0' => 'mixed'], default: '')] $value) {}
 
     /**
      * Get array copy
@@ -1949,7 +2086,8 @@ class ArrayIterator implements SeekableIterator, ArrayAccess, Serializable, Coun
      * if ArrayIterator refers to an object.
      */
     #[TentativeType]
-    public function getArrayCopy(): array {}
+    #[LanguageLevelTypeAware(['8.1' => 'array'], default: '')]
+    public function getArrayCopy() {}
 
     /**
      * Count elements
@@ -1958,7 +2096,8 @@ class ArrayIterator implements SeekableIterator, ArrayAccess, Serializable, Coun
      * array or object, respectively.
      */
     #[TentativeType]
-    public function count(): int {}
+    #[LanguageLevelTypeAware(['8.1' => 'int'], default: '')]
+    public function count() {}
 
     /**
      * Get flags
@@ -1966,7 +2105,8 @@ class ArrayIterator implements SeekableIterator, ArrayAccess, Serializable, Coun
      * @return int The current flags.
      */
     #[TentativeType]
-    public function getFlags(): int {}
+    #[LanguageLevelTypeAware(['8.1' => 'int'], default: '')]
+    public function getFlags() {}
 
     /**
      * Set behaviour flags
@@ -1980,7 +2120,8 @@ class ArrayIterator implements SeekableIterator, ArrayAccess, Serializable, Coun
      * @return void
      */
     #[TentativeType]
-    public function setFlags(#[LanguageLevelTypeAware(['8.0' => 'int'], default: '')] $flags): void {}
+    #[LanguageLevelTypeAware(['8.1' => 'void'], default: '')]
+    public function setFlags(#[LanguageLevelTypeAware(['8.0' => 'int'], default: '')] $flags) {}
 
     /**
      * Sort array by values
@@ -2045,7 +2186,8 @@ class ArrayIterator implements SeekableIterator, ArrayAccess, Serializable, Coun
      * @return void
      */
     #[TentativeType]
-    public function unserialize(#[LanguageLevelTypeAware(['8.0' => 'string'], default: '')] $data): void {}
+    #[LanguageLevelTypeAware(['8.1' => 'void'], default: '')]
+    public function unserialize(#[LanguageLevelTypeAware(['8.0' => 'string'], default: '')] $data) {}
 
     /**
      * Serialize
@@ -2053,7 +2195,8 @@ class ArrayIterator implements SeekableIterator, ArrayAccess, Serializable, Coun
      * @return string The serialized <b>ArrayIterator</b>.
      */
     #[TentativeType]
-    public function serialize(): string {}
+    #[LanguageLevelTypeAware(['8.1' => 'string'], default: '')]
+    public function serialize() {}
 
     /**
      * Rewind array back to the start
@@ -2061,7 +2204,8 @@ class ArrayIterator implements SeekableIterator, ArrayAccess, Serializable, Coun
      * @return void
      */
     #[TentativeType]
-    public function rewind(): void {}
+    #[LanguageLevelTypeAware(['8.1' => 'void'], default: '')]
+    public function rewind() {}
 
     /**
      * Return current array entry
@@ -2069,7 +2213,8 @@ class ArrayIterator implements SeekableIterator, ArrayAccess, Serializable, Coun
      * @return TValue The current array entry.
      */
     #[TentativeType]
-    public function current(): mixed {}
+    #[LanguageLevelTypeAware(['8.1' => 'mixed'], default: '')]
+    public function current() {}
 
     /**
      * Return current array key
@@ -2077,7 +2222,8 @@ class ArrayIterator implements SeekableIterator, ArrayAccess, Serializable, Coun
      * @return TKey|null The key of the current element.
      */
     #[TentativeType]
-    public function key(): string|int|null {}
+    #[LanguageLevelTypeAware(['8.1' => 'string|int|null'], default: '')]
+    public function key() {}
 
     /**
      * Move to next entry
@@ -2085,7 +2231,8 @@ class ArrayIterator implements SeekableIterator, ArrayAccess, Serializable, Coun
      * @return void
      */
     #[TentativeType]
-    public function next(): void {}
+    #[LanguageLevelTypeAware(['8.1' => 'void'], default: '')]
+    public function next() {}
 
     /**
      * Check whether array contains more entries
@@ -2093,7 +2240,8 @@ class ArrayIterator implements SeekableIterator, ArrayAccess, Serializable, Coun
      * @return bool
      */
     #[TentativeType]
-    public function valid(): bool {}
+    #[LanguageLevelTypeAware(['8.1' => 'bool'], default: '')]
+    public function valid() {}
 
     /**
      * Seek to position
@@ -2104,28 +2252,32 @@ class ArrayIterator implements SeekableIterator, ArrayAccess, Serializable, Coun
      * @return void
      */
     #[TentativeType]
-    public function seek(#[LanguageLevelTypeAware(['8.0' => 'int'], default: '')] $offset): void {}
+    #[LanguageLevelTypeAware(['8.1' => 'void'], default: '')]
+    public function seek(#[LanguageLevelTypeAware(['8.0' => 'int'], default: '')] $offset) {}
 
     /**
      * @return array
      * @since 7.4
      */
     #[TentativeType]
-    public function __debugInfo(): array {}
+    #[LanguageLevelTypeAware(['8.1' => 'array'], default: '')]
+    public function __debugInfo() {}
 
     /**
      * @return array
      * @since 7.4
      */
     #[TentativeType]
-    public function __serialize(): array {}
+    #[LanguageLevelTypeAware(['8.1' => 'array'], default: '')]
+    public function __serialize() {}
 
     /**
      * @param array $data
      * @since 7.4
      */
     #[TentativeType]
-    public function __unserialize(array $data): void {}
+    #[LanguageLevelTypeAware(['8.1' => 'void'], default: '')]
+    public function __unserialize(array $data) {}
 }
 
 /**
@@ -2145,7 +2297,8 @@ class RecursiveArrayIterator extends ArrayIterator implements RecursiveIterator
      * otherwise false is returned.
      */
     #[TentativeType]
-    public function hasChildren(): bool {}
+    #[LanguageLevelTypeAware(['8.1' => 'bool'], default: '')]
+    public function hasChildren() {}
 
     /**
      * Returns an iterator for the current entry if it is an array or an object.
@@ -2153,7 +2306,8 @@ class RecursiveArrayIterator extends ArrayIterator implements RecursiveIterator
      * @return RecursiveArrayIterator|null An iterator for the current entry, if it is an array or object.
      */
     #[TentativeType]
-    public function getChildren(): ?RecursiveArrayIterator {}
+    #[LanguageLevelTypeAware(['8.1' => 'RecursiveArrayIterator|null'], default: '')]
+    public function getChildren() {}
 
     /**
      * Return current array key
@@ -2161,5 +2315,6 @@ class RecursiveArrayIterator extends ArrayIterator implements RecursiveIterator
      * @return string|int|null The key of the current element.
      */
     #[TentativeType]
-    public function key(): string|int|null {}
+    #[LanguageLevelTypeAware(['8.1' => 'string|int|null'], default: '')]
+    public function key() {}
 }

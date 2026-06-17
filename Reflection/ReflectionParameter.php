@@ -65,7 +65,8 @@ class ReflectionParameter implements Reflector
      */
     #[Pure]
     #[TentativeType]
-    public function getName(): string {}
+    #[LanguageLevelTypeAware(['8.1' => 'string'], default: '')]
+    public function getName() {}
 
     /**
      * Checks if passed by reference
@@ -75,7 +76,8 @@ class ReflectionParameter implements Reflector
      */
     #[Pure]
     #[TentativeType]
-    public function isPassedByReference(): bool {}
+    #[LanguageLevelTypeAware(['8.1' => 'bool'], default: '')]
+    public function isPassedByReference() {}
 
     /**
      * Returns whether this parameter can be passed by value
@@ -86,7 +88,8 @@ class ReflectionParameter implements Reflector
      * @since 5.4
      */
     #[TentativeType]
-    public function canBePassedByValue(): bool {}
+    #[LanguageLevelTypeAware(['8.1' => 'bool'], default: '')]
+    public function canBePassedByValue() {}
 
     /**
      * Gets declaring function
@@ -97,7 +100,8 @@ class ReflectionParameter implements Reflector
      */
     #[Pure]
     #[TentativeType]
-    public function getDeclaringFunction(): ReflectionFunctionAbstract {}
+    #[LanguageLevelTypeAware(['8.1' => 'ReflectionFunctionAbstract'], default: '')]
+    public function getDeclaringFunction() {}
 
     /**
      * Gets declaring class
@@ -108,7 +112,8 @@ class ReflectionParameter implements Reflector
      */
     #[Pure]
     #[TentativeType]
-    public function getDeclaringClass(): ?ReflectionClass {}
+    #[LanguageLevelTypeAware(['8.1' => 'ReflectionClass|null'], default: '')]
+    public function getDeclaringClass() {}
 
     /**
      * Gets the class type hinted for the parameter as a ReflectionClass object.
@@ -120,7 +125,8 @@ class ReflectionParameter implements Reflector
     #[Deprecated(reason: "Use ReflectionParameter::getType() and the ReflectionType APIs should be used instead.", since: "8.0")]
     #[Pure]
     #[TentativeType]
-    public function getClass(): ?ReflectionClass {}
+    #[LanguageLevelTypeAware(['8.1' => 'ReflectionClass|null'], default: '')]
+    public function getClass() {}
 
     /**
      * Checks if the parameter has a type associated with it.
@@ -130,7 +136,8 @@ class ReflectionParameter implements Reflector
      * @since 7.0
      */
     #[TentativeType]
-    public function hasType(): bool {}
+    #[LanguageLevelTypeAware(['8.1' => 'bool'], default: '')]
+    public function hasType() {}
 
     /**
      * Gets a parameter's type
@@ -162,7 +169,8 @@ class ReflectionParameter implements Reflector
     #[Deprecated(reason: "Use ReflectionParameter::getType() and the ReflectionType APIs should be used instead.", since: "8.0")]
     #[Pure]
     #[TentativeType]
-    public function isArray(): bool {}
+    #[LanguageLevelTypeAware(['8.1' => 'bool'], default: '')]
+    public function isArray() {}
 
     /**
      * Returns whether parameter MUST be callable
@@ -176,7 +184,8 @@ class ReflectionParameter implements Reflector
     #[Deprecated(reason: "Use ReflectionParameter::getType() and the ReflectionType APIs should be used instead.", since: "8.0")]
     #[Pure]
     #[TentativeType]
-    public function isCallable(): bool {}
+    #[LanguageLevelTypeAware(['8.1' => 'bool'], default: '')]
+    public function isCallable() {}
 
     /**
      * Checks if null is allowed
@@ -186,7 +195,8 @@ class ReflectionParameter implements Reflector
      * otherwise {@see false}
      */
     #[TentativeType]
-    public function allowsNull(): bool {}
+    #[LanguageLevelTypeAware(['8.1' => 'bool'], default: '')]
+    public function allowsNull() {}
 
     /**
      * Gets parameter position
@@ -197,7 +207,8 @@ class ReflectionParameter implements Reflector
      */
     #[Pure]
     #[TentativeType]
-    public function getPosition(): int {}
+    #[LanguageLevelTypeAware(['8.1' => 'int'], default: '')]
+    public function getPosition() {}
 
     /**
      * Checks if optional
@@ -208,7 +219,8 @@ class ReflectionParameter implements Reflector
      */
     #[Pure]
     #[TentativeType]
-    public function isOptional(): bool {}
+    #[LanguageLevelTypeAware(['8.1' => 'bool'], default: '')]
+    public function isOptional() {}
 
     /**
      * Checks if a default value is available
@@ -219,7 +231,8 @@ class ReflectionParameter implements Reflector
      */
     #[Pure]
     #[TentativeType]
-    public function isDefaultValueAvailable(): bool {}
+    #[LanguageLevelTypeAware(['8.1' => 'bool'], default: '')]
+    public function isDefaultValueAvailable() {}
 
     /**
      * Gets default parameter value
@@ -231,7 +244,8 @@ class ReflectionParameter implements Reflector
      */
     #[Pure]
     #[TentativeType]
-    public function getDefaultValue(): mixed {}
+    #[LanguageLevelTypeAware(['8.1' => 'mixed'], default: '')]
+    public function getDefaultValue() {}
 
     /**
      * Returns whether the default value of this parameter is constant
@@ -242,7 +256,8 @@ class ReflectionParameter implements Reflector
      */
     #[Pure]
     #[TentativeType]
-    public function isDefaultValueConstant(): bool {}
+    #[LanguageLevelTypeAware(['8.1' => 'bool'], default: '')]
+    public function isDefaultValueConstant() {}
 
     /**
      * Returns the default value's constant name if default value is constant or null
@@ -254,7 +269,8 @@ class ReflectionParameter implements Reflector
      */
     #[Pure]
     #[TentativeType]
-    public function getDefaultValueConstantName(): ?string {}
+    #[LanguageLevelTypeAware(['8.1' => 'string|null'], default: '')]
+    public function getDefaultValueConstantName() {}
 
     /**
      * Returns whether this function is variadic
@@ -265,7 +281,8 @@ class ReflectionParameter implements Reflector
      */
     #[Pure]
     #[TentativeType]
-    public function isVariadic(): bool {}
+    #[LanguageLevelTypeAware(['8.1' => 'bool'], default: '')]
+    public function isVariadic() {}
 
     /**
      * Returns information about whether the parameter is a promoted.

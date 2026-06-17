@@ -3,6 +3,7 @@
 namespace RdKafka;
 
 use JetBrains\PhpStorm\Internal\TentativeType;
+use JetBrains\PhpStorm\Internal\LanguageLevelTypeAware;
 
 class TopicPartition
 {
@@ -50,5 +51,6 @@ class TopicPartition
     public function setTopic($topic_name) {}
 
     #[TentativeType]
-    public function getErr(): ?int {}
+    #[LanguageLevelTypeAware(['8.1' => 'int|null'], default: '')]
+    public function getErr() {}
 }

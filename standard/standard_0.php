@@ -71,25 +71,28 @@ class php_user_filter
      * </tr>
      */
     #[TentativeType]
+    #[LanguageLevelTypeAware(['8.1' => 'int'], default: '')]
     public function filter(
         $in,
         $out,
         &$consumed,
         #[LanguageLevelTypeAware(['8.0' => 'bool'], default: '')] $closing
-    ): int {}
+    ) {}
 
     /**
      * @link https://php.net/manual/en/php-user-filter.oncreate.php
      * @return bool
      */
     #[TentativeType]
-    public function onCreate(): bool {}
+    #[LanguageLevelTypeAware(['8.1' => 'bool'], default: '')]
+    public function onCreate() {}
 
     /**
      * @link https://php.net/manual/en/php-user-filter.onclose.php
      */
     #[TentativeType]
-    public function onClose(): void {}
+    #[LanguageLevelTypeAware(['8.1' => 'void'], default: '')]
+    public function onClose() {}
 }
 /**
  * @since 8.4

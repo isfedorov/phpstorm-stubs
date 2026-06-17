@@ -94,7 +94,8 @@ class ReflectionClassConstant implements Reflector
      */
     #[Pure]
     #[TentativeType]
-    public function getDeclaringClass(): ReflectionClass {}
+    #[LanguageLevelTypeAware(['8.1' => 'ReflectionClass'], default: '')]
+    public function getDeclaringClass() {}
 
     /**
      * Gets doc comments
@@ -105,7 +106,8 @@ class ReflectionClassConstant implements Reflector
      */
     #[Pure]
     #[TentativeType]
-    public function getDocComment(): string|false {}
+    #[LanguageLevelTypeAware(['8.1' => 'string|false'], default: '')]
+    public function getDocComment() {}
 
     /**
      * Gets the class constant modifiers
@@ -117,7 +119,8 @@ class ReflectionClassConstant implements Reflector
      */
     #[Pure]
     #[TentativeType]
-    public function getModifiers(): int {}
+    #[LanguageLevelTypeAware(['8.1' => 'int'], default: '')]
+    public function getModifiers() {}
 
     /**
      * Get name of the constant
@@ -128,7 +131,8 @@ class ReflectionClassConstant implements Reflector
      */
     #[Pure]
     #[TentativeType]
-    public function getName(): string {}
+    #[LanguageLevelTypeAware(['8.1' => 'string'], default: '')]
+    public function getName() {}
 
     /**
      * Gets value
@@ -139,7 +143,8 @@ class ReflectionClassConstant implements Reflector
      */
     #[Pure]
     #[TentativeType]
-    public function getValue(): mixed {}
+    #[LanguageLevelTypeAware(['8.1' => 'mixed'], default: '')]
+    public function getValue() {}
 
     /**
      * Checks if class constant is private
@@ -150,7 +155,8 @@ class ReflectionClassConstant implements Reflector
      */
     #[Pure]
     #[TentativeType]
-    public function isPrivate(): bool {}
+    #[LanguageLevelTypeAware(['8.1' => 'bool'], default: '')]
+    public function isPrivate() {}
 
     /**
      * Checks if class constant is protected
@@ -161,7 +167,8 @@ class ReflectionClassConstant implements Reflector
      */
     #[Pure]
     #[TentativeType]
-    public function isProtected(): bool {}
+    #[LanguageLevelTypeAware(['8.1' => 'bool'], default: '')]
+    public function isProtected() {}
 
     /**
      * Checks if class constant is public
@@ -172,7 +179,8 @@ class ReflectionClassConstant implements Reflector
      */
     #[Pure]
     #[TentativeType]
-    public function isPublic(): bool {}
+    #[LanguageLevelTypeAware(['8.1' => 'bool'], default: '')]
+    public function isPublic() {}
 
     /**
      * Returns the string representation of the ReflectionClassConstant object.

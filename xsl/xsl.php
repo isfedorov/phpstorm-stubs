@@ -19,7 +19,8 @@ class XSLTProcessor
      * @return bool <b>TRUE</b> on success or <b>FALSE</b> on failure.
      */
     #[TentativeType]
-    public function importStylesheet(#[LanguageLevelTypeAware(['8.0' => 'object'], default: '')] $stylesheet): bool {}
+    #[LanguageLevelTypeAware(['8.1' => 'bool'], default: '')]
+    public function importStylesheet(#[LanguageLevelTypeAware(['8.0' => 'object'], default: '')] $stylesheet) {}
 
     /**
      * Transform to a DOMDocument
@@ -29,10 +30,11 @@ class XSLTProcessor
      * @return DOMDocument|false The resulting <b>DOMDocument</b> or <b>FALSE</b> on error.
      */
     #[TentativeType]
+    #[LanguageLevelTypeAware(['8.1' => 'object|false'], default: '')]
     public function transformToDoc(
         #[LanguageLevelTypeAware(['8.0' => 'object'], default: '')] $document,
         #[LanguageLevelTypeAware(['8.0' => 'string|null'], default: '')] $returnClass = null
-    ): object|false {}
+    ) {}
 
     /**
      * Transform to URI
@@ -46,10 +48,11 @@ class XSLTProcessor
      * @return int the number of bytes written or <b>FALSE</b> if an error occurred.
      */
     #[TentativeType]
+    #[LanguageLevelTypeAware(['8.1' => 'int'], default: '')]
     public function transformToUri(
         #[LanguageLevelTypeAware(['8.0' => 'object'], default: '')] $document,
         #[LanguageLevelTypeAware(['8.0' => 'string'], default: '')] $uri
-    ): int {}
+    ) {}
 
     /**
      * Transform to XML
@@ -60,7 +63,8 @@ class XSLTProcessor
      * @return string|false|null The result of the transformation as a string or <b>FALSE</b> on error.
      */
     #[TentativeType]
-    public function transformToXml(#[LanguageLevelTypeAware(['8.0' => 'object'], default: '')] $document): string|false|null {}
+    #[LanguageLevelTypeAware(['8.1' => 'string|false|null'], default: '')]
+    public function transformToXml(#[LanguageLevelTypeAware(['8.0' => 'object'], default: '')] $document) {}
 
     /**
      * Set value for a parameter
@@ -77,11 +81,12 @@ class XSLTProcessor
      * @return bool <b>TRUE</b> on success or <b>FALSE</b> on failure.
      */
     #[TentativeType]
+    #[LanguageLevelTypeAware(['8.1' => 'bool'], default: '')]
     public function setParameter(
         #[LanguageLevelTypeAware(['8.0' => 'string'], default: '')] $namespace,
         #[LanguageLevelTypeAware(['8.0' => 'array|string'], default: '')] $name,
         #[LanguageLevelTypeAware(['8.0' => 'string|null'], default: '')] $value = null
-    ): bool {}
+    ) {}
 
     /**
      * Get value of a parameter
@@ -95,10 +100,11 @@ class XSLTProcessor
      * @return string|false The value of the parameter (as a string), or <b>FALSE</b> if it's not set.
      */
     #[TentativeType]
+    #[LanguageLevelTypeAware(['8.1' => 'string|false'], default: '')]
     public function getParameter(
         #[LanguageLevelTypeAware(['8.0' => 'string'], default: '')] $namespace,
         #[LanguageLevelTypeAware(['8.0' => 'string'], default: '')] $name
-    ): string|false {}
+    ) {}
 
     /**
      * Remove parameter
@@ -112,10 +118,11 @@ class XSLTProcessor
      * @return bool <b>TRUE</b> on success or <b>FALSE</b> on failure.
      */
     #[TentativeType]
+    #[LanguageLevelTypeAware(['8.1' => 'bool'], default: '')]
     public function removeParameter(
         #[LanguageLevelTypeAware(['8.0' => 'string'], default: '')] $namespace,
         #[LanguageLevelTypeAware(['8.0' => 'string'], default: '')] $name
-    ): bool {}
+    ) {}
 
     /**
      * Determine if PHP has EXSLT support
@@ -124,7 +131,8 @@ class XSLTProcessor
      * @since 5.0
      */
     #[TentativeType]
-    public function hasExsltSupport(): bool {}
+    #[LanguageLevelTypeAware(['8.1' => 'bool'], default: '')]
+    public function hasExsltSupport() {}
 
     /**
      * Enables the ability to use PHP functions as XSLT functions
@@ -141,7 +149,8 @@ class XSLTProcessor
      * @since 5.0
      */
     #[TentativeType]
-    public function registerPHPFunctions(#[LanguageLevelTypeAware(['8.0' => 'array|string|null'], default: '')] $functions = null): void {}
+    #[LanguageLevelTypeAware(['8.1' => 'void'], default: '')]
+    public function registerPHPFunctions(#[LanguageLevelTypeAware(['8.0' => 'array|string|null'], default: '')] $functions = null) {}
 
     /**
      * Sets profiling output file
@@ -161,7 +170,8 @@ class XSLTProcessor
      * @since 5.4
      */
     #[TentativeType]
-    public function setSecurityPrefs(#[LanguageLevelTypeAware(['8.0' => 'int'], default: '')] $preferences): int {}
+    #[LanguageLevelTypeAware(['8.1' => 'int'], default: '')]
+    public function setSecurityPrefs(#[LanguageLevelTypeAware(['8.0' => 'int'], default: '')] $preferences) {}
 
     /**
      * Get security preferences
@@ -170,7 +180,8 @@ class XSLTProcessor
      * @since 5.4
      */
     #[TentativeType]
-    public function getSecurityPrefs(): int {}
+    #[LanguageLevelTypeAware(['8.1' => 'int'], default: '')]
+    public function getSecurityPrefs() {}
 }
 define('XSL_CLONE_AUTO', 0);
 define('XSL_CLONE_NEVER', -1);
