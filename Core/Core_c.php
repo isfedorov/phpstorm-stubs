@@ -48,7 +48,8 @@ interface IteratorAggregate extends Traversable
      * @throws Exception on failure.
      */
     #[TentativeType]
-    public function getIterator(): Traversable;
+    #[LanguageLevelTypeAware(['8.1' => 'Traversable'], default: '')]
+    public function getIterator();
 }
 
 /**
@@ -67,7 +68,8 @@ interface Iterator extends Traversable
      * @return TValue Can return any type.
      */
     #[TentativeType]
-    public function current(): mixed;
+    #[LanguageLevelTypeAware(['8.1' => 'mixed'], default: '')]
+    public function current();
 
     /**
      * Move forward to next element
@@ -75,7 +77,8 @@ interface Iterator extends Traversable
      * @return void Any returned value is ignored.
      */
     #[TentativeType]
-    public function next(): void;
+    #[LanguageLevelTypeAware(['8.1' => 'void'], default: '')]
+    public function next();
 
     /**
      * Return the key of the current element
@@ -83,7 +86,8 @@ interface Iterator extends Traversable
      * @return TKey|null TKey on success, or null on failure.
      */
     #[TentativeType]
-    public function key(): mixed;
+    #[LanguageLevelTypeAware(['8.1' => 'mixed'], default: '')]
+    public function key();
 
     /**
      * Checks if current position is valid
@@ -92,7 +96,8 @@ interface Iterator extends Traversable
      * Returns true on success or false on failure.
      */
     #[TentativeType]
-    public function valid(): bool;
+    #[LanguageLevelTypeAware(['8.1' => 'bool'], default: '')]
+    public function valid();
 
     /**
      * Rewind the Iterator to the first element
@@ -100,7 +105,8 @@ interface Iterator extends Traversable
      * @return void Any returned value is ignored.
      */
     #[TentativeType]
-    public function rewind(): void;
+    #[LanguageLevelTypeAware(['8.1' => 'void'], default: '')]
+    public function rewind();
 }
 
 /**
@@ -123,7 +129,8 @@ interface ArrayAccess
      * The return value will be casted to boolean if non-boolean was returned.
      */
     #[TentativeType]
-    public function offsetExists(#[LanguageLevelTypeAware(['8.0' => 'mixed'], default: '')] $offset): bool;
+    #[LanguageLevelTypeAware(['8.1' => 'bool'], default: '')]
+    public function offsetExists(#[LanguageLevelTypeAware(['8.0' => 'mixed'], default: '')] $offset);
 
     /**
      * Offset to retrieve
@@ -134,7 +141,8 @@ interface ArrayAccess
      * @return TValue Can return all value types.
      */
     #[TentativeType]
-    public function offsetGet(#[LanguageLevelTypeAware(['8.0' => 'mixed'], default: '')] $offset): mixed;
+    #[LanguageLevelTypeAware(['8.1' => 'mixed'], default: '')]
+    public function offsetGet(#[LanguageLevelTypeAware(['8.0' => 'mixed'], default: '')] $offset);
 
     /**
      * Offset to set
@@ -148,10 +156,11 @@ interface ArrayAccess
      * @return void
      */
     #[TentativeType]
+    #[LanguageLevelTypeAware(['8.1' => 'void'], default: '')]
     public function offsetSet(
         #[LanguageLevelTypeAware(['8.0' => 'mixed'], default: '')] $offset,
         #[LanguageLevelTypeAware(['8.0' => 'mixed'], default: '')] $value
-    ): void;
+    );
 
     /**
      * Offset to unset
@@ -162,7 +171,8 @@ interface ArrayAccess
      * @return void
      */
     #[TentativeType]
-    public function offsetUnset(#[LanguageLevelTypeAware(['8.0' => 'mixed'], default: '')] $offset): void;
+    #[LanguageLevelTypeAware(['8.1' => 'void'], default: '')]
+    public function offsetUnset(#[LanguageLevelTypeAware(['8.0' => 'mixed'], default: '')] $offset);
 }
 
 /**
@@ -407,7 +417,8 @@ class Exception implements Throwable
     public function __toString() {}
 
     #[TentativeType]
-    public function __wakeup(): void {}
+    #[LanguageLevelTypeAware(['8.1' => 'void'], default: '')]
+    public function __wakeup() {}
 }
 
 /**
@@ -545,7 +556,8 @@ class Error implements Throwable
     private function __clone(): void {}
 
     #[TentativeType]
-    public function __wakeup(): void {}
+    #[LanguageLevelTypeAware(['8.1' => 'void'], default: '')]
+    public function __wakeup() {}
 }
 
 /**
@@ -744,7 +756,8 @@ interface Countable
      * </p>
      */
     #[TentativeType]
-    public function count(): int;
+    #[LanguageLevelTypeAware(['8.1' => 'int'], default: '')]
+    public function count();
 }
 
 /**

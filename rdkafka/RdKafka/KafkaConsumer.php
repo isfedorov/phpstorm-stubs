@@ -3,6 +3,7 @@
 namespace RdKafka;
 
 use JetBrains\PhpStorm\Internal\TentativeType;
+use JetBrains\PhpStorm\Internal\LanguageLevelTypeAware;
 
 class KafkaConsumer
 {
@@ -35,10 +36,12 @@ class KafkaConsumer
     public function assign($topic_partitions = null) {}
 
     #[TentativeType]
-    public function incrementalAssign(array $topic_partitions): void {}
+    #[LanguageLevelTypeAware(['8.1' => 'void'], default: '')]
+    public function incrementalAssign(array $topic_partitions) {}
 
     #[TentativeType]
-    public function incrementalUnassign(array $topic_partitions): void {}
+    #[LanguageLevelTypeAware(['8.1' => 'void'], default: '')]
+    public function incrementalUnassign(array $topic_partitions) {}
 
     /**
      * @param null|Message|TopicPartition[] $message_or_offsets
@@ -141,22 +144,28 @@ class KafkaConsumer
     public function newTopic($topic_name, $topic_conf = null) {}
 
     #[TentativeType]
-    public function getControllerId(int $timeout_ms): int {}
+    #[LanguageLevelTypeAware(['8.1' => 'int'], default: '')]
+    public function getControllerId(int $timeout_ms) {}
 
     #[TentativeType]
-    public function pausePartitions(array $topic_partitions): array {}
+    #[LanguageLevelTypeAware(['8.1' => 'array'], default: '')]
+    public function pausePartitions(array $topic_partitions) {}
 
     #[TentativeType]
-    public function resumePartitions(array $topic_partitions): array {}
+    #[LanguageLevelTypeAware(['8.1' => 'array'], default: '')]
+    public function resumePartitions(array $topic_partitions) {}
 
     #[TentativeType]
-    public function poll(int $timeout_ms): int {}
+    #[LanguageLevelTypeAware(['8.1' => 'int'], default: '')]
+    public function poll(int $timeout_ms) {}
 
     #[TentativeType]
-    public function oauthbearerSetToken(string $token_value, int $lifetime_ms, string $principal_name, array $extensions = []): void {}
+    #[LanguageLevelTypeAware(['8.1' => 'void'], default: '')]
+    public function oauthbearerSetToken(string $token_value, int $lifetime_ms, string $principal_name, array $extensions = []) {}
 
     #[TentativeType]
-    public function oauthbearerSetTokenFailure(string $error): void {}
+    #[LanguageLevelTypeAware(['8.1' => 'void'], default: '')]
+    public function oauthbearerSetTokenFailure(string $error) {}
 
     /**
      * @return void

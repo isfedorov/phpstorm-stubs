@@ -62,7 +62,8 @@ class ReflectionZendExtension implements Reflector
      */
     #[Pure]
     #[TentativeType]
-    public function getName(): string {}
+    #[LanguageLevelTypeAware(['8.1' => 'string'], default: '')]
+    public function getName() {}
 
     /**
      * Gets version
@@ -73,7 +74,8 @@ class ReflectionZendExtension implements Reflector
      */
     #[Pure]
     #[TentativeType]
-    public function getVersion(): string {}
+    #[LanguageLevelTypeAware(['8.1' => 'string'], default: '')]
+    public function getVersion() {}
 
     /**
      * Gets author
@@ -84,7 +86,8 @@ class ReflectionZendExtension implements Reflector
      */
     #[Pure]
     #[TentativeType]
-    public function getAuthor(): string {}
+    #[LanguageLevelTypeAware(['8.1' => 'string'], default: '')]
+    public function getAuthor() {}
 
     /**
      * Gets URL
@@ -95,7 +98,8 @@ class ReflectionZendExtension implements Reflector
      */
     #[Pure]
     #[TentativeType]
-    public function getURL(): string {}
+    #[LanguageLevelTypeAware(['8.1' => 'string'], default: '')]
+    public function getURL() {}
 
     /**
      * Gets copyright
@@ -106,7 +110,8 @@ class ReflectionZendExtension implements Reflector
      */
     #[Pure]
     #[TentativeType]
-    public function getCopyright(): string {}
+    #[LanguageLevelTypeAware(['8.1' => 'string'], default: '')]
+    public function getCopyright() {}
 
     /**
      * Clone handler

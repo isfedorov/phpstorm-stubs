@@ -132,7 +132,8 @@ class ReflectionProperty implements Reflector
      */
     #[Pure]
     #[TentativeType]
-    public function getName(): string {}
+    #[LanguageLevelTypeAware(['8.1' => 'string'], default: '')]
+    public function getName() {}
 
     /**
      * Gets value
@@ -146,7 +147,8 @@ class ReflectionProperty implements Reflector
      */
     #[Pure]
     #[TentativeType]
-    public function getValue(#[LanguageLevelTypeAware(['8.0' => 'object|null'], default: '')] $object = null): mixed {}
+    #[LanguageLevelTypeAware(['8.1' => 'mixed'], default: '')]
+    public function getValue(#[LanguageLevelTypeAware(['8.0' => 'object|null'], default: '')] $object = null) {}
 
     /**
      * Set property value
@@ -159,10 +161,11 @@ class ReflectionProperty implements Reflector
      * @return void No value is returned.
      */
     #[TentativeType]
+    #[LanguageLevelTypeAware(['8.1' => 'void'], default: '')]
     public function setValue(
         #[LanguageLevelTypeAware(['8.0' => 'mixed'], default: '')] $objectOrValue,
         #[LanguageLevelTypeAware(['8.0' => 'mixed'], default: '')] $value
-    ): void {}
+    ) {}
 
     /**
      * Checks if property is public
@@ -172,7 +175,8 @@ class ReflectionProperty implements Reflector
      */
     #[Pure]
     #[TentativeType]
-    public function isPublic(): bool {}
+    #[LanguageLevelTypeAware(['8.1' => 'bool'], default: '')]
+    public function isPublic() {}
 
     /**
      * Checks if property is private
@@ -182,7 +186,8 @@ class ReflectionProperty implements Reflector
      */
     #[Pure]
     #[TentativeType]
-    public function isPrivate(): bool {}
+    #[LanguageLevelTypeAware(['8.1' => 'bool'], default: '')]
+    public function isPrivate() {}
 
     /**
      * Checks if property is protected
@@ -192,7 +197,8 @@ class ReflectionProperty implements Reflector
      */
     #[Pure]
     #[TentativeType]
-    public function isProtected(): bool {}
+    #[LanguageLevelTypeAware(['8.1' => 'bool'], default: '')]
+    public function isProtected() {}
 
     /**
      * Checks if property is static
@@ -202,7 +208,8 @@ class ReflectionProperty implements Reflector
      */
     #[Pure]
     #[TentativeType]
-    public function isStatic(): bool {}
+    #[LanguageLevelTypeAware(['8.1' => 'bool'], default: '')]
+    public function isStatic() {}
 
     /**
      * Checks if default value
@@ -213,7 +220,8 @@ class ReflectionProperty implements Reflector
      */
     #[Pure]
     #[TentativeType]
-    public function isDefault(): bool {}
+    #[LanguageLevelTypeAware(['8.1' => 'bool'], default: '')]
+    public function isDefault() {}
 
     /**
      * Gets modifiers
@@ -223,7 +231,8 @@ class ReflectionProperty implements Reflector
      */
     #[Pure]
     #[TentativeType]
-    public function getModifiers(): int {}
+    #[LanguageLevelTypeAware(['8.1' => 'int'], default: '')]
+    public function getModifiers() {}
 
     /**
      * Gets declaring class
@@ -233,7 +242,8 @@ class ReflectionProperty implements Reflector
      */
     #[Pure]
     #[TentativeType]
-    public function getDeclaringClass(): ReflectionClass {}
+    #[LanguageLevelTypeAware(['8.1' => 'ReflectionClass'], default: '')]
+    public function getDeclaringClass() {}
 
     /**
      * Gets doc comment
@@ -243,7 +253,8 @@ class ReflectionProperty implements Reflector
      */
     #[Pure]
     #[TentativeType]
-    public function getDocComment(): string|false {}
+    #[LanguageLevelTypeAware(['8.1' => 'string|false'], default: '')]
+    public function getDocComment() {}
 
     /**
      * Set property accessibility
@@ -254,7 +265,8 @@ class ReflectionProperty implements Reflector
      */
     #[PhpStormStubsElementAvailable(to: "8.0")]
     #[TentativeType]
-    public function setAccessible(#[LanguageLevelTypeAware(['8.0' => 'bool'], default: '')] $accessible): void {}
+    #[LanguageLevelTypeAware(['8.1' => 'void'], default: '')]
+    public function setAccessible(#[LanguageLevelTypeAware(['8.0' => 'bool'], default: '')] $accessible) {}
 
     /**
      * Set property accessibility
@@ -266,8 +278,9 @@ class ReflectionProperty implements Reflector
      */
     #[PhpStormStubsElementAvailable(from: "8.1")]
     #[TentativeType]
+    #[LanguageLevelTypeAware(['8.1' => 'void'], default: '')]
     #[Deprecated('Deprecated: it has no effect', since: '8.5')]
-    public function setAccessible(bool $accessible): void {}
+    public function setAccessible(bool $accessible) {}
 
     /**
      * Gets property type
@@ -296,7 +309,8 @@ class ReflectionProperty implements Reflector
      * @since 7.4
      */
     #[TentativeType]
-    public function hasType(): bool {}
+    #[LanguageLevelTypeAware(['8.1' => 'bool'], default: '')]
+    public function hasType() {}
 
     /**
      * Checks if property is initialized
@@ -309,7 +323,8 @@ class ReflectionProperty implements Reflector
      */
     #[Pure]
     #[TentativeType]
-    public function isInitialized(?object $object = null): bool {}
+    #[LanguageLevelTypeAware(['8.1' => 'bool'], default: '')]
+    public function isInitialized(?object $object = null) {}
 
     /**
      * Returns information about whether the property was promoted.
@@ -350,7 +365,8 @@ class ReflectionProperty implements Reflector
      */
     #[Pure]
     #[TentativeType]
-    public function getDefaultValue(): mixed {}
+    #[LanguageLevelTypeAware(['8.1' => 'mixed'], default: '')]
+    public function getDefaultValue() {}
 
     /**
      * @template T

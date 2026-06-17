@@ -6,6 +6,7 @@ use RdKafka\Metadata;
 use RdKafka\Topic;
 use RdKafka\TopicConf;
 use RdKafka\TopicPartition;
+use JetBrains\PhpStorm\Internal\LanguageLevelTypeAware;
 
 abstract class RdKafka
 {
@@ -39,7 +40,8 @@ abstract class RdKafka
     public function getMetadata($all_topics, $only_topic = null, $timeout_ms = 0) {}
 
     #[TentativeType]
-    public function getControllerId(int $timeout_ms): int {}
+    #[LanguageLevelTypeAware(['8.1' => 'int'], default: '')]
+    public function getControllerId(int $timeout_ms) {}
 
     /**
      * @return int
@@ -108,14 +110,18 @@ abstract class RdKafka
     public function outqLen() {}
 
     #[TentativeType]
-    public function pausePartitions(array $topic_partitions): array {}
+    #[LanguageLevelTypeAware(['8.1' => 'array'], default: '')]
+    public function pausePartitions(array $topic_partitions) {}
 
     #[TentativeType]
-    public function resumePartitions(array $topic_partitions): array {}
+    #[LanguageLevelTypeAware(['8.1' => 'array'], default: '')]
+    public function resumePartitions(array $topic_partitions) {}
 
     #[TentativeType]
-    public function oauthbearerSetToken(string $token_value, int|float|string $lifetime_ms, string $principal_name, array $extensions = []): void {}
+    #[LanguageLevelTypeAware(['8.1' => 'void'], default: '')]
+    public function oauthbearerSetToken(string $token_value, int|float|string $lifetime_ms, string $principal_name, array $extensions = []) {}
 
     #[TentativeType]
-    public function oauthbearerSetTokenFailure(string $error): void {}
+    #[LanguageLevelTypeAware(['8.1' => 'void'], default: '')]
+    public function oauthbearerSetTokenFailure(string $error) {}
 }

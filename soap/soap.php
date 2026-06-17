@@ -279,10 +279,11 @@ class SoapClient
      */
     #[Deprecated]
     #[TentativeType]
+    #[LanguageLevelTypeAware(['8.1' => 'mixed'], default: '')]
     public function __call(
         #[LanguageLevelTypeAware(['8.0' => 'string'], default: '')] $name,
         array $args
-    ): mixed {}
+    ) {}
 
     /**
      * Calls a SOAP function
@@ -331,13 +332,14 @@ class SoapClient
      * @since 5.0
      */
     #[TentativeType]
+    #[LanguageLevelTypeAware(['8.1' => 'mixed'], default: '')]
     public function __soapCall(
         #[LanguageLevelTypeAware(['8.0' => 'string'], default: '')] $name,
         array $args,
         #[LanguageLevelTypeAware(['8.0' => 'array|null'], default: '')] $options = null,
         $inputHeaders = null,
         &$outputHeaders = null
-    ): mixed {}
+    ) {}
 
     /**
      * Returns last SOAP request
@@ -346,7 +348,8 @@ class SoapClient
      * @since 5.0
      */
     #[TentativeType]
-    public function __getLastRequest(): ?string {}
+    #[LanguageLevelTypeAware(['8.1' => 'string|null'], default: '')]
+    public function __getLastRequest() {}
 
     /**
      * Returns last SOAP response
@@ -355,7 +358,8 @@ class SoapClient
      * @since 5.0
      */
     #[TentativeType]
-    public function __getLastResponse(): ?string {}
+    #[LanguageLevelTypeAware(['8.1' => 'string|null'], default: '')]
+    public function __getLastResponse() {}
 
     /**
      * Returns the SOAP headers from the last request
@@ -364,7 +368,8 @@ class SoapClient
      * @since 5.0
      */
     #[TentativeType]
-    public function __getLastRequestHeaders(): ?string {}
+    #[LanguageLevelTypeAware(['8.1' => 'string|null'], default: '')]
+    public function __getLastRequestHeaders() {}
 
     /**
      * Returns the SOAP headers from the last response
@@ -373,7 +378,8 @@ class SoapClient
      * @since 5.0
      */
     #[TentativeType]
-    public function __getLastResponseHeaders(): ?string {}
+    #[LanguageLevelTypeAware(['8.1' => 'string|null'], default: '')]
+    public function __getLastResponseHeaders() {}
 
     /**
      * Returns list of available SOAP functions
@@ -383,7 +389,8 @@ class SoapClient
      * @since 5.0
      */
     #[TentativeType]
-    public function __getFunctions(): ?array {}
+    #[LanguageLevelTypeAware(['8.1' => 'array|null'], default: '')]
+    public function __getFunctions() {}
 
     /**
      * Returns a list of SOAP types
@@ -392,7 +399,8 @@ class SoapClient
      * @since 5.0
      */
     #[TentativeType]
-    public function __getTypes(): ?array {}
+    #[LanguageLevelTypeAware(['8.1' => 'array|null'], default: '')]
+    public function __getTypes() {}
 
     /**
      * Returns a list of all cookies
@@ -401,7 +409,8 @@ class SoapClient
      * @since 5.4
      */
     #[TentativeType]
-    public function __getCookies(): array {}
+    #[LanguageLevelTypeAware(['8.1' => 'array'], default: '')]
+    public function __getCookies() {}
 
     /**
      * Performs a SOAP request
@@ -426,6 +435,7 @@ class SoapClient
      * @since 5.0
      */
     #[TentativeType]
+    #[LanguageLevelTypeAware(['8.1' => 'string|null'], default: '')]
     public function __doRequest(
         #[LanguageLevelTypeAware(['8.0' => 'string'], default: '')] $request,
         #[LanguageLevelTypeAware(['8.0' => 'string'], default: '')] $location,
@@ -433,7 +443,7 @@ class SoapClient
         #[LanguageLevelTypeAware(['8.0' => 'int'], default: '')] $version,
         #[LanguageLevelTypeAware(["8.0" => 'bool'], default: 'int')] $oneWay = false,
         #[PhpStormStubsElementAvailable(from: '8.5')] ?string $uriParserClass = null
-    ): ?string {}
+    ) {}
 
     /**
      * The __setCookie purpose
@@ -448,10 +458,11 @@ class SoapClient
      * @since 5.0
      */
     #[TentativeType]
+    #[LanguageLevelTypeAware(['8.1' => 'void'], default: '')]
     public function __setCookie(
         #[LanguageLevelTypeAware(['8.0' => 'string'], default: '')] $name,
         #[LanguageLevelTypeAware(["8.0" => "string|null"], default: "string")] $value = null
-    ): void {}
+    ) {}
 
     /**
      * Sets the location of the Web service to use
@@ -463,7 +474,8 @@ class SoapClient
      * @since 5.0
      */
     #[TentativeType]
-    public function __setLocation(#[LanguageLevelTypeAware(['8.0' => 'string|null'], default: '')] $location = null): ?string {}
+    #[LanguageLevelTypeAware(['8.1' => 'string|null'], default: '')]
+    public function __setLocation(#[LanguageLevelTypeAware(['8.0' => 'string|null'], default: '')] $location = null) {}
 
     /**
      * Sets SOAP headers for subsequent calls
@@ -477,10 +489,11 @@ class SoapClient
      * @since 5.0
      */
     #[TentativeType]
+    #[LanguageLevelTypeAware(['8.1' => 'bool'], default: '')]
     public function __setSoapHeaders(
         #[PhpStormStubsElementAvailable(from: '5.3', to: '5.6')] $headers = null,
         #[PhpStormStubsElementAvailable(from: '7.0')] $headers = null
-    ): bool {}
+    ) {}
 }
 
 /**
@@ -699,7 +712,8 @@ class SoapServer
      * @since 5.1
      */
     #[TentativeType]
-    public function setPersistence(#[LanguageLevelTypeAware(['8.0' => 'int'], default: '')] $mode): void {}
+    #[LanguageLevelTypeAware(['8.1' => 'void'], default: '')]
+    public function setPersistence(#[LanguageLevelTypeAware(['8.0' => 'int'], default: '')] $mode) {}
 
     /**
      * Sets the class which handles SOAP requests
@@ -712,10 +726,11 @@ class SoapServer
      * @since 5.0
      */
     #[TentativeType]
+    #[LanguageLevelTypeAware(['8.1' => 'void'], default: '')]
     public function setClass(
         #[LanguageLevelTypeAware(['8.0' => 'string'], default: '')] $class,
         #[LanguageLevelTypeAware(['8.0' => 'mixed'], default: '')] ...$args
-    ): void {}
+    ) {}
 
     /**
      * Sets the object which will be used to handle SOAP requests
@@ -726,7 +741,8 @@ class SoapServer
      * @return void No value is returned.
      */
     #[TentativeType]
-    public function setObject(#[LanguageLevelTypeAware(['8.0' => 'object'], default: '')] $object): void {}
+    #[LanguageLevelTypeAware(['8.1' => 'void'], default: '')]
+    public function setObject(#[LanguageLevelTypeAware(['8.0' => 'object'], default: '')] $object) {}
 
     /**
      * Adds one or more functions to handle SOAP requests
@@ -751,7 +767,8 @@ class SoapServer
      * @since 5.0
      */
     #[TentativeType]
-    public function addFunction($functions): void {}
+    #[LanguageLevelTypeAware(['8.1' => 'void'], default: '')]
+    public function addFunction($functions) {}
 
     /**
      * Returns list of defined functions
@@ -760,7 +777,8 @@ class SoapServer
      * @since 5.0
      */
     #[TentativeType]
-    public function getFunctions(): array {}
+    #[LanguageLevelTypeAware(['8.1' => 'array'], default: '')]
+    public function getFunctions() {}
 
     /**
      * Handles a SOAP request
@@ -773,7 +791,8 @@ class SoapServer
      * @since 5.0
      */
     #[TentativeType]
-    public function handle(#[LanguageLevelTypeAware(['8.0' => 'string|null'], default: '')] $request = null): void {}
+    #[LanguageLevelTypeAware(['8.1' => 'void'], default: '')]
+    public function handle(#[LanguageLevelTypeAware(['8.0' => 'string|null'], default: '')] $request = null) {}
 
     /**
      * Issue SoapServer fault indicating an error
@@ -798,6 +817,7 @@ class SoapServer
      * @since 5.0
      */
     #[TentativeType]
+    #[LanguageLevelTypeAware(['8.1' => 'void'], default: '')]
     public function fault(
         #[LanguageLevelTypeAware(['8.0' => 'string'], default: '')] $code,
         #[LanguageLevelTypeAware(['8.0' => 'string'], default: '')] $string,
@@ -805,7 +825,7 @@ class SoapServer
         #[LanguageLevelTypeAware(['8.0' => 'mixed'], default: '')] $details = null,
         #[LanguageLevelTypeAware(['8.0' => 'string'], default: '')] $name = '',
         #[PhpStormStubsElementAvailable('8.5')] string $lang = ''
-    ): void {}
+    ) {}
 
     /**
      * Add a SOAP header to the response
@@ -817,7 +837,8 @@ class SoapServer
      * @since 5.0
      */
     #[TentativeType]
-    public function addSoapHeader(SoapHeader $header): void {}
+    #[LanguageLevelTypeAware(['8.1' => 'void'], default: '')]
+    public function addSoapHeader(SoapHeader $header) {}
 
     /**
      * @since 8.4

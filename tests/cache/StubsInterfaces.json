@@ -69,14 +69,16 @@
                         "removedVersion": null
                     }
                 ],
-                "returnType": "bool",
+                "returnType": "",
                 "hasTentativeReturnType": true,
                 "phpDoc": null,
                 "sinceVersion": null,
                 "removedVersion": null,
                 "returnTypeFromPhpDoc": "bool",
-                "languageLevelTypes": null,
-                "defaultType": null
+                "languageLevelTypes": {
+                    "8.1": "bool"
+                },
+                "defaultType": ""
             },
             {
                 "name": "offsetGet",
@@ -105,14 +107,16 @@
                         "removedVersion": null
                     }
                 ],
-                "returnType": "mixed",
+                "returnType": "",
                 "hasTentativeReturnType": true,
                 "phpDoc": null,
                 "sinceVersion": null,
                 "removedVersion": null,
                 "returnTypeFromPhpDoc": "TValue",
-                "languageLevelTypes": null,
-                "defaultType": null
+                "languageLevelTypes": {
+                    "8.1": "mixed"
+                },
+                "defaultType": ""
             },
             {
                 "name": "offsetSet",
@@ -159,14 +163,16 @@
                         "removedVersion": null
                     }
                 ],
-                "returnType": "void",
+                "returnType": "",
                 "hasTentativeReturnType": true,
                 "phpDoc": null,
                 "sinceVersion": null,
                 "removedVersion": null,
                 "returnTypeFromPhpDoc": "void",
-                "languageLevelTypes": null,
-                "defaultType": null
+                "languageLevelTypes": {
+                    "8.1": "void"
+                },
+                "defaultType": ""
             },
             {
                 "name": "offsetUnset",
@@ -195,14 +201,16 @@
                         "removedVersion": null
                     }
                 ],
-                "returnType": "void",
+                "returnType": "",
                 "hasTentativeReturnType": true,
                 "phpDoc": null,
                 "sinceVersion": null,
                 "removedVersion": null,
                 "returnTypeFromPhpDoc": "void",
-                "languageLevelTypes": null,
-                "defaultType": null
+                "languageLevelTypes": {
+                    "8.1": "void"
+                },
+                "defaultType": ""
             }
         ],
         "constants": [],
@@ -5068,14 +5076,16 @@
                 "isDeprecated": false,
                 "accessModifier": "public",
                 "parameters": [],
-                "returnType": "int",
+                "returnType": "",
                 "hasTentativeReturnType": true,
                 "phpDoc": null,
                 "sinceVersion": null,
                 "removedVersion": null,
                 "returnTypeFromPhpDoc": "int<0, max>",
-                "languageLevelTypes": null,
-                "defaultType": null
+                "languageLevelTypes": {
+                    "8.1": "int"
+                },
+                "defaultType": ""
             }
         ],
         "constants": [],
@@ -5443,14 +5453,16 @@
                         "removedVersion": null
                     }
                 ],
-                "returnType": "\\DateInterval",
+                "returnType": "",
                 "hasTentativeReturnType": true,
                 "phpDoc": null,
                 "sinceVersion": null,
                 "removedVersion": null,
                 "returnTypeFromPhpDoc": "\\DateInterval",
-                "languageLevelTypes": null,
-                "defaultType": null
+                "languageLevelTypes": {
+                    "8.1": "DateInterval"
+                },
+                "defaultType": ""
             },
             {
                 "name": "format",
@@ -5479,14 +5491,16 @@
                         "removedVersion": null
                     }
                 ],
-                "returnType": "string",
+                "returnType": "",
                 "hasTentativeReturnType": true,
                 "phpDoc": null,
                 "sinceVersion": null,
                 "removedVersion": null,
                 "returnTypeFromPhpDoc": "string",
-                "languageLevelTypes": null,
-                "defaultType": null
+                "languageLevelTypes": {
+                    "8.1": "string"
+                },
+                "defaultType": ""
             },
             {
                 "name": "getOffset",
@@ -5496,7 +5510,7 @@
                 "isDeprecated": false,
                 "accessModifier": "public",
                 "parameters": [],
-                "returnType": "int",
+                "returnType": "",
                 "hasTentativeReturnType": true,
                 "phpDoc": null,
                 "sinceVersion": null,
@@ -5534,14 +5548,16 @@
                 "isDeprecated": false,
                 "accessModifier": "public",
                 "parameters": [],
-                "returnType": "\\DateTimeZone|false",
+                "returnType": "",
                 "hasTentativeReturnType": true,
                 "phpDoc": null,
                 "sinceVersion": null,
                 "removedVersion": null,
                 "returnTypeFromPhpDoc": "\\DateTimeZone|false",
-                "languageLevelTypes": null,
-                "defaultType": null
+                "languageLevelTypes": {
+                    "8.1": "DateTimeZone|false"
+                },
+                "defaultType": ""
             },
             {
                 "name": "__wakeup",
@@ -5551,14 +5567,16 @@
                 "isDeprecated": true,
                 "accessModifier": "public",
                 "parameters": [],
-                "returnType": "void",
+                "returnType": "",
                 "hasTentativeReturnType": true,
                 "phpDoc": null,
                 "sinceVersion": null,
                 "removedVersion": null,
                 "returnTypeFromPhpDoc": "void",
-                "languageLevelTypes": null,
-                "defaultType": null
+                "languageLevelTypes": {
+                    "8.1": "void"
+                },
+                "defaultType": ""
             },
             {
                 "name": "__serialize",
@@ -9287,14 +9305,16 @@
                 "isDeprecated": false,
                 "accessModifier": "public",
                 "parameters": [],
-                "returnType": "mixed",
+                "returnType": "",
                 "hasTentativeReturnType": true,
                 "phpDoc": null,
                 "sinceVersion": null,
                 "removedVersion": null,
                 "returnTypeFromPhpDoc": "TValue",
-                "languageLevelTypes": null,
-                "defaultType": null
+                "languageLevelTypes": {
+                    "8.1": "mixed"
+                },
+                "defaultType": ""
             },
             {
                 "name": "next",
@@ -9304,14 +9324,16 @@
                 "isDeprecated": false,
                 "accessModifier": "public",
                 "parameters": [],
-                "returnType": "void",
+                "returnType": "",
                 "hasTentativeReturnType": true,
                 "phpDoc": null,
                 "sinceVersion": null,
                 "removedVersion": null,
                 "returnTypeFromPhpDoc": "void",
-                "languageLevelTypes": null,
-                "defaultType": null
+                "languageLevelTypes": {
+                    "8.1": "void"
+                },
+                "defaultType": ""
             },
             {
                 "name": "key",
@@ -9321,14 +9343,16 @@
                 "isDeprecated": false,
                 "accessModifier": "public",
                 "parameters": [],
-                "returnType": "mixed",
+                "returnType": "",
                 "hasTentativeReturnType": true,
                 "phpDoc": null,
                 "sinceVersion": null,
                 "removedVersion": null,
                 "returnTypeFromPhpDoc": "TKey|null",
-                "languageLevelTypes": null,
-                "defaultType": null
+                "languageLevelTypes": {
+                    "8.1": "mixed"
+                },
+                "defaultType": ""
             },
             {
                 "name": "valid",
@@ -9338,14 +9362,16 @@
                 "isDeprecated": false,
                 "accessModifier": "public",
                 "parameters": [],
-                "returnType": "bool",
+                "returnType": "",
                 "hasTentativeReturnType": true,
                 "phpDoc": null,
                 "sinceVersion": null,
                 "removedVersion": null,
                 "returnTypeFromPhpDoc": "bool",
-                "languageLevelTypes": null,
-                "defaultType": null
+                "languageLevelTypes": {
+                    "8.1": "bool"
+                },
+                "defaultType": ""
             },
             {
                 "name": "rewind",
@@ -9355,14 +9381,16 @@
                 "isDeprecated": false,
                 "accessModifier": "public",
                 "parameters": [],
-                "returnType": "void",
+                "returnType": "",
                 "hasTentativeReturnType": true,
                 "phpDoc": null,
                 "sinceVersion": null,
                 "removedVersion": null,
                 "returnTypeFromPhpDoc": "void",
-                "languageLevelTypes": null,
-                "defaultType": null
+                "languageLevelTypes": {
+                    "8.1": "void"
+                },
+                "defaultType": ""
             }
         ],
         "constants": [],
@@ -9389,14 +9417,16 @@
                 "isDeprecated": false,
                 "accessModifier": "public",
                 "parameters": [],
-                "returnType": "\\Traversable",
+                "returnType": "",
                 "hasTentativeReturnType": true,
                 "phpDoc": null,
                 "sinceVersion": null,
                 "removedVersion": null,
                 "returnTypeFromPhpDoc": "\\Traversable<TKey,TValue>|TValue[]",
-                "languageLevelTypes": null,
-                "defaultType": null
+                "languageLevelTypes": {
+                    "8.1": "Traversable"
+                },
+                "defaultType": ""
             }
         ],
         "constants": [],
@@ -9423,14 +9453,16 @@
                 "isDeprecated": false,
                 "accessModifier": "public",
                 "parameters": [],
-                "returnType": "mixed",
+                "returnType": "",
                 "hasTentativeReturnType": true,
                 "phpDoc": null,
                 "sinceVersion": "5.4",
                 "removedVersion": null,
                 "returnTypeFromPhpDoc": "mixed",
-                "languageLevelTypes": null,
-                "defaultType": null
+                "languageLevelTypes": {
+                    "8.1": "mixed"
+                },
+                "defaultType": ""
             }
         ],
         "constants": [],
@@ -10971,14 +11003,16 @@
                 "isDeprecated": false,
                 "accessModifier": "public",
                 "parameters": [],
-                "returnType": "\\Iterator|null",
+                "returnType": "",
                 "hasTentativeReturnType": true,
                 "phpDoc": null,
                 "sinceVersion": null,
                 "removedVersion": null,
                 "returnTypeFromPhpDoc": "\\Iterator|null",
-                "languageLevelTypes": null,
-                "defaultType": null
+                "languageLevelTypes": {
+                    "8.1": "Iterator|null"
+                },
+                "defaultType": ""
             }
         ],
         "constants": [],
@@ -11053,14 +11087,16 @@
                 "isDeprecated": false,
                 "accessModifier": "public",
                 "parameters": [],
-                "returnType": "bool",
+                "returnType": "",
                 "hasTentativeReturnType": true,
                 "phpDoc": null,
                 "sinceVersion": null,
                 "removedVersion": null,
                 "returnTypeFromPhpDoc": "bool",
-                "languageLevelTypes": null,
-                "defaultType": null
+                "languageLevelTypes": {
+                    "8.1": "bool"
+                },
+                "defaultType": ""
             },
             {
                 "name": "getChildren",
@@ -11070,14 +11106,16 @@
                 "isDeprecated": false,
                 "accessModifier": "public",
                 "parameters": [],
-                "returnType": "\\RecursiveIterator|null",
+                "returnType": "",
                 "hasTentativeReturnType": true,
                 "phpDoc": null,
                 "sinceVersion": null,
                 "removedVersion": null,
                 "returnTypeFromPhpDoc": "\\RecursiveIterator|null",
-                "languageLevelTypes": null,
-                "defaultType": null
+                "languageLevelTypes": {
+                    "8.1": "RecursiveIterator|null"
+                },
+                "defaultType": ""
             }
         ],
         "constants": [],
@@ -11176,14 +11214,16 @@
                         "removedVersion": null
                     }
                 ],
-                "returnType": "void",
+                "returnType": "",
                 "hasTentativeReturnType": true,
                 "phpDoc": null,
                 "sinceVersion": null,
                 "removedVersion": null,
                 "returnTypeFromPhpDoc": "void",
-                "languageLevelTypes": null,
-                "defaultType": null
+                "languageLevelTypes": {
+                    "8.1": "void"
+                },
+                "defaultType": ""
             }
         ],
         "constants": [],
@@ -11278,14 +11318,16 @@
                 "isDeprecated": false,
                 "accessModifier": "public",
                 "parameters": [],
-                "returnType": "bool",
+                "returnType": "",
                 "hasTentativeReturnType": true,
                 "phpDoc": null,
                 "sinceVersion": "5.4",
                 "removedVersion": null,
                 "returnTypeFromPhpDoc": "bool",
-                "languageLevelTypes": null,
-                "defaultType": null
+                "languageLevelTypes": {
+                    "8.1": "bool"
+                },
+                "defaultType": ""
             },
             {
                 "name": "destroy",
@@ -11314,14 +11356,16 @@
                         "removedVersion": null
                     }
                 ],
-                "returnType": "bool",
+                "returnType": "",
                 "hasTentativeReturnType": true,
                 "phpDoc": null,
                 "sinceVersion": "5.4",
                 "removedVersion": null,
                 "returnTypeFromPhpDoc": "bool",
-                "languageLevelTypes": null,
-                "defaultType": null
+                "languageLevelTypes": {
+                    "8.1": "bool"
+                },
+                "defaultType": ""
             },
             {
                 "name": "gc",
@@ -11350,7 +11394,7 @@
                         "removedVersion": null
                     }
                 ],
-                "returnType": "int|false",
+                "returnType": "",
                 "hasTentativeReturnType": true,
                 "phpDoc": null,
                 "sinceVersion": "5.4",
@@ -11406,14 +11450,16 @@
                         "removedVersion": null
                     }
                 ],
-                "returnType": "bool",
+                "returnType": "",
                 "hasTentativeReturnType": true,
                 "phpDoc": null,
                 "sinceVersion": "5.4",
                 "removedVersion": null,
                 "returnTypeFromPhpDoc": "bool",
-                "languageLevelTypes": null,
-                "defaultType": null
+                "languageLevelTypes": {
+                    "8.1": "bool"
+                },
+                "defaultType": ""
             },
             {
                 "name": "read",
@@ -11442,14 +11488,16 @@
                         "removedVersion": null
                     }
                 ],
-                "returnType": "string|false",
+                "returnType": "",
                 "hasTentativeReturnType": true,
                 "phpDoc": null,
                 "sinceVersion": "5.4",
                 "removedVersion": null,
                 "returnTypeFromPhpDoc": "string|false",
-                "languageLevelTypes": null,
-                "defaultType": null
+                "languageLevelTypes": {
+                    "8.1": "string|false"
+                },
+                "defaultType": ""
             },
             {
                 "name": "write",
@@ -11496,14 +11544,16 @@
                         "removedVersion": null
                     }
                 ],
-                "returnType": "bool",
+                "returnType": "",
                 "hasTentativeReturnType": true,
                 "phpDoc": null,
                 "sinceVersion": "5.4",
                 "removedVersion": null,
                 "returnTypeFromPhpDoc": "bool",
-                "languageLevelTypes": null,
-                "defaultType": null
+                "languageLevelTypes": {
+                    "8.1": "bool"
+                },
+                "defaultType": ""
             }
         ],
         "constants": [],
@@ -11528,14 +11578,16 @@
                 "isDeprecated": false,
                 "accessModifier": "public",
                 "parameters": [],
-                "returnType": "string",
+                "returnType": "",
                 "hasTentativeReturnType": true,
                 "phpDoc": null,
                 "sinceVersion": null,
                 "removedVersion": null,
                 "returnTypeFromPhpDoc": "string",
-                "languageLevelTypes": null,
-                "defaultType": null
+                "languageLevelTypes": {
+                    "8.1": "string"
+                },
+                "defaultType": ""
             }
         ],
         "constants": [],
@@ -11577,14 +11629,16 @@
                         "removedVersion": null
                     }
                 ],
-                "returnType": "bool",
+                "returnType": "",
                 "hasTentativeReturnType": true,
                 "phpDoc": null,
                 "sinceVersion": null,
                 "removedVersion": null,
                 "returnTypeFromPhpDoc": "bool",
-                "languageLevelTypes": null,
-                "defaultType": null
+                "languageLevelTypes": {
+                    "8.1": "bool"
+                },
+                "defaultType": ""
             },
             {
                 "name": "updateTimestamp",
@@ -11627,14 +11681,16 @@
                         "removedVersion": null
                     }
                 ],
-                "returnType": "bool",
+                "returnType": "",
                 "hasTentativeReturnType": true,
                 "phpDoc": null,
                 "sinceVersion": null,
                 "removedVersion": null,
                 "returnTypeFromPhpDoc": "bool",
-                "languageLevelTypes": null,
-                "defaultType": null
+                "languageLevelTypes": {
+                    "8.1": "bool"
+                },
+                "defaultType": ""
             }
         ],
         "constants": [],
@@ -11676,14 +11732,16 @@
                         "removedVersion": null
                     }
                 ],
-                "returnType": "void",
+                "returnType": "",
                 "hasTentativeReturnType": true,
                 "phpDoc": null,
                 "sinceVersion": null,
                 "removedVersion": null,
                 "returnTypeFromPhpDoc": "void",
-                "languageLevelTypes": null,
-                "defaultType": null
+                "languageLevelTypes": {
+                    "8.1": "void"
+                },
+                "defaultType": ""
             }
         ],
         "constants": [],
@@ -11725,14 +11783,16 @@
                         "removedVersion": null
                     }
                 ],
-                "returnType": "void",
+                "returnType": "",
                 "hasTentativeReturnType": true,
                 "phpDoc": null,
                 "sinceVersion": null,
                 "removedVersion": null,
                 "returnTypeFromPhpDoc": "void",
-                "languageLevelTypes": null,
-                "defaultType": null
+                "languageLevelTypes": {
+                    "8.1": "void"
+                },
+                "defaultType": ""
             },
             {
                 "name": "detach",
@@ -11759,14 +11819,16 @@
                         "removedVersion": null
                     }
                 ],
-                "returnType": "void",
+                "returnType": "",
                 "hasTentativeReturnType": true,
                 "phpDoc": null,
                 "sinceVersion": null,
                 "removedVersion": null,
                 "returnTypeFromPhpDoc": "void",
-                "languageLevelTypes": null,
-                "defaultType": null
+                "languageLevelTypes": {
+                    "8.1": "void"
+                },
+                "defaultType": ""
             },
             {
                 "name": "notify",
@@ -11776,14 +11838,16 @@
                 "isDeprecated": false,
                 "accessModifier": "public",
                 "parameters": [],
-                "returnType": "void",
+                "returnType": "",
                 "hasTentativeReturnType": true,
                 "phpDoc": null,
                 "sinceVersion": null,
                 "removedVersion": null,
                 "returnTypeFromPhpDoc": "void",
-                "languageLevelTypes": null,
-                "defaultType": null
+                "languageLevelTypes": {
+                    "8.1": "void"
+                },
+                "defaultType": ""
             }
         ],
         "constants": [],
