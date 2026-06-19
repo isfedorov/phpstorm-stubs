@@ -344,7 +344,8 @@
             "List",
             "Zset",
             "Hash",
-            "Stream"
+            "Stream",
+            "Vectorset"
         ],
         "constants": [],
         "methods": [],

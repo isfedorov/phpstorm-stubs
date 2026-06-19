@@ -69,7 +69,9 @@ class PhpDocumentorParser implements PhpDocParserInterface
 
     /**
      * Fill in @param/@return/@var types that phpDocumentor dropped, reading them verbatim from
-     * the raw docblock. Only gaps are filled — values phpDocumentor already produced are kept.
+     * the raw docblock. Gaps are filled, and values phpDocumentor produced are also replaced when
+     * it collapsed a multi-argument generic (see {@see preferFaithfulType}); otherwise the value
+     * phpDocumentor already produced is kept.
      */
     private function recoverDroppedTypes(string $docComment, ParsedPhpDoc $parsed): void
     {
@@ -90,18 +92,86 @@ class PhpDocumentorParser implements PhpDocParserInterface
 
             switch ($m[1]) {
                 case 'return':
-                    $parsed->returnType ??= $type;
+                    $parsed->returnType = $this->preferFaithfulType($parsed->returnType, $type);
                     break;
                 case 'var':
-                    $parsed->varType ??= $type;
+                    $parsed->varType = $this->preferFaithfulType($parsed->varType, $type);
                     break;
                 case 'param':
-                    if (preg_match('/\$(\w+)/', $rest, $vm) && !array_key_exists($vm[1], $parsed->paramTypes)) {
-                        $parsed->paramTypes[$vm[1]] = $type;
+                    if (preg_match('/\$(\w+)/', $rest, $vm)) {
+                        $parsed->paramTypes[$vm[1]] = $this->preferFaithfulType(
+                            $parsed->paramTypes[$vm[1]] ?? null,
+                            $type
+                        );
                     }
                     break;
             }
         }
+    }
+
+    /**
+     * Decide between phpDocumentor's resolved type and the verbatim type read from the raw
+     * docblock.
+     *
+     * phpDocumentor's Collection value object models only a value type and an optional key type,
+     * so any generic with more than two arguments is silently truncated: e.g.
+     * `\Generator<int, list<string>, void, void>` is rendered as `\Generator<void,void>` (the
+     * arguments are reversed and the surplus dropped). When the verbatim type is the same generic
+     * but carries more top-level arguments, it is the faithful one and wins. Whitespace-only or
+     * equivalent renderings keep phpDocumentor's output to avoid needless cache churn.
+     */
+    private function preferFaithfulType(?string $current, string $verbatim): string
+    {
+        if ($current === null) {
+            return $verbatim;
+        }
+
+        $resolved = $this->decomposeGeneric($current);
+        $raw = $this->decomposeGeneric($verbatim);
+        if ($resolved !== null && $raw !== null
+            && $resolved[0] === $raw[0]
+            && $raw[1] > $resolved[1]) {
+            return $verbatim;
+        }
+
+        return $current;
+    }
+
+    /**
+     * Decompose the outermost generic of a type string into its base name (without a leading
+     * backslash) and the number of top-level type arguments, respecting nested `<> {} ()`.
+     *
+     * e.g. `\Generator<int, list<string>, void, void>` → `['Generator', 4]`.
+     *
+     * @return array{0: string, 1: int}|null null when the string is not a (well-formed) generic
+     */
+    private function decomposeGeneric(string $type): ?array
+    {
+        $open = strpos($type, '<');
+        if ($open === false) {
+            return null;
+        }
+
+        $base = ltrim(substr($type, 0, $open), '\\');
+        $depth = 0;
+        $args = 1;
+        $closed = false;
+        for ($i = $open, $len = strlen($type); $i < $len; $i++) {
+            $c = $type[$i];
+            if ($c === '<' || $c === '{' || $c === '(') {
+                $depth++;
+            } elseif ($c === '>' || $c === '}' || $c === ')') {
+                $depth--;
+                if ($depth === 0) {
+                    $closed = true;
+                    break;
+                }
+            } elseif ($c === ',' && $depth === 1) {
+                $args++;
+            }
+        }
+
+        return $closed ? [$base, $args] : null;
     }
 
     /**

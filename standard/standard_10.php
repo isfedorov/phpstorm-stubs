@@ -8,7 +8,10 @@
  * @since 8.4
  */
 function array_find(array $array, callable $callback): mixed {}
+
 /**
+ * Checks if at least one array element satisfies a callback function.
+ * Returns true, if the given callback returns true for any element. Otherwise the function returns false.
  * @template TKey
  * @template TValue
  * @param array<TKey, TValue> $array
@@ -26,7 +29,10 @@ function array_find_key(array $array, callable $callback): mixed {}
  * @since 8.4
  */
 function array_any(array $array, callable $callback): bool {}
+
 /**
+ * Checks if all array elements satisfy a callback function.
+ * Returns true, if the given callback returns true for all elements. Otherwise the function returns false.
  * @template TKey
  * @template TValue
  * @param array<TKey, TValue> $array
@@ -35,6 +41,7 @@ function array_any(array $array, callable $callback): bool {}
  * @since 8.4
  */
 function array_all(array $array, callable $callback): bool {}
+
 /**
  * @since 8.4
  */
