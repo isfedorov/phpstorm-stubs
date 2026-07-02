@@ -3,7 +3,6 @@
 use JetBrains\PhpStorm\Internal\PhpStormStubsElementAvailable;
 use JetBrains\PhpStorm\Internal\TentativeType;
 use JetBrains\PhpStorm\Pure;
-use JetBrains\PhpStorm\Internal\LanguageLevelTypeAware;
 
 /**
  * The ReflectionType class reports information about a function's parameters.
@@ -21,8 +20,7 @@ abstract class ReflectionType implements Stringable
      * @since 7.0
      */
     #[TentativeType]
-    #[LanguageLevelTypeAware(['8.1' => 'bool'], default: '')]
-    public function allowsNull() {}
+    public function allowsNull(): bool {}
 
     /**
      * Checks if it is a built-in type

@@ -271,8 +271,7 @@ class XMLReader
      * @since 5.1.2
      */
     #[TentativeType]
-    #[LanguageLevelTypeAware(['8.1' => 'string|null'], default: '')]
-    public function getAttribute(#[LanguageLevelTypeAware(['8.0' => 'string'], default: '')] $name) {}
+    public function getAttribute(#[LanguageLevelTypeAware(['8.0' => 'string'], default: '')] $name): ?string {}
 
     /**
      * Get the value of an attribute by index
@@ -285,8 +284,7 @@ class XMLReader
      * @since 5.1.2
      */
     #[TentativeType]
-    #[LanguageLevelTypeAware(['8.1' => 'string|null'], default: '')]
-    public function getAttributeNo(#[LanguageLevelTypeAware(['8.0' => 'int'], default: '')] $index) {}
+    public function getAttributeNo(#[LanguageLevelTypeAware(['8.0' => 'int'], default: '')] $index): ?string {}
 
     /**
      * Get the value of an attribute by localname and URI
@@ -303,11 +301,10 @@ class XMLReader
      * @since 5.1.2
      */
     #[TentativeType]
-    #[LanguageLevelTypeAware(['8.1' => 'string|null'], default: '')]
     public function getAttributeNs(
         #[LanguageLevelTypeAware(['8.0' => 'string'], default: '')] $name,
         #[LanguageLevelTypeAware(['8.0' => 'string'], default: '')] $namespace
-    ) {}
+    ): ?string {}
 
     /**
      * Indicates if specified property has been set
@@ -320,8 +317,7 @@ class XMLReader
      * @since 5.1.2
      */
     #[TentativeType]
-    #[LanguageLevelTypeAware(['8.1' => 'bool'], default: '')]
-    public function getParserProperty(#[LanguageLevelTypeAware(['8.0' => 'int'], default: '')] $property) {}
+    public function getParserProperty(#[LanguageLevelTypeAware(['8.0' => 'int'], default: '')] $property): bool {}
 
     /**
      * Indicates if the parsed document is valid
@@ -330,8 +326,7 @@ class XMLReader
      * @since 5.1.2
      */
     #[TentativeType]
-    #[LanguageLevelTypeAware(['8.1' => 'bool'], default: '')]
-    public function isValid() {}
+    public function isValid(): bool {}
 
     /**
      * Lookup namespace for a prefix
@@ -343,8 +338,7 @@ class XMLReader
      * @since 5.1.2
      */
     #[TentativeType]
-    #[LanguageLevelTypeAware(['8.1' => 'string|null'], default: '')]
-    public function lookupNamespace(#[LanguageLevelTypeAware(['8.0' => 'string'], default: '')] $prefix) {}
+    public function lookupNamespace(#[LanguageLevelTypeAware(['8.0' => 'string'], default: '')] $prefix): ?string {}
 
     /**
      * Move cursor to an attribute by index
@@ -356,8 +350,7 @@ class XMLReader
      * @since 5.1.2
      */
     #[TentativeType]
-    #[LanguageLevelTypeAware(['8.1' => 'bool'], default: '')]
-    public function moveToAttributeNo(#[LanguageLevelTypeAware(['8.0' => 'int'], default: '')] $index) {}
+    public function moveToAttributeNo(#[LanguageLevelTypeAware(['8.0' => 'int'], default: '')] $index): bool {}
 
     /**
      * Move cursor to a named attribute
@@ -369,8 +362,7 @@ class XMLReader
      * @since 5.1.2
      */
     #[TentativeType]
-    #[LanguageLevelTypeAware(['8.1' => 'bool'], default: '')]
-    public function moveToAttribute(#[LanguageLevelTypeAware(['8.0' => 'string'], default: '')] $name) {}
+    public function moveToAttribute(#[LanguageLevelTypeAware(['8.0' => 'string'], default: '')] $name): bool {}
 
     /**
      * Move cursor to a named attribute
@@ -385,11 +377,10 @@ class XMLReader
      * @since 5.1.2
      */
     #[TentativeType]
-    #[LanguageLevelTypeAware(['8.1' => 'bool'], default: '')]
     public function moveToAttributeNs(
         #[LanguageLevelTypeAware(['8.0' => 'string'], default: '')] $name,
         #[LanguageLevelTypeAware(['8.0' => 'string'], default: '')] $namespace
-    ) {}
+    ): bool {}
 
     /**
      * Position cursor on the parent Element of current Attribute
@@ -399,8 +390,7 @@ class XMLReader
      * @since 5.1.2
      */
     #[TentativeType]
-    #[LanguageLevelTypeAware(['8.1' => 'bool'], default: '')]
-    public function moveToElement() {}
+    public function moveToElement(): bool {}
 
     /**
      * Position cursor on the first Attribute
@@ -409,8 +399,7 @@ class XMLReader
      * @since 5.1.2
      */
     #[TentativeType]
-    #[LanguageLevelTypeAware(['8.1' => 'bool'], default: '')]
-    public function moveToFirstAttribute() {}
+    public function moveToFirstAttribute(): bool {}
 
     /**
      * Position cursor on the next Attribute
@@ -419,8 +408,7 @@ class XMLReader
      * @since 5.1.2
      */
     #[TentativeType]
-    #[LanguageLevelTypeAware(['8.1' => 'bool'], default: '')]
-    public function moveToNextAttribute() {}
+    public function moveToNextAttribute(): bool {}
 
     /**
      * Set the URI containing the XML to parse
@@ -452,8 +440,7 @@ class XMLReader
      * @since 5.1.2
      */
     #[TentativeType]
-    #[LanguageLevelTypeAware(['8.1' => 'bool'], default: '')]
-    public function read() {}
+    public function read(): bool {}
 
     /**
      * Move cursor to next node skipping all subtrees
@@ -465,8 +452,7 @@ class XMLReader
      * @since 5.1.2
      */
     #[TentativeType]
-    #[LanguageLevelTypeAware(['8.1' => 'bool'], default: '')]
-    public function next(#[LanguageLevelTypeAware(['8.0' => 'string|null'], default: '')] $name = null) {}
+    public function next(#[LanguageLevelTypeAware(['8.0' => 'string|null'], default: '')] $name = null): bool {}
 
     /**
      * Retrieve XML from current node
@@ -474,8 +460,7 @@ class XMLReader
      * @return string the contents of the current node as a string. Empty string on failure.
      */
     #[TentativeType]
-    #[LanguageLevelTypeAware(['8.1' => 'string'], default: '')]
-    public function readInnerXml() {}
+    public function readInnerXml(): string {}
 
     /**
      * Retrieve XML from current node, including it self
@@ -483,8 +468,7 @@ class XMLReader
      * @return string the contents of current node, including itself, as a string. Empty string on failure.
      */
     #[TentativeType]
-    #[LanguageLevelTypeAware(['8.1' => 'string'], default: '')]
-    public function readOuterXml() {}
+    public function readOuterXml(): string {}
 
     /**
      * Reads the contents of the current node as a string
@@ -493,8 +477,7 @@ class XMLReader
      * failure.
      */
     #[TentativeType]
-    #[LanguageLevelTypeAware(['8.1' => 'string'], default: '')]
-    public function readString() {}
+    public function readString(): string {}
 
     /**
      * Validate document against XSD
@@ -505,8 +488,7 @@ class XMLReader
      * @return bool <b>TRUE</b> on success or <b>FALSE</b> on failure.
      */
     #[TentativeType]
-    #[LanguageLevelTypeAware(['8.1' => 'bool'], default: '')]
-    public function setSchema(#[LanguageLevelTypeAware(['8.0' => 'string|null'], default: '')] $filename) {}
+    public function setSchema(#[LanguageLevelTypeAware(['8.0' => 'string|null'], default: '')] $filename): bool {}
 
     /**
      * Set parser options
@@ -523,11 +505,10 @@ class XMLReader
      * @since 5.1.2
      */
     #[TentativeType]
-    #[LanguageLevelTypeAware(['8.1' => 'bool'], default: '')]
     public function setParserProperty(
         #[LanguageLevelTypeAware(['8.0' => 'int'], default: '')] $property,
         #[LanguageLevelTypeAware(['8.0' => 'bool'], default: '')] $value
-    ) {}
+    ): bool {}
 
     /**
      * Set the filename or URI for a RelaxNG Schema
@@ -538,8 +519,7 @@ class XMLReader
      * @return bool <b>TRUE</b> on success or <b>FALSE</b> on failure.
      */
     #[TentativeType]
-    #[LanguageLevelTypeAware(['8.1' => 'bool'], default: '')]
-    public function setRelaxNGSchema(#[LanguageLevelTypeAware(['8.0' => 'string|null'], default: '')] $filename) {}
+    public function setRelaxNGSchema(#[LanguageLevelTypeAware(['8.0' => 'string|null'], default: '')] $filename): bool {}
 
     /**
      * Set the data containing a RelaxNG Schema
@@ -551,8 +531,7 @@ class XMLReader
      * @since 5.1.2
      */
     #[TentativeType]
-    #[LanguageLevelTypeAware(['8.1' => 'bool'], default: '')]
-    public function setRelaxNGSchemaSource(#[LanguageLevelTypeAware(['8.0' => 'string|null'], default: '')] $source) {}
+    public function setRelaxNGSchemaSource(#[LanguageLevelTypeAware(['8.0' => 'string|null'], default: '')] $source): bool {}
 
     /**
      * Set the data containing the XML to parse
@@ -585,10 +564,9 @@ class XMLReader
      * @since 5.1.2
      */
     #[TentativeType]
-    #[LanguageLevelTypeAware(['8.1' => 'DOMNode|false'], default: '')]
     public function expand(
         #[PhpStormStubsElementAvailable(from: '7.0')] #[LanguageLevelTypeAware(['8.0' => 'DOMNode|null'], default: '')] $baseNode = null
-    ) {}
+    ): DOMNode|false {}
 
     /**
      * @since 8.4

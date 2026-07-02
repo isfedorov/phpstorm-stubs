@@ -114,8 +114,7 @@ class ReflectionMethod extends ReflectionFunctionAbstract
      */
     #[Pure]
     #[TentativeType]
-    #[LanguageLevelTypeAware(['8.1' => 'bool'], default: '')]
-    public function isPublic() {}
+    public function isPublic(): bool {}
 
     /**
      * Checks if method is private
@@ -125,8 +124,7 @@ class ReflectionMethod extends ReflectionFunctionAbstract
      */
     #[Pure]
     #[TentativeType]
-    #[LanguageLevelTypeAware(['8.1' => 'bool'], default: '')]
-    public function isPrivate() {}
+    public function isPrivate(): bool {}
 
     /**
      * Checks if method is protected
@@ -136,8 +134,7 @@ class ReflectionMethod extends ReflectionFunctionAbstract
      */
     #[Pure]
     #[TentativeType]
-    #[LanguageLevelTypeAware(['8.1' => 'bool'], default: '')]
-    public function isProtected() {}
+    public function isProtected(): bool {}
 
     /**
      * Checks if method is abstract
@@ -147,8 +144,7 @@ class ReflectionMethod extends ReflectionFunctionAbstract
      */
     #[Pure]
     #[TentativeType]
-    #[LanguageLevelTypeAware(['8.1' => 'bool'], default: '')]
-    public function isAbstract() {}
+    public function isAbstract(): bool {}
 
     /**
      * Checks if method is final
@@ -158,8 +154,7 @@ class ReflectionMethod extends ReflectionFunctionAbstract
      */
     #[Pure]
     #[TentativeType]
-    #[LanguageLevelTypeAware(['8.1' => 'bool'], default: '')]
-    public function isFinal() {}
+    public function isFinal(): bool {}
 
     /**
      * Checks if method is static
@@ -169,8 +164,7 @@ class ReflectionMethod extends ReflectionFunctionAbstract
      */
     #[Pure]
     #[TentativeType]
-    #[LanguageLevelTypeAware(['8.1' => 'bool'], default: '')]
-    public function isStatic() {}
+    public function isStatic(): bool {}
 
     /**
      * Checks if method is a constructor
@@ -180,8 +174,7 @@ class ReflectionMethod extends ReflectionFunctionAbstract
      */
     #[Pure]
     #[TentativeType]
-    #[LanguageLevelTypeAware(['8.1' => 'bool'], default: '')]
-    public function isConstructor() {}
+    public function isConstructor(): bool {}
 
     /**
      * Checks if method is a destructor
@@ -191,8 +184,7 @@ class ReflectionMethod extends ReflectionFunctionAbstract
      */
     #[Pure]
     #[TentativeType]
-    #[LanguageLevelTypeAware(['8.1' => 'bool'], default: '')]
-    public function isDestructor() {}
+    public function isDestructor(): bool {}
 
     /**
      * Returns a dynamically created closure for the method
@@ -206,11 +198,10 @@ class ReflectionMethod extends ReflectionFunctionAbstract
      */
     #[Pure]
     #[TentativeType]
-    #[LanguageLevelTypeAware(['8.1' => 'Closure'], default: '')]
     public function getClosure(
         #[PhpStormStubsElementAvailable(from: '5.3', to: '7.3')] $object,
         #[PhpStormStubsElementAvailable(from: '7.4')] #[LanguageLevelTypeAware(['8.0' => 'object|null'], default: '')] $object = null
-    ) {}
+    ): Closure {}
 
     /**
      * Gets the method modifiers
@@ -231,8 +222,7 @@ class ReflectionMethod extends ReflectionFunctionAbstract
      */
     #[Pure]
     #[TentativeType]
-    #[LanguageLevelTypeAware(['8.1' => 'int'], default: '')]
-    public function getModifiers() {}
+    public function getModifiers(): int {}
 
     /**
      * Invokes a reflected method.
@@ -249,11 +239,10 @@ class ReflectionMethod extends ReflectionFunctionAbstract
      * invocation failed.
      */
     #[TentativeType]
-    #[LanguageLevelTypeAware(['8.1' => 'mixed'], default: '')]
     public function invoke(
         #[LanguageLevelTypeAware(['8.0' => 'object|null'], default: '')] $object,
         mixed ...$args
-    ) {}
+    ): mixed {}
 
     /**
      * Invokes the reflected method and pass its arguments as array.
@@ -268,8 +257,7 @@ class ReflectionMethod extends ReflectionFunctionAbstract
      * invocation failed.
      */
     #[TentativeType]
-    #[LanguageLevelTypeAware(['8.1' => 'mixed'], default: '')]
-    public function invokeArgs(#[LanguageLevelTypeAware(['8.0' => 'object|null'], default: '')] $object, array $args) {}
+    public function invokeArgs(#[LanguageLevelTypeAware(['8.0' => 'object|null'], default: '')] $object, array $args): mixed {}
 
     /**
      * Gets declaring class for the reflected method.
@@ -280,8 +268,7 @@ class ReflectionMethod extends ReflectionFunctionAbstract
      */
     #[Pure]
     #[TentativeType]
-    #[LanguageLevelTypeAware(['8.1' => 'ReflectionClass'], default: '')]
-    public function getDeclaringClass() {}
+    public function getDeclaringClass(): ReflectionClass {}
 
     /**
      * Gets the method prototype (if there is one).
@@ -292,8 +279,7 @@ class ReflectionMethod extends ReflectionFunctionAbstract
      */
     #[Pure]
     #[TentativeType]
-    #[LanguageLevelTypeAware(['8.1' => 'ReflectionMethod'], default: '')]
-    public function getPrototype() {}
+    public function getPrototype(): ReflectionMethod {}
 
     /**
      * Set method accessibility
@@ -304,8 +290,7 @@ class ReflectionMethod extends ReflectionFunctionAbstract
      */
     #[PhpStormStubsElementAvailable(from: "5.3", to: "8.0")]
     #[TentativeType]
-    #[LanguageLevelTypeAware(['8.1' => 'void'], default: '')]
-    public function setAccessible(#[LanguageLevelTypeAware(['8.0' => 'bool'], default: '')] $accessible) {}
+    public function setAccessible(#[LanguageLevelTypeAware(['8.0' => 'bool'], default: '')] $accessible): void {}
 
     /**
      * Set method accessibility
@@ -317,9 +302,8 @@ class ReflectionMethod extends ReflectionFunctionAbstract
      */
     #[PhpStormStubsElementAvailable(from: "8.1")]
     #[TentativeType]
-    #[LanguageLevelTypeAware(['8.1' => 'void'], default: '')]
     #[Deprecated('Deprecated: it has no effect', since: '8.5')]
-    public function setAccessible(bool $accessible) {}
+    public function setAccessible(bool $accessible): void {}
 
     #[PhpStormStubsElementAvailable(from: '8.2')]
     public function hasPrototype(): bool {}

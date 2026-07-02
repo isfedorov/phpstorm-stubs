@@ -98,11 +98,10 @@ interface DateTimeInterface
      * difference between the two dates.
      */
     #[TentativeType]
-    #[LanguageLevelTypeAware(['8.1' => 'DateInterval'], default: '')]
     public function diff(
         DateTimeInterface $targetObject,
         #[LanguageLevelTypeAware(['8.0' => 'bool'], default: '')] $absolute = false
-    );
+    ): DateInterval;
 
     /**
      * (PHP 5 &gt;=5.5.0)<br/>
@@ -117,8 +116,7 @@ interface DateTimeInterface
      */
     #[Pure(true)]
     #[TentativeType]
-    #[LanguageLevelTypeAware(['8.1' => 'string'], default: '')]
-    public function format(#[LanguageLevelTypeAware(['8.0' => 'string'], default: '')] $format);
+    public function format(#[LanguageLevelTypeAware(['8.0' => 'string'], default: '')] $format): string;
 
     /**
      * (PHP 5 &gt;=5.5.0)<br/>
@@ -129,7 +127,7 @@ interface DateTimeInterface
      */
     #[LanguageLevelTypeAware(["8.0" => "int"], default: "int|false")]
     #[TentativeType]
-    public function getOffset();
+    public function getOffset(): int;
 
     /**
      * (PHP 5 &gt;=5.5.0)<br/>
@@ -150,8 +148,7 @@ interface DateTimeInterface
      * or <b>FALSE</b> on failure.
      */
     #[TentativeType]
-    #[LanguageLevelTypeAware(['8.1' => 'DateTimeZone|false'], default: '')]
-    public function getTimezone();
+    public function getTimezone(): DateTimeZone|false;
 
     /**
      * (PHP 5 &gt;=5.5.0)<br/>
@@ -160,9 +157,8 @@ interface DateTimeInterface
      * @return void Initializes a DateTime object.
      */
     #[TentativeType]
-    #[LanguageLevelTypeAware(['8.1' => 'void'], default: '')]
     #[\JetBrains\PhpStorm\Deprecated(since: '8.5')]
-    public function __wakeup();
+    public function __wakeup(): void;
 
     #[PhpStormStubsElementAvailable(from: '8.2')]
     public function __serialize(): array;
@@ -234,9 +230,8 @@ class DateTimeImmutable implements DateTimeInterface
      * @link https://secure.php.net/manual/en/datetimeimmutable.add.php
      */
     #[TentativeType]
-    #[LanguageLevelTypeAware(['8.1' => 'DateTimeImmutable'], default: '')]
     #[\NoDiscard(message: "as DateTimeImmutable::add() does not modify the object itself")]
-    public function add(DateInterval $interval) {}
+    public function add(DateInterval $interval): DateTimeImmutable {}
 
     /**
      * (PHP 5 &gt;=5.5.0)<br/>
@@ -248,13 +243,12 @@ class DateTimeImmutable implements DateTimeInterface
      * @return DateTimeImmutable|false
      */
     #[TentativeType]
-    #[LanguageLevelTypeAware(['8.1' => 'DateTimeImmutable|false'], default: '')]
     #[PhpStormStubsElementAvailable(from: '5.5', to: '7.4')]
     public static function createFromFormat(
         #[LanguageLevelTypeAware(['8.0' => 'string'], default: '')] $format,
         #[LanguageLevelTypeAware(['8.0' => 'string'], default: '')] $datetime,
         #[LanguageLevelTypeAware(['8.0' => 'DateTimeZone|null'], default: 'DateTimeZone')] $timezone = null
-    ) {}
+    ): DateTimeImmutable|false {}
 
     /**
      * (PHP 5 &gt;=5.5.0)<br/>
@@ -267,13 +261,12 @@ class DateTimeImmutable implements DateTimeInterface
      * @throws ValueError when the datetime contains NULL-bytes.
      */
     #[TentativeType]
-    #[LanguageLevelTypeAware(['8.1' => 'DateTimeImmutable|false'], default: '')]
     #[PhpStormStubsElementAvailable(from: '8.0')]
     public static function createFromFormat(
         #[LanguageLevelTypeAware(['8.0' => 'string'], default: '')] $format,
         #[LanguageLevelTypeAware(['8.0' => 'string'], default: '')] $datetime,
         #[LanguageLevelTypeAware(['8.0' => 'DateTimeZone|null'], default: 'DateTimeZone')] $timezone = null
-    ) {}
+    ): DateTimeImmutable|false {}
 
     /**
      * (PHP 5 &gt;=5.6.0)<br/>
@@ -294,8 +287,7 @@ class DateTimeImmutable implements DateTimeInterface
      */
     #[ArrayShape(["warning_count" => "int", "warnings" => "string[]", "error_count" => "int", "errors" => "string[]"])]
     #[TentativeType]
-    #[LanguageLevelTypeAware(['8.1' => 'array|false'], default: '')]
-    public static function getLastErrors() {}
+    public static function getLastErrors(): array|false {}
 
     /**
      * (PHP 5 &gt;=5.5.0)<br/>
@@ -338,8 +330,7 @@ class DateTimeImmutable implements DateTimeInterface
      * Returns a new instance of a {@link https://secure.php.net/manual/en/class.datetimeimmutable.php DateTimeImmutable} object.
      */
     #[TentativeType]
-    #[LanguageLevelTypeAware(['8.1' => 'static'], default: '')]
-    public static function __set_state(array $array) {}
+    public static function __set_state(array $array): static {}
 
     /**
      * (PHP 5 &gt;=5.5.0)<br/>
@@ -352,13 +343,12 @@ class DateTimeImmutable implements DateTimeInterface
      * Returns the {@link https://secure.php.net/manual/en/class.datetimeimmutable.php DateTimeImmutable} object for method chaining or <b>FALSE</b> on failure.
      */
     #[TentativeType]
-    #[LanguageLevelTypeAware(['8.1' => 'DateTimeImmutable'], default: '')]
     #[\NoDiscard(message: "as DateTimeImmutable::setDate() does not modify the object itself")]
     public function setDate(
         #[LanguageLevelTypeAware(['8.0' => 'int'], default: '')] $year,
         #[LanguageLevelTypeAware(['8.0' => 'int'], default: '')] $month,
         #[LanguageLevelTypeAware(['8.0' => 'int'], default: '')] $day
-    ) {}
+    ): DateTimeImmutable {}
 
     /**
      * (PHP 5 &gt;=5.5.0)<br/>
@@ -371,13 +361,12 @@ class DateTimeImmutable implements DateTimeInterface
      * Returns the {@link https://secure.php.net/manual/en/class.datetimeimmutable.php DateTimeImmutable} object for method chaining or <b>FALSE</b> on failure.
      */
     #[TentativeType]
-    #[LanguageLevelTypeAware(['8.1' => 'DateTimeImmutable'], default: '')]
     #[\NoDiscard(message: "as DateTimeImmutable::setISODate() does not modify the object itself")]
     public function setISODate(
         #[LanguageLevelTypeAware(['8.0' => 'int'], default: '')] $year,
         #[LanguageLevelTypeAware(['8.0' => 'int'], default: '')] $week,
         #[LanguageLevelTypeAware(['8.0' => 'int'], default: '')] $dayOfWeek = 1
-    ) {}
+    ): DateTimeImmutable {}
 
     /**
      * (PHP 5 &gt;=5.5.0)<br/>
@@ -391,7 +380,6 @@ class DateTimeImmutable implements DateTimeInterface
      * Returns the {@link https://secure.php.net/manual/en/class.datetimeimmutable.php DateTimeImmutable} object for method chaining or <b>FALSE</b> on failure.
      */
     #[TentativeType]
-    #[LanguageLevelTypeAware(['8.1' => 'DateTimeImmutable'], default: '')]
     #[\NoDiscard(message: "as DateTimeImmutable::setTime() does not modify the object itself")]
     #[Pure]
     public function setTime(
@@ -399,7 +387,7 @@ class DateTimeImmutable implements DateTimeInterface
         #[LanguageLevelTypeAware(['8.0' => 'int'], default: '')] $minute,
         #[LanguageLevelTypeAware(['8.0' => 'int'], default: '')] $second = 0,
         #[PhpStormStubsElementAvailable(from: '7.1')] #[LanguageLevelTypeAware(['8.0' => 'int'], default: '')] $microsecond = 0
-    ) {}
+    ): DateTimeImmutable {}
 
     /**
      * (PHP 5 &gt;=5.5.0)<br/>
@@ -410,9 +398,8 @@ class DateTimeImmutable implements DateTimeInterface
      * Returns the {@link https://secure.php.net/manual/en/class.datetimeimmutable.php DateTimeImmutable} object for method chaining or <b>FALSE</b> on failure.
      */
     #[TentativeType]
-    #[LanguageLevelTypeAware(['8.1' => 'DateTimeImmutable'], default: '')]
     #[\NoDiscard(message: "as DateTimeImmutable::setTimestamp() does not modify the object itself")]
-    public function setTimestamp(#[LanguageLevelTypeAware(['8.0' => 'int'], default: '')] $timestamp) {}
+    public function setTimestamp(#[LanguageLevelTypeAware(['8.0' => 'int'], default: '')] $timestamp): DateTimeImmutable {}
 
     /**
      * (PHP 5 &gt;=5.5.0)<br/>
@@ -426,9 +413,8 @@ class DateTimeImmutable implements DateTimeInterface
      * Returns the {@link https://secure.php.net/manual/en/class.datetimeimmutable.php DateTimeImmutable} object for method chaining or <b>FALSE</b> on failure.
      */
     #[TentativeType]
-    #[LanguageLevelTypeAware(['8.1' => 'DateTimeImmutable'], default: '')]
     #[\NoDiscard(message: "as DateTimeImmutable::setTimezone() does not modify the object itself")]
-    public function setTimezone(DateTimeZone $timezone) {}
+    public function setTimezone(DateTimeZone $timezone): DateTimeImmutable {}
 
     /**
      * (PHP 5 &gt;=5.5.0)<br/>
@@ -442,9 +428,8 @@ class DateTimeImmutable implements DateTimeInterface
      * Returns the {@link https://secure.php.net/manual/en/class.datetimeimmutable.php DateTimeImmutable} object for method chaining or <b>FALSE</b> on failure.
      */
     #[TentativeType]
-    #[LanguageLevelTypeAware(['8.1' => 'DateTimeImmutable'], default: '')]
     #[\NoDiscard(message: "as DateTimeImmutable::sub() does not modify the object itself")]
-    public function sub(DateInterval $interval) {}
+    public function sub(DateInterval $interval): DateTimeImmutable {}
 
     /**
      * (PHP 5 &gt;=5.5.0)<br/>
@@ -457,11 +442,10 @@ class DateTimeImmutable implements DateTimeInterface
      * difference between the two dates.
      */
     #[TentativeType]
-    #[LanguageLevelTypeAware(['8.1' => 'DateInterval'], default: '')]
     public function diff(
         #[LanguageLevelTypeAware(['8.0' => 'DateTimeInterface'], default: '')] $targetObject,
         #[LanguageLevelTypeAware(['8.0' => 'bool'], default: '')] $absolute = false
-    ) {}
+    ): DateInterval {}
 
     /**
      * (PHP 5 &gt;=5.5.0)<br/>
@@ -475,8 +459,7 @@ class DateTimeImmutable implements DateTimeInterface
      */
     #[Pure(true)]
     #[TentativeType]
-    #[LanguageLevelTypeAware(['8.1' => 'string'], default: '')]
-    public function format(#[LanguageLevelTypeAware(['8.0' => 'string'], default: '')] $format) {}
+    public function format(#[LanguageLevelTypeAware(['8.0' => 'string'], default: '')] $format): string {}
 
     /**
      * (PHP 5 &gt;=5.5.0)<br/>
@@ -486,8 +469,7 @@ class DateTimeImmutable implements DateTimeInterface
      * or <b>FALSE</b> on failure.
      */
     #[TentativeType]
-    #[LanguageLevelTypeAware(['8.1' => 'int'], default: '')]
-    public function getOffset() {}
+    public function getOffset(): int {}
 
     /**
      * (PHP 5 &gt;=5.5.0)<br/>
@@ -496,8 +478,7 @@ class DateTimeImmutable implements DateTimeInterface
      * Returns the Unix timestamp representing the date.
      */
     #[TentativeType]
-    #[LanguageLevelTypeAware(['8.1' => 'int'], default: '')]
-    public function getTimestamp() {}
+    public function getTimestamp(): int {}
 
     /**
      * (PHP 5 &gt;=5.5.0)<br/>
@@ -508,8 +489,7 @@ class DateTimeImmutable implements DateTimeInterface
      * or <b>FALSE</b> on failure.
      */
     #[TentativeType]
-    #[LanguageLevelTypeAware(['8.1' => 'DateTimeZone|false'], default: '')]
-    public function getTimezone() {}
+    public function getTimezone(): DateTimeZone|false {}
 
     /**
      * (PHP 5 &gt;=5.5.0)<br/>
@@ -518,9 +498,8 @@ class DateTimeImmutable implements DateTimeInterface
      * @return void Initializes a DateTime object.
      */
     #[TentativeType]
-    #[LanguageLevelTypeAware(['8.1' => 'void'], default: '')]
     #[Deprecated(since: '8.5')]
-    public function __wakeup() {}
+    public function __wakeup(): void {}
 
     /**
      * @param DateTimeInterface $object
@@ -539,8 +518,7 @@ class DateTimeImmutable implements DateTimeInterface
      * @since 8.4
      */
     #[TentativeType]
-    #[LanguageLevelTypeAware(['8.1' => 'static'], default: '')]
-    public static function createFromTimestamp(int|float $timestamp) {}
+    public static function createFromTimestamp(int|float $timestamp): static {}
 
     /**
      * @since 8.4
@@ -700,9 +678,8 @@ class DateTime implements DateTimeInterface
      * @link https://php.net/manual/en/datetime.wakeup.php
      */
     #[TentativeType]
-    #[LanguageLevelTypeAware(['8.1' => 'void'], default: '')]
     #[Deprecated(since: '8.5')]
-    public function __wakeup() {}
+    public function __wakeup(): void {}
 
     /**
      * Returns date formatted according to given format.
@@ -712,8 +689,7 @@ class DateTime implements DateTimeInterface
      */
     #[Pure(true)]
     #[TentativeType]
-    #[LanguageLevelTypeAware(['8.1' => 'string'], default: '')]
-    public function format(#[LanguageLevelTypeAware(['8.0' => 'string'], default: '')] $format) {}
+    public function format(#[LanguageLevelTypeAware(['8.0' => 'string'], default: '')] $format): string {}
 
     /**
      * Alter the timestamp of a DateTime object by incrementing or decrementing
@@ -747,8 +723,7 @@ class DateTime implements DateTimeInterface
      * @link https://php.net/manual/en/datetime.add.php
      */
     #[TentativeType]
-    #[LanguageLevelTypeAware(['8.1' => 'DateTime'], default: '')]
-    public function add(DateInterval $interval) {}
+    public function add(DateInterval $interval): DateTime {}
 
     /**
      * @param DateTimeImmutable $object
@@ -767,8 +742,7 @@ class DateTime implements DateTimeInterface
      * @throws DateInvalidOperationException
      */
     #[TentativeType]
-    #[LanguageLevelTypeAware(['8.1' => 'DateTime'], default: '')]
-    public function sub(DateInterval $interval) {}
+    public function sub(DateInterval $interval): DateTime {}
 
     /**
      * Get the TimeZone associated with the DateTime
@@ -776,8 +750,7 @@ class DateTime implements DateTimeInterface
      * @link https://php.net/manual/en/datetime.gettimezone.php
      */
     #[TentativeType]
-    #[LanguageLevelTypeAware(['8.1' => 'DateTimeZone|false'], default: '')]
-    public function getTimezone() {}
+    public function getTimezone(): DateTimeZone|false {}
 
     /**
      * Set the TimeZone associated with the DateTime
@@ -786,8 +759,7 @@ class DateTime implements DateTimeInterface
      * @link https://php.net/manual/en/datetime.settimezone.php
      */
     #[TentativeType]
-    #[LanguageLevelTypeAware(['8.1' => 'DateTime'], default: '')]
-    public function setTimezone(#[LanguageLevelTypeAware(['8.0' => 'DateTimeZone'], default: '')] $timezone) {}
+    public function setTimezone(#[LanguageLevelTypeAware(['8.0' => 'DateTimeZone'], default: '')] $timezone): DateTime {}
 
     /**
      * Returns the timezone offset
@@ -795,8 +767,7 @@ class DateTime implements DateTimeInterface
      * @link https://php.net/manual/en/datetime.getoffset.php
      */
     #[TentativeType]
-    #[LanguageLevelTypeAware(['8.1' => 'int'], default: '')]
-    public function getOffset() {}
+    public function getOffset(): int {}
 
     /**
      * Sets the current time of the DateTime object to a different time.
@@ -808,13 +779,12 @@ class DateTime implements DateTimeInterface
      * @link https://php.net/manual/en/datetime.settime.php
      */
     #[TentativeType]
-    #[LanguageLevelTypeAware(['8.1' => 'DateTime'], default: '')]
     public function setTime(
         #[LanguageLevelTypeAware(['8.0' => 'int'], default: '')] $hour,
         #[LanguageLevelTypeAware(['8.0' => 'int'], default: '')] $minute,
         #[LanguageLevelTypeAware(['8.0' => 'int'], default: '')] $second = 0,
         #[PhpStormStubsElementAvailable(from: '7.1')] #[LanguageLevelTypeAware(['8.0' => 'int'], default: '')] $microsecond = 0
-    ) {}
+    ): DateTime {}
 
     /**
      * Sets the current date of the DateTime object to a different date.
@@ -825,12 +795,11 @@ class DateTime implements DateTimeInterface
      * @link https://php.net/manual/en/datetime.setdate.php
      */
     #[TentativeType]
-    #[LanguageLevelTypeAware(['8.1' => 'DateTime'], default: '')]
     public function setDate(
         #[LanguageLevelTypeAware(['8.0' => 'int'], default: '')] $year,
         #[LanguageLevelTypeAware(['8.0' => 'int'], default: '')] $month,
         #[LanguageLevelTypeAware(['8.0' => 'int'], default: '')] $day
-    ) {}
+    ): DateTime {}
 
     /**
      * Set a date according to the ISO 8601 standard - using weeks and day offsets rather than specific dates.
@@ -841,12 +810,11 @@ class DateTime implements DateTimeInterface
      * @link https://php.net/manual/en/datetime.setisodate.php
      */
     #[TentativeType]
-    #[LanguageLevelTypeAware(['8.1' => 'DateTime'], default: '')]
     public function setISODate(
         #[LanguageLevelTypeAware(['8.0' => 'int'], default: '')] $year,
         #[LanguageLevelTypeAware(['8.0' => 'int'], default: '')] $week,
         #[LanguageLevelTypeAware(['8.0' => 'int'], default: '')] $dayOfWeek = 1
-    ) {}
+    ): DateTime {}
 
     /**
      * Sets the date and time based on a Unix timestamp.
@@ -855,8 +823,7 @@ class DateTime implements DateTimeInterface
      * @link https://php.net/manual/en/datetime.settimestamp.php
      */
     #[TentativeType]
-    #[LanguageLevelTypeAware(['8.1' => 'DateTime'], default: '')]
-    public function setTimestamp(#[LanguageLevelTypeAware(['8.0' => 'int'], default: '')] $timestamp) {}
+    public function setTimestamp(#[LanguageLevelTypeAware(['8.0' => 'int'], default: '')] $timestamp): DateTime {}
 
     /**
      * Gets the Unix timestamp.
@@ -864,8 +831,7 @@ class DateTime implements DateTimeInterface
      * @link https://php.net/manual/en/datetime.gettimestamp.php
      */
     #[TentativeType]
-    #[LanguageLevelTypeAware(['8.1' => 'int'], default: '')]
-    public function getTimestamp() {}
+    public function getTimestamp(): int {}
 
     /**
      * Returns the difference between two DateTime objects represented as a DateInterval.
@@ -875,11 +841,10 @@ class DateTime implements DateTimeInterface
      * @link https://php.net/manual/en/datetime.diff.php
      */
     #[TentativeType]
-    #[LanguageLevelTypeAware(['8.1' => 'DateInterval'], default: '')]
     public function diff(
         #[LanguageLevelTypeAware(['8.0' => 'DateTimeInterface'], default: '')] $targetObject,
         #[LanguageLevelTypeAware(['8.0' => 'bool'], default: '')] $absolute = false
-    ) {}
+    ): DateInterval {}
 
     /**
      * Parse a string into a new DateTime object according to the specified format
@@ -890,13 +855,12 @@ class DateTime implements DateTimeInterface
      * @link https://php.net/manual/en/datetime.createfromformat.php
      */
     #[TentativeType]
-    #[LanguageLevelTypeAware(['8.1' => 'DateTime|false'], default: '')]
     #[PhpStormStubsElementAvailable(from: '5.3', to: '7.4')]
     public static function createFromFormat(
         #[LanguageLevelTypeAware(['8.0' => 'string'], default: '')] $format,
         #[LanguageLevelTypeAware(['8.0' => 'string'], default: '')] $datetime,
         #[LanguageLevelTypeAware(['8.0' => 'DateTimeZone|null'], default: 'DateTimeZone')] $timezone = null
-    ) {}
+    ): DateTime|false {}
 
     /**
      * Parse a string into a new DateTime object according to the specified format
@@ -908,13 +872,12 @@ class DateTime implements DateTimeInterface
      * @throws ValueError when the datetime contains NULL-bytes.
      */
     #[TentativeType]
-    #[LanguageLevelTypeAware(['8.1' => 'DateTime|false'], default: '')]
     #[PhpStormStubsElementAvailable(from: '8.0')]
     public static function createFromFormat(
         #[LanguageLevelTypeAware(['8.0' => 'string'], default: '')] $format,
         #[LanguageLevelTypeAware(['8.0' => 'string'], default: '')] $datetime,
         #[LanguageLevelTypeAware(['8.0' => 'DateTimeZone|null'], default: 'DateTimeZone')] $timezone = null
-    ) {}
+    ): DateTime|false {}
 
     /**
      * Returns an array of warnings and errors found while parsing a date/time string
@@ -923,8 +886,7 @@ class DateTime implements DateTimeInterface
      */
     #[ArrayShape(["warning_count" => "int", "warnings" => "string[]", "error_count" => "int", "errors" => "string[]"])]
     #[TentativeType]
-    #[LanguageLevelTypeAware(['8.1' => 'array|false'], default: '')]
-    public static function getLastErrors() {}
+    public static function getLastErrors(): array|false {}
 
     /**
      * The __set_state handler
@@ -933,8 +895,7 @@ class DateTime implements DateTimeInterface
      * @return DateTime <p>Returns a new instance of a DateTime object.</p>
      */
     #[TentativeType]
-    #[LanguageLevelTypeAware(['8.1' => 'static'], default: '')]
-    public static function __set_state(array $array) {}
+    public static function __set_state(array $array): static {}
 
     /**
      * @param DateTimeInterface $object
@@ -953,8 +914,7 @@ class DateTime implements DateTimeInterface
      * @since 8.4
      */
     #[TentativeType]
-    #[LanguageLevelTypeAware(['8.1' => 'static'], default: '')]
-    public static function createFromTimestamp(int|float $timestamp) {}
+    public static function createFromTimestamp(int|float $timestamp): static {}
 
     /**
      * @since 8.4
@@ -1001,8 +961,7 @@ class DateTimeZone
      * @link https://php.net/manual/en/datetimezone.getname.php
      */
     #[TentativeType]
-    #[LanguageLevelTypeAware(['8.1' => 'string'], default: '')]
-    public function getName() {}
+    public function getName(): string {}
 
     /**
      * Returns location information for a timezone
@@ -1010,14 +969,13 @@ class DateTimeZone
      * @link https://php.net/manual/en/datetimezone.getlocation.php
      */
     #[TentativeType]
-    #[LanguageLevelTypeAware(['8.1' => 'array|false'], default: '')]
     #[ArrayShape([
         'country_code' => 'string',
         'latitude' => 'double',
         'longitude' => 'double',
         'comments' => 'string',
     ])]
-    public function getLocation() {}
+    public function getLocation(): array|false {}
 
     /**
      * Returns the timezone offset from GMT
@@ -1026,8 +984,7 @@ class DateTimeZone
      * @link https://php.net/manual/en/datetimezone.getoffset.php
      */
     #[TentativeType]
-    #[LanguageLevelTypeAware(['8.1' => 'int'], default: '')]
-    public function getOffset(DateTimeInterface $datetime) {}
+    public function getOffset(DateTimeInterface $datetime): int {}
 
     /**
      * Returns all transitions for the timezone
@@ -1037,13 +994,12 @@ class DateTimeZone
      * @link https://php.net/manual/en/datetimezone.gettransitions.php
      */
     #[TentativeType]
-    #[LanguageLevelTypeAware(['8.1' => 'array|false'], default: '')]
     public function getTransitions(
         #[PhpStormStubsElementAvailable(from: '5.3', to: '5.6')] $timestampBegin = PHP_INT_MIN,
         #[PhpStormStubsElementAvailable(from: '5.3', to: '5.6')] $timestampEnd = 2147483647,
         #[PhpStormStubsElementAvailable(from: '7.0')] #[LanguageLevelTypeAware(['8.0' => 'int'], default: '')] $timestampBegin = PHP_INT_MIN,
         #[PhpStormStubsElementAvailable(from: '7.0')] #[LanguageLevelTypeAware(['8.0' => 'int'], default: '')] $timestampEnd = 2147483647
-    ) {}
+    ): array|false {}
 
     /**
      * Returns associative array containing dst, offset and the timezone name
@@ -1051,8 +1007,7 @@ class DateTimeZone
      * @link https://php.net/manual/en/datetimezone.listabbreviations.php
      */
     #[TentativeType]
-    #[LanguageLevelTypeAware(['8.1' => 'array'], default: '')]
-    public static function listAbbreviations() {}
+    public static function listAbbreviations(): array {}
 
     /**
      * Returns a numerically indexed array with all timezone identifiers
@@ -1072,13 +1027,11 @@ class DateTimeZone
      * @link https://php.net/manual/en/datetime.wakeup.php
      */
     #[TentativeType]
-    #[LanguageLevelTypeAware(['8.1' => 'void'], default: '')]
     #[Deprecated(since: '8.5')]
-    public function __wakeup() {}
+    public function __wakeup(): void {}
 
     #[TentativeType]
-    #[LanguageLevelTypeAware(['8.1' => 'static'], default: '')]
-    public static function __set_state(array $array) {}
+    public static function __set_state(array $array): static {}
 
     #[PhpStormStubsElementAvailable(from: '8.2')]
     public function __serialize(): array {}
@@ -1173,8 +1126,7 @@ class DateInterval
      * @link https://php.net/manual/en/dateinterval.format.php
      */
     #[TentativeType]
-    #[LanguageLevelTypeAware(['8.1' => 'string'], default: '')]
-    public function format(#[LanguageLevelTypeAware(['8.0' => 'string'], default: '')] $format) {}
+    public function format(#[LanguageLevelTypeAware(['8.0' => 'string'], default: '')] $format): string {}
 
     /**
      * Sets up a DateInterval from the relative parts of the string
@@ -1202,13 +1154,11 @@ class DateInterval
     public static function createFromDateString(#[LanguageLevelTypeAware(['8.0' => 'string'], default: '')] $datetime) {}
 
     #[TentativeType]
-    #[LanguageLevelTypeAware(['8.1' => 'void'], default: '')]
     #[Deprecated(since: '8.5')]
-    public function __wakeup() {}
+    public function __wakeup(): void {}
 
     #[TentativeType]
-    #[LanguageLevelTypeAware(['8.1' => 'static'], default: '')]
-    public static function __set_state(array $array) {}
+    public static function __set_state(array $array): static {}
 
     #[PhpStormStubsElementAvailable(from: '8.2')]
     public function __serialize(): array {}
@@ -1319,8 +1269,7 @@ class DatePeriod implements IteratorAggregate
      * @since 5.6
      */
     #[TentativeType]
-    #[LanguageLevelTypeAware(['8.1' => 'DateInterval'], default: '')]
-    public function getDateInterval() {}
+    public function getDateInterval(): DateInterval {}
 
     /**
      * Gets the end date
@@ -1330,8 +1279,7 @@ class DatePeriod implements IteratorAggregate
      * @return TEnd
      */
     #[TentativeType]
-    #[LanguageLevelTypeAware(['8.1' => 'DateTimeInterface|null'], default: '')]
-    public function getEndDate() {}
+    public function getEndDate(): ?DateTimeInterface {}
 
     /**
      * Gets the start date
@@ -1341,17 +1289,14 @@ class DatePeriod implements IteratorAggregate
      * @return TDate
      */
     #[TentativeType]
-    #[LanguageLevelTypeAware(['8.1' => 'DateTimeInterface'], default: '')]
-    public function getStartDate() {}
+    public function getStartDate(): DateTimeInterface {}
 
     #[TentativeType]
-    #[LanguageLevelTypeAware(['8.1' => 'DatePeriod'], default: '')]
-    public static function __set_state(#[PhpStormStubsElementAvailable(from: '7.3')] array $array) {}
+    public static function __set_state(#[PhpStormStubsElementAvailable(from: '7.3')] array $array): DatePeriod {}
 
     #[TentativeType]
-    #[LanguageLevelTypeAware(['8.1' => 'void'], default: '')]
     #[Deprecated(since: '8.5')]
-    public function __wakeup() {}
+    public function __wakeup(): void {}
 
     /**
      * Get the number of recurrences
@@ -1360,8 +1305,7 @@ class DatePeriod implements IteratorAggregate
      * @since 7.2
      */
     #[TentativeType]
-    #[LanguageLevelTypeAware(['8.1' => 'int|null'], default: '')]
-    public function getRecurrences() {}
+    public function getRecurrences(): ?int {}
 
     /**
      * @return \Iterator<int, TDate>

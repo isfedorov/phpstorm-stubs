@@ -19,8 +19,7 @@ class Reflection
      * @return string[] An array of modifier names.
      */
     #[TentativeType]
-    #[LanguageLevelTypeAware(['8.1' => 'array'], default: '')]
-    public static function getModifierNames(#[LanguageLevelTypeAware(['8.0' => 'int'], default: '')] $modifiers) {}
+    public static function getModifierNames(#[LanguageLevelTypeAware(['8.0' => 'int'], default: '')] $modifiers): array {}
 
     /**
      * Exports

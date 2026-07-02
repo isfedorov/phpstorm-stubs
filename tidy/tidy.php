@@ -29,8 +29,7 @@ class tidy
      * The return type depends on the type of the specified one.
      */
     #[TentativeType]
-    #[LanguageLevelTypeAware(['8.1' => 'string|int|bool'], default: '')]
-    public function getOpt(#[LanguageLevelTypeAware(['8.0' => 'string'], default: '')] $option) {}
+    public function getOpt(#[LanguageLevelTypeAware(['8.0' => 'string'], default: '')] $option): string|int|bool {}
 
     /**
      * (PHP 5, PECL tidy &gt;= 0.5.2)<br/>
@@ -39,8 +38,7 @@ class tidy
      * @return bool <b>TRUE</b> on success or <b>FALSE</b> on failure.
      */
     #[TentativeType]
-    #[LanguageLevelTypeAware(['8.1' => 'bool'], default: '')]
-    public function cleanRepair() {}
+    public function cleanRepair(): bool {}
 
     /**
      * (PHP 5, PECL tidy &gt;= 0.5.2)<br/>
@@ -76,13 +74,12 @@ class tidy
      * @return bool <b>TRUE</b> on success or <b>FALSE</b> on failure.
      */
     #[TentativeType]
-    #[LanguageLevelTypeAware(['8.1' => 'bool'], default: '')]
     public function parseFile(
         #[LanguageLevelTypeAware(['8.0' => 'string'], default: '')] $filename,
         #[LanguageLevelTypeAware(['8.0' => 'array|string|null'], default: '')] $config = null,
         #[LanguageLevelTypeAware(['8.0' => 'string|null'], default: '')] $encoding = null,
         #[LanguageLevelTypeAware(['8.0' => 'bool'], default: '')] $useIncludePath = false
-    ) {}
+    ): bool {}
 
     /**
      * (PHP 5, PECL tidy &gt;= 0.5.2)<br/>
@@ -112,12 +109,11 @@ class tidy
      * @return bool a new <b>tidy</b> instance.
      */
     #[TentativeType]
-    #[LanguageLevelTypeAware(['8.1' => 'bool'], default: '')]
     public function parseString(
         #[LanguageLevelTypeAware(['8.0' => 'string'], default: '')] $string,
         #[LanguageLevelTypeAware(['8.0' => 'array|string|null'], default: '')] $config = null,
         #[LanguageLevelTypeAware(['8.0' => 'string|null'], default: '')] $encoding = null
-    ) {}
+    ): bool {}
 
     /**
      * (PHP 5, PECL tidy &gt;= 0.7.0)<br/>
@@ -148,12 +144,11 @@ class tidy
      * @return string|false the repaired string.
      */
     #[TentativeType]
-    #[LanguageLevelTypeAware(['8.1' => 'string|false'], default: '')]
     public static function repairString(
         #[LanguageLevelTypeAware(['8.0' => 'string'], default: '')] $string,
         #[LanguageLevelTypeAware(['8.0' => 'array|string|null'], default: '')] $config = null,
         #[LanguageLevelTypeAware(['8.0' => 'string|null'], default: '')] $encoding = null
-    ) {}
+    ): string|false {}
 
     /**
      * (PHP 5, PECL tidy &gt;= 0.7.0)<br/>
@@ -187,13 +182,12 @@ class tidy
      * @return string|false the repaired contents as a string.
      */
     #[TentativeType]
-    #[LanguageLevelTypeAware(['8.1' => 'string|false'], default: '')]
     public static function repairFile(
         #[LanguageLevelTypeAware(['8.0' => 'string'], default: '')] $filename,
         #[LanguageLevelTypeAware(['8.0' => 'array|string|null'], default: '')] $config = null,
         #[LanguageLevelTypeAware(['8.0' => 'string|null'], default: '')] $encoding = null,
         #[LanguageLevelTypeAware(['8.0' => 'bool'], default: '')] $useIncludePath = false
-    ) {}
+    ): string|false {}
 
     /**
      * (PHP 5, PECL tidy &gt;= 0.5.2)<br/>
@@ -202,8 +196,7 @@ class tidy
      * @return bool <b>TRUE</b> on success or <b>FALSE</b> on failure.
      */
     #[TentativeType]
-    #[LanguageLevelTypeAware(['8.1' => 'bool'], default: '')]
-    public function diagnose() {}
+    public function diagnose(): bool {}
 
     /**
      * (PHP 5, PECL tidy &gt;= 0.5.2)<br/>
@@ -212,8 +205,7 @@ class tidy
      * @return string a string with the release date of the Tidy library.
      */
     #[TentativeType]
-    #[LanguageLevelTypeAware(['8.1' => 'string'], default: '')]
-    public function getRelease() {}
+    public function getRelease(): string {}
 
     /**
      * (PHP 5, PECL tidy &gt;= 0.7.0)<br/>
@@ -225,8 +217,7 @@ class tidy
      * For an explanation about each option, visit http://tidy.sourceforge.net/docs/quickref.html.
      */
     #[TentativeType]
-    #[LanguageLevelTypeAware(['8.1' => 'array'], default: '')]
-    public function getConfig() {}
+    public function getConfig(): array {}
 
     /**
      * (PHP 5, PECL tidy &gt;= 0.5.2)<br/>
@@ -236,8 +227,7 @@ class tidy
      * errors, or 2 for errors.
      */
     #[TentativeType]
-    #[LanguageLevelTypeAware(['8.1' => 'int'], default: '')]
-    public function getStatus() {}
+    public function getStatus(): int {}
 
     /**
      * (PHP 5, PECL tidy &gt;= 0.5.2)<br/>
@@ -250,8 +240,7 @@ class tidy
      * return 0.
      */
     #[TentativeType]
-    #[LanguageLevelTypeAware(['8.1' => 'int'], default: '')]
-    public function getHtmlVer() {}
+    public function getHtmlVer(): int {}
 
     /**
      * Returns the documentation for the given option name
@@ -263,8 +252,7 @@ class tidy
      * <b>FALSE</b> otherwise.
      */
     #[TentativeType]
-    #[LanguageLevelTypeAware(['8.1' => 'string|false'], default: '')]
-    public function getOptDoc(#[LanguageLevelTypeAware(['8.0' => 'string'], default: '')] $option) {}
+    public function getOptDoc(#[LanguageLevelTypeAware(['8.0' => 'string'], default: '')] $option): string|false {}
 
     /**
      * (PHP 5, PECL tidy &gt;= 0.5.2)<br/>
@@ -278,8 +266,7 @@ class tidy
      * return <b>FALSE</b>.
      */
     #[TentativeType]
-    #[LanguageLevelTypeAware(['8.1' => 'bool'], default: '')]
-    public function isXhtml() {}
+    public function isXhtml(): bool {}
 
     /**
      * (PHP 5, PECL tidy &gt;= 0.5.2)<br/>
@@ -294,8 +281,7 @@ class tidy
      * return <b>FALSE</b>.
      */
     #[TentativeType]
-    #[LanguageLevelTypeAware(['8.1' => 'bool'], default: '')]
-    public function isXml() {}
+    public function isXml(): bool {}
 
     /**
      * (PHP 5, PECL tidy 0.5.2-1.0.0)<br/>
@@ -304,8 +290,7 @@ class tidy
      * @return tidyNode|null the <b>tidyNode</b> object.
      */
     #[TentativeType]
-    #[LanguageLevelTypeAware(['8.1' => 'tidyNode|null'], default: '')]
-    public function root() {}
+    public function root(): ?tidyNode {}
 
     /**
      * (PHP 5, PECL tidy 0.5.2-1.0.0)<br/>
@@ -314,8 +299,7 @@ class tidy
      * @return tidyNode|null the <b>tidyNode</b> object.
      */
     #[TentativeType]
-    #[LanguageLevelTypeAware(['8.1' => 'tidyNode|null'], default: '')]
-    public function head() {}
+    public function head(): ?tidyNode {}
 
     /**
      * (PHP 5, PECL tidy 0.5.2-1.0.0)<br/>
@@ -324,8 +308,7 @@ class tidy
      * @return tidyNode|null the <b>tidyNode</b> object.
      */
     #[TentativeType]
-    #[LanguageLevelTypeAware(['8.1' => 'tidyNode|null'], default: '')]
-    public function html() {}
+    public function html(): ?tidyNode {}
 
     /**
      * (PHP 5, PECL tidy 0.5.2-1.0)<br/>
@@ -335,8 +318,7 @@ class tidy
      * &lt;body&gt; tag of the tidy parse tree.
      */
     #[TentativeType]
-    #[LanguageLevelTypeAware(['8.1' => 'tidyNode|null'], default: '')]
-    public function body() {}
+    public function body(): ?tidyNode {}
 
     /**
      * (PHP 5, PECL tidy &gt;= 0.5.2)<br/>

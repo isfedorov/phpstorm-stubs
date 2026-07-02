@@ -1087,11 +1087,10 @@ namespace {
          * so <b>PDO::prepare</b> does not check the statement.
          */
         #[TentativeType]
-        #[LanguageLevelTypeAware(['8.1' => 'PDOStatement|false'], default: '')]
         public function prepare(
             #[LanguageLevelTypeAware(['8.0' => 'string'], default: '')] $query,
             #[LanguageLevelTypeAware(['8.0' => 'array'], default: '')] $options = []
-        ) {}
+        ): PDOStatement|false {}
 
         /**
          * (PHP 5 &gt;= 5.1.0, PHP 7, PECL pdo &gt;= 0.1.0)<br/>
@@ -1118,8 +1117,7 @@ namespace {
          * attribute is not <b>PDO::ERRMODE_EXCEPTION</b>.
          */
         #[TentativeType]
-        #[LanguageLevelTypeAware(['8.1' => 'bool'], default: '')]
-        public function beginTransaction() {}
+        public function beginTransaction(): bool {}
 
         /**
          * (PHP 5 &gt;= 5.1.0, PHP 7, PECL pdo &gt;= 0.1.0)<br/>
@@ -1129,8 +1127,7 @@ namespace {
          * @throws PDOException if there is no active transaction.
          */
         #[TentativeType]
-        #[LanguageLevelTypeAware(['8.1' => 'bool'], default: '')]
-        public function commit() {}
+        public function commit(): bool {}
 
         /**
          * (PHP 5 &gt;= 5.1.0, PHP 7, PECL pdo &gt;= 0.1.0)<br/>
@@ -1140,8 +1137,7 @@ namespace {
          * @throws PDOException if there is no active transaction.
          */
         #[TentativeType]
-        #[LanguageLevelTypeAware(['8.1' => 'bool'], default: '')]
-        public function rollBack() {}
+        public function rollBack(): bool {}
 
         /**
          * (PHP 5 &gt;= 5.3.3, Bundled pdo_pgsql, PHP 7)<br/>
@@ -1150,8 +1146,7 @@ namespace {
          * @return bool <b>TRUE</b> if a transaction is currently active, and <b>FALSE</b> if not.
          */
         #[TentativeType]
-        #[LanguageLevelTypeAware(['8.1' => 'bool'], default: '')]
-        public function inTransaction() {}
+        public function inTransaction(): bool {}
 
         /**
          * (PHP 5 &gt;= 5.1.0, PHP 7, PECL pdo &gt;= 0.1.0)<br/>
@@ -1163,11 +1158,10 @@ namespace {
          * @throws PDOException On error if PDO::ERRMODE_EXCEPTION option is true.
          */
         #[TentativeType]
-        #[LanguageLevelTypeAware(['8.1' => 'bool'], default: '')]
         public function setAttribute(
             #[LanguageLevelTypeAware(['8.0' => 'int'], default: '')] $attribute,
             #[LanguageLevelTypeAware(['8.0' => 'mixed'], default: '')] $value
-        ) {}
+        ): bool {}
 
         /**
          * (PHP 5 &gt;= 5.1.0, PHP 7, PECL pdo &gt;= 0.1.0)<br/>
@@ -1199,8 +1193,7 @@ namespace {
          * @throws PDOException On error if PDO::ERRMODE_EXCEPTION option is true.
          */
         #[TentativeType]
-        #[LanguageLevelTypeAware(['8.1' => 'int|false'], default: '')]
-        public function exec(#[LanguageLevelTypeAware(['8.0' => 'string'], default: '')] $statement) {}
+        public function exec(#[LanguageLevelTypeAware(['8.0' => 'string'], default: '')] $statement): int|false {}
 
         /**
          * (PHP 5 &gt;= 5.1.0, PHP 7, PECL pdo &gt;= 0.2.0)<br/>
@@ -1229,8 +1222,7 @@ namespace {
          */
         #[PhpStormStubsElementAvailable(to: '7.4')]
         #[TentativeType]
-        #[LanguageLevelTypeAware(['8.1' => 'PDOStatement|false'], default: '')]
-        public function query($query, $fetchMode = PDO::ATTR_DEFAULT_FETCH_MODE, $arg3 = null, $ctorargs = []) {}
+        public function query($query, $fetchMode = PDO::ATTR_DEFAULT_FETCH_MODE, $arg3 = null, $ctorargs = []): PDOStatement|false {}
 
         /**
          * (PHP 5 >= 5.1.0, PHP 7, PHP 8, PECL pdo &gt;= 0.2.0)<br/>
@@ -1256,12 +1248,11 @@ namespace {
          */
         #[PhpStormStubsElementAvailable('8.0')]
         #[TentativeType]
-        #[LanguageLevelTypeAware(['8.1' => 'PDOStatement|false'], default: '')]
         public function query(
             #[LanguageLevelTypeAware(['8.0' => 'string'], default: '')] $query,
             #[LanguageLevelTypeAware(['8.0' => 'int|null'], default: '')] $fetchMode = null,
             #[LanguageLevelTypeAware(['8.0' => 'mixed'], default: '')] ...$fetchModeArgs
-        ) {}
+        ): PDOStatement|false {}
 
         /**
          * (PHP 5 &gt;= 5.1.0, PHP 7, PECL pdo &gt;= 0.1.0)<br/>
@@ -1288,8 +1279,7 @@ namespace {
          * @throws PDOException On error if PDO::ERRMODE_EXCEPTION option is true.
          */
         #[TentativeType]
-        #[LanguageLevelTypeAware(['8.1' => 'string|false'], default: '')]
-        public function lastInsertId(#[LanguageLevelTypeAware(['8.0' => 'string|null'], default: '')] $name = null) {}
+        public function lastInsertId(#[LanguageLevelTypeAware(['8.0' => 'string|null'], default: '')] $name = null): string|false {}
 
         /**
          * (PHP 5 &gt;= 5.1.0, PHP 7, PECL pdo &gt;= 0.1.0)<br/>
@@ -1318,8 +1308,7 @@ namespace {
          * Returns <b>NULL</b> if no operation has been run on the database handle.
          */
         #[TentativeType]
-        #[LanguageLevelTypeAware(['8.1' => 'string|null'], default: '')]
-        public function errorCode() {}
+        public function errorCode(): ?string {}
 
         /**
          * (PHP 5 &gt;= 5.1.0, PHP 7, PECL pdo &gt;= 0.1.0)<br/>
@@ -1362,8 +1351,7 @@ namespace {
          */
         #[ArrayShape([0 => "string", 1 => "int", 2 => "string"])]
         #[TentativeType]
-        #[LanguageLevelTypeAware(['8.1' => 'array'], default: '')]
-        public function errorInfo() {}
+        public function errorInfo(): array {}
 
         /**
          * (PHP 5 &gt;= 5.1.0, PHP 7, PECL pdo &gt;= 0.2.0)<br/>
@@ -1390,8 +1378,7 @@ namespace {
          * @throws PDOException when the underlying driver does not support the requested attribute.
          */
         #[TentativeType]
-        #[LanguageLevelTypeAware(['8.1' => 'mixed'], default: '')]
-        public function getAttribute(#[LanguageLevelTypeAware(['8.0' => 'int'], default: '')] $attribute) {}
+        public function getAttribute(#[LanguageLevelTypeAware(['8.0' => 'int'], default: '')] $attribute): mixed {}
 
         /**
          * (PHP 5 &gt;= 5.1.0, PHP 7, PECL pdo &gt;= 0.2.1)<br/>
@@ -1408,11 +1395,10 @@ namespace {
          * this way.
          */
         #[TentativeType]
-        #[LanguageLevelTypeAware(['8.1' => 'string|false'], default: '')]
         public function quote(
             #[LanguageLevelTypeAware(['8.0' => 'string'], default: '')] $string,
             #[LanguageLevelTypeAware(['8.0' => 'int'], default: '')] $type = PDO::PARAM_STR
-        ) {}
+        ): string|false {}
 
         final public function __wakeup() {}
 
@@ -1426,8 +1412,7 @@ namespace {
          * no drivers are available, it returns an empty array.
          */
         #[TentativeType]
-        #[LanguageLevelTypeAware(['8.1' => 'array'], default: '')]
-        public static function getAvailableDrivers() {}
+        public static function getAvailableDrivers(): array {}
 
         /**
          * (PHP 5 &gt;= 5.1.0, PHP 7, PECL pdo_sqlite &gt;= 1.0.0)<br/>
@@ -1689,8 +1674,7 @@ namespace {
          * @throws PDOException On error if PDO::ERRMODE_EXCEPTION option is true.
          */
         #[TentativeType]
-        #[LanguageLevelTypeAware(['8.1' => 'bool'], default: '')]
-        public function execute(#[LanguageLevelTypeAware(['8.0' => 'array|null'], default: '')] $params = null) {}
+        public function execute(#[LanguageLevelTypeAware(['8.0' => 'array|null'], default: '')] $params = null): bool {}
 
         /**
          * (PHP 5 &gt;= 5.1.0, PHP 7, PECL pdo &gt;= 0.1.0)<br/>
@@ -1722,12 +1706,11 @@ namespace {
          * @throws PDOException On error if PDO::ERRMODE_EXCEPTION option is true.
          */
         #[TentativeType]
-        #[LanguageLevelTypeAware(['8.1' => 'mixed'], default: '')]
         public function fetch(
             #[LanguageLevelTypeAware(['8.0' => 'int'], default: '')] $mode = PDO::FETCH_DEFAULT,
             #[LanguageLevelTypeAware(['8.0' => 'int'], default: '')] $cursorOrientation = PDO::FETCH_ORI_NEXT,
             #[LanguageLevelTypeAware(['8.0' => 'int'], default: '')] $cursorOffset = 0
-        ) {}
+        ): mixed {}
 
         /**
          * (PHP 5 &gt;= 5.1.0, PHP 7, PECL pdo &gt;= 0.1.0)<br/>
@@ -1761,14 +1744,13 @@ namespace {
          * @throws PDOException On error if PDO::ERRMODE_EXCEPTION option is true.
          */
         #[TentativeType]
-        #[LanguageLevelTypeAware(['8.1' => 'bool'], default: '')]
         public function bindParam(
             #[LanguageLevelTypeAware(['8.0' => 'int|string'], default: '')] $param,
             #[LanguageLevelTypeAware(['8.0' => 'mixed'], default: '')] &$var,
             #[LanguageLevelTypeAware(['8.0' => 'int'], default: '')] $type = PDO::PARAM_STR,
             #[LanguageLevelTypeAware(['8.0' => 'int'], default: '')] $maxLength = 0,
             #[LanguageLevelTypeAware(['8.0' => 'mixed'], default: '')] $driverOptions = null
-        ) {}
+        ): bool {}
 
         /**
          * (PHP 5 &gt;= 5.1.0, PHP 7, PECL pdo &gt;= 0.1.0)<br/>
@@ -1795,14 +1777,13 @@ namespace {
          * @throws PDOException On error if PDO::ERRMODE_EXCEPTION option is true.
          */
         #[TentativeType]
-        #[LanguageLevelTypeAware(['8.1' => 'bool'], default: '')]
         public function bindColumn(
             #[LanguageLevelTypeAware(['8.0' => 'int|string'], default: '')] $column,
             #[LanguageLevelTypeAware(['8.0' => 'mixed'], default: '')] &$var,
             #[LanguageLevelTypeAware(['8.0' => 'int'], default: '')] $type = PDO::PARAM_STR,
             #[LanguageLevelTypeAware(['8.0' => 'int'], default: '')] $maxLength = 0,
             #[LanguageLevelTypeAware(['8.0' => 'mixed'], default: '')] $driverOptions = null
-        ) {}
+        ): bool {}
 
         /**
          * (PHP 5 &gt;= 5.1.0, PHP 7, PECL pdo &gt;= 1.0.0)<br/>
@@ -1826,12 +1807,11 @@ namespace {
          * @throws PDOException On error if PDO::ERRMODE_EXCEPTION option is true.
          */
         #[TentativeType]
-        #[LanguageLevelTypeAware(['8.1' => 'bool'], default: '')]
         public function bindValue(
             #[LanguageLevelTypeAware(['8.0' => 'int|string'], default: '')] $param,
             #[LanguageLevelTypeAware(['8.0' => 'mixed'], default: '')] $value,
             #[LanguageLevelTypeAware(['8.0' => 'int'], default: '')] $type = PDO::PARAM_STR
-        ) {}
+        ): bool {}
 
         /**
          * (PHP 5 &gt;= 5.1.0, PHP 7, PECL pdo &gt;= 0.1.0)<br/>
@@ -1841,8 +1821,7 @@ namespace {
          * @throws PDOException On error if PDO::ERRMODE_EXCEPTION option is true.
          */
         #[TentativeType]
-        #[LanguageLevelTypeAware(['8.1' => 'int'], default: '')]
-        public function rowCount() {}
+        public function rowCount(): int {}
 
         /**
          * (PHP 5 &gt;= 5.1.0, PHP 7, PECL pdo &gt;= 0.9.0)<br/>
@@ -1862,8 +1841,7 @@ namespace {
          * @throws PDOException On error if PDO::ERRMODE_EXCEPTION option is true.
          */
         #[TentativeType]
-        #[LanguageLevelTypeAware(['8.1' => 'mixed'], default: '')]
-        public function fetchColumn(#[LanguageLevelTypeAware(['8.0' => 'int'], default: '')] $column = 0) {}
+        public function fetchColumn(#[LanguageLevelTypeAware(['8.0' => 'int'], default: '')] $column = 0): mixed {}
 
         /**
          * (PHP 5 &gt;= 5.1.0, PHP 7, PECL pdo &gt;= 0.1.0)<br/>
@@ -1913,12 +1891,11 @@ namespace {
          * processing them with PHP.
          */
         #[TentativeType]
-        #[LanguageLevelTypeAware(['8.1' => 'array'], default: '')]
         public function fetchAll(
             #[LanguageLevelTypeAware(['8.0' => 'int'], default: '')] $mode = PDO::FETCH_DEFAULT,
             #[PhpStormStubsElementAvailable(from: '5.3', to: '7.4')] $fetch_argument = null,
             #[LanguageLevelTypeAware(['8.0' => 'mixed'], default: '')] ...$args
-        ) {}
+        ): array {}
 
         /**
          * @template T
@@ -1937,11 +1914,10 @@ namespace {
          * @throws PDOException On error if PDO::ERRMODE_EXCEPTION option is true.
          */
         #[TentativeType]
-        #[LanguageLevelTypeAware(['8.1' => 'object|false'], default: '')]
         public function fetchObject(
             #[LanguageLevelTypeAware(['8.0' => 'string|null'], default: '')] $class = "stdClass",
             #[LanguageLevelTypeAware(['8.0' => 'array'], default: '')] $constructorArgs = []
-        ) {}
+        ): object|false {}
 
         /**
          * (PHP 5 &gt;= 5.1.0, PHP 7, PECL pdo &gt;= 0.1.0)<br/>
@@ -1952,8 +1928,7 @@ namespace {
          * for operations performed with PDOStatement objects.
          */
         #[TentativeType]
-        #[LanguageLevelTypeAware(['8.1' => 'string|null'], default: '')]
-        public function errorCode() {}
+        public function errorCode(): ?string {}
 
         /**
          * (PHP 5 &gt;= 5.1.0, PHP 7, PECL pdo &gt;= 0.1.0)<br/>
@@ -1982,8 +1957,7 @@ namespace {
          */
         #[ArrayShape([0 => "string", 1 => "int", 2 => "string"])]
         #[TentativeType]
-        #[LanguageLevelTypeAware(['8.1' => 'array'], default: '')]
-        public function errorInfo() {}
+        public function errorInfo(): array {}
 
         /**
          * (PHP 5 &gt;= 5.1.0, PHP 7, PECL pdo &gt;= 0.2.0)<br/>
@@ -1995,11 +1969,10 @@ namespace {
          * @throws PDOException On error if PDO::ERRMODE_EXCEPTION option is true.
          */
         #[TentativeType]
-        #[LanguageLevelTypeAware(['8.1' => 'bool'], default: '')]
         public function setAttribute(
             #[LanguageLevelTypeAware(['8.0' => 'int'], default: '')] $attribute,
             #[LanguageLevelTypeAware(['8.0' => 'mixed'], default: '')] $value
-        ) {}
+        ): bool {}
 
         /**
          * (PHP 5 &gt;= 5.1.0, PHP 7, PECL pdo &gt;= 0.2.0)<br/>
@@ -2009,8 +1982,7 @@ namespace {
          * @return mixed the attribute value.
          */
         #[TentativeType]
-        #[LanguageLevelTypeAware(['8.1' => 'mixed'], default: '')]
-        public function getAttribute(#[LanguageLevelTypeAware(['8.0' => 'int'], default: '')] $name) {}
+        public function getAttribute(#[LanguageLevelTypeAware(['8.0' => 'int'], default: '')] $name): mixed {}
 
         /**
          * (PHP 5 &gt;= 5.1.0, PHP 7, PECL pdo &gt;= 0.2.0)<br/>
@@ -2022,8 +1994,7 @@ namespace {
          * @throws PDOException On error if PDO::ERRMODE_EXCEPTION option is true.
          */
         #[TentativeType]
-        #[LanguageLevelTypeAware(['8.1' => 'int'], default: '')]
-        public function columnCount() {}
+        public function columnCount(): int {}
 
         /**
          * (PHP 5 &gt;= 5.1.0, PHP 7, PECL pdo &gt;= 0.2.0)<br/>
@@ -2086,7 +2057,6 @@ namespace {
          * or if no result set exists.
          */
         #[TentativeType]
-        #[LanguageLevelTypeAware(['8.1' => 'array|false'], default: '')]
         #[ArrayShape([
             "name" => "string",
             "len" => "int",
@@ -2097,7 +2067,7 @@ namespace {
             "flags" => "array",
             "pdo_type" => "int"
         ])]
-        public function getColumnMeta(#[LanguageLevelTypeAware(['8.0' => 'int'], default: '')] $column) {}
+        public function getColumnMeta(#[LanguageLevelTypeAware(['8.0' => 'int'], default: '')] $column): array|false {}
 
         /**
          * (PHP 5 &gt;= 5.1.0, PHP 7, PECL pdo &gt;= 0.2.0)<br/>
@@ -2122,8 +2092,7 @@ namespace {
          * @throws PDOException On error if PDO::ERRMODE_EXCEPTION option is true.
          */
         #[TentativeType]
-        #[LanguageLevelTypeAware(['8.1' => 'bool'], default: '')]
-        public function nextRowset() {}
+        public function nextRowset(): bool {}
 
         /**
          * (PHP 5 &gt;= 5.1.0, PHP 7, PECL pdo &gt;= 0.9.0)<br/>
@@ -2133,8 +2102,7 @@ namespace {
          * @throws PDOException On error if PDO::ERRMODE_EXCEPTION option is true.
          */
         #[TentativeType]
-        #[LanguageLevelTypeAware(['8.1' => 'bool'], default: '')]
-        public function closeCursor() {}
+        public function closeCursor(): bool {}
 
         /**
          * (PHP 5 &gt;= 5.1.0, PHP 7, PECL pdo &gt;= 0.9.0)<br/>
@@ -2143,8 +2111,7 @@ namespace {
          * @return bool|null No value is returned.
          */
         #[TentativeType]
-        #[LanguageLevelTypeAware(['8.1' => 'bool|null'], default: '')]
-        public function debugDumpParams() {}
+        public function debugDumpParams(): ?bool {}
 
         final public function __wakeup() {}
 

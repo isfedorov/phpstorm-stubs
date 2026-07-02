@@ -4,7 +4,6 @@
 use JetBrains\PhpStorm\Internal\TentativeType;
 use JetBrains\PhpStorm\Language;
 use JetBrains\PhpStorm\Pure;
-use JetBrains\PhpStorm\Internal\LanguageLevelTypeAware;
 
 /**
  * Objects implementing JsonSerializable
@@ -23,8 +22,7 @@ interface JsonSerializable
      * @since 5.4
      */
     #[TentativeType]
-    #[LanguageLevelTypeAware(['8.1' => 'mixed'], default: '')]
-    public function jsonSerialize();
+    public function jsonSerialize(): mixed;
 }
 
 class JsonIncrementalParser

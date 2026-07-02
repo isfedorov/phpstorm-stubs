@@ -64,8 +64,7 @@ class ReflectionExtension implements Reflector
      */
     #[Pure]
     #[TentativeType]
-    #[LanguageLevelTypeAware(['8.1' => 'string'], default: '')]
-    public function getName() {}
+    public function getName(): string {}
 
     /**
      * Gets extension version
@@ -75,8 +74,7 @@ class ReflectionExtension implements Reflector
      */
     #[Pure]
     #[TentativeType]
-    #[LanguageLevelTypeAware(['8.1' => 'string|null'], default: '')]
-    public function getVersion() {}
+    public function getVersion(): ?string {}
 
     /**
      * Gets extension functions
@@ -88,8 +86,7 @@ class ReflectionExtension implements Reflector
      */
     #[Pure]
     #[TentativeType]
-    #[LanguageLevelTypeAware(['8.1' => 'array'], default: '')]
-    public function getFunctions() {}
+    public function getFunctions(): array {}
 
     /**
      * Gets constants
@@ -99,8 +96,7 @@ class ReflectionExtension implements Reflector
      */
     #[Pure]
     #[TentativeType]
-    #[LanguageLevelTypeAware(['8.1' => 'array'], default: '')]
-    public function getConstants() {}
+    public function getConstants(): array {}
 
     /**
      * Gets extension ini entries
@@ -111,8 +107,7 @@ class ReflectionExtension implements Reflector
      */
     #[Pure]
     #[TentativeType]
-    #[LanguageLevelTypeAware(['8.1' => 'array'], default: '')]
-    public function getINIEntries() {}
+    public function getINIEntries(): array {}
 
     /**
      * Gets classes
@@ -124,8 +119,7 @@ class ReflectionExtension implements Reflector
      */
     #[Pure]
     #[TentativeType]
-    #[LanguageLevelTypeAware(['8.1' => 'array'], default: '')]
-    public function getClasses() {}
+    public function getClasses(): array {}
 
     /**
      * Gets class names
@@ -136,8 +130,7 @@ class ReflectionExtension implements Reflector
      */
     #[Pure]
     #[TentativeType]
-    #[LanguageLevelTypeAware(['8.1' => 'array'], default: '')]
-    public function getClassNames() {}
+    public function getClassNames(): array {}
 
     /**
      * Gets dependencies
@@ -148,8 +141,7 @@ class ReflectionExtension implements Reflector
      */
     #[Pure]
     #[TentativeType]
-    #[LanguageLevelTypeAware(['8.1' => 'array'], default: '')]
-    public function getDependencies() {}
+    public function getDependencies(): array {}
 
     /**
      * Print extension info
@@ -158,8 +150,7 @@ class ReflectionExtension implements Reflector
      * @return void Print extension info
      */
     #[TentativeType]
-    #[LanguageLevelTypeAware(['8.1' => 'void'], default: '')]
-    public function info() {}
+    public function info(): void {}
 
     /**
      * Returns whether this extension is persistent
@@ -170,8 +161,7 @@ class ReflectionExtension implements Reflector
      */
     #[Pure]
     #[TentativeType]
-    #[LanguageLevelTypeAware(['8.1' => 'bool'], default: '')]
-    public function isPersistent() {}
+    public function isPersistent(): bool {}
 
     /**
      * Returns whether this extension is temporary
@@ -182,8 +172,7 @@ class ReflectionExtension implements Reflector
      */
     #[Pure]
     #[TentativeType]
-    #[LanguageLevelTypeAware(['8.1' => 'bool'], default: '')]
-    public function isTemporary() {}
+    public function isTemporary(): bool {}
 
     /**
      * Clones

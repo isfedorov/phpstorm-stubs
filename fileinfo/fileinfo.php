@@ -58,12 +58,11 @@ class finfo
      */
     #[Pure(true)]
     #[TentativeType]
-    #[LanguageLevelTypeAware(['8.1' => 'string|false'], default: '')]
     public function file(
         #[LanguageLevelTypeAware(['8.0' => 'string'], default: '')] $filename,
         #[LanguageLevelTypeAware(['8.0' => 'int'], default: '')] $flags = FILEINFO_NONE,
         $context = null
-    ) {}
+    ): string|false {}
 
     /**
      * (PHP 5 &gt;= 5.3.0, PECL fileinfo &gt;= 0.1.0)<br/>
@@ -82,12 +81,11 @@ class finfo
      */
     #[Pure(true)]
     #[TentativeType]
-    #[LanguageLevelTypeAware(['8.1' => 'string|false'], default: '')]
     public function buffer(
         #[LanguageLevelTypeAware(['8.0' => 'string'], default: '')] $string,
         #[LanguageLevelTypeAware(['8.0' => 'int'], default: '')] $flags = FILEINFO_NONE,
         $context = null
-    ) {}
+    ): string|false {}
 }
 
 /**
