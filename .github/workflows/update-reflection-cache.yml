@@ -32,16 +32,25 @@ jobs:
       - name: Build test runner image
         run: docker compose -f docker-compose.yml build test_runner >/dev/null
 
-      # Runs the detector inside the test_runner service. The runner's $GITHUB_OUTPUT file is
-      # mounted into the container so the script's `has_changes` / `updated_versions` outputs
-      # become available as steps.detect.outputs.* for the conditional steps below.
+      # Runs the detector inside the test_runner service. The script writes its
+      # `has_changes` / `updated_versions` outputs to a file inside the project bind mount
+      # (`.:/opt/project/phpstorm-stubs`) — the same mount the workflow already relies on to
+      # carry regenerated caches back to the host — and we then fold that file into the runner's
+      # real $GITHUB_OUTPUT on the host. We deliberately do NOT bind-mount $GITHUB_OUTPUT itself
+      # into the container: single-file bind mounts don't reliably propagate in-container writes
+      # back to the host across all Docker setups (rootless/userns-remap/storage drivers), which
+      # would silently drop the outputs and skip every conditional step below.
       - name: Check for new PHP patch releases
         id: detect
         run: |
+          rm -f detect-output.txt
           docker compose -f docker-compose.yml run --rm \
-            -v "$GITHUB_OUTPUT:/tmp/gh_output" \
-            -e GITHUB_OUTPUT=/tmp/gh_output \
+            -e GITHUB_OUTPUT=/opt/project/phpstorm-stubs/detect-output.txt \
             test_runner php tests/check-and-update-php-versions.php
+          if [ -f detect-output.txt ]; then
+            cat detect-output.txt >> "$GITHUB_OUTPUT"
+            rm -f detect-output.txt
+          fi
 
       - name: Composer Install
         if: steps.detect.outputs.has_changes == 'true'

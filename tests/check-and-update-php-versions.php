@@ -186,10 +186,16 @@ function writeOutputs(array $updatedVersions, bool $hasChanges): void
     if ($out === false || $out === '') {
         return;
     }
-    @file_put_contents(
+    // No error suppression: if this write fails the conditional steps in the workflow would be
+    // silently skipped, so a failure must surface (and be loud) rather than be swallowed.
+    $written = file_put_contents(
         $out,
         'updated_versions=' . implode(',', $updatedVersions) . "\n"
         . 'has_changes=' . ($hasChanges ? 'true' : 'false') . "\n",
         FILE_APPEND
     );
+    if ($written === false) {
+        fwrite(STDERR, "Failed to write GitHub Actions outputs to $out\n");
+        exit(1);
+    }
 }
