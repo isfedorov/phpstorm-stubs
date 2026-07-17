@@ -709,8 +709,8 @@
         "constants": [],
         "parentClass": null,
         "interfaces": [
-            "Iterator",
-            "Traversable"
+            "\\Iterator",
+            "\\Traversable"
         ]
     },
     {
@@ -1245,7 +1245,7 @@
         ],
         "parentClass": null,
         "interfaces": [
-            "DateTimeInterface"
+            "\\DateTimeInterface"
         ]
     },
     {
@@ -1736,7 +1736,7 @@
         "constants": [],
         "parentClass": null,
         "interfaces": [
-            "DateTimeInterface"
+            "\\DateTimeInterface"
         ]
     },
     {
@@ -2232,7 +2232,7 @@
         ],
         "parentClass": null,
         "interfaces": [
-            "Traversable"
+            "\\Traversable"
         ]
     },
     {
@@ -6604,7 +6604,7 @@
         "constants": [],
         "parentClass": null,
         "interfaces": [
-            "Traversable"
+            "\\Traversable"
         ]
     },
     {
@@ -6803,7 +6803,7 @@
         "constants": [],
         "parentClass": null,
         "interfaces": [
-            "Traversable"
+            "\\Traversable"
         ]
     },
     {
@@ -18484,9 +18484,9 @@
         ],
         "parentClass": null,
         "interfaces": [
-            "Iterator",
-            "Traversable",
-            "OuterIterator"
+            "\\Iterator",
+            "\\Traversable",
+            "\\OuterIterator"
         ]
     },
     {
@@ -18591,9 +18591,9 @@
         "constants": [],
         "parentClass": null,
         "interfaces": [
-            "Iterator",
-            "Traversable",
-            "OuterIterator"
+            "\\Iterator",
+            "\\Traversable",
+            "\\OuterIterator"
         ]
     },
     {
@@ -18709,9 +18709,9 @@
         "constants": [],
         "parentClass": "IteratorIterator",
         "interfaces": [
-            "OuterIterator",
-            "Traversable",
-            "Iterator"
+            "\\OuterIterator",
+            "\\Traversable",
+            "\\Iterator"
         ]
     },
     {
@@ -18849,10 +18849,10 @@
         "constants": [],
         "parentClass": "FilterIterator",
         "interfaces": [
-            "Iterator",
-            "Traversable",
-            "OuterIterator",
-            "RecursiveIterator"
+            "\\Iterator",
+            "\\Traversable",
+            "\\OuterIterator",
+            "\\RecursiveIterator"
         ]
     },
     {
@@ -18979,9 +18979,9 @@
         "constants": [],
         "parentClass": "FilterIterator",
         "interfaces": [
-            "Iterator",
-            "Traversable",
-            "OuterIterator"
+            "\\Iterator",
+            "\\Traversable",
+            "\\OuterIterator"
         ]
     },
     {
@@ -19130,10 +19130,10 @@
         "constants": [],
         "parentClass": "CallbackFilterIterator",
         "interfaces": [
-            "OuterIterator",
-            "Traversable",
-            "Iterator",
-            "RecursiveIterator"
+            "\\OuterIterator",
+            "\\Traversable",
+            "\\Iterator",
+            "\\RecursiveIterator"
         ]
     },
     {
@@ -19271,10 +19271,10 @@
         "constants": [],
         "parentClass": "RecursiveFilterIterator",
         "interfaces": [
-            "RecursiveIterator",
-            "OuterIterator",
-            "Traversable",
-            "Iterator"
+            "\\RecursiveIterator",
+            "\\OuterIterator",
+            "\\Traversable",
+            "\\Iterator"
         ]
     },
     {
@@ -19435,9 +19435,9 @@
         "constants": [],
         "parentClass": "IteratorIterator",
         "interfaces": [
-            "OuterIterator",
-            "Traversable",
-            "Iterator"
+            "\\OuterIterator",
+            "\\Traversable",
+            "\\Iterator"
         ]
     },
     {
@@ -19771,11 +19771,11 @@
         ],
         "parentClass": "IteratorIterator",
         "interfaces": [
-            "OuterIterator",
-            "Traversable",
-            "Iterator",
-            "ArrayAccess",
-            "Countable"
+            "\\OuterIterator",
+            "\\Traversable",
+            "\\Iterator",
+            "\\ArrayAccess",
+            "\\Countable"
         ]
     },
     {
@@ -20131,12 +20131,12 @@
         ],
         "parentClass": "CachingIterator",
         "interfaces": [
-            "Countable",
-            "ArrayAccess",
-            "Iterator",
-            "Traversable",
-            "OuterIterator",
-            "RecursiveIterator"
+            "\\Countable",
+            "\\ArrayAccess",
+            "\\Iterator",
+            "\\Traversable",
+            "\\OuterIterator",
+            "\\RecursiveIterator"
         ]
     },
     {
@@ -20241,9 +20241,9 @@
         "constants": [],
         "parentClass": "IteratorIterator",
         "interfaces": [
-            "OuterIterator",
-            "Traversable",
-            "Iterator"
+            "\\OuterIterator",
+            "\\Traversable",
+            "\\Iterator"
         ]
     },
     {
@@ -20381,9 +20381,9 @@
         "constants": [],
         "parentClass": "IteratorIterator",
         "interfaces": [
-            "OuterIterator",
-            "Traversable",
-            "Iterator"
+            "\\OuterIterator",
+            "\\Traversable",
+            "\\Iterator"
         ]
     },
     {
@@ -20488,9 +20488,9 @@
         "constants": [],
         "parentClass": "IteratorIterator",
         "interfaces": [
-            "OuterIterator",
-            "Traversable",
-            "Iterator"
+            "\\OuterIterator",
+            "\\Traversable",
+            "\\Iterator"
         ]
     },
     {
@@ -20814,9 +20814,9 @@
         ],
         "parentClass": "FilterIterator",
         "interfaces": [
-            "Iterator",
-            "Traversable",
-            "OuterIterator"
+            "\\Iterator",
+            "\\Traversable",
+            "\\OuterIterator"
         ]
     },
     {
@@ -21162,10 +21162,10 @@
         ],
         "parentClass": "RegexIterator",
         "interfaces": [
-            "OuterIterator",
-            "Traversable",
-            "Iterator",
-            "RecursiveIterator"
+            "\\OuterIterator",
+            "\\Traversable",
+            "\\Iterator",
+            "\\RecursiveIterator"
         ]
     },
     {
@@ -21236,8 +21236,8 @@
         "constants": [],
         "parentClass": null,
         "interfaces": [
-            "Iterator",
-            "Traversable"
+            "\\Iterator",
+            "\\Traversable"
         ]
     },
     {
@@ -21671,9 +21671,9 @@
         ],
         "parentClass": "RecursiveIteratorIterator",
         "interfaces": [
-            "OuterIterator",
-            "Traversable",
-            "Iterator"
+            "\\OuterIterator",
+            "\\Traversable",
+            "\\Iterator"
         ]
     },
     {
@@ -22099,11 +22099,11 @@
         ],
         "parentClass": null,
         "interfaces": [
-            "IteratorAggregate",
-            "Traversable",
-            "ArrayAccess",
-            "Serializable",
-            "Countable"
+            "\\IteratorAggregate",
+            "\\Traversable",
+            "\\ArrayAccess",
+            "\\Serializable",
+            "\\Countable"
         ]
     },
     {
@@ -22539,12 +22539,12 @@
         ],
         "parentClass": null,
         "interfaces": [
-            "Iterator",
-            "Traversable",
-            "ArrayAccess",
-            "SeekableIterator",
-            "Serializable",
-            "Countable"
+            "\\Iterator",
+            "\\Traversable",
+            "\\ArrayAccess",
+            "\\SeekableIterator",
+            "\\Serializable",
+            "\\Countable"
         ]
     },
     {
@@ -22996,13 +22996,13 @@
         ],
         "parentClass": "ArrayIterator",
         "interfaces": [
-            "Countable",
-            "Serializable",
-            "SeekableIterator",
-            "ArrayAccess",
-            "Traversable",
-            "Iterator",
-            "RecursiveIterator"
+            "\\Countable",
+            "\\Serializable",
+            "\\SeekableIterator",
+            "\\ArrayAccess",
+            "\\Traversable",
+            "\\Iterator",
+            "\\RecursiveIterator"
         ]
     },
     {
@@ -23993,9 +23993,9 @@
         "constants": [],
         "parentClass": "SplFileInfo",
         "interfaces": [
-            "Iterator",
-            "Traversable",
-            "SeekableIterator"
+            "\\Iterator",
+            "\\Traversable",
+            "\\SeekableIterator"
         ]
     },
     {
@@ -24654,9 +24654,9 @@
         ],
         "parentClass": "DirectoryIterator",
         "interfaces": [
-            "SeekableIterator",
-            "Traversable",
-            "Iterator"
+            "\\SeekableIterator",
+            "\\Traversable",
+            "\\Iterator"
         ]
     },
     {
@@ -25371,10 +25371,10 @@
         ],
         "parentClass": "FilesystemIterator",
         "interfaces": [
-            "Iterator",
-            "Traversable",
-            "SeekableIterator",
-            "RecursiveIterator"
+            "\\Iterator",
+            "\\Traversable",
+            "\\SeekableIterator",
+            "\\RecursiveIterator"
         ]
     },
     {
@@ -26044,10 +26044,10 @@
         ],
         "parentClass": "FilesystemIterator",
         "interfaces": [
-            "Iterator",
-            "Traversable",
-            "SeekableIterator",
-            "Countable"
+            "\\Iterator",
+            "\\Traversable",
+            "\\SeekableIterator",
+            "\\Countable"
         ]
     },
     {
@@ -27175,10 +27175,10 @@
         ],
         "parentClass": "SplFileInfo",
         "interfaces": [
-            "RecursiveIterator",
-            "Traversable",
-            "Iterator",
-            "SeekableIterator"
+            "\\RecursiveIterator",
+            "\\Traversable",
+            "\\Iterator",
+            "\\SeekableIterator"
         ]
     },
     {
@@ -28273,10 +28273,10 @@
         ],
         "parentClass": "SplFileObject",
         "interfaces": [
-            "SeekableIterator",
-            "Iterator",
-            "Traversable",
-            "RecursiveIterator"
+            "\\SeekableIterator",
+            "\\Iterator",
+            "\\Traversable",
+            "\\RecursiveIterator"
         ]
     },
     {
@@ -28700,11 +28700,11 @@
         ],
         "parentClass": null,
         "interfaces": [
-            "Iterator",
-            "Traversable",
-            "Countable",
-            "ArrayAccess",
-            "Serializable"
+            "\\Iterator",
+            "\\Traversable",
+            "\\Countable",
+            "\\ArrayAccess",
+            "\\Serializable"
         ]
     },
     {
@@ -29162,11 +29162,11 @@
         ],
         "parentClass": "SplDoublyLinkedList",
         "interfaces": [
-            "Serializable",
-            "ArrayAccess",
-            "Countable",
-            "Traversable",
-            "Iterator"
+            "\\Serializable",
+            "\\ArrayAccess",
+            "\\Countable",
+            "\\Traversable",
+            "\\Iterator"
         ]
     },
     {
@@ -29590,11 +29590,11 @@
         ],
         "parentClass": "SplDoublyLinkedList",
         "interfaces": [
-            "Serializable",
-            "ArrayAccess",
-            "Countable",
-            "Traversable",
-            "Iterator"
+            "\\Serializable",
+            "\\ArrayAccess",
+            "\\Countable",
+            "\\Traversable",
+            "\\Iterator"
         ]
     },
     {
@@ -29754,9 +29754,9 @@
         "constants": [],
         "parentClass": null,
         "interfaces": [
-            "Iterator",
-            "Traversable",
-            "Countable"
+            "\\Iterator",
+            "\\Traversable",
+            "\\Countable"
         ]
     },
     {
@@ -29939,9 +29939,9 @@
         "constants": [],
         "parentClass": "SplHeap",
         "interfaces": [
-            "Countable",
-            "Traversable",
-            "Iterator"
+            "\\Countable",
+            "\\Traversable",
+            "\\Iterator"
         ]
     },
     {
@@ -30124,9 +30124,9 @@
         "constants": [],
         "parentClass": "SplHeap",
         "interfaces": [
-            "Countable",
-            "Traversable",
-            "Iterator"
+            "\\Countable",
+            "\\Traversable",
+            "\\Iterator"
         ]
     },
     {
@@ -30362,9 +30362,9 @@
         ],
         "parentClass": null,
         "interfaces": [
-            "Iterator",
-            "Traversable",
-            "Countable"
+            "\\Iterator",
+            "\\Traversable",
+            "\\Countable"
         ]
     },
     {
@@ -30662,10 +30662,10 @@
         "constants": [],
         "parentClass": null,
         "interfaces": [
-            "Iterator",
-            "Traversable",
-            "ArrayAccess",
-            "Countable"
+            "\\Iterator",
+            "\\Traversable",
+            "\\ArrayAccess",
+            "\\Countable"
         ]
     },
     {
@@ -31090,11 +31090,11 @@
         "constants": [],
         "parentClass": null,
         "interfaces": [
-            "Countable",
-            "Iterator",
-            "Traversable",
-            "Serializable",
-            "ArrayAccess"
+            "\\Countable",
+            "\\Iterator",
+            "\\Traversable",
+            "\\Serializable",
+            "\\ArrayAccess"
         ]
     },
     {
@@ -31338,8 +31338,8 @@
         ],
         "parentClass": null,
         "interfaces": [
-            "Iterator",
-            "Traversable"
+            "\\Iterator",
+            "\\Traversable"
         ]
     },
     {
@@ -33016,7 +33016,7 @@
         "constants": [],
         "parentClass": null,
         "interfaces": [
-            "Traversable"
+            "\\Traversable"
         ]
     },
     {
@@ -33597,7 +33597,7 @@
         "constants": [],
         "parentClass": null,
         "interfaces": [
-            "Reflector"
+            "\\Reflector"
         ]
     },
     {
@@ -34028,7 +34028,7 @@
         ],
         "parentClass": "ReflectionFunctionAbstract",
         "interfaces": [
-            "Reflector"
+            "\\Reflector"
         ]
     },
     {
@@ -34329,7 +34329,7 @@
         "constants": [],
         "parentClass": null,
         "interfaces": [
-            "Reflector"
+            "\\Reflector"
         ]
     },
     {
@@ -34986,7 +34986,7 @@
         ],
         "parentClass": "ReflectionFunctionAbstract",
         "interfaces": [
-            "Reflector"
+            "\\Reflector"
         ]
     },
     {
@@ -35816,7 +35816,7 @@
         ],
         "parentClass": null,
         "interfaces": [
-            "Reflector"
+            "\\Reflector"
         ]
     },
     {
@@ -36646,7 +36646,7 @@
         ],
         "parentClass": "ReflectionClass",
         "interfaces": [
-            "Reflector"
+            "\\Reflector"
         ]
     },
     {
@@ -36982,7 +36982,7 @@
         ],
         "parentClass": null,
         "interfaces": [
-            "Reflector"
+            "\\Reflector"
         ]
     },
     {
@@ -37206,7 +37206,7 @@
         "constants": [],
         "parentClass": null,
         "interfaces": [
-            "Reflector"
+            "\\Reflector"
         ]
     },
     {
@@ -37364,7 +37364,7 @@
         "constants": [],
         "parentClass": null,
         "interfaces": [
-            "Reflector"
+            "\\Reflector"
         ]
     },
     {
@@ -37539,8 +37539,8 @@
         "constants": [],
         "parentClass": null,
         "interfaces": [
-            "SessionHandlerInterface",
-            "SessionIdInterface"
+            "\\SessionHandlerInterface",
+            "\\SessionIdInterface"
         ]
     },
     {
@@ -37974,7 +37974,7 @@
         "constants": [],
         "parentClass": null,
         "interfaces": [
-            "Traversable"
+            "\\Traversable"
         ]
     },
     {
@@ -38485,10 +38485,10 @@
         "constants": [],
         "parentClass": "SimpleXMLElement",
         "interfaces": [
-            "Traversable",
-            "RecursiveIterator",
-            "Iterator",
-            "Countable"
+            "\\Traversable",
+            "\\RecursiveIterator",
+            "\\Iterator",
+            "\\Countable"
         ]
     },
     {
@@ -42719,12 +42719,12 @@
         ],
         "parentClass": "RecursiveDirectoryIterator",
         "interfaces": [
-            "RecursiveIterator",
-            "SeekableIterator",
-            "Traversable",
-            "Iterator",
-            "Countable",
-            "ArrayAccess"
+            "\\RecursiveIterator",
+            "\\SeekableIterator",
+            "\\Traversable",
+            "\\Iterator",
+            "\\Countable",
+            "\\ArrayAccess"
         ]
     },
     {
@@ -44715,12 +44715,12 @@
         ],
         "parentClass": "RecursiveDirectoryIterator",
         "interfaces": [
-            "RecursiveIterator",
-            "SeekableIterator",
-            "Traversable",
-            "Iterator",
-            "Countable",
-            "ArrayAccess"
+            "\\RecursiveIterator",
+            "\\SeekableIterator",
+            "\\Traversable",
+            "\\Iterator",
+            "\\Countable",
+            "\\ArrayAccess"
         ]
     },
     {
@@ -48670,7 +48670,7 @@
         "constants": [],
         "parentClass": null,
         "interfaces": [
-            "Traversable"
+            "\\Traversable"
         ]
     },
     {
@@ -52285,8 +52285,8 @@
         "constants": [],
         "parentClass": null,
         "interfaces": [
-            "Iterator",
-            "Traversable"
+            "\\Iterator",
+            "\\Traversable"
         ]
     },
     {
@@ -52792,7 +52792,7 @@
         ],
         "parentClass": null,
         "interfaces": [
-            "Traversable"
+            "\\Traversable"
         ]
     },
     {
@@ -53365,7 +53365,7 @@
         ],
         "parentClass": "IntlBreakIterator",
         "interfaces": [
-            "Traversable"
+            "\\Traversable"
         ]
     },
     {
@@ -53882,7 +53882,7 @@
         ],
         "parentClass": "IntlBreakIterator",
         "interfaces": [
-            "Traversable"
+            "\\Traversable"
         ]
     },
     {
@@ -53983,8 +53983,8 @@
         ],
         "parentClass": "IntlIterator",
         "interfaces": [
-            "Traversable",
-            "Iterator"
+            "\\Traversable",
+            "\\Iterator"
         ]
     },
     {
@@ -56565,7 +56565,7 @@
         "constants": [],
         "parentClass": null,
         "interfaces": [
-            "Traversable"
+            "\\Traversable"
         ]
     },
     {
