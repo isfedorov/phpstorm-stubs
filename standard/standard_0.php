@@ -5,6 +5,7 @@
 use JetBrains\PhpStorm\ArrayShape;
 use JetBrains\PhpStorm\Deprecated;
 use JetBrains\PhpStorm\ExpectedValues;
+use JetBrains\PhpStorm\FileReference;
 use JetBrains\PhpStorm\Internal\LanguageLevelTypeAware;
 use JetBrains\PhpStorm\Internal\PhpStormStubsElementAvailable;
 use JetBrains\PhpStorm\Internal\TentativeType;
@@ -817,7 +818,7 @@ function sha1(string $string, bool $binary = false): string {}
  * @return string|false a string on success, false otherwise.
  */
 #[Pure(true)]
-function sha1_file(string $filename, bool $binary = false): string|false {}
+function sha1_file(#[FileReference] string $filename, bool $binary = false): string|false {}
 
 /**
  * Calculate the md5 hash of a string
@@ -848,7 +849,7 @@ function md5(string $string, bool $binary = false): string {}
  * @return string|false a string on success, false otherwise.
  */
 #[Pure(true)]
-function md5_file(string $filename, bool $binary = false): string|false {}
+function md5_file(#[FileReference] string $filename, bool $binary = false): string|false {}
 
 /**
  * Calculates the crc32 polynomial of a string
@@ -956,7 +957,7 @@ function iptcembed(string $iptc_data, string $filename, int $spool = 0): string|
  * </p>
  */
 #[ArrayShape([0 => "int", 1 => "int", 2 => "int", 3 => "string", "bits" => "int", "channels" => "int", "mime" => "string"])]
-function getimagesize(string $filename, &$image_info = null): array|false {}
+function getimagesize(#[FileReference] string $filename, &$image_info = null): array|false {}
 
 /**
  * Get Mime-Type for image-type returned by getimagesize, exif_read_data, exif_thumbnail, exif_imagetype

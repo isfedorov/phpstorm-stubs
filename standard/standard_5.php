@@ -2,6 +2,7 @@
 
 use JetBrains\PhpStorm\Deprecated;
 use JetBrains\PhpStorm\ExpectedValues;
+use JetBrains\PhpStorm\FileReference;
 use JetBrains\PhpStorm\Internal\LanguageLevelTypeAware;
 use JetBrains\PhpStorm\Pure;
 
@@ -401,7 +402,7 @@ function popen(string $command, string $mode) {}
  * </p>
  * @return false|int the number of bytes read from the file, or FALSE on failure
  */
-function readfile(string $filename, bool $use_include_path = false, $context = null): int|false {}
+function readfile(#[FileReference] string $filename, bool $use_include_path = false, $context = null): int|false {}
 
 /**
  * Rewind the position of a file pointer
@@ -423,7 +424,7 @@ function rewind($stream): bool {}
  * @param resource $context [optional]
  * @return bool true on success or false on failure.
  */
-function rmdir(string $directory, $context = null): bool {}
+function rmdir(#[FileReference] string $directory, $context = null): bool {}
 
 /**
  * Changes the current umask
@@ -704,7 +705,7 @@ function fread($stream, int $length): string|false {}
  * @param resource $context [optional]
  * @return resource|false a file pointer resource on success, or false on error.
  */
-function fopen(string $filename, string $mode, bool $use_include_path = false, $context = null) {}
+function fopen(#[FileReference] string $filename, string $mode, bool $use_include_path = false, $context = null) {}
 
 /**
  * Output all remaining data on a file pointer
@@ -895,7 +896,7 @@ function fputs($stream, string $data, ?int $length = null): int|false {}
  * @param resource $context [optional]
  * @return bool true on success or false on failure.
  */
-function mkdir(string $directory, int $permissions = 0777, bool $recursive = false, $context = null): bool {}
+function mkdir(#[FileReference] string $directory, int $permissions = 0777, bool $recursive = false, $context = null): bool {}
 
 /**
  * Renames a file or directory
@@ -913,7 +914,7 @@ function mkdir(string $directory, int $permissions = 0777, bool $recursive = fal
  * @param resource $context [optional]
  * @return bool true on success or false on failure.
  */
-function rename(string $from, string $to, $context = null): bool {}
+function rename(#[FileReference] string $from, #[FileReference] string $to, $context = null): bool {}
 
 /**
  * Copies file
@@ -935,7 +936,7 @@ function rename(string $from, string $to, $context = null): bool {}
  * </p>
  * @return bool true on success or false on failure.
  */
-function copy(string $from, string $to, $context = null): bool {}
+function copy(#[FileReference] string $from, #[FileReference] string $to, $context = null): bool {}
 
 /**
  * Create file with unique file name
@@ -950,7 +951,7 @@ function copy(string $from, string $to, $context = null): bool {}
  * @return string|false the new temporary filename, or false on
  * failure.
  */
-function tempnam(string $directory, string $prefix): string|false {}
+function tempnam(#[FileReference] string $directory, string $prefix): string|false {}
 
 /**
  * Creates a temporary file
@@ -990,7 +991,7 @@ function tmpfile() {}
  * </p>
  */
 #[Pure(true)]
-function file(string $filename, int $flags = 0, $context = null): array|false {}
+function file(#[FileReference] string $filename, int $flags = 0, $context = null): array|false {}
 
 /**
  * Reads entire file into a string
@@ -1017,7 +1018,7 @@ function file(string $filename, int $flags = 0, $context = null): array|false {}
  * @return string|false The function returns the read data or false on failure.
  */
 #[Pure(true)]
-function file_get_contents(string $filename, bool $use_include_path = false, $context = null, int $offset = 0, ?int $length = null): string|false {}
+function file_get_contents(#[FileReference] string $filename, bool $use_include_path = false, $context = null, int $offset = 0, ?int $length = null): string|false {}
 
 /**
  * Write a string to a file
@@ -1090,4 +1091,4 @@ function file_get_contents(string $filename, bool $use_include_path = false, $co
  * @return int|false The function returns the number of bytes that were written to the file, or
  * false on failure.
  */
-function file_put_contents(string $filename, mixed $data, int $flags = 0, $context = null): int|false {}
+function file_put_contents(#[FileReference] string $filename, mixed $data, int $flags = 0, $context = null): int|false {}
