@@ -2,6 +2,7 @@
 
 use JetBrains\PhpStorm\ArrayShape;
 use JetBrains\PhpStorm\Deprecated;
+use JetBrains\PhpStorm\FileReference;
 use JetBrains\PhpStorm\Internal\LanguageLevelTypeAware;
 use JetBrains\PhpStorm\Internal\PhpStormStubsElementAvailable;
 use JetBrains\PhpStorm\Pure;
@@ -1167,7 +1168,7 @@ function socket_get_status($stream): array {}
  * </p>
  */
 #[Pure(true)]
-function realpath(string $path): string|false {}
+function realpath(#[FileReference] string $path): string|false {}
 
 /**
  * Match filename against a pattern

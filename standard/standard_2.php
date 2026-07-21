@@ -1,6 +1,7 @@
 <?php
 
 use JetBrains\PhpStorm\ArrayShape;
+use JetBrains\PhpStorm\FileReference;
 use JetBrains\PhpStorm\Internal\LanguageLevelTypeAware;
 use JetBrains\PhpStorm\Internal\PhpStormStubsElementAvailable;
 use JetBrains\PhpStorm\Internal\ReturnTypeContract as TypeContract;
@@ -595,7 +596,7 @@ function http_build_query(object|array $data, string $numeric_prefix = "", ?stri
  * @return string|false the contents of the symbolic link path or false on error.
  */
 #[Pure(true)]
-function readlink(string $path): string|false {}
+function readlink(#[FileReference] string $path): string|false {}
 
 /**
  * Gets information about a link
@@ -608,7 +609,7 @@ function readlink(string $path): string|false {}
  * system call. Returns 0 or false in case of error.
  */
 #[Pure(true)]
-function linkinfo(string $path): int|false {}
+function linkinfo(#[FileReference] string $path): int|false {}
 
 /**
  * Creates a symbolic link
@@ -621,7 +622,7 @@ function linkinfo(string $path): int|false {}
  * </p>
  * @return bool true on success or false on failure.
  */
-function symlink(string $target, string $link): bool {}
+function symlink(#[FileReference] string $target, #[FileReference] string $link): bool {}
 
 /**
  * Create a hard link
@@ -630,7 +631,7 @@ function symlink(string $target, string $link): bool {}
  * @param string $link The link name.
  * @return bool true on success or false on failure.
  */
-function link(string $target, string $link): bool {}
+function link(#[FileReference] string $target, #[FileReference] string $link): bool {}
 
 /**
  * Deletes a file
@@ -641,7 +642,7 @@ function link(string $target, string $link): bool {}
  * @param resource $context [optional]
  * @return bool true on success or false on failure.
  */
-function unlink(string $filename, $context = null): bool {}
+function unlink(#[FileReference] string $filename, $context = null): bool {}
 
 /**
  * Execute an external program

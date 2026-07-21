@@ -2,6 +2,7 @@
 
 use JetBrains\PhpStorm\ArrayShape;
 use JetBrains\PhpStorm\Deprecated;
+use JetBrains\PhpStorm\FileReference;
 use JetBrains\PhpStorm\Internal\LanguageLevelTypeAware;
 use JetBrains\PhpStorm\Internal\PhpStormStubsElementAvailable;
 use JetBrains\PhpStorm\Pure;
@@ -346,7 +347,7 @@ function unregister_tick_function(callable $callback): void {}
  * code as a string instead of printing it out. Otherwise, it will return
  * true on success, false on failure.
  */
-function highlight_file(string $filename, bool $return = false): string|bool {}
+function highlight_file(#[FileReference] string $filename, bool $return = false): string|bool {}
 
 /**
  * Alias:
@@ -356,7 +357,7 @@ function highlight_file(string $filename, bool $return = false): string|bool {}
  * @param bool $return [optional]
  * @return string|bool
  */
-function show_source(string $filename, bool $return = false): string|bool {}
+function show_source(#[FileReference] string $filename, bool $return = false): string|bool {}
 
 /**
  * Syntax highlighting of a string
@@ -852,7 +853,7 @@ function ignore_user_abort(?bool $enable = null): int {}
  * and false on failure.
  */
 #[Pure(true)]
-function parse_ini_file(string $filename, bool $process_sections = false, int $scanner_mode = INI_SCANNER_NORMAL): array|false {}
+function parse_ini_file(#[FileReference] string $filename, bool $process_sections = false, int $scanner_mode = INI_SCANNER_NORMAL): array|false {}
 
 /**
  * Parse a configuration string
